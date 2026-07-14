@@ -1,2 +1,6 @@
 # Local Codex workspace instructions
 .agent/
+
+# Local project documentation
+/docs/*.md
+/docs/**/*.md
