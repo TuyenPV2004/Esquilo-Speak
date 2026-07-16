@@ -1,0 +1,54 @@
+{
+  "id": "lesson-basic-greetings",
+  "courseId": "course-en-for-vi",
+  "title": {
+    "vi": "Lời chào cơ bản",
+    "en": "Basic greetings"
+  },
+  "objectives": [
+    {
+      "vi": "Nhận biết và sử dụng lời chào thông dụng.",
+      "en": "Recognize and use common greetings."
+    }
+  ],
+  "estimatedMinutes": 5,
+  "exercises": [
+    {
+      "id": "exercise-choose-hello",
+      "type": "multiple_choice",
+      "prompt": {
+        "vi": "Từ nào có nghĩa là xin chào?",
+        "en": "Which word is a greeting?"
+      },
+      "options": [
+        {
+          "id": "option-hello",
+          "text": {
+            "vi": "Hello",
+            "en": "Hello"
+          }
+        },
+        {
+          "id": "option-goodbye",
+          "text": {
+            "vi": "Goodbye",
+            "en": "Goodbye"
+          }
+        }
+      ],
+      "correctOptionId": "option-hello",
+      "explanation": {
+        "vi": "Hello là lời chào thông dụng trong tiếng Anh.",
+        "en": "Hello is a common English greeting."
+      },
+      "skill": "vocabulary",
+      "conceptIds": ["concept-basic-greetings"]
+    }
+  ],
+  "metadata": {
+    "version": 1,
+    "status": "draft",
+    "owner": "EsquiloSpeak content team",
+    "license": "Proprietary"
+  }
+}

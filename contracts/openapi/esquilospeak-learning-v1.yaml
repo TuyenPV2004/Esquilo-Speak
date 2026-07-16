@@ -1,0 +1,413 @@
+openapi: 3.1.1
+info:
+  title: EsquiloSpeak Learning API
+  version: 0.1.0
+  description: >-
+    Contract for the first vertical slice: discover a course, load a lesson,
+    submit a multiple-choice attempt, receive feedback, and read progress.
+    Authentication token issuance and mastery scheduling are outside this slice.
+  contact:
+    name: EsquiloSpeak
+servers:
+  - url: http://localhost:8080
+    description: Local development
+tags:
+  - name: Catalog
+  - name: Learning
+  - name: Progress
+paths:
+  /api/mobile/v1/languages:
+    get:
+      tags: [Catalog]
+      operationId: listLearningLanguages
+      summary: List enabled learning languages
+      security: []
+      responses:
+        '200':
+          description: Enabled languages
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [items]
+                properties:
+                  items:
+                    type: array
+                    items:
+                      $ref: ../schema/language.schema.json
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+  /api/mobile/v1/courses:
+    get:
+      tags: [Catalog]
+      operationId: listCourses
+      summary: List published courses for a language pair
+      security: []
+      parameters:
+        - name: sourceLanguage
+          in: query
+          required: true
+          schema:
+            $ref: '#/components/schemas/Locale'
+        - name: targetLanguage
+          in: query
+          required: true
+          schema:
+            $ref: '#/components/schemas/Locale'
+      responses:
+        '200':
+          description: Matching published courses
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [items]
+                properties:
+                  items:
+                    type: array
+                    items:
+                      $ref: ../schema/course.schema.json
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+  /api/mobile/v1/courses/{courseId}/lessons:
+    get:
+      tags: [Catalog]
+      operationId: listCourseLessons
+      summary: List published lesson versions in course order
+      security: []
+      parameters:
+        - $ref: '#/components/parameters/CourseId'
+      responses:
+        '200':
+          description: Ordered lesson summaries
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [items]
+                properties:
+                  items:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/LessonSummary'
+        '404':
+          $ref: '#/components/responses/ErrorResponse'
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+  /api/mobile/v1/lessons/{lessonId}:
+    get:
+      tags: [Learning]
+      operationId: getLesson
+      summary: Get an immutable published lesson version
+      security: []
+      parameters:
+        - $ref: '#/components/parameters/LessonId'
+        - name: version
+          in: query
+          required: false
+          description: Omit to resolve the current published version.
+          schema:
+            type: integer
+            minimum: 1
+      responses:
+        '200':
+          description: Lesson content
+          headers:
+            ETag:
+              description: Entity tag for local caching.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: ../schema/lesson.schema.json
+        '404':
+          $ref: '#/components/responses/ErrorResponse'
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+  /api/mobile/v1/attempts:
+    post:
+      tags: [Learning]
+      operationId: submitAttempt
+      summary: Submit one append-only exercise attempt
+      description: >-
+        The server deduplicates retries by Idempotency-Key and clientAttemptId.
+        Repeating the same accepted request returns the canonical result without
+        creating another attempt.
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/IdempotencyKey'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AttemptRequest'
+      responses:
+        '200':
+          description: Canonical attempt result and updated progress
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AttemptResult'
+        '400':
+          $ref: '#/components/responses/ErrorResponse'
+        '401':
+          $ref: '#/components/responses/ErrorResponse'
+        '409':
+          description: Idempotency key reused with a different request payload
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '422':
+          $ref: '#/components/responses/ErrorResponse'
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+  /api/mobile/v1/progress/courses/{courseId}:
+    get:
+      tags: [Progress]
+      operationId: getCourseProgress
+      summary: Get canonical progress for the current learner
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/CourseId'
+      responses:
+        '200':
+          description: Course progress
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CourseProgress'
+        '401':
+          $ref: '#/components/responses/ErrorResponse'
+        '404':
+          $ref: '#/components/responses/ErrorResponse'
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: >-
+        Token for an authenticated or guest learner session. Token issuance and
+        account merge behavior will be defined by a later identity contract.
+  parameters:
+    CourseId:
+      name: courseId
+      in: path
+      required: true
+      schema:
+        $ref: '#/components/schemas/Identifier'
+    LessonId:
+      name: lessonId
+      in: path
+      required: true
+      schema:
+        $ref: '#/components/schemas/Identifier'
+    IdempotencyKey:
+      name: Idempotency-Key
+      in: header
+      required: true
+      description: Stable UUID generated once for the logical mutation.
+      schema:
+        type: string
+        format: uuid
+  responses:
+    ErrorResponse:
+      description: Request could not be completed
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ApiError'
+  schemas:
+    Identifier:
+      type: string
+      pattern: '^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$'
+      minLength: 2
+      maxLength: 100
+    Locale:
+      type: string
+      pattern: '^[A-Za-z]{2,3}(?:-[A-Za-z0-9]{2,8})*$'
+      examples: [vi, en, pt-BR]
+    LocalizedText:
+      type: object
+      minProperties: 1
+      patternProperties:
+        '^[A-Za-z]{2,3}(?:-[A-Za-z0-9]{2,8})*$':
+          type: string
+          minLength: 1
+      additionalProperties: false
+    LessonSummary:
+      type: object
+      required: [id, version, title, estimatedMinutes]
+      properties:
+        id:
+          $ref: '#/components/schemas/Identifier'
+        version:
+          type: integer
+          minimum: 1
+        title:
+          $ref: '#/components/schemas/LocalizedText'
+        estimatedMinutes:
+          type: integer
+          minimum: 1
+          maximum: 120
+      additionalProperties: false
+    AttemptRequest:
+      type: object
+      required:
+        - clientAttemptId
+        - courseId
+        - lessonId
+        - lessonVersion
+        - exerciseId
+        - selectedOptionId
+        - occurredAt
+      properties:
+        clientAttemptId:
+          type: string
+          format: uuid
+        courseId:
+          $ref: '#/components/schemas/Identifier'
+        lessonId:
+          $ref: '#/components/schemas/Identifier'
+        lessonVersion:
+          type: integer
+          minimum: 1
+        exerciseId:
+          $ref: '#/components/schemas/Identifier'
+        selectedOptionId:
+          $ref: '#/components/schemas/Identifier'
+        occurredAt:
+          type: string
+          format: date-time
+        responseTimeMs:
+          type: integer
+          minimum: 0
+      additionalProperties: false
+    AttemptResult:
+      type: object
+      required:
+        - attemptId
+        - clientAttemptId
+        - acceptedAt
+        - correct
+        - feedback
+        - progress
+        - syncCursor
+      properties:
+        attemptId:
+          type: string
+          format: uuid
+        clientAttemptId:
+          type: string
+          format: uuid
+        acceptedAt:
+          type: string
+          format: date-time
+        correct:
+          type: boolean
+        feedback:
+          $ref: '#/components/schemas/Feedback'
+        progress:
+          $ref: '#/components/schemas/CourseProgress'
+        syncCursor:
+          type: string
+          minLength: 1
+      additionalProperties: false
+    Feedback:
+      type: object
+      required: [message, correctOptionId, explanation]
+      properties:
+        message:
+          $ref: '#/components/schemas/LocalizedText'
+        correctOptionId:
+          $ref: '#/components/schemas/Identifier'
+        explanation:
+          $ref: '#/components/schemas/LocalizedText'
+      additionalProperties: false
+    CourseProgress:
+      type: object
+      required:
+        - courseId
+        - completedExerciseCount
+        - totalExerciseCount
+        - lastActivityAt
+        - lessonProgress
+      properties:
+        courseId:
+          $ref: '#/components/schemas/Identifier'
+        completedExerciseCount:
+          type: integer
+          minimum: 0
+        totalExerciseCount:
+          type: integer
+          minimum: 0
+        lastActivityAt:
+          type: string
+          format: date-time
+        lessonProgress:
+          type: array
+          items:
+            $ref: '#/components/schemas/LessonProgress'
+      additionalProperties: false
+    LessonProgress:
+      type: object
+      required: [lessonId, lessonVersion, status, completedExerciseCount, totalExerciseCount]
+      properties:
+        lessonId:
+          $ref: '#/components/schemas/Identifier'
+        lessonVersion:
+          type: integer
+          minimum: 1
+        status:
+          type: string
+          enum: [not_started, in_progress, completed]
+        completedExerciseCount:
+          type: integer
+          minimum: 0
+        totalExerciseCount:
+          type: integer
+          minimum: 1
+      additionalProperties: false
+    ApiError:
+      type: object
+      required: [type, title, status, code, traceId, retryable]
+      properties:
+        type:
+          type: string
+          format: uri-reference
+        title:
+          type: string
+          minLength: 1
+        status:
+          type: integer
+          minimum: 400
+          maximum: 599
+        detail:
+          type: string
+        code:
+          type: string
+          pattern: '^[A-Z][A-Z0-9_]+$'
+        traceId:
+          type: string
+          minLength: 1
+        retryable:
+          type: boolean
+        violations:
+          type: array
+          items:
+            type: object
+            required: [field, code]
+            properties:
+              field:
+                type: string
+              code:
+                type: string
+            additionalProperties: false
+      additionalProperties: false

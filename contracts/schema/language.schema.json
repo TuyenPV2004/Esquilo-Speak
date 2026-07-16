@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.esquilospeak.com/content/language.schema.json",
+  "title": "Learning language",
+  "type": "object",
+  "required": ["id", "languageTag", "name", "enabled"],
+  "properties": {
+    "id": {
+      "$ref": "common.schema.json#/$defs/identifier"
+    },
+    "languageTag": {
+      "$ref": "common.schema.json#/$defs/locale"
+    },
+    "name": {
+      "$ref": "common.schema.json#/$defs/localizedText"
+    },
+    "enabled": {
+      "type": "boolean"
+    }
+  },
+  "additionalProperties": false
+}

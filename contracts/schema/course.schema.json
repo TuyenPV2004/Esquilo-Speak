@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.esquilospeak.com/content/course.schema.json",
+  "title": "Course",
+  "type": "object",
+  "required": [
+    "id",
+    "sourceLanguage",
+    "targetLanguage",
+    "title",
+    "description",
+    "lessonIds",
+    "metadata"
+  ],
+  "properties": {
+    "id": {
+      "$ref": "common.schema.json#/$defs/identifier"
+    },
+    "sourceLanguage": {
+      "$ref": "common.schema.json#/$defs/locale"
+    },
+    "targetLanguage": {
+      "$ref": "common.schema.json#/$defs/locale"
+    },
+    "title": {
+      "$ref": "common.schema.json#/$defs/localizedText"
+    },
+    "description": {
+      "$ref": "common.schema.json#/$defs/localizedText"
+    },
+    "lessonIds": {
+      "type": "array",
+      "items": {
+        "$ref": "common.schema.json#/$defs/identifier"
+      },
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "metadata": {
+      "$ref": "common.schema.json#/$defs/contentMetadata"
+    }
+  },
+  "additionalProperties": false
+}

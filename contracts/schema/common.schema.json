@@ -1,0 +1,66 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.esquilospeak.com/content/common.schema.json",
+  "title": "EsquiloSpeak content common definitions",
+  "$defs": {
+    "identifier": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$",
+      "minLength": 2,
+      "maxLength": 100
+    },
+    "locale": {
+      "type": "string",
+      "pattern": "^[A-Za-z]{2,3}(?:-[A-Za-z0-9]{2,8})*$",
+      "examples": ["vi", "en", "pt-BR"]
+    },
+    "localizedText": {
+      "type": "object",
+      "description": "Text indexed by BCP 47 language tag.",
+      "minProperties": 1,
+      "patternProperties": {
+        "^[A-Za-z]{2,3}(?:-[A-Za-z0-9]{2,8})*$": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "additionalProperties": false
+    },
+    "contentStatus": {
+      "type": "string",
+      "enum": ["draft", "in_review", "approved", "scheduled", "published", "retired"]
+    },
+    "contentMetadata": {
+      "type": "object",
+      "required": ["version", "status", "owner", "license"],
+      "properties": {
+        "version": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "status": {
+          "$ref": "#/$defs/contentStatus"
+        },
+        "owner": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "license": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "source": {
+          "type": "string",
+          "format": "uri"
+        },
+        "publishedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}
