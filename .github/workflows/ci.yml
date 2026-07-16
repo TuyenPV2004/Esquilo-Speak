@@ -1,0 +1,65 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - develop
+      - main
+  pull_request:
+    branches:
+      - develop
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate-contracts:
+    name: Validate contracts
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v6
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: 24
+          package-manager-cache: false
+
+      - name: Validate JSON files
+        shell: bash
+        run: |
+          node <<'NODE'
+          const fs = require('node:fs');
+          const path = require('node:path');
+
+          const directory = path.join('contracts', 'schema');
+          const files = fs
+            .readdirSync(directory)
+            .filter((file) => file.endsWith('.json'))
+            .sort();
+
+          if (files.length === 0) {
+            throw new Error(`No JSON files found in ${directory}`);
+          }
+
+          for (const file of files) {
+            const filePath = path.join(directory, file);
+            JSON.parse(fs.readFileSync(filePath, 'utf8'));
+            console.log(`Validated ${filePath}`);
+          }
+          NODE
+
+      - name: Lint OpenAPI contract
+        run: >-
+          npx --yes @redocly/cli@2.39.0 lint
+          contracts/openapi/esquilospeak-learning-v1.yaml
+          --extends=spec

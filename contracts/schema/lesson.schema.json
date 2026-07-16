@@ -1,0 +1,116 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.esquilospeak.com/content/lesson.schema.json",
+  "title": "Lesson",
+  "description": "Versioned lesson content for the first learning vertical slice.",
+  "type": "object",
+  "required": [
+    "id",
+    "courseId",
+    "title",
+    "objectives",
+    "estimatedMinutes",
+    "exercises",
+    "metadata"
+  ],
+  "properties": {
+    "id": {
+      "$ref": "common.schema.json#/$defs/identifier"
+    },
+    "courseId": {
+      "$ref": "common.schema.json#/$defs/identifier"
+    },
+    "title": {
+      "$ref": "common.schema.json#/$defs/localizedText"
+    },
+    "objectives": {
+      "type": "array",
+      "items": {
+        "$ref": "common.schema.json#/$defs/localizedText"
+      },
+      "minItems": 1
+    },
+    "estimatedMinutes": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 120
+    },
+    "exercises": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/multipleChoiceExercise"
+      },
+      "minItems": 1
+    },
+    "metadata": {
+      "$ref": "common.schema.json#/$defs/contentMetadata"
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "multipleChoiceExercise": {
+      "type": "object",
+      "required": [
+        "id",
+        "type",
+        "prompt",
+        "options",
+        "correctOptionId",
+        "explanation",
+        "skill",
+        "conceptIds"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "common.schema.json#/$defs/identifier"
+        },
+        "type": {
+          "const": "multiple_choice"
+        },
+        "prompt": {
+          "$ref": "common.schema.json#/$defs/localizedText"
+        },
+        "options": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/exerciseOption"
+          },
+          "minItems": 2,
+          "uniqueItems": true
+        },
+        "correctOptionId": {
+          "$ref": "common.schema.json#/$defs/identifier"
+        },
+        "explanation": {
+          "$ref": "common.schema.json#/$defs/localizedText"
+        },
+        "skill": {
+          "type": "string",
+          "enum": ["reading", "listening", "writing", "speaking", "vocabulary", "grammar"]
+        },
+        "conceptIds": {
+          "type": "array",
+          "items": {
+            "$ref": "common.schema.json#/$defs/identifier"
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        }
+      },
+      "additionalProperties": false
+    },
+    "exerciseOption": {
+      "type": "object",
+      "required": ["id", "text"],
+      "properties": {
+        "id": {
+          "$ref": "common.schema.json#/$defs/identifier"
+        },
+        "text": {
+          "$ref": "common.schema.json#/$defs/localizedText"
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}
