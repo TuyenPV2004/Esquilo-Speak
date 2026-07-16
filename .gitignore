@@ -2,5 +2,4 @@
 .agent/
 
 # Local project documentation
-/docs/*.md
-/docs/**/*.md
+/docs/
