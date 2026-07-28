@@ -33,3 +33,108 @@ EsquiloSpeak hướng tới người mới bắt đầu, người học lại t�
 **Esquilo** có nghĩa là “con sóc” trong tiếng Bồ Đào Nha, tượng trưng cho khả năng tích lũy và ghi nhớ. **Speak** thể hiện mục tiêu cuối cùng của việc học ngôn ngữ: có thể nói, hiểu và giao tiếp tự tin.
 
 Hình ảnh chú sóc đang đọc sách đại diện cho hành trình tích lũy từng đơn vị kiến thức nhỏ để xây dựng năng lực ngôn ngữ bền vững.
+
+## Trạng thái triển khai
+
+Repository đã có Foundation Sprint chạy được cho vertical slice học tập đầu tiên:
+
+```text
+Danh mục ngôn ngữ/khóa học
+→ Danh sách bài học
+→ Bài tập trắc nghiệm
+→ Gửi attempt có idempotency
+→ Nhận phản hồi tức thì
+→ Xem tiến độ khóa học
+```
+
+- Mobile: Flutter `3.44.3`, Dart `3.12.2`, Android/iOS.
+- Backend: Java `21`, Spring Boot `4.1.0`, Spring Modulith `2.1.0`.
+- Build backend: Gradle Wrapper `9.6.1`.
+- Data: PostgreSQL `18`, Flyway migration và seed content.
+- Contract: OpenAPI `3.1.1` và JSON Schema `2020-12`.
+
+## Cấu trúc có thể chạy
+
+```text
+apps/mobile/                         Flutter learner application
+backend/core-platform/               Spring Boot modular monolith
+contracts/openapi/                   Mobile API contract
+contracts/schema/                    Authoring và learner delivery schemas
+infrastructure/local/compose/        PostgreSQL local
+```
+
+## Prerequisites
+
+- JDK 21.
+- Flutter 3.44.3 với Dart 3.12.2.
+- Android SDK cho Android development.
+- Docker Desktop hoặc Docker Engine hỗ trợ Compose.
+
+## Chạy local
+
+Sao chép `.env.example` thành `.env`, thay hai giá trị password local và chạy
+PostgreSQL:
+
+```powershell
+docker compose --env-file .env -f infrastructure/local/compose/compose.yml up -d
+```
+
+Chạy backend bằng profile `local`:
+
+```powershell
+cd backend/core-platform
+.\gradlew.bat bootRun
+```
+
+Profile local sinh khóa JWT tạm thời trong bộ nhớ và cung cấp
+`POST /internal/dev/token` để ứng dụng mobile chạy vertical slice. Endpoint này
+không tồn tại trong profile `production`.
+
+Chạy Flutter trên Android emulator:
+
+```powershell
+cd apps/mobile
+flutter pub get
+flutter run
+```
+
+Android emulator dùng API mặc định `http://10.0.2.2:8080`. Có thể đổi endpoint:
+
+```powershell
+flutter run --dart-define=ESQUILO_API_URL=https://api.example.com
+```
+
+## Kiểm thử
+
+Backend:
+
+```powershell
+cd backend/core-platform
+.\gradlew.bat test
+```
+
+Lệnh này chạy kiểm tra boundary Spring Modulith và integration test với
+PostgreSQL Testcontainers, do đó Docker phải đang hoạt động.
+
+Mobile:
+
+```powershell
+cd apps/mobile
+dart format --output=none --set-exit-if-changed lib test
+flutter analyze
+flutter test
+```
+
+Contract:
+
+```powershell
+npx --yes @redocly/cli@2.39.0 lint contracts/openapi/esquilospeak-learning-v1.yaml --extends=spec
+```
+
+## Cấu hình production
+
+- Kích hoạt Spring profile `production`.
+- Cung cấp `ESQUILO_DB_URL`, `ESQUILO_DB_USERNAME`,
+  `ESQUILO_DB_PASSWORD` và `ESQUILO_JWT_ISSUER_URI` từ secret store.
+- Không sử dụng local token endpoint hoặc password trong `.env.example` cho
+  production.

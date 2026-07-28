@@ -63,3 +63,79 @@ jobs:
           npx --yes @redocly/cli@2.39.0 lint
           contracts/openapi/esquilospeak-learning-v1.yaml
           --extends=spec
+
+  backend:
+    name: Build and test backend
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    defaults:
+      run:
+        working-directory: backend/core-platform
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v6
+
+      - name: Set up Java
+        uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: "21"
+          cache: gradle
+
+      - name: Verify Gradle wrapper
+        uses: gradle/actions/wrapper-validation@v5
+
+      - name: Build and test
+        run: ./gradlew test bootJar
+
+  mobile:
+    name: Analyze, test, and build mobile
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    defaults:
+      run:
+        working-directory: apps/mobile
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v6
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: "3.44.3"
+          channel: stable
+          cache: true
+
+      - name: Resolve packages
+        run: flutter pub get
+
+      - name: Check formatting
+        run: dart format --output=none --set-exit-if-changed lib test
+
+      - name: Analyze
+        run: flutter analyze
+
+      - name: Test
+        run: flutter test
+
+      - name: Build Android debug APK
+        run: flutter build apk --debug
+
+  infrastructure:
+    name: Validate local infrastructure
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v6
+
+      - name: Validate Compose model
+        env:
+          POSTGRES_PASSWORD: ci-placeholder-only
+        run: >-
+          docker compose
+          -f infrastructure/local/compose/compose.yml
+          config --quiet

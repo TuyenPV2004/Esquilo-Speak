@@ -1,0 +1,33 @@
+spring:
+  application:
+    name: esquilospeak-core-platform
+  config:
+    import: optional:file:../../.env[.properties]
+  profiles:
+    default: local
+  datasource:
+    url: ${ESQUILO_DB_URL:jdbc:postgresql://localhost:5432/esquilospeak}
+    username: ${ESQUILO_DB_USERNAME:esquilospeak}
+    password: ${ESQUILO_DB_PASSWORD}
+  flyway:
+    locations: classpath:db/migration
+  jackson:
+    default-property-inclusion: non_null
+
+server:
+  error:
+    include-message: never
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      probes:
+        enabled: true
+
+esquilospeak:
+  security:
+    issuer-uri: ${ESQUILO_JWT_ISSUER_URI:}

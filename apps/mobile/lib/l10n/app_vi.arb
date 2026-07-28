@@ -1,0 +1,26 @@
+{
+  "@@locale": "vi",
+  "appTitle": "EsquiloSpeak",
+  "catalogTitle": "Chọn ngôn ngữ muốn học",
+  "coursesTitle": "Khóa học",
+  "lessonsTitle": "Bài học",
+  "lessonTitle": "Nội dung bài học",
+  "feedbackTitle": "Phản hồi",
+  "progressTitle": "Tiến độ khóa học",
+  "startCourse": "Bắt đầu khóa học",
+  "startLesson": "Bắt đầu bài học",
+  "submitAnswer": "Kiểm tra đáp án",
+  "viewProgress": "Xem tiến độ",
+  "tryAgain": "Thử lại",
+  "retry": "Tải lại",
+  "loading": "Đang tải nội dung học",
+  "empty": "Chưa có nội dung học đã xuất bản.",
+  "selectAnswer": "Hãy chọn một đáp án trước khi tiếp tục.",
+  "completedExercises": "Đã hoàn thành {completed}/{total} bài tập",
+  "@completedExercises": {
+    "placeholders": {
+      "completed": { "type": "int" },
+      "total": { "type": "int" }
+    }
+  }
+}

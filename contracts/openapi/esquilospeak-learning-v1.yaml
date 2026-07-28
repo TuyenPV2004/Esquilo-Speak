@@ -120,7 +120,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: ../schema/lesson.schema.json
+                $ref: ../schema/lesson-delivery.schema.json
         '404':
           $ref: '#/components/responses/ErrorResponse'
         default:

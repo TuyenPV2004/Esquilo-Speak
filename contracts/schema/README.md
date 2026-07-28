@@ -1,6 +1,7 @@
-# First learning vertical slice — content schema
+# First learning vertical slice — schemas
 
-These JSON Schema Draft 2020-12 documents define the versioned learning content used by the first vertical slice.
+These JSON Schema Draft 2020-12 documents define authoring content and
+learner-safe delivery payloads used by the first vertical slice.
 
 ## Files
 
@@ -8,7 +9,12 @@ These JSON Schema Draft 2020-12 documents define the versioned learning content 
 - `language.schema.json`: one enabled learning language in the catalog.
 - `course.schema.json`: one language-pair course and its ordered lesson IDs.
 - `lesson.schema.json`: one lesson containing multiple-choice exercises.
+- `lesson-delivery.schema.json`: the public lesson response without scoring data.
 - `lesson.example.json`: minimal valid lesson example.
+
+The authoring schema contains `correctOptionId` and `explanation`. The delivery
+schema deliberately excludes both fields so a client cannot read the answer
+before submitting an attempt.
 
 ## Semantic rules outside JSON Schema
 

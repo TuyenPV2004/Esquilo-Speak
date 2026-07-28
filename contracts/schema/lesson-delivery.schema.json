@@ -1,0 +1,71 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.esquilospeak.com/content/lesson-delivery.schema.json",
+  "title": "Learner lesson delivery",
+  "description": "Published lesson content safe to deliver before an attempt. Correct answers and explanations are intentionally excluded.",
+  "type": "object",
+  "required": [
+    "id",
+    "courseId",
+    "version",
+    "title",
+    "objectives",
+    "estimatedMinutes",
+    "exercises"
+  ],
+  "properties": {
+    "id": { "$ref": "common.schema.json#/$defs/identifier" },
+    "courseId": { "$ref": "common.schema.json#/$defs/identifier" },
+    "version": { "type": "integer", "minimum": 1 },
+    "title": { "$ref": "common.schema.json#/$defs/localizedText" },
+    "objectives": {
+      "type": "array",
+      "items": { "$ref": "common.schema.json#/$defs/localizedText" },
+      "minItems": 1
+    },
+    "estimatedMinutes": { "type": "integer", "minimum": 1, "maximum": 120 },
+    "exercises": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/multipleChoiceExercise" },
+      "minItems": 1
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "multipleChoiceExercise": {
+      "type": "object",
+      "required": ["id", "type", "prompt", "options", "skill", "conceptIds"],
+      "properties": {
+        "id": { "$ref": "common.schema.json#/$defs/identifier" },
+        "type": { "const": "multiple_choice" },
+        "prompt": { "$ref": "common.schema.json#/$defs/localizedText" },
+        "options": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/exerciseOption" },
+          "minItems": 2,
+          "uniqueItems": true
+        },
+        "skill": {
+          "type": "string",
+          "enum": ["reading", "listening", "writing", "speaking", "vocabulary", "grammar"]
+        },
+        "conceptIds": {
+          "type": "array",
+          "items": { "$ref": "common.schema.json#/$defs/identifier" },
+          "minItems": 1,
+          "uniqueItems": true
+        }
+      },
+      "additionalProperties": false
+    },
+    "exerciseOption": {
+      "type": "object",
+      "required": ["id", "text"],
+      "properties": {
+        "id": { "$ref": "common.schema.json#/$defs/identifier" },
+        "text": { "$ref": "common.schema.json#/$defs/localizedText" }
+      },
+      "additionalProperties": false
+    }
+  }
+}
