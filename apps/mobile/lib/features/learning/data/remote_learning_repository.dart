@@ -47,24 +47,30 @@ class RemoteLearningRepository implements LearningRepository {
   }
 
   @override
-  Future<AttemptFeedback> submitAttempt({
+  PendingAttempt createAttempt({
     required Lesson lesson,
     required Exercise exercise,
     required String selectedOptionId,
-  }) async {
+  }) {
+    return PendingAttempt(
+      clientAttemptId: _uuid.v4(),
+      idempotencyKey: _uuid.v4(),
+      courseId: lesson.courseId,
+      lessonId: lesson.id,
+      lessonVersion: lesson.version,
+      exerciseId: exercise.id,
+      selectedOptionId: selectedOptionId,
+      occurredAt: DateTime.now().toUtc(),
+    );
+  }
+
+  @override
+  Future<AttemptFeedback> submitAttempt(PendingAttempt attempt) async {
     final payload = await _api.post(
       '/api/mobile/v1/attempts',
       authenticated: true,
-      idempotent: true,
-      body: {
-        'clientAttemptId': _uuid.v4(),
-        'courseId': lesson.courseId,
-        'lessonId': lesson.id,
-        'lessonVersion': lesson.version,
-        'exerciseId': exercise.id,
-        'selectedOptionId': selectedOptionId,
-        'occurredAt': DateTime.now().toUtc().toIso8601String(),
-      },
+      idempotencyKey: attempt.idempotencyKey,
+      body: attempt.toJson(),
     );
     return AttemptFeedback.fromJson(payload);
   }

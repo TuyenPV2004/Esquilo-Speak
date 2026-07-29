@@ -128,6 +128,7 @@ class _Catalog extends StatelessWidget {
         final language = available[index];
         return Card(
           child: ListTile(
+            key: ValueKey('language-${language.languageTag}'),
             minTileHeight: 64,
             leading: const Icon(Icons.language),
             title: Text(localized(language.name, _locale(context))),
@@ -176,6 +177,7 @@ class _Courses extends StatelessWidget {
                 Text(localized(course.description, _locale(context))),
                 const SizedBox(height: 16),
                 FilledButton(
+                  key: ValueKey('course-${course.id}'),
                   onPressed: () => onSelected(course),
                   child: Text(actionLabel),
                 ),
@@ -217,6 +219,7 @@ class _Lessons extends StatelessWidget {
             title: Text(localized(lesson.title, _locale(context))),
             subtitle: Text('${lesson.estimatedMinutes} min'),
             trailing: TextButton(
+              key: ValueKey('lesson-${lesson.id}'),
               onPressed: () => onSelected(lesson),
               child: Text(actionLabel),
             ),
@@ -275,6 +278,7 @@ class _LessonExercise extends StatelessWidget {
                   (option) => Semantics(
                     selected: selectedOptionId == option.id,
                     child: RadioListTile<String>(
+                      key: ValueKey('option-${option.id}'),
                       value: option.id,
                       title: Text(localized(option.text, locale)),
                     ),
@@ -295,7 +299,11 @@ class _LessonExercise extends StatelessWidget {
             ),
           ),
         const SizedBox(height: 12),
-        FilledButton(onPressed: onSubmit, child: Text(submitLabel)),
+        FilledButton(
+          key: const ValueKey('attempt-submit'),
+          onPressed: onSubmit,
+          child: Text(submitLabel),
+        ),
       ],
     );
   }
@@ -344,7 +352,11 @@ class _Feedback extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 16),
-          FilledButton(onPressed: onContinue, child: Text(actionLabel)),
+          FilledButton(
+            key: const ValueKey('progress-view'),
+            onPressed: onContinue,
+            child: Text(actionLabel),
+          ),
         ],
       ),
     );

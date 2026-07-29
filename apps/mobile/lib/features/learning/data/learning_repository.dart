@@ -12,11 +12,13 @@ abstract interface class LearningRepository {
 
   Future<Lesson> lesson(String lessonId, {int? version});
 
-  Future<AttemptFeedback> submitAttempt({
+  PendingAttempt createAttempt({
     required Lesson lesson,
     required Exercise exercise,
     required String selectedOptionId,
   });
+
+  Future<AttemptFeedback> submitAttempt(PendingAttempt attempt);
 
   Future<CourseProgress> progress(String courseId);
 }

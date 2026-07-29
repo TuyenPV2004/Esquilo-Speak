@@ -22,6 +22,7 @@ class LearningViewModel extends ChangeNotifier {
   String? selectedOptionId;
   AttemptFeedback? feedback;
   CourseProgress? courseProgress;
+  PendingAttempt? _pendingAttempt;
 
   Future<void> loadCatalog() => _run(() async {
     step = LearningStep.catalog;
@@ -49,10 +50,14 @@ class LearningViewModel extends ChangeNotifier {
     );
     selectedOptionId = null;
     selectionError = null;
+    _pendingAttempt = null;
     step = LearningStep.lesson;
   });
 
   void selectOption(String optionId) {
+    if (selectedOptionId != optionId) {
+      _pendingAttempt = null;
+    }
     selectedOptionId = optionId;
     selectionError = null;
     notifyListeners();
@@ -67,11 +72,13 @@ class LearningViewModel extends ChangeNotifier {
       return;
     }
     await _run(() async {
-      feedback = await _repository.submitAttempt(
+      _pendingAttempt ??= _repository.createAttempt(
         lesson: lesson,
         exercise: lesson.exercises.first,
         selectedOptionId: optionId,
       );
+      feedback = await _repository.submitAttempt(_pendingAttempt!);
+      _pendingAttempt = null;
       step = LearningStep.feedback;
     });
   }
@@ -94,6 +101,10 @@ class LearningViewModel extends ChangeNotifier {
         final course = selectedCourse;
         if (course != null) await chooseCourse(course);
       case LearningStep.lesson:
+        if (_pendingAttempt != null) {
+          await submitAnswer();
+          return;
+        }
         final lesson = selectedLesson;
         if (lesson != null) {
           await chooseLesson(

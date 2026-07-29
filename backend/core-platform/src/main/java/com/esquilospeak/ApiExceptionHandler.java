@@ -1,9 +1,9 @@
 package com.esquilospeak;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.ConstraintViolationException;
 import java.net.URI;
 import java.util.List;
-import java.util.UUID;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -12,6 +12,12 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RestControllerAdvice
 final class ApiExceptionHandler {
+
+    private final HttpServletRequest request;
+
+    ApiExceptionHandler(HttpServletRequest request) {
+        this.request = request;
+    }
 
     @ExceptionHandler(ApiException.class)
     ProblemDetail handleApiException(ApiException exception) {
@@ -62,7 +68,7 @@ final class ApiExceptionHandler {
         problem.setType(URI.create("https://api.esquilospeak.com/problems/" + code.toLowerCase()));
         problem.setTitle(status.getReasonPhrase());
         problem.setProperty("code", code);
-        problem.setProperty("traceId", UUID.randomUUID().toString());
+        problem.setProperty("traceId", request.getAttribute(CorrelationIdFilter.ATTRIBUTE));
         problem.setProperty("retryable", retryable);
         if (!violations.isEmpty()) {
             problem.setProperty("violations", violations);

@@ -48,6 +48,7 @@ class LearningApiIntegrationTest {
                 .andExpect(jsonPath("$.accessToken").isNotEmpty());
 
         mockMvc.perform(get("/api/mobile/v1/languages"))
+                .andExpect(header().exists("X-Correlation-ID"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.items[0].languageTag").exists());
 
@@ -112,6 +113,7 @@ class LearningApiIntegrationTest {
         UUID idempotencyKey = UUID.randomUUID();
         mockMvc.perform(post("/api/mobile/v1/attempts")
                         .with(jwt().jwt(token -> token.subject("learner-conflict")))
+                        .header("X-Correlation-ID", "idempotency-conflict-test")
                         .header("Idempotency-Key", idempotencyKey)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(attemptJson(UUID.randomUUID(), "option-goodbye")))
@@ -120,11 +122,14 @@ class LearningApiIntegrationTest {
 
         mockMvc.perform(post("/api/mobile/v1/attempts")
                         .with(jwt().jwt(token -> token.subject("learner-conflict")))
+                        .header("X-Correlation-ID", "idempotency-conflict-test")
                         .header("Idempotency-Key", idempotencyKey)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(attemptJson(UUID.randomUUID(), "option-hello")))
                 .andExpect(status().isConflict())
-                .andExpect(jsonPath("$.code").value("IDEMPOTENCY_CONFLICT"));
+                .andExpect(header().string("X-Correlation-ID", "idempotency-conflict-test"))
+                .andExpect(jsonPath("$.code").value("IDEMPOTENCY_CONFLICT"))
+                .andExpect(jsonPath("$.traceId").value("idempotency-conflict-test"));
     }
 
     private String attemptJson(UUID clientAttemptId, String optionId) {
