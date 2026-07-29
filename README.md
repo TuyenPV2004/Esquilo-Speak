@@ -63,6 +63,14 @@ contracts/schema/                    Authoring và learner delivery schemas
 infrastructure/local/compose/        PostgreSQL local
 ```
 
+## Quyết định và release gate
+
+- ADR đã được chấp nhận nằm trong [`docs/decisions/`](docs/decisions/).
+- P0 decision/delivery gate nằm tại
+  [`docs/roadmap/P0_GATE.md`](docs/roadmap/P0_GATE.md).
+- Test và evidence của Android end-to-end nằm trong
+  [`tests/end-to-end/`](tests/end-to-end/).
+
 ## Prerequisites
 
 - JDK 21.

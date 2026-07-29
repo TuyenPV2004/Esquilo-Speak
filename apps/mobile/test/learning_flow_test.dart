@@ -80,6 +80,34 @@ void main() {
       findsOneWidget,
     );
   });
+
+  test(
+    'retries an attempt with the same logical mutation identifiers',
+    () async {
+      final repository = RetryOnceLearningRepository();
+      final viewModel = LearningViewModel(repository);
+      await viewModel.loadCatalog();
+      await viewModel.chooseLanguage(viewModel.languages.last);
+      await viewModel.chooseCourse(viewModel.courses.first);
+      await viewModel.chooseLesson(viewModel.lessons.first);
+      viewModel.selectOption('option-hello');
+
+      await viewModel.submitAnswer();
+      expect(viewModel.error, isNotNull);
+
+      await viewModel.retry();
+      expect(viewModel.error, isNull);
+      expect(repository.submissions, hasLength(2));
+      expect(
+        repository.submissions[1].clientAttemptId,
+        repository.submissions[0].clientAttemptId,
+      );
+      expect(
+        repository.submissions[1].idempotencyKey,
+        repository.submissions[0].idempotencyKey,
+      );
+    },
+  );
 }
 
 class FakeLearningRepository implements LearningRepository {
@@ -152,21 +180,55 @@ class FakeLearningRepository implements LearningRepository {
   Future<Lesson> lesson(String lessonId, {int? version}) async => lessonValue;
 
   @override
-  Future<AttemptFeedback> submitAttempt({
+  PendingAttempt createAttempt({
     required Lesson lesson,
     required Exercise exercise,
     required String selectedOptionId,
-  }) async => const AttemptFeedback(
-    correct: true,
-    message: {'vi': 'Chính xác!', 'en': 'Correct!'},
-    correctOptionId: 'option-hello',
-    explanation: {
-      'vi': 'Hello là lời chào thông dụng.',
-      'en': 'Hello is a common greeting.',
-    },
-    progress: progressValue,
+  }) => PendingAttempt(
+    clientAttemptId: '11111111-1111-4111-8111-111111111111',
+    idempotencyKey: '22222222-2222-4222-8222-222222222222',
+    courseId: lesson.courseId,
+    lessonId: lesson.id,
+    lessonVersion: lesson.version,
+    exerciseId: exercise.id,
+    selectedOptionId: selectedOptionId,
+    occurredAt: DateTime.utc(2026, 7, 30),
   );
 
   @override
+  Future<AttemptFeedback> submitAttempt(PendingAttempt attempt) async =>
+      const AttemptFeedback(
+        correct: true,
+        message: {'vi': 'Chính xác!', 'en': 'Correct!'},
+        correctOptionId: 'option-hello',
+        explanation: {
+          'vi': 'Hello là lời chào thông dụng.',
+          'en': 'Hello is a common greeting.',
+        },
+        progress: progressValue,
+      );
+
+  @override
   Future<CourseProgress> progress(String courseId) async => progressValue;
+}
+
+class RetryOnceLearningRepository extends FakeLearningRepository {
+  final List<PendingAttempt> submissions = [];
+
+  @override
+  Future<AttemptFeedback> submitAttempt(PendingAttempt attempt) async {
+    submissions.add(attempt);
+    if (submissions.length == 1) {
+      throw const LearningTestException();
+    }
+    return super.submitAttempt(attempt);
+  }
+}
+
+class LearningTestException implements Exception {
+  const LearningTestException();
+
+  @override
+  String toString() =>
+      'Response was lost after the server accepted the attempt.';
 }

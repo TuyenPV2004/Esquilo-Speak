@@ -133,6 +133,38 @@ class ExerciseOption {
   final LocalizedText text;
 }
 
+class PendingAttempt {
+  const PendingAttempt({
+    required this.clientAttemptId,
+    required this.idempotencyKey,
+    required this.courseId,
+    required this.lessonId,
+    required this.lessonVersion,
+    required this.exerciseId,
+    required this.selectedOptionId,
+    required this.occurredAt,
+  });
+
+  final String clientAttemptId;
+  final String idempotencyKey;
+  final String courseId;
+  final String lessonId;
+  final int lessonVersion;
+  final String exerciseId;
+  final String selectedOptionId;
+  final DateTime occurredAt;
+
+  Map<String, dynamic> toJson() => {
+    'clientAttemptId': clientAttemptId,
+    'courseId': courseId,
+    'lessonId': lessonId,
+    'lessonVersion': lessonVersion,
+    'exerciseId': exerciseId,
+    'selectedOptionId': selectedOptionId,
+    'occurredAt': occurredAt.toUtc().toIso8601String(),
+  };
+}
+
 class AttemptFeedback {
   const AttemptFeedback({
     required this.correct,

@@ -3,7 +3,11 @@
 .claude/
 
 # Local project documentation
-/docs/
+/docs/*
+!/docs/decisions/
+!/docs/decisions/**
+!/docs/roadmap/
+!/docs/roadmap/**
 
 # Local environment and secrets
 .env

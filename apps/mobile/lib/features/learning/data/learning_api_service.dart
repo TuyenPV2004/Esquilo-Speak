@@ -1,14 +1,12 @@
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
-import 'package:uuid/uuid.dart';
 
 class LearningApiService {
   LearningApiService(this._client, this._baseUrl);
 
   final http.Client _client;
   final Uri _baseUrl;
-  final Uuid _uuid = const Uuid();
   String? _token;
 
   Future<Map<String, dynamic>> get(
@@ -27,11 +25,11 @@ class LearningApiService {
     String path, {
     required Map<String, dynamic> body,
     bool authenticated = false,
-    bool idempotent = false,
+    String? idempotencyKey,
   }) async {
     final headers = await _headers(authenticated);
-    if (idempotent) {
-      headers['Idempotency-Key'] = _uuid.v4();
+    if (idempotencyKey != null) {
+      headers['Idempotency-Key'] = idempotencyKey;
     }
     final response = await _client.post(
       _uri(path),

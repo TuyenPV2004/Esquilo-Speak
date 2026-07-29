@@ -22,6 +22,8 @@ paths:
       operationId: listLearningLanguages
       summary: List enabled learning languages
       security: []
+      parameters:
+        - $ref: '#/components/parameters/CorrelationId'
       responses:
         '200':
           description: Enabled languages
@@ -44,6 +46,7 @@ paths:
       summary: List published courses for a language pair
       security: []
       parameters:
+        - $ref: '#/components/parameters/CorrelationId'
         - name: sourceLanguage
           in: query
           required: true
@@ -76,6 +79,7 @@ paths:
       summary: List published lesson versions in course order
       security: []
       parameters:
+        - $ref: '#/components/parameters/CorrelationId'
         - $ref: '#/components/parameters/CourseId'
       responses:
         '200':
@@ -101,6 +105,7 @@ paths:
       summary: Get an immutable published lesson version
       security: []
       parameters:
+        - $ref: '#/components/parameters/CorrelationId'
         - $ref: '#/components/parameters/LessonId'
         - name: version
           in: query
@@ -137,6 +142,7 @@ paths:
       security:
         - bearerAuth: []
       parameters:
+        - $ref: '#/components/parameters/CorrelationId'
         - $ref: '#/components/parameters/IdempotencyKey'
       requestBody:
         required: true
@@ -173,6 +179,7 @@ paths:
       security:
         - bearerAuth: []
       parameters:
+        - $ref: '#/components/parameters/CorrelationId'
         - $ref: '#/components/parameters/CourseId'
       responses:
         '200':
@@ -197,6 +204,18 @@ components:
         Token for an authenticated or guest learner session. Token issuance and
         account merge behavior will be defined by a later identity contract.
   parameters:
+    CorrelationId:
+      name: X-Correlation-ID
+      in: header
+      required: false
+      description: >-
+        Caller-provided correlation identifier. Invalid or omitted values are
+        replaced by the server and the canonical value is returned in the
+        response header and error traceId.
+      schema:
+        type: string
+        pattern: '^[A-Za-z0-9._-]{1,64}$'
+        maxLength: 64
     CourseId:
       name: courseId
       in: path
