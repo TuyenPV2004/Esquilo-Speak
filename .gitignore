@@ -1,5 +1,40 @@
-# Local Codex workspace instructions
+# Local agent workspace instructions
 .agent/
+.claude/
 
 # Local project documentation
 /docs/
+
+# Local environment and secrets
+.env
+.env.*
+!.env.example
+local.properties
+*.jks
+*.keystore
+*.p12
+*.pem
+
+# Java and Gradle
+.gradle/
+**/build/
+out/
+*.class
+
+# Flutter and Dart
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.pub-cache/
+apps/mobile/lib/l10n/app_localizations*.dart
+apps/mobile/android/local.properties
+apps/mobile/android/key.properties
+apps/mobile/ios/Pods/
+apps/mobile/ios/.symlinks/
+
+# Editors and operating systems
+.idea/
+*.iml
+.vscode/
+.DS_Store
+Thumbs.db

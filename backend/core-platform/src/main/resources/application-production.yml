@@ -1,0 +1,9 @@
+spring:
+  config:
+    activate:
+      on-profile: production
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: ${ESQUILO_JWT_ISSUER_URI}

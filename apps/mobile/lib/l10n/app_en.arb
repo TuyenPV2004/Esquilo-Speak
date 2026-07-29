@@ -1,0 +1,26 @@
+{
+  "@@locale": "en",
+  "appTitle": "EsquiloSpeak",
+  "catalogTitle": "Choose a learning language",
+  "coursesTitle": "Courses",
+  "lessonsTitle": "Lessons",
+  "lessonTitle": "Lesson",
+  "feedbackTitle": "Feedback",
+  "progressTitle": "Course progress",
+  "startCourse": "Start course",
+  "startLesson": "Start lesson",
+  "submitAnswer": "Check answer",
+  "viewProgress": "View progress",
+  "tryAgain": "Try again",
+  "retry": "Retry",
+  "loading": "Loading learning content",
+  "empty": "No published learning content is available yet.",
+  "selectAnswer": "Select an answer before continuing.",
+  "completedExercises": "{completed} of {total} exercises completed",
+  "@completedExercises": {
+    "placeholders": {
+      "completed": { "type": "int" },
+      "total": { "type": "int" }
+    }
+  }
+}
