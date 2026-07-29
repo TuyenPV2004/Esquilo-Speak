@@ -1,0 +1,120 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="2400" height="1400" viewBox="0 0 2400 1400" role="img" aria-labelledby="title desc">
+  <title id="title">Cấu trúc thư mục khởi đầu của EsquiloSpeak</title>
+  <desc id="desc">Cây thư mục baseline-first của EsquiloSpeak, chỉ hiển thị các thư mục cần để bắt đầu phát triển.</desc>
+  <defs>
+    <radialGradient id="background" cx="50%" cy="32%" r="84%">
+      <stop offset="0" stop-color="#103352"/>
+      <stop offset="0.58" stop-color="#071c31"/>
+      <stop offset="1" stop-color="#03101e"/>
+    </radialGradient>
+    <linearGradient id="panel" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0c263e" stop-opacity="0.97"/>
+      <stop offset="1" stop-color="#071827" stop-opacity="0.99"/>
+    </linearGradient>
+    <linearGradient id="folder" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#78bcff"/>
+      <stop offset="1" stop-color="#3d82e8"/>
+    </linearGradient>
+    <linearGradient id="file" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ffe36d"/>
+      <stop offset="1" stop-color="#f7b928"/>
+    </linearGradient>
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="130%">
+      <feDropShadow dx="0" dy="14" stdDeviation="20" flood-color="#000814" flood-opacity="0.58"/>
+    </filter>
+    <style>
+      .heading { font: 700 50px "Segoe UI", Arial, sans-serif; letter-spacing: 4px; fill: #f6f8fb; }
+      .subheading { font: 500 22px "Segoe UI", Arial, sans-serif; letter-spacing: 1.4px; fill: #8fb4d5; }
+      .tree { font: 400 23px "Cascadia Mono", "Cascadia Code", Consolas, monospace; fill: #edf4fa; }
+      .root, .strong { font-weight: 700; fill: #ffffff; }
+      .muted { fill: #aebfd0; }
+      .baseline { fill: #5de0ae; font-weight: 700; }
+      .folder { fill: url(#folder); font-family: "Segoe UI Symbol", sans-serif; font-weight: 700; }
+      .file { fill: url(#file); font-family: "Segoe UI Symbol", sans-serif; font-weight: 700; }
+      .rule { stroke: #4b6983; stroke-width: 2; opacity: 0.74; }
+      .window { fill: url(#panel); stroke: #4d6982; stroke-width: 3; }
+      .badge { fill: #123e3a; stroke: #42c99c; stroke-width: 1.5; }
+      .badgeText { font: 700 16px "Segoe UI", Arial, sans-serif; letter-spacing: 1px; fill: #5de0ae; }
+      .noteBox { fill: #102b42; stroke: #42647f; stroke-width: 2; }
+      .noteTitle { font: 700 19px "Segoe UI", Arial, sans-serif; fill: #5de0ae; }
+      .note { font: 500 18px "Segoe UI", Arial, sans-serif; fill: #c2d4e4; }
+    </style>
+  </defs>
+
+  <rect width="2400" height="1400" fill="url(#background)"/>
+  <circle cx="350" cy="240" r="310" fill="#0e416b" opacity="0.17"/>
+  <circle cx="2050" cy="1120" r="370" fill="#13507b" opacity="0.14"/>
+
+  <text x="1200" y="82" text-anchor="middle" class="heading">CẤU TRÚC THƯ MỤC KHỞI ĐẦU ESQUILOSPEAK</text>
+  <text x="1200" y="123" text-anchor="middle" class="subheading">BASELINE-FIRST · MODULAR MONOLITH · MỞ RỘNG KHI CÓ IMPLEMENTATION THỰC TẾ</text>
+
+  <rect x="95" y="160" width="2210" height="1150" rx="18" class="window" filter="url(#shadow)"/>
+  <line x1="95" y1="232" x2="2305" y2="232" class="rule"/>
+  <circle cx="145" cy="196" r="13" fill="#ff6259"/>
+  <circle cx="190" cy="196" r="13" fill="#ffbd45"/>
+  <circle cx="235" cy="196" r="13" fill="#48c98b"/>
+  <text x="1200" y="204" text-anchor="middle" class="subheading">repository-structure — current baseline scaffold</text>
+  <rect x="2020" y="179" width="210" height="34" rx="17" class="badge"/>
+  <text x="2125" y="202" text-anchor="middle" class="badgeText">BASELINE ONLY</text>
+
+  <line x1="1200" y1="252" x2="1200" y2="1128" class="rule"/>
+
+  <g class="tree" transform="translate(130 280)">
+    <text x="0" y="0" class="root">ESQUILOSPEAK/</text>
+    <text x="0" y="34">├── <tspan class="folder">▰</tspan> <tspan class="strong">apps/</tspan></text>
+    <text x="0" y="68">│   ├── <tspan class="folder">▰</tspan> <tspan class="strong">mobile/</tspan> <tspan class="muted"># Flutter learner app</tspan></text>
+    <text x="0" y="102">│   │   ├── <tspan class="folder">▰</tspan> android/ · ios/</text>
+    <text x="0" y="136">│   │   ├── <tspan class="folder">▰</tspan> lib/</text>
+    <text x="0" y="170">│   │   │   ├── <tspan class="folder">▰</tspan> app/</text>
+    <text x="0" y="204">│   │   │   ├── <tspan class="folder">▰</tspan> core/</text>
+    <text x="0" y="238">│   │   │   ├── <tspan class="folder">▰</tspan> features/</text>
+    <text x="0" y="272">│   │   │   └── <tspan class="folder">▰</tspan> l10n/</text>
+    <text x="0" y="306">│   │   └── <tspan class="folder">▰</tspan> test/ · integration_test/</text>
+    <text x="0" y="350">│   └── <tspan class="folder">▰</tspan> <tspan class="strong">admin-web/</tspan> <tspan class="muted"># Next.js operations app</tspan></text>
+    <text x="0" y="384">│       ├── <tspan class="folder">▰</tspan> public/</text>
+    <text x="0" y="418">│       ├── <tspan class="folder">▰</tspan> src/</text>
+    <text x="0" y="452">│       │   ├── <tspan class="folder">▰</tspan> app/ <tspan class="muted"># no empty Route Groups</tspan></text>
+    <text x="0" y="486">│       │   ├── <tspan class="folder">▰</tspan> features/</text>
+    <text x="0" y="520">│       │   ├── <tspan class="folder">▰</tspan> components/</text>
+    <text x="0" y="554">│       │   └── <tspan class="folder">▰</tspan> lib/</text>
+    <text x="0" y="588">│       └── <tspan class="folder">▰</tspan> tests/</text>
+
+    <text x="0" y="642">├── <tspan class="folder">▰</tspan> <tspan class="strong">content/</tspan></text>
+    <text x="0" y="676">│   └── <tspan class="folder">▰</tspan> courses/ · locales/</text>
+    <text x="0" y="730">└── <tspan class="folder">▰</tspan> <tspan class="strong">infrastructure/</tspan></text>
+    <text x="0" y="764">    └── <tspan class="folder">▰</tspan> local/compose/</text>
+  </g>
+
+  <g class="tree" transform="translate(1235 280)">
+    <text x="0" y="0">├── <tspan class="folder">▰</tspan> <tspan class="strong">backend/</tspan></text>
+    <text x="0" y="34">│   └── <tspan class="folder">▰</tspan> <tspan class="strong">core-platform/</tspan> <tspan class="baseline">[BASELINE]</tspan></text>
+    <text x="0" y="68">│       └── <tspan class="folder">▰</tspan> src/</text>
+    <text x="0" y="102">│           ├── <tspan class="folder">▰</tspan> main/</text>
+    <text x="0" y="136">│           │   ├── <tspan class="folder">▰</tspan> java/com/esquilospeak/</text>
+    <text x="0" y="170">│           │   └── <tspan class="folder">▰</tspan> resources/</text>
+    <text x="0" y="204">│           └── <tspan class="folder">▰</tspan> test/</text>
+    <text x="0" y="238">│               ├── <tspan class="folder">▰</tspan> java/com/esquilospeak/</text>
+    <text x="0" y="272">│               └── <tspan class="folder">▰</tspan> resources/</text>
+
+    <text x="0" y="326">├── <tspan class="folder">▰</tspan> <tspan class="strong">contracts/</tspan></text>
+    <text x="0" y="360">│   └── <tspan class="folder">▰</tspan> openapi/ · content-schema/</text>
+
+    <text x="0" y="414">├── <tspan class="folder">▰</tspan> <tspan class="strong">tests/</tspan> <tspan class="muted"># cross-system only</tspan></text>
+    <text x="0" y="448">│   └── <tspan class="folder">▰</tspan> contract/ · end-to-end/</text>
+
+    <text x="0" y="502">├── <tspan class="folder">▰</tspan> <tspan class="strong">docs/</tspan></text>
+    <text x="0" y="536">│   ├── <tspan class="file">◆</tspan> EsquiloSpeak.md · PROJECT.md</text>
+    <text x="0" y="570">│   ├── <tspan class="file">◆</tspan> TECH_STACK_AND_ARCHITECTURE.md</text>
+    <text x="0" y="604">│   ├── <tspan class="file">◆</tspan> REPOSITORY_STRUCTURE.md</text>
+    <text x="0" y="638">│   └── <tspan class="folder">▰</tspan> assets/</text>
+
+    <text x="0" y="692">├── <tspan class="folder">▰</tspan> tools/</text>
+    <text x="0" y="726">├── <tspan class="folder">▰</tspan> .github/</text>
+    <text x="0" y="760">├── <tspan class="folder">▰</tspan> .agent/</text>
+    <text x="0" y="794">└── <tspan class="file">◆</tspan> README.md</text>
+  </g>
+
+  <rect x="250" y="1160" width="1900" height="96" rx="16" class="noteBox"/>
+  <text x="1200" y="1196" text-anchor="middle" class="noteTitle">NGUYÊN TẮC MỞ RỘNG</text>
+  <text x="1200" y="1230" text-anchor="middle" class="note">Feature · module · service · worker · data platform · Kubernetes chỉ được tạo khi bắt đầu có implementation hoặc nhu cầu được chứng minh.</text>
+</svg>
