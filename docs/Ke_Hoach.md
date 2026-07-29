@@ -1,7 +1,7 @@
 # Kế hoạch xây dựng EsquiloSpeak cho Android
 
 > Trạng thái tài liệu: **Đang thực thi**  
-> Cập nhật gần nhất: **2026-07-28**  
+> Cập nhật gần nhất: **2026-07-30**
 > Mục tiêu phát hành hiện tại: **Android**  
 > Thứ tự triển khai: **hoàn thiện backend của phạm vi được duyệt trước, sau đó triển khai Android frontend**  
 > Ngoài phạm vi hiện tại: **native iOS build, test và release**
@@ -113,10 +113,10 @@ nào trước khi tiếp tục mở rộng implementation.
   [Tech_Stack_And_Architecture.md](Tech_Stack_And_Architecture.md).
 - [x] Có cấu trúc repo và dependency rule trong
   [Repository_Structure.md](Repository_Structure.md).
-- [ ] Chốt thị trường, source/target language và nhóm tuổi cho bản Android đầu
+- [x] Chốt thị trường, source/target language và nhóm tuổi cho bản Android đầu
   tiên.
-- [ ] Chốt guest/account merge, consent theo độ tuổi và voice retention.
-- [ ] Chốt success metric, SLO, support policy và phạm vi subscription P0.
+- [x] Chốt guest/account merge, consent theo độ tuổi và voice retention.
+- [x] Chốt success metric, SLO, support policy và phạm vi subscription P0.
 
 Điều kiện qua giai đoạn: các câu hỏi P0 ảnh hưởng identity, content và privacy
 phải được chốt trước khi khóa contract backend tương ứng.
@@ -185,14 +185,14 @@ triển khai mọi năng lực P2 trước bản Android đầu tiên.
 
 ### Giai đoạn 4 — Khóa phạm vi P0 và contract nền tảng
 
-- [ ] Chốt các quyết định P0 còn mở ở Giai đoạn 0.
-- [ ] Lập capability map P0/P1/P2 từ [Nghiep_Vu.md](Nghiep_Vu.md).
-- [ ] Xác định ownership cho identity-profile, curriculum-content,
+- [x] Chốt các quyết định P0 còn mở ở Giai đoạn 0.
+- [x] Lập capability map P0/P1/P2 từ [Nghiep_Vu.md](Nghiep_Vu.md).
+- [x] Xác định ownership cho identity-profile, curriculum-content,
   learning-session/assessment, mastery và review-scheduler.
-- [ ] Chuẩn hóa API error, pagination, idempotency và correlation/trace ID.
-- [ ] Định nghĩa privacy inventory, retention và deletion/export workflow.
-- [ ] Lập threat model cho backend và Android.
-- [ ] Chốt môi trường development/test/staging/production và promotion rule.
+- [x] Chuẩn hóa API error, pagination, idempotency và correlation/trace ID.
+- [x] Định nghĩa privacy inventory, retention và deletion/export workflow.
+- [x] Lập threat model cho backend và Android.
+- [x] Chốt môi trường development/test/staging/production và promotion rule.
 
 Đầu ra: decision record/ADR khi cần, contract cập nhật, acceptance criteria và
 backlog có dependency.
@@ -359,9 +359,9 @@ Chỉ bắt đầu từng nhóm tích hợp sau khi backend contract tương ứ
    - [ ] Thêm contract breaking-change check.
    - [ ] Hoàn thiện dependency/security alert review policy.
 2. **Sprint B — khóa quyết định P0**
-   - [ ] Chốt thị trường/ngôn ngữ/độ tuổi đầu tiên.
-   - [ ] Chốt guest-account merge, consent và privacy retention.
-   - [ ] Chốt P0 capability, SLO và acceptance criteria.
+   - [x] Chốt thị trường/ngôn ngữ/độ tuổi đầu tiên.
+   - [x] Chốt guest-account merge, consent và privacy retention.
+   - [x] Chốt P0 capability, SLO và acceptance criteria.
 3. **Sprint C — identity/profile backend**
    - [ ] Thực hiện Giai đoạn 5 và đạt backend gate.
 4. **Sprint D — curriculum/content backend**

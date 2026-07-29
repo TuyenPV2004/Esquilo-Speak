@@ -91,7 +91,7 @@
       <td><strong>Tạo:</strong> <code>docs/Ke_Hoach.md</code><br><strong>Sửa:</strong> <code>docs/Adr_002_Foundation_And_First_Learning_Slice.md</code><br><strong>Sửa:</strong> <code>.agent/AGENTS.md</code><br><strong>Sửa:</strong> <code>.agent/SKILL.md</code></td>
     </tr>
     <tr>
-      <td rowspan="3"><strong>2026-07-30</strong></td>
+      <td rowspan="4"><strong>2026-07-30</strong></td>
       <td>00:16:17</td>
       <td><strong>Mục đích chung:</strong> Khôi phục khả năng chạy backend quality gate trên GitHub Actions Linux để CI có thể thực sự thực thi Gradle tests và tạo Spring Boot JAR thay vì dừng trước khi Gradle khởi động với exit code 126.<br><strong>Tác dụng của file/thay đổi:</strong> <code>backend/core-platform/gradlew</code> được đổi Git executable mode từ <code>100644</code> sang <code>100755</code>; nội dung script không thay đổi. Quyền thực thi này cho phép step <code>./gradlew test bootJar</code> chạy trên Ubuntu runner. Backend regression suite và <code>bootJar</code> đã được chạy lại thành công bằng JDK 21 ở local.</td>
       <td><strong>Sửa metadata Git:</strong> <code>backend/core-platform/gradlew</code> (<code>100644</code> → <code>100755</code>)</td>
@@ -105,6 +105,11 @@
       <td>01:40:01</td>
       <td><strong>Mục đích chung:</strong> Đồng bộ các nguyên tắc làm việc dùng chung từ cấu hình Codex toàn cục vào phạm vi EsquiloSpeak để agent có cùng baseline về giao tiếp, an toàn, coding, lập kế hoạch, validation và quyết định công nghệ mà không làm mất các quy tắc đặc thù nghiêm ngặt hơn của dự án.<br><strong>Tác dụng của file/thay đổi:</strong> <code>.agent/AGENTS.md</code> bổ sung các nhóm rule dùng chung còn thiếu, giữ nguyên quy trình Git ba tầng, phê duyệt code, roadmap và regression test hiện có, đồng thời chuẩn hóa nhãn <code>Recommended approach / Đề xuất tốt nhất</code>; nhật ký này lưu dấu thay đổi phục vụ truy vết và review.</td>
       <td><strong>Sửa:</strong> <code>.agent/AGENTS.md</code></td>
+    </tr>
+    <tr>
+      <td>04:30:15</td>
+      <td><strong>Bản ghi hồi tố — Mục đích chung:</strong> Đồng bộ roadmap local với bộ quyết định P0 đã được developer phê duyệt để Giai đoạn 4 và Sprint B phản ánh đúng trạng thái có bằng chứng, qua đó mở điều kiện lập kế hoạch cho Giai đoạn 5 mà không bỏ qua quality gate.<br><strong>Tác dụng của file/thay đổi:</strong> <code>Ke_Hoach.md</code> đánh dấu hoàn thành các quyết định còn mở ở Giai đoạn 0, bảy đầu ra của Giai đoạn 4 và ba tiêu chí Sprint B dựa trên ADR-004 cùng P0 Gate đã được chấp nhận; <code>Development_Change_Log.md</code> bổ sung bản ghi hồi tố còn thiếu để truy vết việc khóa phạm vi P0 và lần đồng bộ trạng thái roadmap này.</td>
+      <td><strong>Sửa:</strong> <code>docs/Ke_Hoach.md</code><br><strong>Sửa:</strong> <code>docs/Development_Change_Log.md</code><br><strong>Bằng chứng đã có:</strong> <code>docs/decisions/ADR-004-p0-product-privacy-and-service-decisions.md</code>, <code>docs/roadmap/P0_GATE.md</code></td>
     </tr>
   </tbody>
 </table>
