@@ -2,13 +2,6 @@
 .agent/
 .claude/
 
-# Local project documentation
-/docs/*
-!/docs/decisions/
-!/docs/decisions/**
-!/docs/roadmap/
-!/docs/roadmap/**
-
 # Local environment and secrets
 .env
 .env.*
