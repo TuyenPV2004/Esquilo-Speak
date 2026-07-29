@@ -17,13 +17,14 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.RequestPostProcessor;
 import org.testcontainers.postgresql.PostgreSQLContainer;
 import org.testcontainers.utility.DockerImageName;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
 @Testcontainers
-@SpringBootTest
+@SpringBootTest(properties = "esquilospeak.privacy.processor-enabled=false")
 @AutoConfigureMockMvc
 class LearningApiIntegrationTest {
 
@@ -80,7 +81,7 @@ class LearningApiIntegrationTest {
         String request = attemptJson(clientAttemptId, "option-hello");
 
         String response = mockMvc.perform(post("/api/mobile/v1/attempts")
-                        .with(jwt().jwt(token -> token.subject("learner-integration")))
+                        .with(guestJwt("learner-integration"))
                         .header("Idempotency-Key", idempotencyKey)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(request))
@@ -93,7 +94,7 @@ class LearningApiIntegrationTest {
                 .getContentAsString();
 
         mockMvc.perform(post("/api/mobile/v1/attempts")
-                        .with(jwt().jwt(token -> token.subject("learner-integration")))
+                        .with(guestJwt("learner-integration"))
                         .header("Idempotency-Key", idempotencyKey)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(request))
@@ -102,7 +103,7 @@ class LearningApiIntegrationTest {
                         .value(toJsonField(response, "attemptId")));
 
         mockMvc.perform(get("/api/mobile/v1/progress/courses/course-en-for-vi")
-                        .with(jwt().jwt(token -> token.subject("learner-integration"))))
+                        .with(guestJwt("learner-integration")))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.completedExerciseCount").value(1))
                 .andExpect(jsonPath("$.lessonProgress[0].status").value("completed"));
@@ -112,7 +113,7 @@ class LearningApiIntegrationTest {
     void rejectsIdempotencyKeyReusedWithDifferentPayload() throws Exception {
         UUID idempotencyKey = UUID.randomUUID();
         mockMvc.perform(post("/api/mobile/v1/attempts")
-                        .with(jwt().jwt(token -> token.subject("learner-conflict")))
+                        .with(guestJwt("learner-conflict"))
                         .header("X-Correlation-ID", "idempotency-conflict-test")
                         .header("Idempotency-Key", idempotencyKey)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -121,7 +122,7 @@ class LearningApiIntegrationTest {
                 .andExpect(jsonPath("$.correct").value(false));
 
         mockMvc.perform(post("/api/mobile/v1/attempts")
-                        .with(jwt().jwt(token -> token.subject("learner-conflict")))
+                        .with(guestJwt("learner-conflict"))
                         .header("X-Correlation-ID", "idempotency-conflict-test")
                         .header("Idempotency-Key", idempotencyKey)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -146,6 +147,21 @@ class LearningApiIntegrationTest {
                 }
                 """
                 .formatted(clientAttemptId, optionId, Instant.now());
+    }
+
+    private RequestPostProcessor guestJwt(String subject) {
+        return jwt()
+                .jwt(token -> token
+                        .issuer("https://identity.test")
+                        .subject(subject)
+                        .claim("scope", "learning")
+                        .claim("actor_type", "guest")
+                        .claim("roles", java.util.List.of("learner")))
+                .authorities(
+                        new org.springframework.security.core.authority.SimpleGrantedAuthority(
+                                "ROLE_LEARNER"),
+                        new org.springframework.security.core.authority.SimpleGrantedAuthority(
+                                "SCOPE_learning"));
     }
 
     private String toJsonField(String json, String field) {

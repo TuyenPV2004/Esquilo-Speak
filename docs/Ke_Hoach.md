@@ -199,21 +199,25 @@ backlog có dependency.
 
 ### Giai đoạn 5 — Identity, profile và onboarding backend (P0)
 
-- [ ] Tích hợp external OIDC/OAuth2 cho production; giữ local guest issuer chỉ
-  cho development.
-- [ ] Mô hình subject mapping, learner profile, locale, source/target language,
+- [x] Tích hợp external OIDC/OAuth2 trung lập provider cho production; giữ local
+  guest issuer chỉ cho development. Việc chạy E2E với provider test/staging còn
+  chờ issuer và tenant thực tế.
+- [x] Mô hình subject mapping, learner profile, locale, source/target language,
   learning goal và preference.
-- [ ] Thiết kế guest lifecycle, account creation và idempotent guest-account
+- [x] Thiết kế guest lifecycle, account creation và idempotent guest-account
   merge.
-- [ ] Thiết kế role/permission cho learner, content staff, support và admin.
-- [ ] Thực thi consent/age gate và audit cho thay đổi nhạy cảm.
-- [ ] Thêm API profile/onboarding và authorization tests.
-- [ ] Thêm workflow export/delete account theo privacy decision.
-- [ ] Chạy security tests cho issuer, audience, expired token, scope/role và
+- [x] Thiết kế role/permission cho learner, content staff, support và admin.
+- [x] Thực thi consent/age gate và audit cho thay đổi nhạy cảm.
+- [x] Thêm API profile/onboarding và authorization tests.
+- [x] Thêm workflow export/delete account theo privacy decision.
+- [x] Chạy security tests cho issuer, audience, expired token, scope/role và
   object-level authorization.
 
 Gate: backend identity chạy được với provider test/staging; không dùng local
 signing key ở production; integration/security tests pass.
+
+Trạng thái gate: implementation và test tự động local đã đạt; gate chưa đóng vì
+chưa có external provider test/staging để xác thực discovery/JWKS và token thật.
 
 ### Giai đoạn 6 — Curriculum, content và publishing backend (P0)
 

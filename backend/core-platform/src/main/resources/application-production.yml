@@ -7,3 +7,4 @@ spring:
       resourceserver:
         jwt:
           issuer-uri: ${ESQUILO_JWT_ISSUER_URI}
+          audiences: ${ESQUILO_JWT_AUDIENCE}

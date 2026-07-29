@@ -96,7 +96,9 @@ cd backend/core-platform
 
 Profile local sinh khóa JWT tạm thời trong bộ nhớ và cung cấp
 `POST /internal/dev/token` để ứng dụng mobile chạy vertical slice. Endpoint này
-không tồn tại trong profile `production`.
+không tồn tại trong profile `production`. Mỗi lần gọi endpoint tạo một guest
+identity mới; ứng dụng phải giữ access token trong vòng đời guest session nếu
+muốn tiếp tục cùng tiến độ.
 
 Chạy Flutter trên Android emulator:
 
@@ -143,6 +145,17 @@ npx --yes @redocly/cli@2.39.0 lint contracts/openapi/esquilospeak-learning-v1.ya
 
 - Kích hoạt Spring profile `production`.
 - Cung cấp `ESQUILO_DB_URL`, `ESQUILO_DB_USERNAME`,
-  `ESQUILO_DB_PASSWORD` và `ESQUILO_JWT_ISSUER_URI` từ secret store.
+  `ESQUILO_DB_PASSWORD`, `ESQUILO_JWT_ISSUER_URI` và
+  `ESQUILO_JWT_AUDIENCE` từ secret store.
+- External OIDC provider phải phát JWT có `iss`, `sub`, audience khớp cấu hình,
+  `actor_type` là `guest` hoặc `account`, scope `learning`, và role thuộc
+  `learner`, `content_staff`, `support`, `admin`. Mobile API hiện yêu cầu
+  `SCOPE_learning` cùng `ROLE_LEARNER`; role không thuộc allow-list bị bỏ qua.
+- Account learner phải hoàn tất age band trước khi đồng bộ tiến độ. P0 từ chối
+  account dưới 16 tuổi cho đến khi có guardian-consent flow được phê duyệt.
 - Không sử dụng local token endpoint hoặc password trong `.env.example` cho
   production.
+
+External account registration, login, password/MFA và account recovery thuộc
+OIDC provider. Backend chỉ lưu SHA-256 mapping của `issuer + subject`, không lưu
+raw subject.
