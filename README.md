@@ -201,6 +201,8 @@ Chi tiết completion, conflict, mastery và review rule nằm trong
   [`Backend_Slo_And_Load_Test.md`](docs/Backend_Slo_And_Load_Test.md).
 - Security self-review:
   [`Backend_Asvs_Review.md`](docs/Backend_Asvs_Review.md).
+- Backend release-gate evidence:
+  [`Backend_Release_Gate.md`](docs/Backend_Release_Gate.md).
 
 ## Cấu hình production
 

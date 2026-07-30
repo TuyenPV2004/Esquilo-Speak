@@ -79,6 +79,9 @@ jobs:
           }
           NODE
 
+      - name: Validate P0 release freeze and Android fixtures
+        run: node tests/contract/Validate_P0_Release_Freeze.mjs
+
       - name: Lint OpenAPI contract
         run: >-
           npx --yes @redocly/cli@2.39.0 lint

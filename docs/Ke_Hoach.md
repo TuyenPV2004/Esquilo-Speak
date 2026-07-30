@@ -303,14 +303,22 @@ P2 chỉ khi có requirement và số liệu:
 
 ### Giai đoạn 9 — Backend release gate
 
-- [ ] Toàn bộ contract P0 lint và compatibility review pass.
-- [ ] Toàn bộ unit/integration/security/module regression tests pass.
-- [ ] Test trên PostgreSQL version mục tiêu và migration từ baseline gần nhất.
+- [x] Toàn bộ contract P0 lint và compatibility review pass.
+- [x] Toàn bộ unit/integration/security/module regression tests pass.
+- [x] Test trên PostgreSQL version mục tiêu và migration từ baseline gần nhất.
 - [ ] Staging dùng external identity và production-like configuration.
-- [ ] Backup/restore, rollback/forward-fix và incident runbook được diễn tập.
+- [x] Backup/restore, rollback/forward-fix và incident runbook được diễn tập.
 - [ ] Không còn P0 security/privacy finding chưa có chấp nhận rủi ro.
 - [ ] API documentation và Android integration fixtures được đóng băng cho đợt
   tích hợp.
+
+Trạng thái gate: contract 0.4.0 đã lint, oasdiff và khóa SHA-256 cùng fixture
+bao phủ 21 mobile operation; 24 backend test, Modulith, bootJar và PostgreSQL 18
+Flyway V1→V5 đều pass. Backup/restore/runbook dùng lại evidence diễn tập của Giai
+đoạn 8. Fixture consumer test đã có nhưng chưa chạy do môi trường hiện tại không
+có Flutter SDK, vì vậy mục đóng băng integration vẫn giữ mở đến khi CI mobile
+pass. External OIDC staging, TLS/KMS và hai high ASVS finding chưa có risk
+acceptance tiếp tục chặn hoàn thành Giai đoạn 9.
 
 ## 7. Android frontend track
 
