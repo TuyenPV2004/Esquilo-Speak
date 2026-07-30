@@ -81,6 +81,31 @@ void main() {
     );
   });
 
+  testWidgets('keeps rapid loading transitions uniquely keyed', (tester) async {
+    final viewModel = TestLearningViewModel(FakeLearningRepository());
+    await tester.pumpWidget(
+      MaterialApp(
+        localizationsDelegates: const [
+          AppLocalizations.delegate,
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+        ],
+        supportedLocales: AppLocalizations.supportedLocales,
+        home: LearningFlowScreen(viewModel: viewModel),
+      ),
+    );
+
+    viewModel.showLoading(LearningStep.catalog);
+    await tester.pump();
+    viewModel.showContent();
+    await tester.pump();
+    viewModel.showLoading(LearningStep.courses);
+    await tester.pump();
+
+    expect(tester.takeException(), isNull);
+  });
+
   test(
     'retries an attempt with the same logical mutation identifiers',
     () async {
@@ -223,6 +248,21 @@ class RetryOnceLearningRepository extends FakeLearningRepository {
       throw const LearningTestException();
     }
     return super.submitAttempt(attempt);
+  }
+}
+
+class TestLearningViewModel extends LearningViewModel {
+  TestLearningViewModel(super.repository);
+
+  void showLoading(LearningStep nextStep) {
+    step = nextStep;
+    loading = true;
+    notifyListeners();
+  }
+
+  void showContent() {
+    loading = false;
+    notifyListeners();
   }
 }
 

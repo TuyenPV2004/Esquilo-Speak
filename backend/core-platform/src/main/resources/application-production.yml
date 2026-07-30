@@ -20,3 +20,9 @@ logging:
         max-throwable-depth: 20
   level:
     org.springframework.security: INFO
+
+esquilospeak:
+  advanced-learning:
+    provider-mode: external-required
+  commerce:
+    purchase-verifier-mode: external-required

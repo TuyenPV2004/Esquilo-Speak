@@ -120,6 +120,13 @@ class HomeScreen extends StatelessWidget {
                       icon: const Icon(Icons.event_repeat_outlined),
                       label: Text(strings.openReviewQueue),
                     ),
+                    const SizedBox(height: AppSpacing.sm),
+                    FilledButton.tonalIcon(
+                      key: const ValueKey('advanced-learning-entry'),
+                      onPressed: () => context.push('/home/advanced'),
+                      icon: const Icon(Icons.auto_awesome_outlined),
+                      label: Text(strings.openAdvancedLearning),
+                    ),
                   ],
                 ),
               );

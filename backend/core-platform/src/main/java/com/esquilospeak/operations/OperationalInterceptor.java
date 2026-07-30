@@ -96,7 +96,8 @@ class OperationalInterceptor implements HandlerInterceptor {
             Exception exception) {
         String traceId = logRequestCompletion(request, response);
         String route = routeCategory(request);
-        if (request.getRequestURI().startsWith("/api/admin/")
+        if ((request.getRequestURI().startsWith("/api/admin/")
+                        || request.getRequestURI().startsWith("/api/support/"))
                 && !HttpMethod.GET.matches(request.getMethod())) {
             Authentication authentication =
                     SecurityContextHolder.getContext().getAuthentication();
@@ -171,6 +172,25 @@ class OperationalInterceptor implements HandlerInterceptor {
                     properties.getAdminWritesPerMinute(),
                     Duration.ofMinutes(1));
         }
+        if (path.startsWith("/api/mobile/v1/advanced/")) {
+            return new RateLimitService.Policy(
+                    "advanced-feedback",
+                    properties.getAdvancedFeedbackPerMinute(),
+                    Duration.ofMinutes(1));
+        }
+        if (path.startsWith("/api/mobile/v1/commerce/")) {
+            return new RateLimitService.Policy(
+                    "commerce-write",
+                    properties.getCommerceWritesPerMinute(),
+                    Duration.ofMinutes(1));
+        }
+        if (path.startsWith("/api/mobile/v1/support/")
+                || path.startsWith("/api/support/v1/")) {
+            return new RateLimitService.Policy(
+                    "support-write",
+                    properties.getSupportWritesPerHour(),
+                    Duration.ofHours(1));
+        }
         return null;
     }
 
@@ -178,6 +198,15 @@ class OperationalInterceptor implements HandlerInterceptor {
         String path = request.getRequestURI();
         if (path.startsWith("/api/admin/")) {
             return "content-admin";
+        }
+        if (path.startsWith("/api/support/")) {
+            return "support-operations";
+        }
+        if (path.startsWith("/api/mobile/v1/advanced")) {
+            return "advanced-learning";
+        }
+        if (path.startsWith("/api/mobile/v1/commerce")) {
+            return "commerce-entitlement";
         }
         if (path.startsWith("/api/mobile/v1/sync")) {
             return "learning-sync";

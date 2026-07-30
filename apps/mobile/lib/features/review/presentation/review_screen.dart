@@ -5,6 +5,7 @@ import '../../../core/design_system/component_states.dart';
 import '../../../core/design_system/responsive_content.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../l10n/user_facing_failure_localization.dart';
+import '../data/learning_insights_models.dart';
 import 'learning_insights_view_model.dart';
 
 class ReviewScreen extends StatelessWidget {
@@ -88,37 +89,7 @@ class ReviewScreen extends StatelessWidget {
                     ),
                     const SizedBox(height: AppSpacing.sm),
                     ...insights.mastery.map(
-                      (item) => Card(
-                        child: Padding(
-                          padding: const EdgeInsets.all(AppSpacing.md),
-                          child: Semantics(
-                            label: strings.masteryValue(
-                              item.conceptId,
-                              (item.score * 100).round(),
-                            ),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.stretch,
-                              children: [
-                                Text(
-                                  item.conceptId,
-                                  style: Theme.of(
-                                    context,
-                                  ).textTheme.titleMedium,
-                                ),
-                                const SizedBox(height: AppSpacing.sm),
-                                LinearProgressIndicator(value: item.score),
-                                const SizedBox(height: AppSpacing.xs),
-                                Text(
-                                  strings.masteryEvidence(
-                                    item.correctEvidenceCount,
-                                    item.evidenceCount,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
+                      (item) => MasteryInsightCard(item: item),
                     ),
                   ],
                 ),
@@ -126,6 +97,78 @@ class ReviewScreen extends StatelessWidget {
             },
           ),
         ),
+      ),
+    );
+  }
+}
+
+class MasteryInsightCard extends StatelessWidget {
+  const MasteryInsightCard({required this.item, super.key});
+
+  final MasteryState item;
+
+  @override
+  Widget build(BuildContext context) {
+    final strings = AppLocalizations.of(context);
+    final percent = (item.score * 100).round();
+    final masteryLabel = strings.masteryValue(item.conceptId, percent);
+    final localUpdatedAt = item.lastEvidenceAt.toLocal();
+    final materialStrings = MaterialLocalizations.of(context);
+    final updatedAt = strings.masteryLastUpdated(
+      '${materialStrings.formatFullDate(localUpdatedAt)}, '
+      '${materialStrings.formatTimeOfDay(TimeOfDay.fromDateTime(localUpdatedAt))}',
+    );
+    return Card(
+      key: ValueKey('mastery-insight-${item.conceptId}'),
+      child: ExpansionTile(
+        title: Text(
+          item.conceptId,
+          style: Theme.of(context).textTheme.titleMedium,
+        ),
+        subtitle: Padding(
+          padding: const EdgeInsets.only(top: AppSpacing.sm),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              LinearProgressIndicator(
+                value: item.score,
+                semanticsLabel: masteryLabel,
+                semanticsValue: '$percent%',
+              ),
+              const SizedBox(height: AppSpacing.xs),
+              Text(
+                strings.masteryEvidence(
+                  item.correctEvidenceCount,
+                  item.evidenceCount,
+                ),
+              ),
+            ],
+          ),
+        ),
+        childrenPadding: const EdgeInsets.fromLTRB(
+          AppSpacing.md,
+          0,
+          AppSpacing.md,
+          AppSpacing.md,
+        ),
+        expandedCrossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          const Divider(),
+          Text(
+            strings.masteryCalculationHeading,
+            style: Theme.of(context).textTheme.labelLarge,
+          ),
+          const SizedBox(height: AppSpacing.xs),
+          Text(
+            item.calculationMethod == 'weighted-correct-ratio'
+                ? strings.masteryCalculationWeighted
+                : strings.masteryCalculationGeneral,
+          ),
+          const SizedBox(height: AppSpacing.sm),
+          Text(strings.masteryModelVersion(item.modelVersion)),
+          const SizedBox(height: AppSpacing.xxs),
+          Text(updatedAt),
+        ],
       ),
     );
   }

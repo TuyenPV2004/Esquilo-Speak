@@ -50,7 +50,7 @@ class LearningFlowScreen extends StatelessWidget {
   Widget _body(BuildContext context, AppLocalizations strings) {
     if (viewModel.loading) {
       return Center(
-        key: const ValueKey('loading'),
+        key: ValueKey('loading-${viewModel.step.name}'),
         child: Semantics(
           liveRegion: true,
           label: strings.loading,

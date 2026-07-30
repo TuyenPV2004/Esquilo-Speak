@@ -17,6 +17,12 @@ class RateLimitProperties {
     private int privacyPerHour = 5;
     @Min(1)
     private int adminWritesPerMinute = 60;
+    @Min(1)
+    private int advancedFeedbackPerMinute = 12;
+    @Min(1)
+    private int commerceWritesPerMinute = 10;
+    @Min(1)
+    private int supportWritesPerHour = 10;
 
     boolean isEnabled() {
         return enabled;
@@ -56,5 +62,29 @@ class RateLimitProperties {
 
     void setAdminWritesPerMinute(int adminWritesPerMinute) {
         this.adminWritesPerMinute = adminWritesPerMinute;
+    }
+
+    int getAdvancedFeedbackPerMinute() {
+        return advancedFeedbackPerMinute;
+    }
+
+    void setAdvancedFeedbackPerMinute(int advancedFeedbackPerMinute) {
+        this.advancedFeedbackPerMinute = advancedFeedbackPerMinute;
+    }
+
+    int getCommerceWritesPerMinute() {
+        return commerceWritesPerMinute;
+    }
+
+    void setCommerceWritesPerMinute(int commerceWritesPerMinute) {
+        this.commerceWritesPerMinute = commerceWritesPerMinute;
+    }
+
+    int getSupportWritesPerHour() {
+        return supportWritesPerHour;
+    }
+
+    void setSupportWritesPerHour(int supportWritesPerHour) {
+        this.supportWritesPerHour = supportWritesPerHour;
     }
 }

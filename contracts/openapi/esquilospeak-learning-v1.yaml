@@ -1,7 +1,7 @@
 openapi: 3.1.1
 info:
   title: EsquiloSpeak Learning API
-  version: 0.4.0
+  version: 0.5.0
   description: >-
     Mobile contract for identity/profile onboarding and the first learning
     vertical slice: resolve a guest or account learner, manage profile and
@@ -26,6 +26,11 @@ tags:
   - name: Mastery
   - name: Review
   - name: Sync
+  - name: Advanced Learning
+  - name: Assessment
+  - name: Engagement
+  - name: Commerce
+  - name: Support
 paths:
   /api/mobile/v1/languages:
     get:
@@ -751,6 +756,380 @@ paths:
           $ref: '#/components/responses/ErrorResponse'
         default:
           $ref: '#/components/responses/ErrorResponse'
+  /api/mobile/v1/media/{mediaId}:
+    get:
+      tags: [Advanced Learning]
+      operationId: getLearningMedia
+      summary: Stream an authenticated learning-media asset
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/CorrelationId'
+        - name: mediaId
+          in: path
+          required: true
+          schema:
+            $ref: '#/components/schemas/Identifier'
+      responses:
+        '200':
+          description: WAV media bytes for the requested learning asset
+          headers:
+            ETag:
+              schema:
+                type: string
+          content:
+            audio/wav:
+              schema:
+                type: string
+                format: binary
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+  /api/mobile/v1/advanced/pronunciation:
+    post:
+      tags: [Advanced Learning]
+      operationId: assessPronunciation
+      summary: Assess a short pronunciation sample without retaining raw voice
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/CorrelationId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [clientRequestId, audioBase64, expectedText, locale]
+              properties:
+                clientRequestId:
+                  type: string
+                  format: uuid
+                audioBase64:
+                  type: string
+                  contentEncoding: base64
+                  maxLength: 2700000
+                expectedText:
+                  type: string
+                  maxLength: 500
+                locale:
+                  $ref: '#/components/schemas/Locale'
+              additionalProperties: false
+      responses:
+        '200':
+          description: Derived pronunciation feedback
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdvancedFeedbackResult'
+        '429':
+          $ref: '#/components/responses/ErrorResponse'
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+  /api/mobile/v1/advanced/writing:
+    post:
+      tags: [Advanced Learning]
+      operationId: getWritingFeedback
+      summary: Get safety-filtered writing feedback
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/CorrelationId'
+      requestBody:
+        $ref: '#/components/requestBodies/TextFeedbackRequest'
+      responses:
+        '200':
+          description: Writing feedback
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdvancedFeedbackResult'
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+  /api/mobile/v1/advanced/conversation:
+    post:
+      tags: [Advanced Learning]
+      operationId: getConversationFeedback
+      summary: Continue a safety-filtered guided conversation
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/CorrelationId'
+      requestBody:
+        $ref: '#/components/requestBodies/TextFeedbackRequest'
+      responses:
+        '200':
+          description: Conversation feedback
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdvancedFeedbackResult'
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+  /api/mobile/v1/assessments/placement:
+    get:
+      tags: [Assessment]
+      operationId: getA1PlacementAssessment
+      summary: Get the internal A1 placement assessment
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Placement definition without answer keys
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AssessmentDefinition'
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+  /api/mobile/v1/assessments/placement/attempts:
+    post:
+      tags: [Assessment]
+      operationId: submitA1PlacementAssessment
+      summary: Score placement and issue a non-accredited completion record
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [clientAttemptId, answers]
+              properties:
+                clientAttemptId:
+                  type: string
+                  format: uuid
+                answers:
+                  type: array
+                  minItems: 4
+                  maxItems: 4
+                  items:
+                    type: string
+              additionalProperties: false
+      responses:
+        '200':
+          description: Placement result
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AssessmentResult'
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+  /api/mobile/v1/engagement:
+    get:
+      tags: [Engagement]
+      operationId: getEngagementStatus
+      summary: Get streak, XP, achievements, and reminder preference
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Current engagement state
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EngagementStatus'
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+  /api/mobile/v1/engagement/activities:
+    post:
+      tags: [Engagement]
+      operationId: recordEngagementActivity
+      summary: Record one idempotent learning activity
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [clientEventId, eventType, xpAwarded]
+              properties:
+                clientEventId:
+                  type: string
+                  format: uuid
+                eventType:
+                  type: string
+                  maxLength: 40
+                xpAwarded:
+                  type: integer
+                  minimum: 0
+                  maximum: 1000
+              additionalProperties: false
+      responses:
+        '200':
+          description: Updated engagement state
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EngagementStatus'
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+  /api/mobile/v1/engagement/notification-preference:
+    put:
+      tags: [Engagement]
+      operationId: updateNotificationPreference
+      summary: Configure local reminder delivery preferences
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NotificationPreference'
+      responses:
+        '200':
+          description: Updated reminder preference
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotificationPreference'
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+  /api/mobile/v1/commerce/entitlements:
+    get:
+      tags: [Commerce]
+      operationId: listEntitlements
+      summary: List server-authoritative learner entitlements
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Learner entitlements
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Entitlement'
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+  /api/mobile/v1/commerce/purchases/verify:
+    post:
+      tags: [Commerce]
+      operationId: verifyPurchase
+      summary: Verify a Play purchase and grant its entitlement
+      security:
+        - bearerAuth: []
+      requestBody:
+        $ref: '#/components/requestBodies/PurchaseRequest'
+      responses:
+        '200':
+          description: Active entitlement
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Entitlement'
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+  /api/mobile/v1/commerce/purchases/refund:
+    post:
+      tags: [Commerce]
+      operationId: verifyRefund
+      summary: Verify a refund event and revoke its entitlement
+      security:
+        - bearerAuth: []
+      requestBody:
+        $ref: '#/components/requestBodies/PurchaseRequest'
+      responses:
+        '200':
+          description: Revoked entitlement
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Entitlement'
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+  /api/mobile/v1/support/tickets:
+    get:
+      tags: [Support]
+      operationId: listOwnSupportTickets
+      summary: List the learner's support and content-report tickets
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Learner tickets
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SupportTicket'
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+    post:
+      tags: [Support]
+      operationId: createSupportTicket
+      summary: Submit a support request or content report
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [type, locale, description]
+              properties:
+                type:
+                  type: string
+                  enum: [support, content_report]
+                contentRef:
+                  type: string
+                  maxLength: 160
+                locale:
+                  $ref: '#/components/schemas/Locale'
+                description:
+                  type: string
+                  maxLength: 2000
+              additionalProperties: false
+      responses:
+        '200':
+          description: Created ticket
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SupportTicket'
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+  /api/support/v1/tickets/{ticketId}/status:
+    patch:
+      tags: [Support]
+      operationId: updateSupportTicketStatus
+      summary: Triage or resolve a ticket as support staff
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: ticketId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [status]
+              properties:
+                status:
+                  type: string
+                  enum: [triaged, resolved, dismissed]
+              additionalProperties: false
+      responses:
+        '200':
+          description: Updated ticket
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SupportTicket'
+        default:
+          $ref: '#/components/responses/ErrorResponse'
 components:
   securitySchemes:
     bearerAuth:
@@ -808,6 +1187,43 @@ components:
       schema:
         type: integer
         minimum: 1
+  requestBodies:
+    TextFeedbackRequest:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            required: [clientRequestId, contentRef, input, locale]
+            properties:
+              clientRequestId:
+                type: string
+                format: uuid
+              contentRef:
+                type: string
+                maxLength: 160
+              input:
+                type: string
+                maxLength: 4000
+              locale:
+                $ref: '#/components/schemas/Locale'
+            additionalProperties: false
+    PurchaseRequest:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            required: [purchaseToken, productId]
+            properties:
+              purchaseToken:
+                type: string
+                maxLength: 4096
+                writeOnly: true
+              productId:
+                type: string
+                maxLength: 120
+            additionalProperties: false
   responses:
     ErrorResponse:
       description: Request could not be completed
@@ -1555,6 +1971,187 @@ components:
                 type: string
                 format: date-time
             additionalProperties: false
+      additionalProperties: false
+    AdvancedFeedbackResult:
+      type: object
+      required: [id, kind, feedback, provider, createdAt]
+      properties:
+        id:
+          type: string
+          format: uuid
+        kind:
+          type: string
+          enum: [pronunciation, writing, conversation]
+        transcript:
+          type: string
+        score:
+          type: number
+          minimum: 0
+          maximum: 100
+        feedback:
+          type: object
+          additionalProperties: true
+        provider:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+      additionalProperties: false
+    AssessmentDefinition:
+      type: object
+      required: [id, level, passScore, questions]
+      properties:
+        id:
+          $ref: '#/components/schemas/Identifier'
+        level:
+          const: A1
+        passScore:
+          type: integer
+          minimum: 0
+          maximum: 100
+        questions:
+          type: array
+          items:
+            type: object
+            required: [id, prompt, options]
+            properties:
+              id:
+                $ref: '#/components/schemas/Identifier'
+              prompt:
+                type: string
+              options:
+                type: array
+                items:
+                  type: string
+            additionalProperties: false
+      additionalProperties: false
+    AssessmentResult:
+      type: object
+      required: [attemptId, level, score, passed, completedAt]
+      properties:
+        attemptId:
+          type: string
+          format: uuid
+        level:
+          const: A1
+        score:
+          type: integer
+          minimum: 0
+          maximum: 100
+        passed:
+          type: boolean
+        completionRecord:
+          type: object
+          required: [id, level, type, issuedAt]
+          properties:
+            id:
+              type: string
+              format: uuid
+            level:
+              const: A1
+            type:
+              const: non_accredited_completion
+            issuedAt:
+              type: string
+              format: date-time
+          additionalProperties: false
+        completedAt:
+          type: string
+          format: date-time
+      additionalProperties: false
+    NotificationPreference:
+      type: object
+      required: [enabled, locale]
+      properties:
+        enabled:
+          type: boolean
+        reminderTime:
+          type: string
+          format: time
+        locale:
+          $ref: '#/components/schemas/Locale'
+        updatedAt:
+          type: string
+          format: date-time
+          readOnly: true
+      additionalProperties: false
+    EngagementStatus:
+      type: object
+      required:
+        [currentStreak, longestStreak, xp, achievements,
+         notificationPreference]
+      properties:
+        currentStreak:
+          type: integer
+          minimum: 0
+        longestStreak:
+          type: integer
+          minimum: 0
+        xp:
+          type: integer
+          minimum: 0
+        lastLearningDate:
+          type: string
+          format: date
+        achievements:
+          type: array
+          items:
+            type: object
+            required: [code, earnedAt]
+            properties:
+              code:
+                $ref: '#/components/schemas/Identifier'
+              earnedAt:
+                type: string
+                format: date-time
+            additionalProperties: false
+        notificationPreference:
+          $ref: '#/components/schemas/NotificationPreference'
+      additionalProperties: false
+    Entitlement:
+      type: object
+      required: [code, status, source, updatedAt]
+      properties:
+        code:
+          $ref: '#/components/schemas/Identifier'
+        status:
+          type: string
+          enum: [active, revoked, expired]
+        validUntil:
+          type: string
+          format: date-time
+        source:
+          type: string
+        updatedAt:
+          type: string
+          format: date-time
+      additionalProperties: false
+    SupportTicket:
+      type: object
+      required:
+        [id, type, locale, description, status, createdAt, updatedAt]
+      properties:
+        id:
+          type: string
+          format: uuid
+        type:
+          type: string
+          enum: [support, content_report]
+        contentRef:
+          type: string
+        locale:
+          $ref: '#/components/schemas/Locale'
+        description:
+          type: string
+        status:
+          type: string
+          enum: [open, triaged, resolved, dismissed]
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
       additionalProperties: false
     ApiError:
       type: object

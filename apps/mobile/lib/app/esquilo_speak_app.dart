@@ -42,7 +42,12 @@ class _EsquiloSpeakAppState extends State<EsquiloSpeakApp> {
         return;
       }
       setState(() => _setDependencies(dependencies));
-    } on Object catch (error) {
+    } on Object catch (error, stackTrace) {
+      assert(() {
+        debugPrint('EsquiloSpeak bootstrap failed: $error');
+        debugPrintStack(stackTrace: stackTrace);
+        return true;
+      }());
       if (mounted) setState(() => _bootstrapError = error);
     }
   }

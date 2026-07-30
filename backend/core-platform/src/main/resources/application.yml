@@ -92,3 +92,6 @@ esquilospeak:
     sync-push-per-minute: ${ESQUILO_RATE_LIMIT_SYNC_PER_MINUTE:30}
     privacy-per-hour: ${ESQUILO_RATE_LIMIT_PRIVACY_PER_HOUR:5}
     admin-writes-per-minute: ${ESQUILO_RATE_LIMIT_ADMIN_PER_MINUTE:60}
+    advanced-feedback-per-minute: ${ESQUILO_RATE_LIMIT_ADVANCED_PER_MINUTE:12}
+    commerce-writes-per-minute: ${ESQUILO_RATE_LIMIT_COMMERCE_PER_MINUTE:10}
+    support-writes-per-hour: ${ESQUILO_RATE_LIMIT_SUPPORT_PER_HOUR:10}

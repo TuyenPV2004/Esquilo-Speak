@@ -9,10 +9,13 @@ import '../core/auth/secure_auth_token_store.dart';
 import '../core/auth/unavailable_auth_gateway.dart';
 import '../core/config/app_environment.dart';
 import '../core/network/api_client.dart';
+import '../core/platform/advanced_learning_platform.dart';
 import '../core/storage/app_database.dart';
 import '../core/sync/sync_coordinator.dart';
 import '../core/telemetry/app_telemetry.dart';
 import '../features/learning/data/learning_api_service.dart';
+import '../features/advanced_learning/data/p1_api_service.dart';
+import '../features/advanced_learning/presentation/p1_view_model.dart';
 import '../features/learning/data/offline_learning_repository.dart';
 import '../features/learning/data/remote_learning_repository.dart';
 import '../features/learning/presentation/learning_view_model.dart';
@@ -32,6 +35,7 @@ class AppDependencies {
     required this.learningViewModel,
     required this.profileViewModel,
     required this.insightsViewModel,
+    required this.p1ViewModel,
   });
 
   final AppEnvironment environment;
@@ -43,6 +47,7 @@ class AppDependencies {
   final LearningViewModel learningViewModel;
   final LearnerProfileViewModel profileViewModel;
   final LearningInsightsViewModel insightsViewModel;
+  final P1ViewModel p1ViewModel;
 
   static Future<AppDependencies> create() async {
     final environment = AppEnvironment.fromDefines();
@@ -80,6 +85,11 @@ class AppDependencies {
     final insightsViewModel = LearningInsightsViewModel(
       LearningInsightsService(api, database),
     )..load();
+    final p1ViewModel = P1ViewModel(
+      P1ApiService(api),
+      AndroidAdvancedLearningPlatform(environment, session),
+      closedTestingCommerceEnabled: environment.isLocal,
+    )..load();
 
     return AppDependencies._(
       environment: environment,
@@ -91,6 +101,7 @@ class AppDependencies {
       learningViewModel: learningViewModel,
       profileViewModel: profileViewModel,
       insightsViewModel: insightsViewModel,
+      p1ViewModel: p1ViewModel,
     );
   }
 
@@ -111,6 +122,7 @@ class AppDependencies {
     learningViewModel.dispose();
     profileViewModel.dispose();
     insightsViewModel.dispose();
+    p1ViewModel.dispose();
     session.dispose();
     httpClient.close();
     await database.close();

@@ -26,3 +26,6 @@ Decision status:
   mastery, review, and offline synchronization P0.
 - [`ADR-006`](ADR-006-android-application-foundation.md): Android application
   foundation, dependencies, security boundaries, and offline strategy.
+- [`ADR-007`](ADR-007-closed-testing-advanced-learning-p1.md): provider-neutral
+  advanced-learning P1 backend for closed testing and production fail-closed
+  boundaries.

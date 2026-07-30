@@ -5,21 +5,30 @@ class MasteryState {
     required this.score,
     required this.correctEvidenceCount,
     required this.evidenceCount,
+    required this.lastEvidenceAt,
+    this.calculationMethod,
   });
 
-  factory MasteryState.fromJson(Map<String, dynamic> json) => MasteryState(
-    conceptId: json['conceptId'] as String,
-    modelVersion: json['modelVersion'] as int,
-    score: (json['score'] as num).toDouble(),
-    correctEvidenceCount: json['correctEvidenceCount'] as int,
-    evidenceCount: json['evidenceCount'] as int,
-  );
+  factory MasteryState.fromJson(Map<String, dynamic> json) {
+    final explanation = json['explanation'] as Map<String, dynamic>;
+    return MasteryState(
+      conceptId: json['conceptId'] as String,
+      modelVersion: json['modelVersion'] as int,
+      score: (json['score'] as num).toDouble(),
+      correctEvidenceCount: json['correctEvidenceCount'] as int,
+      evidenceCount: json['evidenceCount'] as int,
+      lastEvidenceAt: DateTime.parse(json['lastEvidenceAt'] as String).toUtc(),
+      calculationMethod: explanation['method'] as String?,
+    );
+  }
 
   final String conceptId;
   final int modelVersion;
   final double score;
   final int correctEvidenceCount;
   final int evidenceCount;
+  final DateTime lastEvidenceAt;
+  final String? calculationMethod;
 }
 
 class ReviewItem {

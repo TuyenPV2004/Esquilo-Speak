@@ -31,7 +31,7 @@ void main() {
               'correctEvidenceCount': 1,
               'evidenceCount': 1,
               'lastEvidenceAt': '2026-07-30T00:00:00Z',
-              'explanation': {},
+              'explanation': {'method': 'weighted-correct-ratio'},
             },
           ],
         });
@@ -64,6 +64,8 @@ void main() {
     final online = await service.load();
     expect(online.fromCache, isFalse);
     expect(online.mastery, hasLength(1));
+    expect(online.mastery.single.lastEvidenceAt, DateTime.utc(2026, 7, 30));
+    expect(online.mastery.single.calculationMethod, 'weighted-correct-ratio');
     expect(online.recommendation.kind, LearningRecommendationKind.reviewDue);
     expect(online.recommendation.algorithmVersion, 1);
 
@@ -149,7 +151,7 @@ Map<String, dynamic> _mastery(String conceptId, double score) => {
   'correctEvidenceCount': score == 1 ? 1 : 0,
   'evidenceCount': 1,
   'lastEvidenceAt': '2026-07-30T00:00:00Z',
-  'explanation': {},
+  'explanation': {'method': 'weighted-correct-ratio'},
 };
 
 http.Response _json(Map<String, dynamic> body) => http.Response(

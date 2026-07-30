@@ -167,9 +167,10 @@ Authoring payload chứa scoring data; learner API chỉ đọc `learner_content
 loại `correctOptionId`, `correctAnswer` và `explanation`. P0 hỗ trợ
 `multiple_choice` và `true_false`.
 
-Media hiện chỉ có metadata (`objectKey`, checksum, locale, duration/alt text).
-Repository chưa thêm object storage; binary storage chỉ được triển khai khi có
-audio hoặc image production thật.
+Media production vẫn chỉ có metadata (`objectKey`, checksum, locale,
+duration/alt text). Profile local của backend P1 có endpoint WAV deterministic
+để Android closed testing kiểm tra playback/download; repository chưa thêm
+object storage và production profile không dùng media giả.
 
 ## Learning, mastery, review và offline sync
 
@@ -189,6 +190,29 @@ audio hoặc image production thật.
 
 Chi tiết completion, conflict, mastery và review rule nằm trong
 [`ADR-005`](docs/decisions/ADR-005-learning-mastery-review-offline-sync.md).
+
+## Advanced learning P1 cho closed testing
+
+- OpenAPI `0.5.0` bổ sung media, pronunciation, writing/conversation, placement
+  A1, engagement, commerce/entitlement và support.
+- Local profile dùng adapter deterministic. Production profile trả `503` cho
+  provider-dependent operation cho đến khi media/STT/AI/Play verifier thật được
+  cấu hình.
+- Pronunciation không lưu raw voice; chỉ transcript, score và feedback dẫn xuất
+  được tham gia privacy export/delete.
+- Purchase token chỉ được xử lý trong request và lưu SHA-256. Entitlement
+  `premium` được grant/revoke theo purchase/refund verification.
+- Placement chỉ phát hành `non_accredited_completion`; đây không phải chứng chỉ
+  được công nhận.
+- Rate limit P1 áp dụng riêng cho advanced feedback, commerce và support.
+- Android local/closed-testing đã có hub P1 cho media online/offline, ghi âm
+  có permission và retention disclosure, writing/conversation, placement,
+  insight có thể giải thích, engagement/reminder, premium entitlement và
+  support/content report. Production Play Billing và provider thật vẫn thuộc
+  release gate.
+
+Quyết định và production gates nằm trong
+[`ADR-007`](docs/decisions/ADR-007-closed-testing-advanced-learning-p1.md).
 
 ## Backend operations
 
@@ -222,6 +246,8 @@ Chi tiết completion, conflict, mastery và review rule nằm trong
   account dưới 16 tuổi cho đến khi có guardian-consent flow được phê duyệt.
 - Không sử dụng local token endpoint hoặc password trong `.env.example` cho
   production.
+- Cấu hình adapter production cho media, STT/AI và Play purchase verification;
+  không bật local deterministic adapter ngoài profile `local`.
 
 External account registration, login, password/MFA và account recovery thuộc
 OIDC provider. Backend chỉ lưu SHA-256 mapping của `issuer + subject`, không lưu

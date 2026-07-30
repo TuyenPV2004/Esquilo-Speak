@@ -5,10 +5,16 @@ on the Phase 10 foundation: onboarding and profile, language/course/lesson
 selection, attempts and feedback, progress/mastery/review, offline cache/outbox,
 daily goal, privacy controls, and accessible responsive navigation.
 
-Phase 12 has started with an explainable, offline-first learning recommendation
-v1. The home screen derives one deterministic next action from cached review and
-mastery data, in this order: due review, weakest concept, continue learning, then
-start learning. Server-driven or AI personalization remains outside this slice.
+Phase 12 completes the closed-testing Android P1 experience: authenticated media
+playback and private offline download, pronunciation recording with runtime
+permission and raw-voice deletion disclosure, writing/conversation feedback, A1
+placement with a non-accredited completion record, explainable offline-first
+recommendations and mastery insight, streak/achievement/reminder, premium
+entitlement purchase/refund simulation, and support/content reports.
+
+Closed testing deliberately uses deterministic backend providers and a local
+purchase verifier. Production media/STT/AI providers and Google Play Billing are
+release integrations, not silent fallbacks.
 
 ## Local development
 
@@ -61,6 +67,17 @@ flutter test integration_test/learning_flow_integration_test.dart `
   --flavor local --dart-define=ESQUILO_ENV=local -d emulator-5554
 ```
 
+If host networking blocks `10.0.2.2`, use a temporary ADB reverse tunnel:
+
+```powershell
+adb reverse tcp:8080 tcp:8080
+flutter test integration_test/learning_flow_integration_test.dart `
+  --flavor local `
+  --dart-define=ESQUILO_ENV=local `
+  --dart-define=ESQUILO_API_URL=http://127.0.0.1:8080 `
+  -d emulator-5554
+```
+
 ## Storage, security, and telemetry
 
 - Bearer, refresh, and identity tokens are stored only through platform secure
@@ -82,8 +99,10 @@ flutter test integration_test/learning_flow_integration_test.dart `
   offline attempts, deterministic learning recommendations, learning insights,
   and sync reconciliation.
 - Widget tests cover learner behavior, accessibility guidelines, large text,
-  personalized insight copy/actions, and Vietnamese/English localization key
-  parity.
-- Integration tests cover the local Android journey against the real backend.
+  personalized insight copy/actions, P1 forms and permission denial, and
+  Vietnamese/English localization key parity.
+- Integration tests cover authenticated media download, writing feedback, A1
+  placement, premium purchase/refund, support, and the original learner journey
+  against the real backend and PostgreSQL.
 - Golden tests are added only for stable shared components or screens with
   deterministic fonts and dimensions; every image diff requires review.

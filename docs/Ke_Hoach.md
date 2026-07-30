@@ -288,12 +288,19 @@ instance và phải chuyển lên gateway/distributed limiter trước khi scale
 
 P1 sau khi core P0 ổn định:
 
-- [ ] Pronunciation/listening/writing/conversation contract và provider ports.
+- [x] Pronunciation/listening/writing/conversation contract và provider ports.
 - [ ] AI/speech gateway có quota, safety, evaluation và provider fallback.
-- [ ] Assessment/placement/certification backend.
-- [ ] Goal, streak, achievement, notification preference backend.
-- [ ] Subscription, entitlement, purchase verification và refund lifecycle.
+- [x] Assessment/placement/certification backend.
+- [x] Goal, streak, achievement, notification preference backend.
+- [x] Subscription, entitlement, purchase verification và refund lifecycle.
 - [ ] Support, moderation, organization/class và experimentation backend.
+
+Trạng thái P1 backend cho closed testing: OpenAPI 0.5.0, Flyway V6 và các module
+advanced learning, assessment, engagement, commerce/entitlement, support đã có
+integration test trên PostgreSQL 18. Adapter local deterministic không giữ raw
+voice hoặc raw purchase token; production fail closed khi provider thật chưa
+được cấu hình. AI/STT evaluation/fallback production, push delivery,
+organization/class và experimentation vẫn là gate mở.
 
 P2 chỉ khi có requirement và số liệu:
 
@@ -374,22 +381,31 @@ hai checkbox chứa external/device gate chưa được đánh dấu hoàn thàn
 
 ### Giai đoạn 12 — Android advanced learning (P1)
 
-- [ ] Listening và media playback/download.
-- [ ] Pronunciation recording, permission, consent và retention UX.
-- [ ] Writing feedback và conversation experience.
-- [ ] Placement/assessment và certificate display.
-- [ ] Personalization, review recommendation và learning insight.
-- [ ] Streak, achievement/challenge và notification.
-- [ ] Subscription/paywall/entitlement khi commerce backend đã sẵn sàng.
-- [ ] Support/report-content flow.
+- [x] Listening và media playback/download.
+- [x] Pronunciation recording, permission, consent và retention UX.
+- [x] Writing feedback và conversation experience.
+- [x] Placement/assessment và certificate display.
+- [x] Personalization, review recommendation và learning insight.
+- [x] Streak, achievement/challenge và notification.
+- [x] Subscription/paywall/entitlement khi commerce backend đã sẵn sàng.
+- [x] Support/report-content flow.
 
-Trạng thái triển khai đầu tiên: đã có recommendation v1 phía Android, xác định
-next action theo thứ tự có thể giải thích `review đến hạn → mastery yếu nhất →
-tiếp tục học → bắt đầu học`. Kết quả được suy ra từ learning insight đã cache nên
-vẫn hoạt động offline, có nội dung Việt/Anh, semantics, large-text widget test và
-unit test cho mọi nhánh quyết định. Checkbox personalization vẫn mở vì
-server-driven/AI personalization, insight sâu hơn và các năng lực P1 còn lại chưa
-được triển khai.
+Trạng thái gate: Giai đoạn 12 đã hoàn thành trong phạm vi Android local/closed
+testing đã được duyệt. Android có hub P1 và các flow media xác thực
+online/offline, ghi âm AAC/M4A với runtime permission, disclosure và xóa file
+tạm sau khi gửi, writing/conversation feedback, placement A1 cùng bản ghi
+hoàn thành không được công nhận, recommendation/mastery insight có thể giải
+thích, streak/achievement/reminder, premium entitlement purchase/refund qua local
+verifier và support/content report.
+
+Contract 0.5.0, Flyway V6, các module backend và adapter deterministic closed
+testing đã tích hợp. Dart format, Flutter analyzer, 37 Flutter test, accessibility
+large-text/touch-target checks, APK `localDebug`, 30 backend test, `bootJar` và E2E
+Android API 37 với backend/PostgreSQL 18 thật đã pass; E2E bao phủ media
+download, writing, placement, purchase/refund, support và hồi quy learner journey
+P0. Emulator không được dùng để xác minh microphone; physical-device matrix,
+production media/STT/AI provider, Google Play Billing, store policy và release
+credential là các gate Giai đoạn 13, không phải placeholder P1 bị bật ngầm.
 
 ### Giai đoạn 13 — Android release readiness
 

@@ -63,6 +63,10 @@ class SecurityConfiguration {
                                 anyOf(hasRole("SUPPORT"), hasRole("ADMIN"))))
                         .requestMatchers("/api/mobile/v1/**")
                         .access(allOf(hasRole("LEARNER"), hasAuthority("SCOPE_learning")))
+                        .requestMatchers("/api/support/v1/**")
+                        .access(allOf(
+                                hasAuthority("SCOPE_operations"),
+                                anyOf(hasRole("SUPPORT"), hasRole("ADMIN"))))
                         .requestMatchers("/api/admin/v1/content/**")
                         .access(allOf(
                                 hasAuthority("SCOPE_content"),
