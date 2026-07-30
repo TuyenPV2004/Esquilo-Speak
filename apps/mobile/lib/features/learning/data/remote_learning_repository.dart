@@ -54,6 +54,7 @@ class RemoteLearningRepository implements LearningRepository {
   }) {
     return PendingAttempt(
       clientAttemptId: _uuid.v4(),
+      clientMutationId: _uuid.v4(),
       idempotencyKey: _uuid.v4(),
       courseId: lesson.courseId,
       lessonId: lesson.id,

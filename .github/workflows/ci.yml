@@ -147,7 +147,9 @@ jobs:
         run: flutter test
 
       - name: Build Android debug APK
-        run: flutter build apk --debug
+        run: >-
+          flutter build apk --debug --flavor local
+          --dart-define=ESQUILO_ENV=local
 
   infrastructure:
     name: Validate local infrastructure
@@ -247,4 +249,5 @@ jobs:
           script: >-
             cd apps/mobile &&
             flutter test integration_test/learning_flow_integration_test.dart
+            --flavor local --dart-define=ESQUILO_ENV=local
             -d emulator-5554

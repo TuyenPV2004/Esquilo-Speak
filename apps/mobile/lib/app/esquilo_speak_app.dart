@@ -1,52 +1,70 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:http/http.dart' as http;
+import 'package:go_router/go_router.dart';
 
-import '../features/learning/data/learning_api_service.dart';
-import '../features/learning/data/remote_learning_repository.dart';
-import '../features/learning/presentation/learning_flow_screen.dart';
-import '../features/learning/presentation/learning_view_model.dart';
+import '../core/design_system/app_theme.dart';
+import '../core/navigation/app_router.dart';
 import '../l10n/app_localizations.dart';
+import 'app_dependencies.dart';
 
 class EsquiloSpeakApp extends StatefulWidget {
-  const EsquiloSpeakApp({super.key});
+  const EsquiloSpeakApp({this.dependencies, super.key});
+
+  final AppDependencies? dependencies;
 
   @override
   State<EsquiloSpeakApp> createState() => _EsquiloSpeakAppState();
 }
 
 class _EsquiloSpeakAppState extends State<EsquiloSpeakApp> {
-  late final http.Client _httpClient;
-  late final LearningViewModel _viewModel;
+  AppDependencies? _dependencies;
+  GoRouter? _router;
+  Object? _bootstrapError;
+  late final bool _ownsDependencies;
 
   @override
   void initState() {
     super.initState();
-    _httpClient = http.Client();
-    const configuredBaseUrl = String.fromEnvironment('ESQUILO_API_URL');
-    final baseUrl = configuredBaseUrl.isNotEmpty
-        ? configuredBaseUrl
-        : defaultTargetPlatform == TargetPlatform.android
-        ? 'http://10.0.2.2:8080'
-        : 'http://localhost:8080';
-    _viewModel = LearningViewModel(
-      RemoteLearningRepository(
-        LearningApiService(_httpClient, Uri.parse(baseUrl)),
-      ),
-    )..loadCatalog();
+    _ownsDependencies = widget.dependencies == null;
+    final dependencies = widget.dependencies;
+    if (dependencies == null) {
+      _initialize();
+    } else {
+      _setDependencies(dependencies);
+    }
+  }
+
+  Future<void> _initialize() async {
+    try {
+      final dependencies = await AppDependencies.create();
+      if (!mounted) {
+        await dependencies.dispose();
+        return;
+      }
+      setState(() => _setDependencies(dependencies));
+    } on Object catch (error) {
+      if (mounted) setState(() => _bootstrapError = error);
+    }
+  }
+
+  void _setDependencies(AppDependencies dependencies) {
+    _dependencies = dependencies;
+    _router = createAppRouter(dependencies);
   }
 
   @override
   void dispose() {
-    _viewModel.dispose();
-    _httpClient.close();
+    _router?.dispose();
+    if (_ownsDependencies) _dependencies?.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    final router = _router;
+    if (router == null) return _bootstrapApp();
+    return MaterialApp.router(
+      routerConfig: router,
       onGenerateTitle: (context) => AppLocalizations.of(context).appTitle,
       debugShowCheckedModeBanner: false,
       localizationsDelegates: const [
@@ -56,20 +74,35 @@ class _EsquiloSpeakAppState extends State<EsquiloSpeakApp> {
         GlobalCupertinoLocalizations.delegate,
       ],
       supportedLocales: AppLocalizations.supportedLocales,
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: const Color(0xFF1D6B52),
-          brightness: Brightness.light,
-        ),
-        useMaterial3: true,
-        filledButtonTheme: FilledButtonThemeData(
-          style: FilledButton.styleFrom(
-            minimumSize: const Size(48, 48),
-            textStyle: const TextStyle(fontWeight: FontWeight.w700),
-          ),
-        ),
-      ),
-      home: LearningFlowScreen(viewModel: _viewModel),
+      theme: AppTheme.light(),
+      darkTheme: AppTheme.dark(),
+      themeMode: ThemeMode.system,
     );
   }
+
+  Widget _bootstrapApp() => MaterialApp(
+    debugShowCheckedModeBanner: false,
+    theme: AppTheme.light(),
+    darkTheme: AppTheme.dark(),
+    home: Scaffold(
+      body: SafeArea(
+        child: Center(
+          child: _bootstrapError == null
+              ? Semantics(
+                  liveRegion: true,
+                  label: 'Loading EsquiloSpeak',
+                  child: const CircularProgressIndicator(),
+                )
+              : const Padding(
+                  padding: EdgeInsets.all(24),
+                  child: Text(
+                    'EsquiloSpeak could not start. Check the environment '
+                    'configuration and try again.',
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+        ),
+      ),
+    ),
+  );
 }

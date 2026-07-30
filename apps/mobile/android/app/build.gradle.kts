@@ -9,6 +9,10 @@ android {
     compileSdk = flutter.compileSdkVersion
     ndkVersion = flutter.ndkVersion
 
+    buildFeatures {
+        resValues = true
+    }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
@@ -23,6 +27,29 @@ android {
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
         versionName = flutter.versionName
+    }
+
+    flavorDimensions += "environment"
+    productFlavors {
+        create("local") {
+            dimension = "environment"
+            applicationIdSuffix = ".local"
+            versionNameSuffix = "-local"
+            manifestPlaceholders["appAuthRedirectScheme"] = "com.esquilospeak.mobile.local"
+            resValue("string", "app_name", "EsquiloSpeak Local")
+        }
+        create("staging") {
+            dimension = "environment"
+            applicationIdSuffix = ".staging"
+            versionNameSuffix = "-staging"
+            manifestPlaceholders["appAuthRedirectScheme"] = "com.esquilospeak.mobile.staging"
+            resValue("string", "app_name", "EsquiloSpeak Staging")
+        }
+        create("production") {
+            dimension = "environment"
+            manifestPlaceholders["appAuthRedirectScheme"] = "com.esquilospeak.mobile"
+            resValue("string", "app_name", "EsquiloSpeak")
+        }
     }
 
     buildTypes {

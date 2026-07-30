@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 
+import '../../../core/design_system/app_tokens.dart';
+import '../../../core/design_system/component_states.dart';
+import '../../../core/design_system/responsive_content.dart';
 import '../../../l10n/app_localizations.dart';
 import '../data/learning_models.dart';
 import 'learning_view_model.dart';
@@ -18,9 +21,14 @@ class LearningFlowScreen extends StatelessWidget {
         return Scaffold(
           appBar: AppBar(title: Text(_title(strings))),
           body: SafeArea(
-            child: AnimatedSwitcher(
-              duration: const Duration(milliseconds: 200),
-              child: _body(context, strings),
+            child: ResponsiveContent(
+              padding: EdgeInsets.zero,
+              child: AnimatedSwitcher(
+                duration: MediaQuery.disableAnimationsOf(context)
+                    ? Duration.zero
+                    : AppMotion.standard,
+                child: _body(context, strings),
+              ),
             ),
           ),
         );
@@ -406,21 +414,12 @@ class _ErrorState extends StatelessWidget {
   final VoidCallback onRetry;
 
   @override
-  Widget build(BuildContext context) => Center(
+  Widget build(BuildContext context) => AppMessageState(
     key: const ValueKey('error'),
-    child: Padding(
-      padding: const EdgeInsets.all(24),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          const Icon(Icons.cloud_off, size: 48),
-          const SizedBox(height: 12),
-          Text(message, textAlign: TextAlign.center),
-          const SizedBox(height: 16),
-          FilledButton(onPressed: onRetry, child: Text(retryLabel)),
-        ],
-      ),
-    ),
+    icon: Icons.cloud_off,
+    message: message,
+    actionLabel: retryLabel,
+    onAction: onRetry,
   );
 }
 
@@ -431,5 +430,5 @@ class _EmptyState extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) =>
-      Center(child: Text(label, textAlign: TextAlign.center));
+      AppMessageState(icon: Icons.inbox_outlined, message: label);
 }

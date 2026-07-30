@@ -136,6 +136,7 @@ class ExerciseOption {
 class PendingAttempt {
   const PendingAttempt({
     required this.clientAttemptId,
+    required this.clientMutationId,
     required this.idempotencyKey,
     required this.courseId,
     required this.lessonId,
@@ -146,6 +147,7 @@ class PendingAttempt {
   });
 
   final String clientAttemptId;
+  final String clientMutationId;
   final String idempotencyKey;
   final String courseId;
   final String lessonId;

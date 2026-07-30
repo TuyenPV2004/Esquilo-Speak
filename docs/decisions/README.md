@@ -22,3 +22,7 @@ Decision status:
   and the requirement to accept the P0 gate before identity expansion.
 - [`ADR-004`](ADR-004-p0-product-privacy-and-service-decisions.md): accepted P0
   product, age, guest, consent, retention, service, and support decisions.
+- [`ADR-005`](ADR-005-learning-mastery-review-offline-sync.md): learning,
+  mastery, review, and offline synchronization P0.
+- [`ADR-006`](ADR-006-android-application-foundation.md): Android application
+  foundation, dependencies, security boundaries, and offline strategy.

@@ -6,11 +6,13 @@ import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   test('parses the frozen P0 learning integration fixture', () async {
-    final fixture = jsonDecode(
-      await File(
-        '../../tests/contract/fixtures/P0_Android_Integration.json',
-      ).readAsString(),
-    ) as Map<String, dynamic>;
+    final fixture =
+        jsonDecode(
+              await File(
+                '../../tests/contract/fixtures/P0_Android_Integration.json',
+              ).readAsString(),
+            )
+            as Map<String, dynamic>;
     final operations = fixture['operations'] as Map<String, dynamic>;
 
     final languages =

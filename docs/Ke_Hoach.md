@@ -309,15 +309,15 @@ P2 chỉ khi có requirement và số liệu:
 - [ ] Staging dùng external identity và production-like configuration.
 - [x] Backup/restore, rollback/forward-fix và incident runbook được diễn tập.
 - [ ] Không còn P0 security/privacy finding chưa có chấp nhận rủi ro.
-- [ ] API documentation và Android integration fixtures được đóng băng cho đợt
+- [x] API documentation và Android integration fixtures được đóng băng cho đợt
   tích hợp.
 
 Trạng thái gate: contract 0.4.0 đã lint, oasdiff và khóa SHA-256 cùng fixture
 bao phủ 21 mobile operation; 24 backend test, Modulith, bootJar và PostgreSQL 18
 Flyway V1→V5 đều pass. Backup/restore/runbook dùng lại evidence diễn tập của Giai
-đoạn 8. Fixture consumer test đã có nhưng chưa chạy do môi trường hiện tại không
-có Flutter SDK, vì vậy mục đóng băng integration vẫn giữ mở đến khi CI mobile
-pass. External OIDC staging, TLS/KMS và hai high ASVS finding chưa có risk
+đoạn 8. Fixture consumer test đã pass bằng Flutter 3.44.3; lỗi CI mobile do
+format fixture đã được sửa và format/analyze/test local đều pass. External OIDC
+staging, TLS/KMS và hai high ASVS finding chưa có risk
 acceptance tiếp tục chặn hoàn thành Giai đoạn 9.
 
 ## 7. Android frontend track
@@ -327,17 +327,25 @@ Chỉ bắt đầu từng nhóm tích hợp sau khi backend contract tương ứ
 
 ### Giai đoạn 10 — Android application foundation (P0)
 
-- [ ] Chốt navigation, design tokens, typography, component states và responsive
+- [x] Chốt navigation, design tokens, typography, component states và responsive
   behavior.
-- [ ] Chọn local database/secure storage theo requirement; ghi ADR nếu tạo
+- [x] Chọn local database/secure storage theo requirement; ghi ADR nếu tạo
   dependency nền tảng mới.
-- [ ] Xây auth/session lifecycle, token refresh và logout an toàn.
-- [ ] Xây network layer có timeout, retry policy, error mapping và trace header.
-- [ ] Xây offline repository/sync coordinator theo contract backend.
-- [ ] Thiết lập environment/flavor cho local, staging và production.
-- [ ] Thiết lập analytics abstraction, privacy consent và crash reporting.
-- [ ] Thiết lập accessibility baseline và localization QA.
-- [ ] Bổ sung golden/widget/integration test strategy phù hợp.
+- [x] Xây auth/session lifecycle, token refresh và logout an toàn.
+- [x] Xây network layer có timeout, retry policy, error mapping và trace header.
+- [x] Xây offline repository/sync coordinator theo contract backend.
+- [x] Thiết lập environment/flavor cho local, staging và production.
+- [x] Thiết lập analytics abstraction, privacy consent và crash reporting.
+- [x] Thiết lập accessibility baseline và localization QA.
+- [x] Bổ sung golden/widget/integration test strategy phù hợp.
+
+Trạng thái gate: đạt bằng ADR-006, route và Material 3 design system dùng chung,
+secure token/session lifecycle, HTTP policy có correlation/retry/error mapping,
+SQLite outbox cùng cursor sync, ba Android flavor và cleartext chỉ ở local.
+Format, analyzer, 17 Flutter test và APK `localDebug` đã pass bằng Flutter
+3.44.3. External OIDC staging, production telemetry sink, release signing và
+device-matrix E2E vẫn là release/environment gate; không chặn bắt đầu Giai đoạn
+11.
 
 ### Giai đoạn 11 — Android core learner journey (P0)
 

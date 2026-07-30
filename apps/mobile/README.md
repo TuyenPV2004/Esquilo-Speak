@@ -1,20 +1,77 @@
 # EsquiloSpeak mobile
 
-Flutter learner application for the first learning vertical slice.
+Flutter Android learner application. Phase 10 provides the navigation, design
+system, secure session, network, local database, offline sync, environment, and
+privacy-aware telemetry foundations used by later learner journeys.
 
-## Commands
+## Local development
+
+The Android emulator resolves the local backend through
+`http://10.0.2.2:8080`. Start the local flavor with:
 
 ```powershell
 flutter pub get
-dart format --output=none --set-exit-if-changed lib test
-flutter analyze
-flutter test
-flutter run
+flutter run --flavor local --dart-define=ESQUILO_ENV=local
 ```
 
-The Android emulator resolves the local backend through
-`http://10.0.2.2:8080`. Override it for another environment:
+Override the local API when needed:
 
 ```powershell
-flutter run --dart-define=ESQUILO_API_URL=https://api.example.com
+flutter run --flavor local `
+  --dart-define=ESQUILO_ENV=local `
+  --dart-define=ESQUILO_API_URL=http://10.0.2.2:8080
 ```
+
+Only the local flavor allows cleartext HTTP. Staging and production require an
+HTTPS API URL and a complete external OIDC configuration:
+
+```powershell
+flutter run --flavor staging `
+  --dart-define=ESQUILO_ENV=staging `
+  --dart-define=ESQUILO_API_URL=https://api.staging.example `
+  --dart-define=ESQUILO_OIDC_ISSUER=https://identity.staging.example `
+  --dart-define=ESQUILO_OIDC_CLIENT_ID=esquilospeak-mobile-staging `
+  --dart-define=ESQUILO_OIDC_REDIRECT_URL=com.esquilospeak.mobile.staging://oauthredirect `
+  --dart-define=ESQUILO_OIDC_POST_LOGOUT_REDIRECT_URL=com.esquilospeak.mobile.staging://oauthredirect
+```
+
+The values above are placeholders, not credentials. Do not commit tenant
+secrets, tokens, or environment files.
+
+## Validation
+
+```powershell
+dart format --output=none --set-exit-if-changed lib test integration_test
+flutter analyze
+flutter test
+flutter build apk --debug --flavor local --dart-define=ESQUILO_ENV=local
+```
+
+CI also runs the learner journey against PostgreSQL, the backend, and an Android
+emulator:
+
+```powershell
+flutter test integration_test/learning_flow_integration_test.dart `
+  --flavor local --dart-define=ESQUILO_ENV=local -d emulator-5554
+```
+
+## Storage, security, and telemetry
+
+- Bearer, refresh, and identity tokens are stored only through platform secure
+  storage.
+- SQLite stores pending mutations, canonical sync changes, the opaque cursor,
+  and non-sensitive settings.
+- A write is persisted before delivery; only safe reads and idempotent mutations
+  are retried automatically.
+- Analytics and crash events are disabled until consent is stored. The P0 sink
+  is deliberately no-op until a provider and privacy review are approved.
+
+## Test strategy
+
+- Unit tests cover environment validation, session rotation/logout, network
+  retry/error policy, SQLite outbox, and sync reconciliation.
+- Widget tests cover learner behavior, accessibility guidelines, large text,
+  and Vietnamese/English localization key parity.
+- Integration tests cover the local Android journey against the real backend.
+- Golden tests are added only for stable shared components or screens with
+  deterministic fonts and dimensions; every image diff requires review.
