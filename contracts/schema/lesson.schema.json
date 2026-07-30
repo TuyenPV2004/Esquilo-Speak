@@ -1,114 +1,107 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://schemas.esquilospeak.com/content/lesson.schema.json",
-  "title": "Lesson",
-  "description": "Versioned lesson content for the first learning vertical slice.",
+  "title": "Lesson authoring version",
+  "description": "Authoring-only lesson content. Scoring answers never appear in learner delivery.",
   "type": "object",
   "required": [
     "id",
     "courseId",
+    "courseVersion",
+    "unitId",
+    "locale",
     "title",
     "objectives",
     "estimatedMinutes",
-    "exercises",
-    "metadata"
+    "exercises"
   ],
   "properties": {
-    "id": {
-      "$ref": "common.schema.json#/$defs/identifier"
-    },
-    "courseId": {
-      "$ref": "common.schema.json#/$defs/identifier"
-    },
-    "title": {
-      "$ref": "common.schema.json#/$defs/localizedText"
-    },
+    "id": { "$ref": "common.schema.json#/$defs/identifier" },
+    "courseId": { "$ref": "common.schema.json#/$defs/identifier" },
+    "courseVersion": { "type": "integer", "minimum": 1 },
+    "unitId": { "$ref": "common.schema.json#/$defs/identifier" },
+    "locale": { "$ref": "common.schema.json#/$defs/locale" },
+    "title": { "$ref": "common.schema.json#/$defs/localizedText" },
     "objectives": {
       "type": "array",
-      "items": {
-        "$ref": "common.schema.json#/$defs/localizedText"
-      },
+      "items": { "$ref": "common.schema.json#/$defs/localizedText" },
       "minItems": 1
     },
-    "estimatedMinutes": {
-      "type": "integer",
-      "minimum": 1,
-      "maximum": 120
-    },
+    "estimatedMinutes": { "type": "integer", "minimum": 1, "maximum": 120 },
     "exercises": {
       "type": "array",
       "items": {
-        "$ref": "#/$defs/multipleChoiceExercise"
+        "oneOf": [
+          { "$ref": "#/$defs/multipleChoiceExercise" },
+          { "$ref": "#/$defs/trueFalseExercise" }
+        ]
       },
       "minItems": 1
-    },
-    "metadata": {
-      "$ref": "common.schema.json#/$defs/contentMetadata"
     }
   },
   "additionalProperties": false,
   "$defs": {
-    "multipleChoiceExercise": {
+    "exerciseBase": {
       "type": "object",
-      "required": [
-        "id",
-        "type",
-        "prompt",
-        "options",
-        "correctOptionId",
-        "explanation",
-        "skill",
-        "conceptIds"
-      ],
+      "required": ["id", "type", "prompt", "explanation", "skill", "conceptIds"],
       "properties": {
-        "id": {
-          "$ref": "common.schema.json#/$defs/identifier"
-        },
-        "type": {
-          "const": "multiple_choice"
-        },
-        "prompt": {
-          "$ref": "common.schema.json#/$defs/localizedText"
-        },
-        "options": {
-          "type": "array",
-          "items": {
-            "$ref": "#/$defs/exerciseOption"
-          },
-          "minItems": 2,
-          "uniqueItems": true
-        },
-        "correctOptionId": {
-          "$ref": "common.schema.json#/$defs/identifier"
-        },
-        "explanation": {
-          "$ref": "common.schema.json#/$defs/localizedText"
-        },
+        "id": { "$ref": "common.schema.json#/$defs/identifier" },
+        "type": { "type": "string" },
+        "prompt": { "$ref": "common.schema.json#/$defs/localizedText" },
+        "explanation": { "$ref": "common.schema.json#/$defs/localizedText" },
         "skill": {
           "type": "string",
           "enum": ["reading", "listening", "writing", "speaking", "vocabulary", "grammar"]
         },
         "conceptIds": {
           "type": "array",
-          "items": {
-            "$ref": "common.schema.json#/$defs/identifier"
-          },
+          "items": { "$ref": "common.schema.json#/$defs/identifier" },
           "minItems": 1,
           "uniqueItems": true
+        },
+        "media": { "$ref": "common.schema.json#/$defs/mediaMetadata" }
+      }
+    },
+    "multipleChoiceExercise": {
+      "allOf": [
+        { "$ref": "#/$defs/exerciseBase" },
+        {
+          "type": "object",
+          "required": ["options", "correctOptionId"],
+          "properties": {
+            "type": { "const": "multiple_choice" },
+            "options": {
+              "type": "array",
+              "items": { "$ref": "#/$defs/exerciseOption" },
+              "minItems": 2,
+              "uniqueItems": true
+            },
+            "correctOptionId": { "$ref": "common.schema.json#/$defs/identifier" }
+          }
         }
-      },
-      "additionalProperties": false
+      ],
+      "unevaluatedProperties": false
+    },
+    "trueFalseExercise": {
+      "allOf": [
+        { "$ref": "#/$defs/exerciseBase" },
+        {
+          "type": "object",
+          "required": ["correctAnswer"],
+          "properties": {
+            "type": { "const": "true_false" },
+            "correctAnswer": { "type": "boolean" }
+          }
+        }
+      ],
+      "unevaluatedProperties": false
     },
     "exerciseOption": {
       "type": "object",
       "required": ["id", "text"],
       "properties": {
-        "id": {
-          "$ref": "common.schema.json#/$defs/identifier"
-        },
-        "text": {
-          "$ref": "common.schema.json#/$defs/localizedText"
-        }
+        "id": { "$ref": "common.schema.json#/$defs/identifier" },
+        "text": { "$ref": "common.schema.json#/$defs/localizedText" }
       },
       "additionalProperties": false
     }

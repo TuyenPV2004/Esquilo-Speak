@@ -24,7 +24,10 @@ import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
 @Testcontainers
-@SpringBootTest(properties = "esquilospeak.privacy.processor-enabled=false")
+@SpringBootTest(properties = {
+    "esquilospeak.privacy.processor-enabled=false",
+    "esquilospeak.content.publisher-enabled=false"
+})
 @AutoConfigureMockMvc
 class LearningApiIntegrationTest {
 
@@ -57,7 +60,9 @@ class LearningApiIntegrationTest {
                         .param("sourceLanguage", "vi")
                         .param("targetLanguage", "en"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.items[0].id").value("course-en-for-vi"));
+                .andExpect(jsonPath("$.items[0].id").value("course-en-for-vi"))
+                .andExpect(jsonPath("$.items[0].version").value(1))
+                .andExpect(jsonPath("$.items[0].unitIds[0]").value("unit-foundation"));
 
         mockMvc.perform(get("/api/mobile/v1/courses/course-en-for-vi/lessons"))
                 .andExpect(status().isOk())
@@ -67,7 +72,11 @@ class LearningApiIntegrationTest {
                 .andExpect(status().isOk())
                 .andExpect(header().exists("ETag"))
                 .andExpect(jsonPath("$.version").value(1))
+                .andExpect(jsonPath("$.courseVersion").value(1))
+                .andExpect(jsonPath("$.unitId").value("unit-foundation"))
+                .andExpect(jsonPath("$.locale").value("vi"))
                 .andExpect(jsonPath("$.exercises[0].correctOptionId").doesNotExist())
+                .andExpect(jsonPath("$.exercises[0].correctAnswer").doesNotExist())
                 .andExpect(jsonPath("$.exercises[0].explanation").doesNotExist());
 
         mockMvc.perform(get("/api/mobile/v1/progress/courses/course-en-for-vi"))

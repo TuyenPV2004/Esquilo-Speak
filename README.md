@@ -47,6 +47,17 @@ Danh mục ngôn ngữ/khóa học
 → Xem tiến độ khóa học
 ```
 
+Backend cũng đã có content publishing P0:
+
+```text
+Draft course version
+→ Review
+→ Approve
+→ Schedule/publish
+→ Learner-safe delivery
+→ Retire hoặc rollback
+```
+
 - Mobile: Flutter `3.44.3`, Dart `3.12.2`, Android/iOS.
 - Backend: Java `21`, Spring Boot `4.1.0`, Spring Modulith `2.1.0`.
 - Build backend: Gradle Wrapper `9.6.1`.
@@ -140,6 +151,21 @@ Contract:
 ```powershell
 npx --yes @redocly/cli@2.39.0 lint contracts/openapi/esquilospeak-learning-v1.yaml --extends=spec
 ```
+
+## Content publishing
+
+Admin content API nằm dưới `/api/admin/v1/content` và yêu cầu
+`SCOPE_content` cùng `ROLE_CONTENT_STAFF` hoặc `ROLE_ADMIN`. API quản lý course
+version bất biến, unit/lesson/exercise, lifecycle, effective date, audit và
+rollback.
+
+Authoring payload chứa scoring data; learner API chỉ đọc `learner_content` đã
+loại `correctOptionId`, `correctAnswer` và `explanation`. P0 hỗ trợ
+`multiple_choice` và `true_false`.
+
+Media hiện chỉ có metadata (`objectKey`, checksum, locale, duration/alt text).
+Repository chưa thêm object storage; binary storage chỉ được triển khai khi có
+audio hoặc image production thật.
 
 ## Cấu hình production
 

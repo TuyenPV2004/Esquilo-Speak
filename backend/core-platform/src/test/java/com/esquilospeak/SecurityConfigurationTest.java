@@ -69,8 +69,8 @@ class SecurityConfigurationTest {
                 .header("alg", "none")
                 .issuer("https://identity.test")
                 .subject("subject")
-                .issuedAt(Instant.now().minusSeconds(120))
-                .expiresAt(Instant.now().minusSeconds(60))
+                .issuedAt(Instant.now().minusSeconds(600))
+                .expiresAt(Instant.now().minusSeconds(300))
                 .build();
 
         assertFalse(JwtValidators.createDefaultWithIssuer("https://identity.test")

@@ -1,6 +1,7 @@
 package com.esquilospeak;
 
 import static org.springframework.security.authorization.AuthorizationManagers.allOf;
+import static org.springframework.security.authorization.AuthorizationManagers.anyOf;
 import static org.springframework.security.authorization.AuthorityAuthorizationManager.hasAuthority;
 import static org.springframework.security.authorization.AuthorityAuthorizationManager.hasRole;
 
@@ -54,6 +55,10 @@ class SecurityConfiguration {
                         .permitAll()
                         .requestMatchers("/api/mobile/v1/**")
                         .access(allOf(hasRole("LEARNER"), hasAuthority("SCOPE_learning")))
+                        .requestMatchers("/api/admin/v1/content/**")
+                        .access(allOf(
+                                hasAuthority("SCOPE_content"),
+                                anyOf(hasRole("CONTENT_STAFF"), hasRole("ADMIN"))))
                         .anyRequest()
                         .authenticated())
                 .oauth2ResourceServer(resourceServer -> resourceServer.jwt(jwt ->

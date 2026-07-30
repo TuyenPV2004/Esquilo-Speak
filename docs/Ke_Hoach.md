@@ -221,23 +221,27 @@ chưa có external provider test/staging để xác thực discovery/JWKS và to
 
 ### Giai đoạn 6 — Curriculum, content và publishing backend (P0)
 
-- [ ] Mở rộng model language → course → unit → lesson → exercise, có locale và
+- [x] Mở rộng model language → course → unit → lesson → exercise, có locale và
   content version.
-- [ ] Bổ sung exercise type P0 sau multiple choice; mỗi loại có scoring contract
+- [x] Bổ sung exercise type P0 sau multiple choice; mỗi loại có scoring contract
   rõ.
-- [ ] Tách authoring model khỏi learner delivery model cho mọi exercise.
-- [ ] Thiết kế lifecycle draft → review → approved → scheduled/published →
+- [x] Tách authoring model khỏi learner delivery model cho mọi exercise.
+- [x] Thiết kế lifecycle draft → review → approved → scheduled/published →
   retired.
-- [ ] Bổ sung effective date, compatibility và rollback cho content release.
-- [ ] Tạo admin/content APIs tối thiểu; chưa xây admin frontend ở giai đoạn này.
-- [ ] Thêm validation chống reference hỏng, answer leakage và publish content
+- [x] Bổ sung effective date, compatibility và rollback cho content release.
+- [x] Tạo admin/content APIs tối thiểu; chưa xây admin frontend ở giai đoạn này.
+- [x] Thêm validation chống reference hỏng, answer leakage và publish content
   không hợp lệ.
-- [ ] Xác định media metadata và object-storage boundary; chỉ thêm storage khi
+- [x] Xác định media metadata và object-storage boundary; chỉ thêm storage khi
   bắt đầu dùng media thật.
-- [ ] Thêm integration tests cho version/publish/retire và learner delivery.
+- [x] Thêm integration tests cho version/publish/retire và learner delivery.
 
 Gate: backend có thể phát hành một course P0 có version, audit và rollback; app
 chỉ nhận content đã publish phù hợp.
+
+Trạng thái gate: đạt bằng migration PostgreSQL, admin/learner API và integration
+test Testcontainers. Giai đoạn 6 được thực hiện theo ưu tiên trực tiếp của
+developer trong khi external OIDC staging gate của Giai đoạn 5 vẫn còn mở.
 
 ### Giai đoạn 7 — Learning, mastery, review và offline sync backend (P0)
 
@@ -369,7 +373,7 @@ Chỉ bắt đầu từng nhóm tích hợp sau khi backend contract tương ứ
 3. **Sprint C — identity/profile backend**
    - [ ] Thực hiện Giai đoạn 5 và đạt backend gate.
 4. **Sprint D — curriculum/content backend**
-   - [ ] Thực hiện Giai đoạn 6 và đạt backend gate.
+   - [x] Thực hiện Giai đoạn 6 và đạt backend gate.
 5. **Sprint E — learning/mastery/review/offline backend**
    - [ ] Thực hiện Giai đoạn 7 và đạt backend gate.
 6. **Sprint F — backend hardening**

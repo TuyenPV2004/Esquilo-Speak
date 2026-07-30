@@ -36,12 +36,13 @@ public class CurriculumContentService {
 
     public List<Map<String, Object>> listCourses(String sourceLanguage, String targetLanguage) {
         return jdbc.sql("""
-                        select payload::text
-                        from courses
+                        select version_content.content::text
+                        from course_versions version_content
                         where source_language = :sourceLanguage
                           and target_language = :targetLanguage
-                          and published = true
-                        order by id
+                          and state = 'published'
+                          and (effective_at is null or effective_at <= now())
+                        order by course_id
                         """)
                 .param("sourceLanguage", sourceLanguage)
                 .param("targetLanguage", targetLanguage)
@@ -55,10 +56,18 @@ public class CurriculumContentService {
     public List<Map<String, Object>> listLessonSummaries(String courseId) {
         ensureCourseExists(courseId);
         return jdbc.sql("""
-                        select id, version, content::text
-                        from lessons
-                        where course_id = :courseId and status = 'published'
-                        order by position
+                        select lesson.id, lesson.version,
+                               lesson.learner_content::text as content
+                        from lessons lesson
+                        join course_versions course_version
+                          on course_version.course_id = lesson.course_id
+                         and course_version.version = lesson.course_version
+                        where lesson.course_id = :courseId
+                          and course_version.state = 'published'
+                          and lesson.status = 'published'
+                          and (course_version.effective_at is null
+                               or course_version.effective_at <= now())
+                        order by lesson.position
                         """)
                 .param("courseId", courseId)
                 .query((rs, rowNum) -> {
@@ -75,16 +84,31 @@ public class CurriculumContentService {
     public LearnerLesson learnerLesson(String lessonId, Integer requestedVersion) {
         String sql = requestedVersion == null
                 ? """
-                  select version, content::text
-                  from lessons
-                  where id = :lessonId and status = 'published'
-                  order by version desc
+                  select lesson.version, lesson.learner_content::text as content
+                  from lessons lesson
+                  join course_versions course_version
+                    on course_version.course_id = lesson.course_id
+                   and course_version.version = lesson.course_version
+                  where lesson.id = :lessonId
+                    and lesson.status = 'published'
+                    and course_version.state = 'published'
+                    and (course_version.effective_at is null
+                         or course_version.effective_at <= now())
+                  order by lesson.version desc
                   limit 1
                   """
                 : """
-                  select version, content::text
-                  from lessons
-                  where id = :lessonId and version = :version and status = 'published'
+                  select lesson.version, lesson.learner_content::text as content
+                  from lessons lesson
+                  join course_versions course_version
+                    on course_version.course_id = lesson.course_id
+                   and course_version.version = lesson.course_version
+                  where lesson.id = :lessonId
+                    and lesson.version = :version
+                    and lesson.status = 'published'
+                    and course_version.state = 'published'
+                    and (course_version.effective_at is null
+                         or course_version.effective_at <= now())
                   """;
         JdbcClient.StatementSpec statement = jdbc.sql(sql).param("lessonId", lessonId);
         if (requestedVersion != null) {
@@ -93,14 +117,7 @@ public class CurriculumContentService {
         return statement.query((rs, rowNum) -> {
                     int version = rs.getInt("version");
                     ObjectNode content = readObject(rs.getString("content"));
-                    content.remove("metadata");
                     content.put("version", version);
-                    content.get("exercises").forEach(exercise -> {
-                        if (exercise instanceof ObjectNode object) {
-                            object.remove("correctOptionId");
-                            object.remove("explanation");
-                        }
-                    });
                     return new LearnerLesson(
                             objectMapper.convertValue(content, MAP_TYPE),
                             "\"" + lessonId + "-" + version + "\"");
@@ -118,7 +135,18 @@ public class CurriculumContentService {
                         where id = :lessonId
                           and version = :version
                           and course_id = :courseId
-                          and status = 'published'
+                          and (
+                              status = 'published'
+                              or (
+                                  status = 'retired'
+                                  and compatibility_version = (
+                                      select compatibility_version
+                                      from course_versions
+                                      where course_id = :courseId
+                                        and state = 'published'
+                                  )
+                              )
+                          )
                         """)
                 .param("lessonId", lessonId)
                 .param("version", lessonVersion)
@@ -140,30 +168,49 @@ public class CurriculumContentService {
                         HttpStatus.UNPROCESSABLE_CONTENT,
                         "EXERCISE_NOT_FOUND",
                         "The exercise does not belong to the lesson."));
-        @SuppressWarnings("unchecked")
-        List<Map<String, Object>> options = (List<Map<String, Object>>) exercise.get("options");
-        boolean optionExists = options.stream().anyMatch(option -> selectedOptionId.equals(option.get("id")));
-        if (!optionExists) {
-            throw new ApiException(
-                    HttpStatus.UNPROCESSABLE_CONTENT,
-                    "OPTION_NOT_FOUND",
-                    "The selected option does not belong to the exercise.");
+        String correctOptionId;
+        if ("true_false".equals(exercise.get("type"))) {
+            if (!List.of("true", "false").contains(selectedOptionId)) {
+                throw new ApiException(
+                        HttpStatus.UNPROCESSABLE_CONTENT,
+                        "OPTION_NOT_FOUND",
+                        "A true/false answer must be true or false.");
+            }
+            correctOptionId = String.valueOf(exercise.get("correctAnswer"));
+        } else {
+            @SuppressWarnings("unchecked")
+            List<Map<String, Object>> options = (List<Map<String, Object>>) exercise.get("options");
+            boolean optionExists =
+                    options.stream().anyMatch(option -> selectedOptionId.equals(option.get("id")));
+            if (!optionExists) {
+                throw new ApiException(
+                        HttpStatus.UNPROCESSABLE_CONTENT,
+                        "OPTION_NOT_FOUND",
+                        "The selected option does not belong to the exercise.");
+            }
+            correctOptionId = (String) exercise.get("correctOptionId");
         }
         @SuppressWarnings("unchecked")
         Map<String, String> explanation = (Map<String, String>) exercise.get("explanation");
         return new ExerciseAnswer(
-                (String) exercise.get("correctOptionId"),
+                correctOptionId,
                 explanation,
-                selectedOptionId.equals(exercise.get("correctOptionId")));
+                selectedOptionId.equals(correctOptionId));
     }
 
     public List<LessonStructure> courseStructure(String courseId) {
         ensureCourseExists(courseId);
         return jdbc.sql("""
-                        select id, version, jsonb_array_length(content->'exercises') as exercise_count
-                        from lessons
-                        where course_id = :courseId and status = 'published'
-                        order by position
+                        select lesson.id, lesson.version,
+                               jsonb_array_length(lesson.content->'exercises') as exercise_count
+                        from lessons lesson
+                        join course_versions course_version
+                          on course_version.course_id = lesson.course_id
+                         and course_version.version = lesson.course_version
+                        where lesson.course_id = :courseId
+                          and lesson.status = 'published'
+                          and course_version.state = 'published'
+                        order by lesson.position
                         """)
                 .param("courseId", courseId)
                 .query((rs, rowNum) ->
@@ -172,7 +219,14 @@ public class CurriculumContentService {
     }
 
     private void ensureCourseExists(String courseId) {
-        boolean exists = jdbc.sql("select exists(select 1 from courses where id = :courseId and published = true)")
+        boolean exists = jdbc.sql("""
+                        select exists(
+                            select 1
+                            from course_versions
+                            where course_id = :courseId and state = 'published'
+                              and (effective_at is null or effective_at <= now())
+                        )
+                        """)
                 .param("courseId", courseId)
                 .query(Boolean.class)
                 .single();

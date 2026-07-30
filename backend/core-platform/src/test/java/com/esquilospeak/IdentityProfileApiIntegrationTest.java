@@ -30,7 +30,10 @@ import tools.jackson.databind.JsonNode;
 import tools.jackson.databind.ObjectMapper;
 
 @Testcontainers
-@SpringBootTest(properties = "esquilospeak.privacy.processor-enabled=false")
+@SpringBootTest(properties = {
+    "esquilospeak.privacy.processor-enabled=false",
+    "esquilospeak.content.publisher-enabled=false"
+})
 @AutoConfigureMockMvc
 class IdentityProfileApiIntegrationTest {
 
