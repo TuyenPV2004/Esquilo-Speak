@@ -91,6 +91,9 @@ infrastructure/local/compose/        PostgreSQL local
 
 ## Chạy local
 
+Hướng dẫn chạy app và ma trận kiểm thử manual cho phạm vi local/closed testing:
+[`Guide.md`](Guide.md).
+
 Sao chép `.env.example` thành `.env`, thay hai giá trị password local và chạy
 PostgreSQL:
 
