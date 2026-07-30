@@ -270,13 +270,21 @@ còn mở, không phải dependency logic của gate này.
 
 P0 trước Android release:
 
-- [ ] Structured logging, metrics, traces và correlation ID không chứa token/PII.
-- [ ] Health/readiness, timeout, retry budget và graceful shutdown.
-- [ ] Database backup/restore drill, migration rollback/forward-fix runbook.
-- [ ] Rate limit/quota cho endpoint tốn tài nguyên.
-- [ ] Audit trail cho admin/content/security actions.
-- [ ] Load test journey P0 và xác lập SLO/error budget ban đầu.
-- [ ] Kiểm tra OWASP ASVS phù hợp cho API/backend.
+- [x] Structured logging, metrics, traces và correlation ID không chứa token/PII.
+- [x] Health/readiness, timeout, retry budget và graceful shutdown.
+- [x] Database backup/restore drill, migration rollback/forward-fix runbook.
+- [x] Rate limit/quota cho endpoint tốn tài nguyên.
+- [x] Audit trail cho admin/content/security actions.
+- [x] Load test journey P0 và xác lập SLO/error budget ban đầu.
+- [x] Kiểm tra OWASP ASVS phù hợp cho API/backend.
+
+Trạng thái gate P0: đạt bằng ECS structured console log, Prometheus/OpenTelemetry,
+probe và graceful shutdown; rate limit/audit PostgreSQL có integration test; backup
+và restore V1→V5 được diễn tập bằng PostgreSQL 18; P0 journey local đạt 361 request,
+0 lỗi, read p95 40,42 ms và mutation p95 244,19 ms. ASVS 5.0 self-review không phát
+hiện P0 source-code finding mới; external OIDC, TLS/KMS, DAST và supply-chain vẫn là
+release/environment gate của Giai đoạn 9. Limiter P0 chỉ bảo đảm quota cho một
+instance và phải chuyển lên gateway/distributed limiter trước khi scale ngang.
 
 P1 sau khi core P0 ổn định:
 

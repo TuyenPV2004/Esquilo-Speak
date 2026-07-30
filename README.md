@@ -186,6 +186,22 @@ audio hoặc image production thật.
 Chi tiết completion, conflict, mastery và review rule nằm trong
 [`ADR-005`](docs/decisions/ADR-005-learning-mastery-review-offline-sync.md).
 
+## Backend operations
+
+- Liveness/readiness: `/livez`, `/readyz`.
+- Prometheus: `/actuator/prometheus`, yêu cầu `SCOPE_operations` cùng
+  `ROLE_SUPPORT` hoặc `ROLE_ADMIN`.
+- OTLP trace/metric/log export tắt mặc định; chỉ bật với collector đã được phê
+  duyệt.
+- Rate limit P0 áp dụng cho attempt, sync push, privacy request và content admin
+  mutation; response `429` có `Retry-After`.
+- Backup/restore, forward-fix, graceful shutdown và incident procedure:
+  [`Backend_Operations_Runbook.md`](docs/Backend_Operations_Runbook.md).
+- SLO/load harness:
+  [`Backend_Slo_And_Load_Test.md`](docs/Backend_Slo_And_Load_Test.md).
+- Security self-review:
+  [`Backend_Asvs_Review.md`](docs/Backend_Asvs_Review.md).
+
 ## Cấu hình production
 
 - Kích hoạt Spring profile `production`.

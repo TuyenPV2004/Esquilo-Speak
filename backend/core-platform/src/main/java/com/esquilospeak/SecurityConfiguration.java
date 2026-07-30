@@ -5,6 +5,7 @@ import static org.springframework.security.authorization.AuthorizationManagers.a
 import static org.springframework.security.authorization.AuthorityAuthorizationManager.hasAuthority;
 import static org.springframework.security.authorization.AuthorityAuthorizationManager.hasRole;
 
+import com.esquilospeak.operations.SecurityFailureHandler;
 import java.time.Clock;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -39,7 +40,8 @@ class SecurityConfiguration {
     @Bean
     SecurityFilterChain apiSecurity(
             HttpSecurity http,
-            Converter<Jwt, AbstractAuthenticationToken> jwtAuthenticationConverter)
+            Converter<Jwt, AbstractAuthenticationToken> jwtAuthenticationConverter,
+            SecurityFailureHandler securityFailureHandler)
             throws Exception {
         return http.csrf(csrf -> csrf.disable())
                 .sessionManagement(session ->
@@ -47,12 +49,18 @@ class SecurityConfiguration {
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(
                                 "/actuator/health/**",
+                                "/livez",
+                                "/readyz",
                                 "/api/mobile/v1/languages",
                                 "/api/mobile/v1/courses",
                                 "/api/mobile/v1/courses/*/lessons",
                                 "/api/mobile/v1/lessons/*",
                                 "/internal/dev/token")
                         .permitAll()
+                        .requestMatchers("/actuator/prometheus")
+                        .access(allOf(
+                                hasAuthority("SCOPE_operations"),
+                                anyOf(hasRole("SUPPORT"), hasRole("ADMIN"))))
                         .requestMatchers("/api/mobile/v1/**")
                         .access(allOf(hasRole("LEARNER"), hasAuthority("SCOPE_learning")))
                         .requestMatchers("/api/admin/v1/content/**")
@@ -63,6 +71,9 @@ class SecurityConfiguration {
                         .authenticated())
                 .oauth2ResourceServer(resourceServer -> resourceServer.jwt(jwt ->
                         jwt.jwtAuthenticationConverter(jwtAuthenticationConverter)))
+                .exceptionHandling(exceptions -> exceptions
+                        .authenticationEntryPoint(securityFailureHandler)
+                        .accessDeniedHandler(securityFailureHandler))
                 .build();
     }
 

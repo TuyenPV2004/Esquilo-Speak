@@ -9,12 +9,24 @@ spring:
     url: ${ESQUILO_DB_URL:jdbc:postgresql://localhost:5432/esquilospeak}
     username: ${ESQUILO_DB_USERNAME:esquilospeak}
     password: ${ESQUILO_DB_PASSWORD}
+    hikari:
+      connection-timeout: 3000
+      validation-timeout: 2000
+      maximum-pool-size: ${ESQUILO_DB_POOL_SIZE:10}
+      data-source-properties:
+        connectTimeout: 3
+        socketTimeout: 10
   flyway:
     locations: classpath:db/migration
   jackson:
     default-property-inclusion: non_null
+  lifecycle:
+    timeout-per-shutdown-phase: 20s
 
 server:
+  shutdown: graceful
+  tomcat:
+    connection-timeout: 5s
   error:
     include-message: never
 
@@ -22,12 +34,61 @@ management:
   endpoints:
     web:
       exposure:
-        include: health,info
+        include: health,prometheus
   endpoint:
     health:
       probes:
         enabled: true
+        add-additional-paths: true
+      group:
+        readiness:
+          include: readinessState,db
+        liveness:
+          include: livenessState
+  metrics:
+    tags:
+      application: ${spring.application.name}
+    distribution:
+      percentiles-histogram:
+        http.server.requests: true
+      slo:
+        http.server.requests: 100ms,250ms,500ms,800ms,1s,2s
+  tracing:
+    sampling:
+      probability: ${ESQUILO_TRACE_SAMPLE_PROBABILITY:0.1}
+    export:
+      otlp:
+        enabled: ${ESQUILO_OTEL_EXPORT_ENABLED:false}
+  logging:
+    export:
+      otlp:
+        enabled: ${ESQUILO_OTEL_EXPORT_ENABLED:false}
+  otlp:
+    metrics:
+      export:
+        enabled: ${ESQUILO_OTEL_EXPORT_ENABLED:false}
+        url: ${ESQUILO_OTEL_METRICS_ENDPOINT:http://localhost:4318/v1/metrics}
+  opentelemetry:
+    tracing:
+      export:
+        otlp:
+          endpoint: ${ESQUILO_OTEL_TRACES_ENDPOINT:http://localhost:4318/v1/traces}
+      limits:
+        max-attributes: 64
+        max-attribute-value-length: 256
+    logging:
+      export:
+        otlp:
+          endpoint: ${ESQUILO_OTEL_LOGS_ENDPOINT:http://localhost:4318/v1/logs}
 
 esquilospeak:
   security:
     issuer-uri: ${ESQUILO_JWT_ISSUER_URI:}
+  operations:
+    retention-enabled: ${ESQUILO_OPERATIONAL_RETENTION_ENABLED:true}
+  rate-limit:
+    enabled: ${ESQUILO_RATE_LIMIT_ENABLED:true}
+    attempts-per-minute: ${ESQUILO_RATE_LIMIT_ATTEMPTS_PER_MINUTE:60}
+    sync-push-per-minute: ${ESQUILO_RATE_LIMIT_SYNC_PER_MINUTE:30}
+    privacy-per-hour: ${ESQUILO_RATE_LIMIT_PRIVACY_PER_HOUR:5}
+    admin-writes-per-minute: ${ESQUILO_RATE_LIMIT_ADMIN_PER_MINUTE:60}

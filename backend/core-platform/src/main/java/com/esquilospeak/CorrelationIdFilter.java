@@ -8,10 +8,13 @@ import java.io.IOException;
 import java.util.UUID;
 import java.util.regex.Pattern;
 import org.slf4j.MDC;
+import org.springframework.core.Ordered;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 @Component
+@Order(Ordered.HIGHEST_PRECEDENCE)
 final class CorrelationIdFilter extends OncePerRequestFilter {
 
     static final String HEADER = "X-Correlation-ID";
@@ -28,11 +31,11 @@ final class CorrelationIdFilter extends OncePerRequestFilter {
         String traceId = resolve(request.getHeader(HEADER));
         request.setAttribute(ATTRIBUTE, traceId);
         response.setHeader(HEADER, traceId);
-        MDC.put("traceId", traceId);
+        MDC.put("correlationId", traceId);
         try {
             filterChain.doFilter(request, response);
         } finally {
-            MDC.remove("traceId");
+            MDC.remove("correlationId");
         }
     }
 

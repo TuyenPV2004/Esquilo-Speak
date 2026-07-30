@@ -8,3 +8,15 @@ spring:
         jwt:
           issuer-uri: ${ESQUILO_JWT_ISSUER_URI}
           audiences: ${ESQUILO_JWT_AUDIENCE}
+
+logging:
+  structured:
+    format:
+      console: ecs
+    json:
+      stacktrace:
+        root: first
+        max-length: 4096
+        max-throwable-depth: 20
+  level:
+    org.springframework.security: INFO
