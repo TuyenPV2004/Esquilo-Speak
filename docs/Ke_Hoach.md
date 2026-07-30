@@ -383,6 +383,14 @@ hai checkbox chứa external/device gate chưa được đánh dấu hoàn thàn
 - [ ] Subscription/paywall/entitlement khi commerce backend đã sẵn sàng.
 - [ ] Support/report-content flow.
 
+Trạng thái triển khai đầu tiên: đã có recommendation v1 phía Android, xác định
+next action theo thứ tự có thể giải thích `review đến hạn → mastery yếu nhất →
+tiếp tục học → bắt đầu học`. Kết quả được suy ra từ learning insight đã cache nên
+vẫn hoạt động offline, có nội dung Việt/Anh, semantics, large-text widget test và
+unit test cho mọi nhánh quyết định. Checkbox personalization vẫn mở vì
+server-driven/AI personalization, insight sâu hơn và các năng lực P1 còn lại chưa
+được triển khai.
+
 ### Giai đoạn 13 — Android release readiness
 
 - [ ] Application ID, signing, Play App Signing và key custody được chốt.

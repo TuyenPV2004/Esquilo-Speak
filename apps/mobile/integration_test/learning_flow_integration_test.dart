@@ -13,21 +13,21 @@ void main() {
       find.byKey(const ValueKey('sign-in')),
       find.byKey(const ValueKey('retry-profile')),
       find.byKey(const ValueKey('age-adult')),
-      find.byKey(const ValueKey('continue-learning')),
+      find.byKey(const ValueKey('recommendation-action')),
     ], timeout: const Duration(seconds: 60));
     if (find.byKey(const ValueKey('retry-profile')).evaluate().isNotEmpty) {
       await tester.tap(find.byKey(const ValueKey('retry-profile')));
       await _waitForAny(tester, [
         find.byKey(const ValueKey('sign-in')),
         find.byKey(const ValueKey('age-adult')),
-        find.byKey(const ValueKey('continue-learning')),
+        find.byKey(const ValueKey('recommendation-action')),
       ]);
     }
     if (find.byKey(const ValueKey('sign-in')).evaluate().isNotEmpty) {
       await tester.tap(find.byKey(const ValueKey('sign-in')));
       await _waitForAny(tester, [
         find.byKey(const ValueKey('age-adult')),
-        find.byKey(const ValueKey('continue-learning')),
+        find.byKey(const ValueKey('recommendation-action')),
       ]);
     }
     if (find.byKey(const ValueKey('age-adult')).evaluate().isNotEmpty) {
@@ -39,9 +39,16 @@ void main() {
         scrollable: find.byType(Scrollable).first,
       );
       await tester.tap(find.byKey(const ValueKey('complete-onboarding')));
-      await _waitFor(tester, find.byKey(const ValueKey('continue-learning')));
+      await _waitFor(
+        tester,
+        find.byKey(const ValueKey('recommendation-action')),
+      );
     }
-    await tester.tap(find.byKey(const ValueKey('continue-learning')));
+    expect(
+      find.byKey(const ValueKey('learning-recommendation')),
+      findsOneWidget,
+    );
+    await tester.tap(find.byKey(const ValueKey('recommendation-action')));
 
     await _waitFor(tester, find.byKey(const ValueKey('language-en')));
     await tester.tap(find.byKey(const ValueKey('language-en')));

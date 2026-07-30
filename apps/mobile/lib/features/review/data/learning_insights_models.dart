@@ -46,16 +46,39 @@ class ReviewItem {
   final String lastResult;
 }
 
+enum LearningRecommendationKind {
+  reviewDue,
+  strengthenWeakConcept,
+  continueLearning,
+  startLearning,
+}
+
+class LearningRecommendation {
+  const LearningRecommendation({
+    required this.algorithmVersion,
+    required this.kind,
+    this.conceptId,
+    this.masteryScore,
+  });
+
+  final int algorithmVersion;
+  final LearningRecommendationKind kind;
+  final String? conceptId;
+  final double? masteryScore;
+}
+
 class LearningInsights {
   const LearningInsights({
     required this.mastery,
     required this.reviews,
+    required this.recommendation,
     required this.pendingMutationCount,
     required this.fromCache,
   });
 
   final List<MasteryState> mastery;
   final List<ReviewItem> reviews;
+  final LearningRecommendation recommendation;
   final int pendingMutationCount;
   final bool fromCache;
 }

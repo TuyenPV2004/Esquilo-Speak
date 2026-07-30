@@ -72,6 +72,24 @@
   "@pendingSync": { "placeholders": { "count": { "type": "int" } } },
   "nextStepTitle": "Tiếp tục lộ trình học",
   "nextStepDescription": "Học tiếp bài phù hợp trong khóa tiếng Anh cho người Việt.",
+  "recommendationReasonLabel": "Vì sao được đề xuất",
+  "recommendedReviewTitle": "Ôn lại {concept}",
+  "@recommendedReviewTitle": {
+    "placeholders": { "concept": { "type": "String" } }
+  },
+  "recommendedReviewReason": "Nội dung này đã đến hạn theo lịch ôn tập của bạn.",
+  "recommendedPracticeTitle": "Củng cố {concept}",
+  "@recommendedPracticeTitle": {
+    "placeholders": { "concept": { "type": "String" } }
+  },
+  "recommendedPracticeReason": "Mức thành thạo hiện tại là {percent}%, nên đây là nội dung phù hợp nhất để luyện thêm.",
+  "@recommendedPracticeReason": {
+    "placeholders": { "percent": { "type": "int" } }
+  },
+  "recommendedContinueTitle": "Tiếp tục lộ trình học",
+  "recommendedContinueReason": "Các khái niệm đã luyện hiện đang vững; bạn có thể tiến sang nội dung mới.",
+  "recommendedStartTitle": "Bắt đầu bước học đầu tiên",
+  "recommendedStartReason": "Chưa có đủ bằng chứng học tập để cá nhân hóa; hãy hoàn thành một bài để tạo đề xuất.",
   "dueReviews": "Bài cần ôn",
   "mastery": "Mức thành thạo",
   "openReviewQueue": "Mở danh sách ôn tập",

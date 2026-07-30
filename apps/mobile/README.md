@@ -5,6 +5,11 @@ on the Phase 10 foundation: onboarding and profile, language/course/lesson
 selection, attempts and feedback, progress/mastery/review, offline cache/outbox,
 daily goal, privacy controls, and accessible responsive navigation.
 
+Phase 12 has started with an explainable, offline-first learning recommendation
+v1. The home screen derives one deterministic next action from cached review and
+mastery data, in this order: due review, weakest concept, continue learning, then
+start learning. Server-driven or AI personalization remains outside this slice.
+
 ## Local development
 
 The Android emulator resolves the local backend through
@@ -74,9 +79,11 @@ flutter test integration_test/learning_flow_integration_test.dart `
 
 - Unit tests cover environment validation, session rotation/logout, network
   retry/error policy, SQLite migration/cache/outbox, profile/privacy contracts,
-  offline attempts, learning insights, and sync reconciliation.
+  offline attempts, deterministic learning recommendations, learning insights,
+  and sync reconciliation.
 - Widget tests cover learner behavior, accessibility guidelines, large text,
-  and Vietnamese/English localization key parity.
+  personalized insight copy/actions, and Vietnamese/English localization key
+  parity.
 - Integration tests cover the local Android journey against the real backend.
 - Golden tests are added only for stable shared components or screens with
   deterministic fonts and dimensions; every image diff requires review.

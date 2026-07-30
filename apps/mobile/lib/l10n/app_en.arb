@@ -72,6 +72,24 @@
   "@pendingSync": { "placeholders": { "count": { "type": "int" } } },
   "nextStepTitle": "Continue your learning path",
   "nextStepDescription": "Pick up the next lesson in your Vietnamese-to-English course.",
+  "recommendationReasonLabel": "Why this is recommended",
+  "recommendedReviewTitle": "Review {concept}",
+  "@recommendedReviewTitle": {
+    "placeholders": { "concept": { "type": "String" } }
+  },
+  "recommendedReviewReason": "This content is due according to your review schedule.",
+  "recommendedPracticeTitle": "Strengthen {concept}",
+  "@recommendedPracticeTitle": {
+    "placeholders": { "concept": { "type": "String" } }
+  },
+  "recommendedPracticeReason": "Your current mastery is {percent}%, making this the most useful content to practise next.",
+  "@recommendedPracticeReason": {
+    "placeholders": { "percent": { "type": "int" } }
+  },
+  "recommendedContinueTitle": "Continue your learning path",
+  "recommendedContinueReason": "Your practised concepts are currently strong, so you can move on to new content.",
+  "recommendedStartTitle": "Start your first learning step",
+  "recommendedStartReason": "There is not enough learning evidence to personalize yet. Complete a lesson to build a recommendation.",
   "dueReviews": "Due reviews",
   "mastery": "Mastery",
   "openReviewQueue": "Open review queue",

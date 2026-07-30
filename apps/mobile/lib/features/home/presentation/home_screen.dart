@@ -7,7 +7,9 @@ import '../../../core/design_system/responsive_content.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../l10n/user_facing_failure_localization.dart';
 import '../../profile/presentation/learner_profile_view_model.dart';
+import '../../review/data/learning_insights_models.dart';
 import '../../review/presentation/learning_insights_view_model.dart';
+import 'learning_recommendation_card.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({
@@ -44,6 +46,12 @@ class HomeScreen extends StatelessWidget {
               }
               final insights = insightsViewModel.insights;
               final profile = profileViewModel.profile;
+              final recommendation =
+                  insights?.recommendation ??
+                  const LearningRecommendation(
+                    algorithmVersion: 1,
+                    kind: LearningRecommendationKind.startLearning,
+                  );
               final masteryAverage =
                   insights == null || insights.mastery.isEmpty
                   ? 0
@@ -81,29 +89,10 @@ class HomeScreen extends StatelessWidget {
                         ),
                       ),
                     const SizedBox(height: AppSpacing.lg),
-                    Card(
-                      color: Theme.of(context).colorScheme.primaryContainer,
-                      child: Padding(
-                        padding: const EdgeInsets.all(AppSpacing.lg),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: [
-                            Text(
-                              strings.nextStepTitle,
-                              style: Theme.of(context).textTheme.titleLarge,
-                            ),
-                            const SizedBox(height: AppSpacing.xs),
-                            Text(strings.nextStepDescription),
-                            const SizedBox(height: AppSpacing.md),
-                            FilledButton.icon(
-                              key: const ValueKey('continue-learning'),
-                              onPressed: () => context.go('/learn'),
-                              icon: const Icon(Icons.play_arrow_rounded),
-                              label: Text(strings.continueLearning),
-                            ),
-                          ],
-                        ),
-                      ),
+                    LearningRecommendationCard(
+                      recommendation: recommendation,
+                      onOpenLearning: () => context.go('/learn'),
+                      onOpenReview: () => context.go('/review'),
                     ),
                     const SizedBox(height: AppSpacing.md),
                     Row(

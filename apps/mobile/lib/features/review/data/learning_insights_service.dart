@@ -38,18 +38,67 @@ class LearningInsightsService {
   Future<LearningInsights> _decode(
     Map<String, dynamic> payload, {
     required bool fromCache,
-  }) async => LearningInsights(
-    mastery: (payload['mastery'] as List<dynamic>)
+  }) async {
+    final mastery = (payload['mastery'] as List<dynamic>)
         .cast<Map<String, dynamic>>()
         .map(MasteryState.fromJson)
-        .toList(growable: false),
-    reviews: (payload['reviews'] as List<dynamic>)
+        .toList(growable: false);
+    final reviews = (payload['reviews'] as List<dynamic>)
         .cast<Map<String, dynamic>>()
         .map(ReviewItem.fromJson)
-        .toList(growable: false),
-    pendingMutationCount: await _database.pendingMutationCount(),
-    fromCache: fromCache,
-  );
+        .toList(growable: false);
+    return LearningInsights(
+      mastery: mastery,
+      reviews: reviews,
+      recommendation: _recommend(mastery, reviews),
+      pendingMutationCount: await _database.pendingMutationCount(),
+      fromCache: fromCache,
+    );
+  }
+
+  LearningRecommendation _recommend(
+    List<MasteryState> mastery,
+    List<ReviewItem> reviews,
+  ) {
+    if (reviews.isNotEmpty) {
+      final due = reviews.first;
+      final matchingMastery = mastery
+          .where((item) => item.conceptId == due.conceptId)
+          .firstOrNull;
+      return LearningRecommendation(
+        algorithmVersion: 1,
+        kind: LearningRecommendationKind.reviewDue,
+        conceptId: due.conceptId,
+        masteryScore: matchingMastery?.score,
+      );
+    }
+    if (mastery.isEmpty) {
+      return const LearningRecommendation(
+        algorithmVersion: 1,
+        kind: LearningRecommendationKind.startLearning,
+      );
+    }
+    final weakest = mastery.reduce((current, candidate) {
+      if (candidate.score != current.score) {
+        return candidate.score < current.score ? candidate : current;
+      }
+      return candidate.conceptId.compareTo(current.conceptId) < 0
+          ? candidate
+          : current;
+    });
+    if (weakest.score < 1) {
+      return LearningRecommendation(
+        algorithmVersion: 1,
+        kind: LearningRecommendationKind.strengthenWeakConcept,
+        conceptId: weakest.conceptId,
+        masteryScore: weakest.score,
+      );
+    }
+    return const LearningRecommendation(
+      algorithmVersion: 1,
+      kind: LearningRecommendationKind.continueLearning,
+    );
+  }
 
   bool _canUseCache(Object error) =>
       error is NetworkUnavailable || (error is ApiProblem && error.retryable);
