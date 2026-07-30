@@ -22,6 +22,7 @@ class AppMessageState extends StatelessWidget {
     required this.icon,
     required this.message,
     this.actionLabel,
+    this.actionKey,
     this.onAction,
     super.key,
   });
@@ -29,6 +30,7 @@ class AppMessageState extends StatelessWidget {
   final IconData icon;
   final String message;
   final String? actionLabel;
+  final Key? actionKey;
   final VoidCallback? onAction;
 
   @override
@@ -43,7 +45,11 @@ class AppMessageState extends StatelessWidget {
           Text(message, textAlign: TextAlign.center),
           if (actionLabel != null && onAction != null) ...[
             const SizedBox(height: AppSpacing.md),
-            FilledButton(onPressed: onAction, child: Text(actionLabel!)),
+            FilledButton(
+              key: actionKey,
+              onPressed: onAction,
+              child: Text(actionLabel!),
+            ),
           ],
         ],
       ),

@@ -350,16 +350,27 @@ device-matrix E2E vẫn là release/environment gate; không chặn bắt đầu
 ### Giai đoạn 11 — Android core learner journey (P0)
 
 - [ ] Onboarding, guest/account flow và learner profile.
-- [ ] Language/course selection và learning path.
-- [ ] Download/cache course, lesson và media cần thiết.
-- [ ] Lesson/exercise/attempt/feedback với đầy đủ trạng thái lỗi.
-- [ ] Progress, mastery và review queue.
-- [ ] Offline learning, pending mutations, reconnect và conflict messaging.
-- [ ] Daily goal và notification preference tối thiểu nếu thuộc P0 đã chốt.
-- [ ] Privacy controls: consent, export/delete request và log redaction.
-- [ ] Accessibility: screen reader semantics, focus order, contrast, text scale
+- [x] Language/course selection và learning path.
+- [x] Download/cache course, lesson và media cần thiết.
+- [x] Lesson/exercise/attempt/feedback với đầy đủ trạng thái lỗi.
+- [x] Progress, mastery và review queue.
+- [x] Offline learning, pending mutations, reconnect và conflict messaging.
+- [x] Daily goal và notification preference tối thiểu nếu thuộc P0 đã chốt.
+- [x] Privacy controls: consent, export/delete request và log redaction.
+- [x] Accessibility: screen reader semantics, focus order, contrast, text scale
   và touch target.
 - [ ] End-to-end regression trên emulator và thiết bị Android đại diện.
+
+Trạng thái gate: learner journey Android đã có shell responsive, onboarding guest,
+profile, chọn language/course/lesson, attempt/feedback, progress/mastery/review,
+cache SQLite, outbox offline, conflict/error mapping, daily goal, notification
+preference và privacy control. Payload P0 hiện chưa phát hành media nhị phân nên
+cache bao phủ catalog/course/lesson; media playback/download thuộc Giai đoạn 12.
+Dart format, analyzer, 22 Flutter test, migration SQLite V1→V2, APK
+`localDebug` và E2E onboarding → progress trên Android emulator/API 37 với
+backend/PostgreSQL 18 thật đã pass. Account OIDC/guest-to-account merge vẫn cần
+tenant staging thật; physical representative-device regression vẫn mở, vì vậy
+hai checkbox chứa external/device gate chưa được đánh dấu hoàn thành.
 
 ### Giai đoạn 12 — Android advanced learning (P1)
 

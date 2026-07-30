@@ -49,6 +49,19 @@ class ApiClient {
     idempotencyKey: idempotencyKey,
   );
 
+  Future<Map<String, dynamic>> put(
+    String path, {
+    required Map<String, dynamic> body,
+    bool authenticated = false,
+    String? idempotencyKey,
+  }) => _request(
+    method: 'PUT',
+    path: path,
+    body: body,
+    authenticated: authenticated,
+    idempotencyKey: idempotencyKey,
+  );
+
   Future<Map<String, dynamic>> _request({
     required String method,
     required String path,
@@ -58,7 +71,8 @@ class ApiClient {
     String? idempotencyKey,
   }) async {
     final correlationId = uuid.v4();
-    final canRetryMutation = method == 'POST' && idempotencyKey != null;
+    final canRetryMutation =
+        (method == 'POST' || method == 'PUT') && idempotencyKey != null;
     final canRetryTransport = method == 'GET' || canRetryMutation;
     final attempts = canRetryTransport ? maxAttempts : (authenticated ? 2 : 1);
     var hasRefreshedAfterUnauthorized = false;
@@ -96,6 +110,10 @@ class ApiClient {
           'POST' =>
             await _client
                 .post(uri, headers: headers, body: jsonEncode(body))
+                .timeout(timeout),
+          'PUT' =>
+            await _client
+                .put(uri, headers: headers, body: jsonEncode(body))
                 .timeout(timeout),
           _ => throw UnsupportedError('Unsupported method: $method'),
         };

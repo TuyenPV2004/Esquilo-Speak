@@ -23,6 +23,12 @@ class LearningLanguage {
   final String id;
   final String languageTag;
   final LocalizedText name;
+
+  Map<String, dynamic> toJson() => {
+    'id': id,
+    'languageTag': languageTag,
+    'name': name,
+  };
 }
 
 class Course {
@@ -47,6 +53,14 @@ class Course {
   final String targetLanguage;
   final LocalizedText title;
   final LocalizedText description;
+
+  Map<String, dynamic> toJson() => {
+    'id': id,
+    'sourceLanguage': sourceLanguage,
+    'targetLanguage': targetLanguage,
+    'title': title,
+    'description': description,
+  };
 }
 
 class LessonSummary {
@@ -68,6 +82,13 @@ class LessonSummary {
   final int version;
   final LocalizedText title;
   final int estimatedMinutes;
+
+  Map<String, dynamic> toJson() => {
+    'id': id,
+    'version': version,
+    'title': title,
+    'estimatedMinutes': estimatedMinutes,
+  };
 }
 
 class Lesson {
@@ -99,6 +120,15 @@ class Lesson {
   final LocalizedText title;
   final List<LocalizedText> objectives;
   final List<Exercise> exercises;
+
+  Map<String, dynamic> toJson() => {
+    'id': id,
+    'courseId': courseId,
+    'version': version,
+    'title': title,
+    'objectives': objectives,
+    'exercises': exercises.map((item) => item.toJson()).toList(),
+  };
 }
 
 class Exercise {
@@ -119,6 +149,12 @@ class Exercise {
   final String id;
   final LocalizedText prompt;
   final List<ExerciseOption> options;
+
+  Map<String, dynamic> toJson() => {
+    'id': id,
+    'prompt': prompt,
+    'options': options.map((item) => item.toJson()).toList(),
+  };
 }
 
 class ExerciseOption {
@@ -131,6 +167,8 @@ class ExerciseOption {
 
   final String id;
   final LocalizedText text;
+
+  Map<String, dynamic> toJson() => {'id': id, 'text': text};
 }
 
 class PendingAttempt {
@@ -212,4 +250,10 @@ class CourseProgress {
   final String courseId;
   final int completedExerciseCount;
   final int totalExerciseCount;
+
+  Map<String, dynamic> toJson() => {
+    'courseId': courseId,
+    'completedExerciseCount': completedExerciseCount,
+    'totalExerciseCount': totalExerciseCount,
+  };
 }

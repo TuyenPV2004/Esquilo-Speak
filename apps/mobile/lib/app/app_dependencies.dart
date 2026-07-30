@@ -16,6 +16,10 @@ import '../features/learning/data/learning_api_service.dart';
 import '../features/learning/data/offline_learning_repository.dart';
 import '../features/learning/data/remote_learning_repository.dart';
 import '../features/learning/presentation/learning_view_model.dart';
+import '../features/profile/data/learner_profile_service.dart';
+import '../features/profile/presentation/learner_profile_view_model.dart';
+import '../features/review/data/learning_insights_service.dart';
+import '../features/review/presentation/learning_insights_view_model.dart';
 
 class AppDependencies {
   AppDependencies._({
@@ -26,6 +30,8 @@ class AppDependencies {
     required this.telemetry,
     required this.sync,
     required this.learningViewModel,
+    required this.profileViewModel,
+    required this.insightsViewModel,
   });
 
   final AppEnvironment environment;
@@ -35,6 +41,8 @@ class AppDependencies {
   final ConsentAwareTelemetry telemetry;
   final SyncCoordinator sync;
   final LearningViewModel learningViewModel;
+  final LearnerProfileViewModel profileViewModel;
+  final LearningInsightsViewModel insightsViewModel;
 
   static Future<AppDependencies> create() async {
     final environment = AppEnvironment.fromDefines();
@@ -61,8 +69,17 @@ class AppDependencies {
     final sync = SyncCoordinator(database, api);
     final remoteRepository = RemoteLearningRepository(LearningApiService(api));
     final learningViewModel = LearningViewModel(
-      OfflineLearningRepository(remoteRepository, sync),
+      OfflineLearningRepository(remoteRepository, sync, database),
     )..loadCatalog();
+    final profileViewModel = LearnerProfileViewModel(
+      LearnerProfileService(api, database),
+      session,
+      telemetry,
+    );
+    await profileViewModel.load();
+    final insightsViewModel = LearningInsightsViewModel(
+      LearningInsightsService(api, database),
+    )..load();
 
     return AppDependencies._(
       environment: environment,
@@ -72,6 +89,8 @@ class AppDependencies {
       telemetry: telemetry,
       sync: sync,
       learningViewModel: learningViewModel,
+      profileViewModel: profileViewModel,
+      insightsViewModel: insightsViewModel,
     );
   }
 
@@ -90,6 +109,8 @@ class AppDependencies {
 
   Future<void> dispose() async {
     learningViewModel.dispose();
+    profileViewModel.dispose();
+    insightsViewModel.dispose();
     session.dispose();
     httpClient.close();
     await database.close();

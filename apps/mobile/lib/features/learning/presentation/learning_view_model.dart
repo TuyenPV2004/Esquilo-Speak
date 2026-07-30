@@ -1,9 +1,19 @@
 import 'package:flutter/foundation.dart';
 
+import '../../../core/network/user_facing_failure.dart';
 import '../data/learning_models.dart';
+import '../data/offline_learning_repository.dart';
 import '../data/learning_repository.dart';
 
-enum LearningStep { catalog, courses, lessons, lesson, feedback, progress }
+enum LearningStep {
+  catalog,
+  courses,
+  lessons,
+  lesson,
+  queued,
+  feedback,
+  progress,
+}
 
 class LearningViewModel extends ChangeNotifier {
   LearningViewModel(this._repository);
@@ -12,7 +22,7 @@ class LearningViewModel extends ChangeNotifier {
 
   LearningStep step = LearningStep.catalog;
   bool loading = false;
-  String? error;
+  UserFacingFailure? error;
   String? selectionError;
   List<LearningLanguage> languages = const [];
   List<Course> courses = const [];
@@ -90,6 +100,13 @@ class LearningViewModel extends ChangeNotifier {
     step = LearningStep.progress;
   });
 
+  void continueAfterQueued() {
+    _pendingAttempt = null;
+    selectedOptionId = null;
+    step = LearningStep.lessons;
+    notifyListeners();
+  }
+
   Future<void> retry() async {
     switch (step) {
       case LearningStep.catalog:
@@ -101,6 +118,7 @@ class LearningViewModel extends ChangeNotifier {
         final course = selectedCourse;
         if (course != null) await chooseCourse(course);
       case LearningStep.lesson:
+      case LearningStep.queued:
         if (_pendingAttempt != null) {
           await submitAnswer();
           return;
@@ -129,8 +147,11 @@ class LearningViewModel extends ChangeNotifier {
     notifyListeners();
     try {
       await action();
+    } on AttemptQueuedForSync {
+      error = null;
+      step = LearningStep.queued;
     } on Object catch (exception) {
-      error = exception.toString();
+      error = mapUserFacingFailure(exception);
     } finally {
       loading = false;
       notifyListeners();

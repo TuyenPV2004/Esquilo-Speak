@@ -7,7 +7,7 @@ class AppDatabase {
     : _factory = factory ?? databaseFactory;
 
   static const _databaseName = 'esquilospeak_mobile.db';
-  static const _schemaVersion = 1;
+  static const _schemaVersion = 2;
 
   final DatabaseFactory _factory;
   Database? _database;
@@ -51,10 +51,23 @@ class AppDatabase {
               state_value TEXT NOT NULL
             )
           ''');
+          await _createContentCache(database);
+        },
+        onUpgrade: (database, oldVersion, newVersion) async {
+          if (oldVersion < 2) await _createContentCache(database);
         },
       ),
     );
   }
+
+  static Future<void> _createContentCache(DatabaseExecutor database) =>
+      database.execute('''
+        CREATE TABLE content_cache (
+          cache_key TEXT PRIMARY KEY,
+          payload_json TEXT NOT NULL,
+          updated_at TEXT NOT NULL
+        )
+      ''');
 
   Future<void> enqueueMutation(LocalMutation mutation) async {
     await _db.insert(
@@ -147,6 +160,33 @@ class AppDatabase {
     {'state_key': key, 'state_value': '$value'},
     conflictAlgorithm: ConflictAlgorithm.replace,
   );
+
+  Future<void> cacheJson(String key, Map<String, dynamic> payload) =>
+      _db.insert('content_cache', {
+        'cache_key': key,
+        'payload_json': jsonEncode(payload),
+        'updated_at': DateTime.now().toUtc().toIso8601String(),
+      }, conflictAlgorithm: ConflictAlgorithm.replace);
+
+  Future<Map<String, dynamic>?> cachedJson(String key) async {
+    final rows = await _db.query(
+      'content_cache',
+      columns: ['payload_json'],
+      where: 'cache_key = ?',
+      whereArgs: [key],
+      limit: 1,
+    );
+    if (rows.isEmpty) return null;
+    return jsonDecode(rows.single['payload_json'] as String)
+        as Map<String, dynamic>;
+  }
+
+  Future<int> pendingMutationCount() async {
+    final rows = await _db.rawQuery(
+      'SELECT COUNT(*) AS pending_count FROM pending_mutation',
+    );
+    return (rows.single['pending_count'] as num).toInt();
+  }
 
   Future<void> close() async {
     await _database?.close();

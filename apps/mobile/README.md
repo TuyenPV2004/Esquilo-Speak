@@ -1,8 +1,9 @@
 # EsquiloSpeak mobile
 
-Flutter Android learner application. Phase 10 provides the navigation, design
-system, secure session, network, local database, offline sync, environment, and
-privacy-aware telemetry foundations used by later learner journeys.
+Flutter Android learner application. Phase 11 builds the core learner journey
+on the Phase 10 foundation: onboarding and profile, language/course/lesson
+selection, attempts and feedback, progress/mastery/review, offline cache/outbox,
+daily goal, privacy controls, and accessible responsive navigation.
 
 ## Local development
 
@@ -59,17 +60,21 @@ flutter test integration_test/learning_flow_integration_test.dart `
 
 - Bearer, refresh, and identity tokens are stored only through platform secure
   storage.
-- SQLite stores pending mutations, canonical sync changes, the opaque cursor,
-  and non-sensitive settings.
+- SQLite stores cached catalog/course/lesson/profile/insight payloads, pending
+  mutations, canonical sync changes, the opaque cursor, and non-sensitive
+  settings. Schema V2 migrates existing Phase 10 databases in place.
 - A write is persisted before delivery; only safe reads and idempotent mutations
   are retried automatically.
+- Offline content remains readable, attempt mutations stay pending until sync,
+  and the UI exposes cached, pending, retry, conflict, and authentication states.
 - Analytics and crash events are disabled until consent is stored. The P0 sink
   is deliberately no-op until a provider and privacy review are approved.
 
 ## Test strategy
 
 - Unit tests cover environment validation, session rotation/logout, network
-  retry/error policy, SQLite outbox, and sync reconciliation.
+  retry/error policy, SQLite migration/cache/outbox, profile/privacy contracts,
+  offline attempts, learning insights, and sync reconciliation.
 - Widget tests cover learner behavior, accessibility guidelines, large text,
   and Vietnamese/English localization key parity.
 - Integration tests cover the local Android journey against the real backend.

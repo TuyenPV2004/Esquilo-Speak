@@ -9,6 +9,40 @@ void main() {
   testWidgets('completes the live Android learning journey', (tester) async {
     await tester.pumpWidget(const EsquiloSpeakApp());
 
+    await _waitForAny(tester, [
+      find.byKey(const ValueKey('sign-in')),
+      find.byKey(const ValueKey('retry-profile')),
+      find.byKey(const ValueKey('age-adult')),
+      find.byKey(const ValueKey('continue-learning')),
+    ], timeout: const Duration(seconds: 60));
+    if (find.byKey(const ValueKey('retry-profile')).evaluate().isNotEmpty) {
+      await tester.tap(find.byKey(const ValueKey('retry-profile')));
+      await _waitForAny(tester, [
+        find.byKey(const ValueKey('sign-in')),
+        find.byKey(const ValueKey('age-adult')),
+        find.byKey(const ValueKey('continue-learning')),
+      ]);
+    }
+    if (find.byKey(const ValueKey('sign-in')).evaluate().isNotEmpty) {
+      await tester.tap(find.byKey(const ValueKey('sign-in')));
+      await _waitForAny(tester, [
+        find.byKey(const ValueKey('age-adult')),
+        find.byKey(const ValueKey('continue-learning')),
+      ]);
+    }
+    if (find.byKey(const ValueKey('age-adult')).evaluate().isNotEmpty) {
+      await tester.tap(find.byKey(const ValueKey('age-adult')));
+      await tester.pump();
+      await tester.scrollUntilVisible(
+        find.byKey(const ValueKey('complete-onboarding')),
+        400,
+        scrollable: find.byType(Scrollable).first,
+      );
+      await tester.tap(find.byKey(const ValueKey('complete-onboarding')));
+      await _waitFor(tester, find.byKey(const ValueKey('continue-learning')));
+    }
+    await tester.tap(find.byKey(const ValueKey('continue-learning')));
+
     await _waitFor(tester, find.byKey(const ValueKey('language-en')));
     await tester.tap(find.byKey(const ValueKey('language-en')));
 
@@ -38,6 +72,42 @@ void main() {
   });
 }
 
+Future<void> _waitForAny(
+  WidgetTester tester,
+  List<Finder> finders, {
+  Duration timeout = const Duration(seconds: 20),
+}) async {
+  final deadline = DateTime.now().add(timeout);
+  while (finders.every((finder) => finder.evaluate().isEmpty) &&
+      DateTime.now().isBefore(deadline)) {
+    await Future<void>.delayed(const Duration(milliseconds: 200));
+    await tester.pump();
+  }
+  if (finders.every((finder) => finder.evaluate().isEmpty)) {
+    final bootstrapFailed = find
+        .textContaining('could not start')
+        .evaluate()
+        .isNotEmpty;
+    final stillLoading = find
+        .byType(CircularProgressIndicator)
+        .evaluate()
+        .isNotEmpty;
+    final visibleKeys =
+        find
+            .byWidgetPredicate((widget) => widget.key != null)
+            .evaluate()
+            .map((element) => element.widget.key.toString())
+            .toSet()
+            .toList()
+          ..sort();
+    fail(
+      'Timed out waiting for the learner journey '
+      '(bootstrapFailed: $bootstrapFailed, stillLoading: $stillLoading, '
+      'visibleKeys: $visibleKeys).',
+    );
+  }
+}
+
 Future<void> _waitFor(
   WidgetTester tester,
   Finder finder, {
@@ -45,7 +115,8 @@ Future<void> _waitFor(
 }) async {
   final deadline = DateTime.now().add(timeout);
   while (finder.evaluate().isEmpty && DateTime.now().isBefore(deadline)) {
-    await tester.pump(const Duration(milliseconds: 200));
+    await Future<void>.delayed(const Duration(milliseconds: 200));
+    await tester.pump();
   }
   expect(finder, findsOneWidget);
 }

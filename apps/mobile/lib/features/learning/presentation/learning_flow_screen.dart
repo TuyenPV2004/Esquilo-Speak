@@ -4,6 +4,7 @@ import '../../../core/design_system/app_tokens.dart';
 import '../../../core/design_system/component_states.dart';
 import '../../../core/design_system/responsive_content.dart';
 import '../../../l10n/app_localizations.dart';
+import '../../../l10n/user_facing_failure_localization.dart';
 import '../data/learning_models.dart';
 import 'learning_view_model.dart';
 
@@ -41,6 +42,7 @@ class LearningFlowScreen extends StatelessWidget {
     LearningStep.courses => strings.coursesTitle,
     LearningStep.lessons => strings.lessonsTitle,
     LearningStep.lesson => strings.lessonTitle,
+    LearningStep.queued => strings.offlineSavedTitle,
     LearningStep.feedback => strings.feedbackTitle,
     LearningStep.progress => strings.progressTitle,
   };
@@ -58,7 +60,7 @@ class LearningFlowScreen extends StatelessWidget {
     }
     if (viewModel.error != null) {
       return _ErrorState(
-        message: viewModel.error!,
+        message: viewModel.error!.localized(strings),
         retryLabel: strings.retry,
         onRetry: viewModel.retry,
       );
@@ -90,6 +92,12 @@ class LearningFlowScreen extends StatelessWidget {
         onSelected: viewModel.selectOption,
         onSubmit: viewModel.submitAnswer,
         submitLabel: strings.submitAnswer,
+      ),
+      LearningStep.queued => AppMessageState(
+        icon: Icons.cloud_done_outlined,
+        message: strings.offlineSavedMessage,
+        actionLabel: strings.continueLearning,
+        onAction: viewModel.continueAfterQueued,
       ),
       LearningStep.feedback => _Feedback(
         feedback: viewModel.feedback!,

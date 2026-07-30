@@ -98,6 +98,10 @@ PostgreSQL:
 docker compose --env-file .env -f infrastructure/local/compose/compose.yml up -d
 ```
 
+Nếu cổng `5432` đã được PostgreSQL khác sử dụng, đặt `POSTGRES_PORT` thành một
+cổng host còn trống và dùng cùng cổng đó trong `ESQUILO_DB_URL`. Volume được gắn
+tại `/var/lib/postgresql` theo layout của image PostgreSQL 18.
+
 Chạy backend bằng profile `local`:
 
 ```powershell
