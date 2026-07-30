@@ -22,7 +22,7 @@ môi trường tương ứng. Tài liệu này không cấp quyền public produ
 
 Nguồn đóng băng:
 
-- `contracts/openapi/esquilospeak-learning-v1.yaml`
+- `contracts/openapi/esquilospeak-learning-v1-0.4.0.yaml`
 - `tests/contract/P0_Release_Freeze_Manifest.json`
 - `tests/contract/fixtures/P0_Android_Integration.json`
 

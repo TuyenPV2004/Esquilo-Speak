@@ -32,6 +32,12 @@ create avoidable contract and data-model rework.
    documents remain local.
 7. Do not begin production identity implementation until the open P0 product
    and privacy decisions are accepted.
+8. Establish OpenAPI `0.4.0` as the first compatibility baseline. The `0.1.0`
+   document on the target branch predates this gate, was not a released
+   contract, and exposed scoring fields in the learner response. The bootstrap
+   pull request compares its active contract with the immutable `0.4.0`
+   release artifact; every later pull request compares directly with its target
+   branch.
 
 ## Consequences
 
@@ -41,5 +47,7 @@ create avoidable contract and data-model rework.
 - CI becomes slower because one job boots PostgreSQL, the backend, and an
   Android emulator.
 - Contract changes require an explicit compatibility review.
+- The one-time bootstrap is explicit and reviewable; it does not add an
+  oasdiff ignore rule or weaken compatibility checks after the gate lands.
 - Identity/profile implementation remains blocked by product decisions, not by
   missing technical scaffolding.

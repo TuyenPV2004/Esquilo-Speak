@@ -7,15 +7,14 @@ import { fileURLToPath } from "node:url";
 const scriptDirectory = path.dirname(fileURLToPath(import.meta.url));
 const repositoryRoot = path.resolve(scriptDirectory, "..", "..");
 const manifestPath = path.join(scriptDirectory, "P0_Release_Freeze_Manifest.json");
-const openApiPath = path.join(
-  repositoryRoot,
-  "contracts",
-  "openapi",
-  "esquilospeak-learning-v1.yaml",
-);
 const fixtureDirectory = path.join(scriptDirectory, "fixtures");
 
 const manifest = JSON.parse(await readFile(manifestPath, "utf8"));
+const openApiPath = path.resolve(repositoryRoot, manifest.openapi.path);
+assert(
+  openApiPath.startsWith(`${repositoryRoot}${path.sep}`),
+  "OpenAPI manifest path must stay inside the repository.",
+);
 const openApi = await readFile(openApiPath, "utf8");
 const fixtureFiles = (await readdir(fixtureDirectory))
   .filter((file) => file.endsWith(".json"))

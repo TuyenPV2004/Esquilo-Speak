@@ -32,10 +32,25 @@ jobs:
       - name: Fetch pull request base
         run: git fetch --depth=1 origin "${{ github.base_ref }}"
 
+      - name: Select compatibility baseline
+        id: compatibility-base
+        shell: bash
+        run: |
+          if git cat-file -e \
+            "origin/${{ github.base_ref }}:tests/contract/P0_Release_Freeze_Manifest.json" \
+            2>/dev/null; then
+            echo "source=origin/${{ github.base_ref }}:contracts/openapi/esquilospeak-learning-v1.yaml" \
+              >> "$GITHUB_OUTPUT"
+          else
+            echo "source=HEAD:contracts/openapi/esquilospeak-learning-v1-0.4.0.yaml" \
+              >> "$GITHUB_OUTPUT"
+            echo "::notice::Target branch predates the compatibility gate; using the accepted P0 release baseline."
+          fi
+
       - name: Detect breaking OpenAPI changes
         uses: oasdiff/oasdiff-action/breaking@v0
         with:
-          base: "origin/${{ github.base_ref }}:contracts/openapi/esquilospeak-learning-v1.yaml"
+          base: "${{ steps.compatibility-base.outputs.source }}"
           revision: "HEAD:contracts/openapi/esquilospeak-learning-v1.yaml"
           fail-on: WARN
           review: false
