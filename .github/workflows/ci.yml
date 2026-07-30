@@ -105,7 +105,7 @@ jobs:
           cache: gradle
 
       - name: Verify Gradle wrapper
-        uses: gradle/actions/wrapper-validation@v5
+        uses: gradle/actions/wrapper-validation@v6
 
       - name: Build and test
         run: ./gradlew test bootJar
