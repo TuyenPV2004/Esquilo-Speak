@@ -1,14 +1,14 @@
 openapi: 3.1.1
 info:
   title: EsquiloSpeak Learning API
-  version: 0.3.0
+  version: 0.4.0
   description: >-
     Mobile contract for identity/profile onboarding and the first learning
     vertical slice: resolve a guest or account learner, manage profile and
     consent, merge guest progress, request privacy workflows, discover a
-    course, load a lesson, submit an attempt, receive feedback, and read
-    progress. Account authentication remains owned by an external OIDC
-    provider; mastery scheduling remains outside this version.
+    course, load a lesson, submit an append-only attempt, read explainable
+    mastery and review schedules, and reconcile offline mutations. Account
+    authentication remains owned by an external OIDC provider.
   contact:
     name: EsquiloSpeak
 servers:
@@ -23,6 +23,9 @@ tags:
   - name: Content Admin
   - name: Learning
   - name: Progress
+  - name: Mastery
+  - name: Review
+  - name: Sync
 paths:
   /api/mobile/v1/languages:
     get:
@@ -199,6 +202,172 @@ paths:
         '401':
           $ref: '#/components/responses/ErrorResponse'
         '404':
+          $ref: '#/components/responses/ErrorResponse'
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+  /api/mobile/v1/learning-sessions:
+    post:
+      tags: [Learning]
+      operationId: startLearningSession
+      summary: Start an idempotent learning session against one content version
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/CorrelationId'
+        - $ref: '#/components/parameters/IdempotencyKey'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StartLearningSession'
+      responses:
+        '200':
+          description: Canonical learning session
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LearningSession'
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+  /api/mobile/v1/learning-sessions/{sessionId}/completion:
+    post:
+      tags: [Learning]
+      operationId: completeLearningSession
+      summary: Complete a learning session idempotently
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/CorrelationId'
+        - name: sessionId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Completed learning session
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LearningSession'
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+  /api/mobile/v1/mastery:
+    get:
+      tags: [Mastery]
+      operationId: listMasteryStates
+      summary: List versioned and explainable mastery states
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/CorrelationId'
+      responses:
+        '200':
+          description: Current mastery state
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [modelVersion, items]
+                properties:
+                  modelVersion:
+                    type: integer
+                    minimum: 1
+                  items:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/MasteryState'
+                additionalProperties: false
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+  /api/mobile/v1/reviews:
+    get:
+      tags: [Review]
+      operationId: listDueReviews
+      summary: List review items due at the server clock
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/CorrelationId'
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+            default: 20
+      responses:
+        '200':
+          description: Due review queue
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReviewQueue'
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+  /api/mobile/v1/sync/push:
+    post:
+      tags: [Sync]
+      operationId: pushOfflineMutations
+      summary: Push an ordered batch of retry-safe offline mutations
+      description: >-
+        attempt.submit is append-only. A stale baseCursor is rebased and never
+        overwrites accepted attempts. Reusing a clientMutationId with a
+        different canonical payload returns 409.
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/CorrelationId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SyncPushRequest'
+      responses:
+        '200':
+          description: Canonical mutation results and next pull cursor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SyncPushResult'
+        '409':
+          $ref: '#/components/responses/ErrorResponse'
+        '422':
+          $ref: '#/components/responses/ErrorResponse'
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+  /api/mobile/v1/sync/pull:
+    get:
+      tags: [Sync]
+      operationId: pullLearningChanges
+      summary: Pull canonical learner changes after an opaque cursor
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/CorrelationId'
+        - name: cursor
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+            default: 50
+      responses:
+        '200':
+          description: One page of canonical changes, including tombstones
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SyncPullResult'
+        '400':
           $ref: '#/components/responses/ErrorResponse'
         default:
           $ref: '#/components/responses/ErrorResponse'
@@ -1078,6 +1247,9 @@ components:
         responseTimeMs:
           type: integer
           minimum: 0
+        sessionId:
+          type: string
+          format: uuid
       additionalProperties: false
     AttemptResult:
       type: object
@@ -1086,6 +1258,7 @@ components:
         - clientAttemptId
         - acceptedAt
         - correct
+        - scoring
         - feedback
         - progress
         - syncCursor
@@ -1101,6 +1274,20 @@ components:
           format: date-time
         correct:
           type: boolean
+        scoring:
+          type: object
+          required: [modelVersion, earnedPoints, maxPoints]
+          properties:
+            modelVersion:
+              type: integer
+              minimum: 1
+            earnedPoints:
+              type: integer
+              minimum: 0
+            maxPoints:
+              type: integer
+              minimum: 1
+          additionalProperties: false
         feedback:
           $ref: '#/components/schemas/Feedback'
         progress:
@@ -1128,6 +1315,9 @@ components:
         - totalExerciseCount
         - lastActivityAt
         - lessonProgress
+        - completedLessonCount
+        - totalLessonCount
+        - completed
       properties:
         courseId:
           $ref: '#/components/schemas/Identifier'
@@ -1144,6 +1334,14 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/LessonProgress'
+        completedLessonCount:
+          type: integer
+          minimum: 0
+        totalLessonCount:
+          type: integer
+          minimum: 0
+        completed:
+          type: boolean
       additionalProperties: false
     LessonProgress:
       type: object
@@ -1163,6 +1361,200 @@ components:
         totalExerciseCount:
           type: integer
           minimum: 1
+      additionalProperties: false
+    StartLearningSession:
+      type: object
+      required: [clientSessionId, courseId, contentVersion]
+      properties:
+        clientSessionId:
+          type: string
+          format: uuid
+        courseId:
+          $ref: '#/components/schemas/Identifier'
+        contentVersion:
+          type: integer
+          minimum: 1
+      additionalProperties: false
+    LearningSession:
+      type: object
+      required:
+        [sessionId, clientSessionId, courseId, contentVersion, state, startedAt]
+      properties:
+        sessionId:
+          type: string
+          format: uuid
+        clientSessionId:
+          type: string
+          format: uuid
+        courseId:
+          $ref: '#/components/schemas/Identifier'
+        contentVersion:
+          type: integer
+          minimum: 1
+        state:
+          type: string
+          enum: [active, completed]
+        startedAt:
+          type: string
+          format: date-time
+        completedAt:
+          type: string
+          format: date-time
+      additionalProperties: false
+    MasteryState:
+      type: object
+      required:
+        [conceptId, modelVersion, score, correctEvidenceCount, evidenceCount,
+         lastEvidenceAt, explanation]
+      properties:
+        conceptId:
+          $ref: '#/components/schemas/Identifier'
+        modelVersion:
+          type: integer
+          minimum: 1
+        score:
+          type: number
+          minimum: 0
+          maximum: 1
+        correctEvidenceCount:
+          type: integer
+          minimum: 0
+        evidenceCount:
+          type: integer
+          minimum: 1
+        lastEvidenceAt:
+          type: string
+          format: date-time
+        explanation:
+          type: object
+          additionalProperties: true
+      additionalProperties: false
+    ReviewItem:
+      type: object
+      required:
+        [conceptId, modelVersion, dueAt, intervalDays, easeFactor, repetitions,
+         lastResult]
+      properties:
+        conceptId:
+          $ref: '#/components/schemas/Identifier'
+        modelVersion:
+          type: integer
+          minimum: 1
+        dueAt:
+          type: string
+          format: date-time
+        intervalDays:
+          type: integer
+          minimum: 0
+        easeFactor:
+          type: number
+          minimum: 1.3
+        repetitions:
+          type: integer
+          minimum: 0
+        lastResult:
+          type: string
+          enum: [correct, incorrect]
+      additionalProperties: false
+    ReviewQueue:
+      type: object
+      required: [generatedAt, items]
+      properties:
+        generatedAt:
+          type: string
+          format: date-time
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/ReviewItem'
+      additionalProperties: false
+    SyncPushRequest:
+      type: object
+      required: [clientBatchId, mutations]
+      properties:
+        clientBatchId:
+          type: string
+          format: uuid
+        baseCursor:
+          type: string
+        mutations:
+          type: array
+          minItems: 1
+          maxItems: 100
+          items:
+            type: object
+            required: [clientMutationId, type, idempotencyKey, payload]
+            properties:
+              clientMutationId:
+                type: string
+                format: uuid
+              type:
+                const: attempt.submit
+              idempotencyKey:
+                type: string
+                format: uuid
+              payload:
+                $ref: '#/components/schemas/AttemptRequest'
+            additionalProperties: false
+      additionalProperties: false
+    SyncPushResult:
+      type: object
+      required: [clientBatchId, rebased, nextCursor, results]
+      properties:
+        clientBatchId:
+          type: string
+          format: uuid
+        rebased:
+          type: boolean
+        nextCursor:
+          type: string
+        results:
+          type: array
+          items:
+            type: object
+            required: [clientMutationId, status, result]
+            properties:
+              clientMutationId:
+                type: string
+                format: uuid
+              status:
+                type: string
+                enum: [applied, replayed]
+              result:
+                $ref: '#/components/schemas/AttemptResult'
+            additionalProperties: false
+      additionalProperties: false
+    SyncPullResult:
+      type: object
+      required: [nextCursor, hasMore, changes]
+      properties:
+        nextCursor:
+          type: string
+        hasMore:
+          type: boolean
+        changes:
+          type: array
+          items:
+            type: object
+            required: [entityType, entityId, operation, payload, occurredAt]
+            properties:
+              entityType:
+                type: string
+                enum:
+                  [attempt, mastery, reviewSchedule, lessonCompletion,
+                   learningSession]
+              entityId:
+                type: string
+              operation:
+                type: string
+                enum: [upsert, delete]
+              payload:
+                type: object
+                additionalProperties: true
+              occurredAt:
+                type: string
+                format: date-time
+            additionalProperties: false
       additionalProperties: false
     ApiError:
       type: object

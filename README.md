@@ -167,6 +167,25 @@ Media hiện chỉ có metadata (`objectKey`, checksum, locale, duration/alt tex
 Repository chưa thêm object storage; binary storage chỉ được triển khai khi có
 audio hoặc image production thật.
 
+## Learning, mastery, review và offline sync
+
+- `POST /api/mobile/v1/learning-sessions` tạo session theo course content
+  version; endpoint completion đóng session theo cách idempotent.
+- `POST /api/mobile/v1/attempts` vẫn là API attempt đơn append-only và trả
+  scoring/feedback/progress canonical.
+- `GET /api/mobile/v1/mastery` trả mastery model version 1 cùng evidence count
+  có thể giải thích; `GET /api/mobile/v1/reviews` chỉ trả item đã due theo server
+  clock.
+- `POST /api/mobile/v1/sync/push` nhận tối đa 100 `attempt.submit` mutation.
+  `clientMutationId` và `idempotencyKey` phải được lưu trong local outbox và giữ
+  nguyên khi retry.
+- `GET /api/mobile/v1/sync/pull` phân trang change log bằng cursor opaque.
+  Client chỉ ghi cursor mới sau khi áp dụng thành công toàn bộ page; operation
+  `delete` là tombstone, không được bỏ qua.
+
+Chi tiết completion, conflict, mastery và review rule nằm trong
+[`ADR-005`](docs/decisions/ADR-005-learning-mastery-review-offline-sync.md).
+
 ## Cấu hình production
 
 - Kích hoạt Spring profile `production`.

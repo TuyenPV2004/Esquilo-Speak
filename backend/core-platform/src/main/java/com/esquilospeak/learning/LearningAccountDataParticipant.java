@@ -8,11 +8,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import org.springframework.context.event.EventListener;
+import org.springframework.core.Ordered;
+import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
 import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.stereotype.Component;
 
 @Component
+@Order(100)
 class LearningAccountDataParticipant implements AccountDataParticipant {
 
     private final JdbcClient jdbc;
@@ -56,17 +59,48 @@ class LearningAccountDataParticipant implements AccountDataParticipant {
                     return attempt;
                 })
                 .list();
-        return Map.of("attempts", attempts);
+        List<Map<String, Object>> sessions = jdbc.sql("""
+                        select id, client_session_id, course_id, content_version,
+                               state, started_at, completed_at
+                        from learning_sessions
+                        where learner_id = :learnerId
+                        order by started_at, id
+                        """)
+                .param("learnerId", learnerId.toString())
+                .query((rs, rowNum) -> {
+                    Map<String, Object> session = new LinkedHashMap<>();
+                    session.put("sessionId", rs.getObject("id", UUID.class));
+                    session.put("clientSessionId", rs.getObject("client_session_id", UUID.class));
+                    session.put("courseId", rs.getString("course_id"));
+                    session.put("contentVersion", rs.getInt("content_version"));
+                    session.put("state", rs.getString("state"));
+                    session.put("startedAt", rs.getTimestamp("started_at").toInstant());
+                    if (rs.getTimestamp("completed_at") != null) {
+                        session.put(
+                                "completedAt",
+                                rs.getTimestamp("completed_at").toInstant());
+                    }
+                    return session;
+                })
+                .list();
+        return Map.of("attempts", attempts, "sessions", sessions);
     }
 
     @Override
     public void deleteData(UUID learnerId) {
+        jdbc.sql("delete from learning_completions where learner_id = :learnerId")
+                .param("learnerId", learnerId.toString())
+                .update();
         jdbc.sql("delete from attempts where learner_id = :learnerId")
+                .param("learnerId", learnerId.toString())
+                .update();
+        jdbc.sql("delete from learning_sessions where learner_id = :learnerId")
                 .param("learnerId", learnerId.toString())
                 .update();
     }
 
     @EventListener
+    @Order(Ordered.HIGHEST_PRECEDENCE + 10)
     void mergeGuestLearningData(GuestAccountMerged event) {
         String guestLearnerId = event.guestLearnerId().toString();
         String accountLearnerId = event.accountLearnerId().toString();
@@ -118,6 +152,72 @@ class LearningAccountDataParticipant implements AccountDataParticipant {
                         where learner_id = :guestLearnerId
                         """)
                 .param("accountLearnerId", accountLearnerId)
+                .param("guestLearnerId", guestLearnerId)
+                .update();
+        jdbc.sql("""
+                        update attempts moved_attempt
+                        set session_id = account_session.id
+                        from learning_sessions guest_session
+                        join learning_sessions account_session
+                          on account_session.learner_id = :accountLearnerId
+                         and (
+                              account_session.client_session_id = guest_session.client_session_id
+                              or account_session.idempotency_key = guest_session.idempotency_key
+                         )
+                        where guest_session.learner_id = :guestLearnerId
+                          and moved_attempt.session_id = guest_session.id
+                        """)
+                .param("accountLearnerId", accountLearnerId)
+                .param("guestLearnerId", guestLearnerId)
+                .update();
+        jdbc.sql("""
+                        delete from learning_sessions guest
+                        where guest.learner_id = :guestLearnerId
+                          and exists (
+                              select 1 from learning_sessions account
+                              where account.learner_id = :accountLearnerId
+                                and (
+                                    account.client_session_id = guest.client_session_id
+                                    or account.idempotency_key = guest.idempotency_key
+                                )
+                          )
+                        """)
+                .param("guestLearnerId", guestLearnerId)
+                .param("accountLearnerId", accountLearnerId)
+                .update();
+        jdbc.sql("""
+                        update learning_sessions
+                        set learner_id = :accountLearnerId
+                        where learner_id = :guestLearnerId
+                        """)
+                .param("accountLearnerId", accountLearnerId)
+                .param("guestLearnerId", guestLearnerId)
+                .update();
+        jdbc.sql("""
+                        insert into learning_completions (
+                            learner_id, course_id, lesson_id, lesson_version,
+                            active, completed_at, updated_at
+                        )
+                        select :accountLearnerId, course_id, lesson_id, lesson_version,
+                               active, completed_at, updated_at
+                        from learning_completions
+                        where learner_id = :guestLearnerId
+                        on conflict (learner_id, course_id, lesson_id) do update
+                        set active = learning_completions.active or excluded.active,
+                            lesson_version = greatest(
+                                learning_completions.lesson_version,
+                                excluded.lesson_version),
+                            completed_at = coalesce(
+                                learning_completions.completed_at,
+                                excluded.completed_at),
+                            updated_at = greatest(
+                                learning_completions.updated_at,
+                                excluded.updated_at)
+                        """)
+                .param("accountLearnerId", accountLearnerId)
+                .param("guestLearnerId", guestLearnerId)
+                .update();
+        jdbc.sql("delete from learning_completions where learner_id = :guestLearnerId")
                 .param("guestLearnerId", guestLearnerId)
                 .update();
     }

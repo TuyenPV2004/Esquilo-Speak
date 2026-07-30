@@ -67,7 +67,8 @@ class LearningController {
             @NotBlank @Pattern(regexp = IDENTIFIER) String exerciseId,
             @NotBlank @Pattern(regexp = IDENTIFIER) String selectedOptionId,
             @NotNull Instant occurredAt,
-            @PositiveOrZero Integer responseTimeMs) {
+            @PositiveOrZero Integer responseTimeMs,
+            UUID sessionId) {
 
         AttemptRequest toRequest() {
             return new AttemptRequest(
@@ -78,7 +79,8 @@ class LearningController {
                     exerciseId,
                     selectedOptionId,
                     occurredAt,
-                    responseTimeMs);
+                    responseTimeMs,
+                    sessionId);
         }
     }
 }

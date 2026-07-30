@@ -192,10 +192,13 @@ public class CurriculumContentService {
         }
         @SuppressWarnings("unchecked")
         Map<String, String> explanation = (Map<String, String>) exercise.get("explanation");
+        @SuppressWarnings("unchecked")
+        List<String> conceptIds = (List<String>) exercise.getOrDefault("conceptIds", List.of());
         return new ExerciseAnswer(
                 correctOptionId,
                 explanation,
-                selectedOptionId.equals(correctOptionId));
+                selectedOptionId.equals(correctOptionId),
+                List.copyOf(conceptIds));
     }
 
     public List<LessonStructure> courseStructure(String courseId) {
@@ -259,7 +262,10 @@ public class CurriculumContentService {
     public record LearnerLesson(Map<String, Object> payload, String etag) {}
 
     public record ExerciseAnswer(
-            String correctOptionId, Map<String, String> explanation, boolean correct) {}
+            String correctOptionId,
+            Map<String, String> explanation,
+            boolean correct,
+            List<String> conceptIds) {}
 
     public record LessonStructure(String lessonId, int lessonVersion, int exerciseCount) {}
 }

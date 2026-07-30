@@ -245,20 +245,26 @@ developer trong khi external OIDC staging gate của Giai đoạn 5 vẫn còn m
 
 ### Giai đoạn 7 — Learning, mastery, review và offline sync backend (P0)
 
-- [ ] Tách rõ learning session, assessment attempt, mastery evidence và review
+- [x] Tách rõ learning session, assessment attempt, mastery evidence và review
   schedule.
-- [ ] Mở rộng scoring/feedback nhưng giữ attempt append-only.
-- [ ] Định nghĩa lesson/course completion và progress recalculation rule.
-- [ ] Xây mastery model có version và giải thích được evidence.
-- [ ] Xây review queue/spaced-repetition scheduler với clock-controllable tests.
-- [ ] Thiết kế offline write protocol: client mutation ID, idempotency, content
+- [x] Mở rộng scoring/feedback nhưng giữ attempt append-only.
+- [x] Định nghĩa lesson/course completion và progress recalculation rule.
+- [x] Xây mastery model có version và giải thích được evidence.
+- [x] Xây review queue/spaced-repetition scheduler với clock-controllable tests.
+- [x] Thiết kế offline write protocol: client mutation ID, idempotency, content
   version, sync cursor và conflict policy.
-- [ ] Xây pull/push sync API có pagination, tombstone và retry semantics.
-- [ ] Bảo đảm reconnect không tạo attempt trùng hoặc làm mất tiến độ.
-- [ ] Thêm concurrency, replay, conflict và recovery integration tests.
+- [x] Xây pull/push sync API có pagination, tombstone và retry semantics.
+- [x] Bảo đảm reconnect không tạo attempt trùng hoặc làm mất tiến độ.
+- [x] Thêm concurrency, replay, conflict và recovery integration tests.
 
 Gate: một learner có thể học offline, reconnect, đồng bộ attempt/progress và
 nhận review queue nhất quán qua API test.
+
+Trạng thái gate: đạt bằng migration PostgreSQL V4, contract OpenAPI 0.4.0,
+module learning/mastery/review/sync và integration test Testcontainers bao phủ
+replay, conflict, concurrent retry, recovery, pagination và clock-controlled
+review. External OIDC staging gate của Giai đoạn 5 vẫn là dependency release
+còn mở, không phải dependency logic của gate này.
 
 ### Giai đoạn 8 — Backend vận hành và năng lực sau P0
 
@@ -375,7 +381,7 @@ Chỉ bắt đầu từng nhóm tích hợp sau khi backend contract tương ứ
 4. **Sprint D — curriculum/content backend**
    - [x] Thực hiện Giai đoạn 6 và đạt backend gate.
 5. **Sprint E — learning/mastery/review/offline backend**
-   - [ ] Thực hiện Giai đoạn 7 và đạt backend gate.
+   - [x] Thực hiện Giai đoạn 7 và đạt backend gate.
 6. **Sprint F — backend hardening**
    - [ ] Hoàn thành P0 của Giai đoạn 8 và Giai đoạn 9.
 7. **Sprint G trở đi — Android integration**

@@ -8,12 +8,25 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.time.Instant;
+import java.time.Clock;
+import java.time.Duration;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.UUID;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.http.MediaType;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Primary;
+import org.springframework.context.annotation.Import;
+import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
@@ -29,6 +42,7 @@ import org.testcontainers.junit.jupiter.Testcontainers;
     "esquilospeak.content.publisher-enabled=false"
 })
 @AutoConfigureMockMvc
+@Import(LearningApiIntegrationTest.ClockTestConfiguration.class)
 class LearningApiIntegrationTest {
 
     @Container
@@ -44,6 +58,12 @@ class LearningApiIntegrationTest {
 
     @Autowired
     MockMvc mockMvc;
+
+    @Autowired
+    JdbcClient jdbc;
+
+    @Autowired
+    MutableClock clock;
 
     @Test
     void servesCatalogAndLearnerSafeLesson() throws Exception {
@@ -98,6 +118,8 @@ class LearningApiIntegrationTest {
                 .andExpect(jsonPath("$.correct").value(true))
                 .andExpect(jsonPath("$.feedback.correctOptionId").value("option-hello"))
                 .andExpect(jsonPath("$.progress.completedExerciseCount").value(1))
+                .andExpect(jsonPath("$.syncCursor").value(
+                        org.hamcrest.Matchers.startsWith("v1.")))
                 .andReturn()
                 .getResponse()
                 .getContentAsString();
@@ -142,6 +164,191 @@ class LearningApiIntegrationTest {
                 .andExpect(jsonPath("$.traceId").value("idempotency-conflict-test"));
     }
 
+    @Test
+    void reconnectsOfflineWithoutDuplicateAndPullsMasteryReviewAndProgress() throws Exception {
+        String subject = "learner-offline-" + UUID.randomUUID();
+        UUID mutationId = UUID.randomUUID();
+        UUID idempotencyKey = UUID.randomUUID();
+        UUID attemptId = UUID.randomUUID();
+        String push = syncPushJson(
+                UUID.randomUUID(),
+                mutationId,
+                idempotencyKey,
+                attemptId,
+                "option-hello");
+
+        String first = mockMvc.perform(post("/api/mobile/v1/sync/push")
+                        .with(guestJwt(subject))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(push))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.rebased").value(false))
+                .andExpect(jsonPath("$.results[0].status").value("applied"))
+                .andExpect(jsonPath("$.results[0].result.correct").value(true))
+                .andExpect(jsonPath("$.results[0].result.scoring.modelVersion").value(1))
+                .andExpect(jsonPath("$.results[0].result.scoring.earnedPoints").value(1))
+                .andExpect(jsonPath("$.results[0].result.progress.completed").value(true))
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
+        String cursor = toJsonField(first, "nextCursor");
+
+        mockMvc.perform(post("/api/mobile/v1/sync/push")
+                        .with(guestJwt(subject))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(push))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.results[0].status").value("replayed"))
+                .andExpect(jsonPath("$.results[0].result.attemptId")
+                        .value(toNestedJsonField(first, "attemptId")));
+
+        mockMvc.perform(get("/api/mobile/v1/mastery").with(guestJwt(subject)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.modelVersion").value(1))
+                .andExpect(jsonPath("$.items[0].conceptId").value("concept-basic-greetings"))
+                .andExpect(jsonPath("$.items[0].score").value(1.0))
+                .andExpect(jsonPath("$.items[0].evidenceCount").value(1));
+
+        mockMvc.perform(get("/api/mobile/v1/reviews").with(guestJwt(subject)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.items").isEmpty());
+        clock.advance(Duration.ofDays(1));
+        mockMvc.perform(get("/api/mobile/v1/reviews").with(guestJwt(subject)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.items[0].conceptId").value("concept-basic-greetings"))
+                .andExpect(jsonPath("$.items[0].intervalDays").value(1));
+
+        mockMvc.perform(get("/api/mobile/v1/sync/pull")
+                        .with(guestJwt(subject))
+                        .param("limit", "2"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.hasMore").value(true))
+                .andExpect(jsonPath("$.changes.length()").value(2));
+
+        mockMvc.perform(get("/api/mobile/v1/sync/pull")
+                        .with(guestJwt(subject))
+                        .param("cursor", cursor))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.changes").isEmpty());
+
+        long attempts = jdbc.sql("""
+                        select count(*)
+                        from attempts attempt
+                        join identity_subjects subject
+                          on subject.learner_id::text = attempt.learner_id
+                        where subject.issuer = 'https://identity.test'
+                          and attempt.client_attempt_id = :clientAttemptId
+                        """)
+                .param("clientAttemptId", attemptId)
+                .query(Long.class)
+                .single();
+        org.junit.jupiter.api.Assertions.assertEquals(1, attempts);
+    }
+
+    @Test
+    void rejectsConflictingReplayAndSerializesConcurrentOfflineRetries() throws Exception {
+        String subject = "learner-concurrent-" + UUID.randomUUID();
+        mockMvc.perform(get("/api/mobile/v1/me/profile").with(guestJwt(subject)))
+                .andExpect(status().isOk());
+        UUID mutationId = UUID.randomUUID();
+        UUID idempotencyKey = UUID.randomUUID();
+        UUID attemptId = UUID.randomUUID();
+        String push = syncPushJson(
+                UUID.randomUUID(),
+                mutationId,
+                idempotencyKey,
+                attemptId,
+                "option-goodbye");
+        CountDownLatch start = new CountDownLatch(1);
+        try (var executor = Executors.newFixedThreadPool(2)) {
+            Future<Integer> first = executor.submit(() -> {
+                start.await();
+                return mockMvc.perform(post("/api/mobile/v1/sync/push")
+                                .with(guestJwt(subject))
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(push))
+                        .andReturn()
+                        .getResponse()
+                        .getStatus();
+            });
+            Future<Integer> second = executor.submit(() -> {
+                start.await();
+                return mockMvc.perform(post("/api/mobile/v1/sync/push")
+                                .with(guestJwt(subject))
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(push))
+                        .andReturn()
+                        .getResponse()
+                        .getStatus();
+            });
+            start.countDown();
+            org.junit.jupiter.api.Assertions.assertEquals(200, first.get());
+            org.junit.jupiter.api.Assertions.assertEquals(200, second.get());
+        }
+
+        String conflict = syncPushJson(
+                UUID.randomUUID(),
+                mutationId,
+                idempotencyKey,
+                attemptId,
+                "option-hello");
+        mockMvc.perform(post("/api/mobile/v1/sync/push")
+                        .with(guestJwt(subject))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(conflict))
+                .andExpect(status().isConflict())
+                .andExpect(jsonPath("$.code").value("SYNC_MUTATION_CONFLICT"));
+
+        long attempts = jdbc.sql("""
+                        select count(*)
+                        from attempts
+                        where client_attempt_id = :clientAttemptId
+                        """)
+                .param("clientAttemptId", attemptId)
+                .query(Long.class)
+                .single();
+        org.junit.jupiter.api.Assertions.assertEquals(1, attempts);
+    }
+
+    @Test
+    void keepsLearningSessionLifecycleSeparateFromAttempts() throws Exception {
+        String subject = "learner-session-" + UUID.randomUUID();
+        UUID clientSessionId = UUID.randomUUID();
+        UUID idempotencyKey = UUID.randomUUID();
+        String body = """
+                {
+                  "clientSessionId": "%s",
+                  "courseId": "course-en-for-vi",
+                  "contentVersion": 1
+                }
+                """.formatted(clientSessionId);
+        String started = mockMvc.perform(post("/api/mobile/v1/learning-sessions")
+                        .with(guestJwt(subject))
+                        .header("Idempotency-Key", idempotencyKey)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(body))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.state").value("active"))
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
+        String sessionId = toJsonField(started, "sessionId");
+
+        mockMvc.perform(post("/api/mobile/v1/learning-sessions")
+                        .with(guestJwt(subject))
+                        .header("Idempotency-Key", idempotencyKey)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(body))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.sessionId").value(sessionId));
+
+        mockMvc.perform(post("/api/mobile/v1/learning-sessions/{sessionId}/completion", sessionId)
+                        .with(guestJwt(subject)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.state").value("completed"))
+                .andExpect(jsonPath("$.completedAt").exists());
+    }
+
     private String attemptJson(UUID clientAttemptId, String optionId) {
         return """
                 {
@@ -156,6 +363,30 @@ class LearningApiIntegrationTest {
                 }
                 """
                 .formatted(clientAttemptId, optionId, Instant.now());
+    }
+
+    private String syncPushJson(
+            UUID batchId,
+            UUID mutationId,
+            UUID idempotencyKey,
+            UUID clientAttemptId,
+            String optionId) {
+        return """
+                {
+                  "clientBatchId": "%s",
+                  "mutations": [{
+                    "clientMutationId": "%s",
+                    "type": "attempt.submit",
+                    "idempotencyKey": "%s",
+                    "payload": %s
+                  }]
+                }
+                """
+                .formatted(
+                        batchId,
+                        mutationId,
+                        idempotencyKey,
+                        attemptJson(clientAttemptId, optionId));
     }
 
     private RequestPostProcessor guestJwt(String subject) {
@@ -177,5 +408,47 @@ class LearningApiIntegrationTest {
         String prefix = "\"" + field + "\":\"";
         int start = json.indexOf(prefix) + prefix.length();
         return json.substring(start, json.indexOf('"', start));
+    }
+
+    private String toNestedJsonField(String json, String field) {
+        return toJsonField(json, field);
+    }
+
+    @TestConfiguration
+    static class ClockTestConfiguration {
+
+        @Bean
+        @Primary
+        MutableClock mutableClock() {
+            return new MutableClock(Instant.parse("2026-07-30T00:00:00Z"));
+        }
+    }
+
+    static final class MutableClock extends Clock {
+
+        private final AtomicReference<Instant> instant;
+
+        MutableClock(Instant initial) {
+            this.instant = new AtomicReference<>(initial);
+        }
+
+        void advance(Duration duration) {
+            instant.updateAndGet(current -> current.plus(duration));
+        }
+
+        @Override
+        public ZoneId getZone() {
+            return ZoneOffset.UTC;
+        }
+
+        @Override
+        public Clock withZone(ZoneId zone) {
+            return this;
+        }
+
+        @Override
+        public Instant instant() {
+            return instant.get();
+        }
     }
 }
