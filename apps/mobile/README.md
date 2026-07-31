@@ -7,8 +7,8 @@ daily goal, privacy controls, and accessible responsive navigation.
 
 Phase 12 completes the closed-testing Android P1 experience: authenticated media
 playback and private offline download, pronunciation recording with runtime
-permission and raw-voice deletion disclosure, writing/conversation feedback, A1
-placement with a non-accredited completion record, explainable offline-first
+permission and raw-voice deletion disclosure, writing/conversation feedback,
+course-specific placement with a versioned proficiency reference and a non-accredited completion record, explainable offline-first
 recommendations and mastery insight, streak/achievement/reminder, premium
 entitlement purchase/refund simulation, and support/content reports.
 
@@ -101,8 +101,8 @@ flutter test integration_test/learning_flow_integration_test.dart `
 - Widget tests cover learner behavior, accessibility guidelines, large text,
   personalized insight copy/actions, P1 forms and permission denial, and
   Vietnamese/English localization key parity.
-- Integration tests cover authenticated media download, writing feedback, A1
-  placement, premium purchase/refund, support, and the original learner journey
+- Integration tests cover authenticated media download, writing feedback,
+  course-specific placement, premium purchase/refund, support, and the original learner journey
   against the real backend and PostgreSQL.
 - Golden tests are added only for stable shared components or screens with
   deterministic fonts and dimensions; every image diff requires review.

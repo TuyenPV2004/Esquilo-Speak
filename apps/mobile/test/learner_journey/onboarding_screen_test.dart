@@ -7,6 +7,9 @@ import 'package:esquilospeak_mobile/features/profile/data/learner_profile_models
 import 'package:esquilospeak_mobile/features/profile/data/learner_profile_service.dart';
 import 'package:esquilospeak_mobile/features/profile/presentation/learner_profile_view_model.dart';
 import 'package:esquilospeak_mobile/features/profile/presentation/onboarding_screen.dart';
+import 'package:esquilospeak_mobile/features/learning/data/learning_models.dart';
+import 'package:esquilospeak_mobile/features/learning/data/learning_repository.dart';
+import 'package:esquilospeak_mobile/features/learning/presentation/learning_view_model.dart';
 import 'package:esquilospeak_mobile/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -45,9 +48,10 @@ void main() {
       ..profile = LearnerProfile(
         learnerId: '22222222-2222-4222-8222-222222222222',
         actorType: LearnerActorType.guest,
-        uiLocale: 'vi',
-        sourceLanguage: 'vi',
-        targetLanguage: 'en',
+        uiLocale: null,
+        sourceLanguage: null,
+        targetLanguage: null,
+        activeCourseId: null,
         ageBand: null,
         learningGoal: null,
         preferences: const LearnerPreferences(),
@@ -69,7 +73,14 @@ void main() {
             size: Size(400, 700),
             textScaler: TextScaler.linear(2),
           ),
-          child: OnboardingScreen(viewModel: viewModel),
+          child: OnboardingScreen(
+            viewModel: viewModel,
+            learningViewModel: LearningViewModel(
+              const _LearningRepository(),
+              learningContext: () => const LearningContextSnapshot.empty(),
+              onCourseSelected: (_) async {},
+            ),
+          ),
         ),
       ),
     );
@@ -79,6 +90,52 @@ void main() {
     expect(find.text('A plan that fits your day'), findsOneWidget);
     expect(find.byType(ListView), findsOneWidget);
   });
+}
+
+class _LearningRepository implements LearningRepository {
+  const _LearningRepository();
+
+  @override
+  Future<List<LearningLanguage>> languages() async => const [
+    LearningLanguage(
+      id: 'language-vietnamese',
+      languageTag: 'vi',
+      name: {'vi': 'Tiếng Việt', 'en': 'Vietnamese'},
+    ),
+    LearningLanguage(
+      id: 'language-english',
+      languageTag: 'en',
+      name: {'vi': 'Tiếng Anh', 'en': 'English'},
+    ),
+  ];
+
+  @override
+  Future<List<Course>> courses({
+    required String sourceLanguage,
+    required String targetLanguage,
+  }) async => const [];
+
+  @override
+  PendingAttempt createAttempt({
+    required Lesson lesson,
+    required Exercise exercise,
+    required ExerciseResponse response,
+  }) => throw UnimplementedError();
+
+  @override
+  Future<Lesson> lesson(String lessonId, {int? version}) =>
+      throw UnimplementedError();
+
+  @override
+  Future<List<LessonSummary>> lessons(String courseId) async => const [];
+
+  @override
+  Future<CourseProgress> progress(String courseId) =>
+      throw UnimplementedError();
+
+  @override
+  Future<AttemptFeedback> submitAttempt(PendingAttempt attempt) =>
+      throw UnimplementedError();
 }
 
 class _TokenProvider implements AccessTokenProvider {

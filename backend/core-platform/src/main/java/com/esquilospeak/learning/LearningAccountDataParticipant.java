@@ -13,15 +13,20 @@ import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
 import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.stereotype.Component;
+import tools.jackson.core.JacksonException;
+import tools.jackson.core.type.TypeReference;
+import tools.jackson.databind.ObjectMapper;
 
 @Component
 @Order(100)
 class LearningAccountDataParticipant implements AccountDataParticipant {
 
     private final JdbcClient jdbc;
+    private final ObjectMapper objectMapper;
 
-    LearningAccountDataParticipant(JdbcClient jdbc) {
+    LearningAccountDataParticipant(JdbcClient jdbc, ObjectMapper objectMapper) {
         this.jdbc = jdbc;
+        this.objectMapper = objectMapper;
     }
 
     @Override
@@ -33,7 +38,7 @@ class LearningAccountDataParticipant implements AccountDataParticipant {
     public Map<String, Object> exportData(UUID learnerId) {
         List<Map<String, Object>> attempts = jdbc.sql("""
                         select id, client_attempt_id, course_id, lesson_id, lesson_version,
-                               exercise_id, selected_option_id, correct, occurred_at, accepted_at,
+                               exercise_id, selected_option_id, response::text, correct, occurred_at, accepted_at,
                                response_time_ms
                         from attempts
                         where learner_id = :learnerId
@@ -49,6 +54,7 @@ class LearningAccountDataParticipant implements AccountDataParticipant {
                     attempt.put("lessonVersion", rs.getInt("lesson_version"));
                     attempt.put("exerciseId", rs.getString("exercise_id"));
                     attempt.put("selectedOptionId", rs.getString("selected_option_id"));
+                    attempt.put("response", readResponse(rs.getString("response")));
                     attempt.put("correct", rs.getBoolean("correct"));
                     attempt.put("occurredAt", rs.getTimestamp("occurred_at").toInstant());
                     attempt.put("acceptedAt", rs.getTimestamp("accepted_at").toInstant());
@@ -84,6 +90,14 @@ class LearningAccountDataParticipant implements AccountDataParticipant {
                 })
                 .list();
         return Map.of("attempts", attempts, "sessions", sessions);
+    }
+
+    private Map<String, Object> readResponse(String response) {
+        try {
+            return objectMapper.readValue(response, new TypeReference<>() {});
+        } catch (JacksonException exception) {
+            throw new IllegalStateException("Stored attempt response is invalid.", exception);
+        }
     }
 
     @Override

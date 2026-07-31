@@ -16,6 +16,7 @@ import java.io.File
 import java.net.HttpURLConnection
 import java.net.URL
 import java.util.concurrent.Executors
+import java.time.ZoneId
 
 class MainActivity : FlutterActivity() {
     private val channelName = "com.esquilospeak.mobile/advanced_learning"
@@ -37,6 +38,7 @@ class MainActivity : FlutterActivity() {
 
     private fun handleMethodCall(call: MethodCall, result: MethodChannel.Result) {
         when (call.method) {
+            "systemTimezone" -> result.success(ZoneId.systemDefault().id)
             "playRemoteMedia" -> playRemoteMedia(call, result)
             "downloadMedia" -> downloadMedia(call, result)
             "playDownloadedMedia" -> playDownloadedMedia(call, result)

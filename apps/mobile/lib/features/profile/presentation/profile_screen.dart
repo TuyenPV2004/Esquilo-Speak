@@ -55,8 +55,8 @@ class ProfileScreen extends StatelessWidget {
                       ),
                       subtitle: Text(
                         strings.languagePair(
-                          profile.sourceLanguage.toUpperCase(),
-                          profile.targetLanguage.toUpperCase(),
+                          profile.sourceLanguage?.toUpperCase() ?? '—',
+                          profile.targetLanguage?.toUpperCase() ?? '—',
                         ),
                       ),
                     ),

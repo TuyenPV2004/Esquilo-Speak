@@ -16,7 +16,7 @@ class SupportScreen extends StatefulWidget {
 
 class _SupportScreenState extends State<SupportScreen> {
   final _description = TextEditingController();
-  final _contentRef = TextEditingController(text: 'lesson-basic-greetings');
+  final _contentRef = TextEditingController();
   bool _contentReport = false;
 
   @override

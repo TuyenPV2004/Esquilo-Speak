@@ -1,7 +1,11 @@
-# Kế hoạch xây dựng EsquiloSpeak cho Android
+# Kế hoạch xây dựng EsquiloSpeak cho Android — Phần 1
 
-> Trạng thái tài liệu: **Đang thực thi**  
-> Cập nhật gần nhất: **2026-07-30**
+> Phần 1 ghi lại foundation đến hết Giai đoạn 12. Giai đoạn 13 — Android
+> release readiness vẫn được giữ nguyên nhưng tạm khóa cho đến khi đạt Product
+> Completion Gate trong [Kế hoạch Phần 2](Ke_Hoach_2.md).
+
+> Trạng thái tài liệu: **Giai đoạn 1–12 đã hoàn thành; Giai đoạn 13 tạm khóa**  
+> Cập nhật gần nhất: **2026-07-31**  
 > Mục tiêu phát hành hiện tại: **Android**  
 > Thứ tự triển khai: **hoàn thiện backend của phạm vi được duyệt trước, sau đó triển khai Android frontend**  
 > Ngoài phạm vi hiện tại: **native iOS build, test và release**
@@ -18,12 +22,12 @@ hỏi:
 
 Đây là kế hoạch sống, không thay thế:
 
-- [phạm vi và quyết định sản phẩm](Project.md);
-- [mô tả nghiệp vụ hoàn chỉnh](Nghiep_Vu.md);
-- [tech stack và kiến trúc](Tech_Stack_And_Architecture.md);
-- [cấu trúc repository](Repository_Structure.md);
-- các [ADR đã được chấp nhận](Adr_002_Foundation_And_First_Learning_Slice.md);
-- OpenAPI và JSON Schema trong [`contracts/`](../contracts/).
+- [phạm vi và quyết định sản phẩm](../shared/Project.md);
+- [mô tả nghiệp vụ hoàn chỉnh](../shared/Nghiep_Vu.md);
+- [tech stack và kiến trúc](../architecture/Tech_Stack_And_Architecture.md);
+- [cấu trúc repository](../architecture/Repository_Structure.md);
+- các [ADR đã được chấp nhận](../decisions/README.md);
+- OpenAPI và JSON Schema trong [`contracts/`](../../contracts/).
 
 Kế hoạch này cụ thể hóa các nguồn trên thành thứ tự triển khai và checklist.
 Thứ tự là quyết định của project, được suy ra từ dependency hiện tại; không phải
@@ -105,14 +109,14 @@ Mục tiêu: biết sản phẩm giải quyết vấn đề gì, dành cho ai v�
 nào trước khi tiếp tục mở rộng implementation.
 
 - [x] Có product scope, persona, core learning loop và lộ trình cấp cao trong
-  [Project.md](Project.md).
+  [Project.md](../shared/Project.md).
 - [x] Có mô tả nghiệp vụ mục tiêu từ identity, curriculum, learning, mastery,
   offline đến commerce, operations và analytics trong
-  [Nghiep_Vu.md](Nghiep_Vu.md).
+  [Nghiep_Vu.md](../shared/Nghiep_Vu.md).
 - [x] Có tech stack/architecture và điều kiện tiến hóa trong
-  [Tech_Stack_And_Architecture.md](Tech_Stack_And_Architecture.md).
+  [Tech_Stack_And_Architecture.md](../architecture/Tech_Stack_And_Architecture.md).
 - [x] Có cấu trúc repo và dependency rule trong
-  [Repository_Structure.md](Repository_Structure.md).
+  [Repository_Structure.md](../architecture/Repository_Structure.md).
 - [x] Chốt thị trường, source/target language và nhóm tuổi cho bản Android đầu
   tiên.
 - [x] Chốt guest/account merge, consent theo độ tuổi và voice retention.
@@ -186,7 +190,7 @@ triển khai mọi năng lực P2 trước bản Android đầu tiên.
 ### Giai đoạn 4 — Khóa phạm vi P0 và contract nền tảng
 
 - [x] Chốt các quyết định P0 còn mở ở Giai đoạn 0.
-- [x] Lập capability map P0/P1/P2 từ [Nghiep_Vu.md](Nghiep_Vu.md).
+- [x] Lập capability map P0/P1/P2 từ [Nghiep_Vu.md](../shared/Nghiep_Vu.md).
 - [x] Xác định ownership cho identity-profile, curriculum-content,
   learning-session/assessment, mastery và review-scheduler.
 - [x] Chuẩn hóa API error, pagination, idempotency và correlation/trace ID.

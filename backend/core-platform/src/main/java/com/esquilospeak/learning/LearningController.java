@@ -1,6 +1,7 @@
 package com.esquilospeak.learning;
 
 import com.esquilospeak.identityprofile.IdentityProfileService;
+import com.esquilospeak.ApiException;
 import com.esquilospeak.identityprofile.IdentityProfileService.LearnerContext;
 import com.esquilospeak.learning.LearningService.AttemptRequest;
 import com.esquilospeak.learning.LearningService.AttemptResult;
@@ -12,6 +13,7 @@ import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.PositiveOrZero;
 import java.time.Instant;
+import java.util.Map;
 import java.util.UUID;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
@@ -65,12 +67,23 @@ class LearningController {
             @NotBlank @Pattern(regexp = IDENTIFIER) String lessonId,
             @Positive int lessonVersion,
             @NotBlank @Pattern(regexp = IDENTIFIER) String exerciseId,
-            @NotBlank @Pattern(regexp = IDENTIFIER) String selectedOptionId,
+            @Pattern(regexp = IDENTIFIER) String selectedOptionId,
+            Map<String, Object> response,
             @NotNull Instant occurredAt,
             @PositiveOrZero Integer responseTimeMs,
             UUID sessionId) {
 
         AttemptRequest toRequest() {
+            Map<String, Object> normalizedResponse = response;
+            if (normalizedResponse == null && selectedOptionId != null) {
+                normalizedResponse = Map.of("kind", "option", "optionId", selectedOptionId);
+            }
+            if (normalizedResponse == null || normalizedResponse.isEmpty()) {
+                throw new ApiException(
+                        org.springframework.http.HttpStatus.BAD_REQUEST,
+                        "ATTEMPT_RESPONSE_REQUIRED",
+                        "Provide a typed response or the legacy selectedOptionId field.");
+            }
             return new AttemptRequest(
                     clientAttemptId,
                     courseId,
@@ -78,6 +91,7 @@ class LearningController {
                     lessonVersion,
                     exerciseId,
                     selectedOptionId,
+                    Map.copyOf(normalizedResponse),
                     occurredAt,
                     responseTimeMs,
                     sessionId);

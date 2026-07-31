@@ -60,7 +60,9 @@ void main() {
     await coordinator.enqueueAttempt(
       clientMutationId: mutationId,
       idempotencyKey: '22222222-2222-4222-8222-222222222222',
-      payload: const {'selectedOptionId': 'option-hello'},
+      payload: const {
+        'response': {'kind': 'option', 'optionId': 'option-hello'},
+      },
       occurredAt: DateTime.utc(2026, 7, 30),
     );
 

@@ -41,6 +41,7 @@ void main() {
           final body = jsonDecode(request.body) as Map<String, dynamic>;
           expect(body['sourceLanguage'], 'vi');
           expect(body['targetLanguage'], 'en');
+          expect(body['activeCourseId'], 'course-en-for-vi');
           expect(body['ageBand'], 'adult');
           expect(
             (body['preferences'] as Map<String, dynamic>)['dailyGoalMinutes'],
@@ -88,6 +89,7 @@ void main() {
         uiLocale: 'vi',
         sourceLanguage: 'vi',
         targetLanguage: 'en',
+        activeCourseId: 'course-en-for-vi',
         ageBand: LearnerAgeBand.adult,
         learningGoal: 'daily_communication',
         preferences: const LearnerPreferences(dailyGoalMinutes: 10),
@@ -110,6 +112,7 @@ Map<String, dynamic> _profile({String? ageBand}) => {
   'uiLocale': 'vi',
   'sourceLanguage': 'vi',
   'targetLanguage': 'en',
+  'activeCourseId': 'course-en-for-vi',
   'ageBand': ?ageBand,
   'learningGoal': 'daily_communication',
   'preferences': {'dailyGoalMinutes': 10, 'notificationsEnabled': false},

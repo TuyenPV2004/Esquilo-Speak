@@ -19,6 +19,7 @@ void main() {
   ) async {
     final semantics = tester.ensureSemantics();
     final viewModel = _viewModel();
+    await viewModel.load();
     await tester.pumpWidget(
       _TestApp(child: AdvancedPracticeScreen(viewModel: viewModel)),
     );
@@ -155,6 +156,8 @@ P1ViewModel _viewModel() => P1ViewModel(
   FakeP1Gateway(),
   FakeAdvancedLearningPlatform(),
   closedTestingCommerceEnabled: true,
+  closedTestingProductId: 'premium-monthly',
+  selectedCourseId: () => 'course-en-for-vi',
 );
 
 class _TestApp extends StatelessWidget {

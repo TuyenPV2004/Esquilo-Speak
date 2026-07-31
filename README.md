@@ -76,9 +76,10 @@ infrastructure/local/compose/        PostgreSQL local
 
 ## Quyết định và release gate
 
+- Chỉ mục tài liệu nằm tại [`docs/README.md`](docs/README.md).
 - ADR đã được chấp nhận nằm trong [`docs/decisions/`](docs/decisions/).
 - P0 decision/delivery gate nằm tại
-  [`docs/roadmap/P0_GATE.md`](docs/roadmap/P0_GATE.md).
+  [`docs/plans/P0_GATE.md`](docs/plans/P0_GATE.md).
 - Test và evidence của Android end-to-end nằm trong
   [`tests/end-to-end/`](tests/end-to-end/).
 
@@ -92,7 +93,7 @@ infrastructure/local/compose/        PostgreSQL local
 ## Chạy local
 
 Hướng dẫn chạy app và ma trận kiểm thử manual cho phạm vi local/closed testing:
-[`Guide.md`](Guide.md).
+[`docs/shared/Guide.md`](docs/shared/Guide.md).
 
 Sao chép `.env.example` thành `.env`, thay hai giá trị password local và chạy
 PostgreSQL:
@@ -196,8 +197,9 @@ Chi tiết completion, conflict, mastery và review rule nằm trong
 
 ## Advanced learning P1 cho closed testing
 
-- OpenAPI `0.5.0` bổ sung media, pronunciation, writing/conversation, placement
-  A1, engagement, commerce/entitlement và support.
+- OpenAPI `0.6.0` bổ sung proficiency framework có phiên bản và placement theo
+  course, bên cạnh media, pronunciation, writing/conversation, engagement,
+  commerce/entitlement và support.
 - Local profile dùng adapter deterministic. Production profile trả `503` cho
   provider-dependent operation cho đến khi media/STT/AI/Play verifier thật được
   cấu hình.
@@ -227,13 +229,13 @@ Quyết định và production gates nằm trong
 - Rate limit P0 áp dụng cho attempt, sync push, privacy request và content admin
   mutation; response `429` có `Retry-After`.
 - Backup/restore, forward-fix, graceful shutdown và incident procedure:
-  [`Backend_Operations_Runbook.md`](docs/Backend_Operations_Runbook.md).
+  [`Backend_Operations_Runbook.md`](docs/operations/Backend_Operations_Runbook.md).
 - SLO/load harness:
-  [`Backend_Slo_And_Load_Test.md`](docs/Backend_Slo_And_Load_Test.md).
+  [`Backend_Slo_And_Load_Test.md`](docs/operations/Backend_Slo_And_Load_Test.md).
 - Security self-review:
-  [`Backend_Asvs_Review.md`](docs/Backend_Asvs_Review.md).
+  [`Backend_Asvs_Review.md`](docs/operations/Backend_Asvs_Review.md).
 - Backend release-gate evidence:
-  [`Backend_Release_Gate.md`](docs/Backend_Release_Gate.md).
+  [`Backend_Release_Gate.md`](docs/operations/Backend_Release_Gate.md).
 
 ## Cấu hình production
 

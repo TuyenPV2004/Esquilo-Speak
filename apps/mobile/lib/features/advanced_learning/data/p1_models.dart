@@ -1,5 +1,36 @@
 import 'package:flutter/foundation.dart';
 
+import '../../../core/models/proficiency_models.dart';
+
+@immutable
+class AdvancedActivityDefinition {
+  const AdvancedActivityDefinition({
+    required this.id,
+    required this.contentRef,
+    required this.mediaId,
+    required this.expectedText,
+    required this.targetLocale,
+    required this.feedbackLocale,
+  });
+
+  factory AdvancedActivityDefinition.fromJson(Map<String, dynamic> json) =>
+      AdvancedActivityDefinition(
+        id: json['id'] as String,
+        contentRef: json['contentRef'] as String,
+        mediaId: json['mediaId'] as String,
+        expectedText: json['expectedText'] as String,
+        targetLocale: json['targetLocale'] as String,
+        feedbackLocale: json['feedbackLocale'] as String,
+      );
+
+  final String id;
+  final String contentRef;
+  final String mediaId;
+  final String expectedText;
+  final String targetLocale;
+  final String feedbackLocale;
+}
+
 @immutable
 class AdvancedFeedback {
   const AdvancedFeedback({
@@ -58,7 +89,8 @@ class PlacementQuestion {
 class PlacementAssessment {
   const PlacementAssessment({
     required this.id,
-    required this.level,
+    required this.courseId,
+    required this.proficiency,
     required this.passScore,
     required this.questions,
   });
@@ -66,7 +98,10 @@ class PlacementAssessment {
   factory PlacementAssessment.fromJson(Map<String, dynamic> json) =>
       PlacementAssessment(
         id: json['id'] as String,
-        level: json['level'] as String,
+        courseId: json['courseId'] as String,
+        proficiency: ProficiencyReference.fromJson(
+          Map<String, dynamic>.from(json['proficiency'] as Map),
+        ),
         passScore: json['passScore'] as int,
         questions: (json['questions'] as List)
             .map(
@@ -78,7 +113,8 @@ class PlacementAssessment {
       );
 
   final String id;
-  final String level;
+  final String courseId;
+  final ProficiencyReference proficiency;
   final int passScore;
   final List<PlacementQuestion> questions;
 }
@@ -88,6 +124,7 @@ class PlacementResult {
   const PlacementResult({
     required this.score,
     required this.passed,
+    required this.proficiency,
     required this.completedAt,
     required this.hasCompletionRecord,
   });
@@ -96,12 +133,16 @@ class PlacementResult {
       PlacementResult(
         score: json['score'] as int,
         passed: json['passed'] as bool,
+        proficiency: ProficiencyReference.fromJson(
+          Map<String, dynamic>.from(json['proficiency'] as Map),
+        ),
         completedAt: DateTime.parse(json['completedAt'] as String),
         hasCompletionRecord: json['completionRecord'] != null,
       );
 
   final int score;
   final bool passed;
+  final ProficiencyReference proficiency;
   final DateTime completedAt;
   final bool hasCompletionRecord;
 }
@@ -127,6 +168,8 @@ class EngagementStatus {
     required this.xp,
     required this.achievements,
     required this.reminderEnabled,
+    required this.reminderTime,
+    required this.timezone,
     this.lastLearningDate,
   });
 
@@ -148,6 +191,8 @@ class EngagementStatus {
           )
           .toList(growable: false),
       reminderEnabled: preference['enabled'] as bool? ?? false,
+      reminderTime: preference['reminderTime'] as String?,
+      timezone: preference['timezone'] as String? ?? 'UTC',
     );
   }
 
@@ -157,6 +202,8 @@ class EngagementStatus {
   final DateTime? lastLearningDate;
   final List<Achievement> achievements;
   final bool reminderEnabled;
+  final String? reminderTime;
+  final String timezone;
 }
 
 @immutable

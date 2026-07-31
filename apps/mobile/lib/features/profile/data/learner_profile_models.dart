@@ -38,6 +38,7 @@ class LearnerProfile {
     required this.uiLocale,
     required this.sourceLanguage,
     required this.targetLanguage,
+    required this.activeCourseId,
     required this.ageBand,
     required this.learningGoal,
     required this.preferences,
@@ -47,9 +48,10 @@ class LearnerProfile {
   factory LearnerProfile.fromJson(Map<String, dynamic> json) => LearnerProfile(
     learnerId: json['learnerId'] as String,
     actorType: LearnerActorType.values.byName(json['actorType'] as String),
-    uiLocale: json['uiLocale'] as String,
-    sourceLanguage: json['sourceLanguage'] as String,
-    targetLanguage: json['targetLanguage'] as String,
+    uiLocale: json['uiLocale'] as String?,
+    sourceLanguage: json['sourceLanguage'] as String?,
+    targetLanguage: json['targetLanguage'] as String?,
+    activeCourseId: json['activeCourseId'] as String?,
     ageBand: _ageBand(json['ageBand'] as String?),
     learningGoal: json['learningGoal'] as String?,
     preferences: LearnerPreferences.fromJson(
@@ -60,22 +62,29 @@ class LearnerProfile {
 
   final String learnerId;
   final LearnerActorType actorType;
-  final String uiLocale;
-  final String sourceLanguage;
-  final String targetLanguage;
+  final String? uiLocale;
+  final String? sourceLanguage;
+  final String? targetLanguage;
+  final String? activeCourseId;
   final LearnerAgeBand? ageBand;
   final String? learningGoal;
   final LearnerPreferences preferences;
   final DateTime updatedAt;
 
-  bool get onboardingComplete => ageBand != null;
+  bool get onboardingComplete =>
+      ageBand != null &&
+      uiLocale != null &&
+      sourceLanguage != null &&
+      targetLanguage != null &&
+      activeCourseId != null;
 
   Map<String, dynamic> toJson() => {
     'learnerId': learnerId,
     'actorType': actorType.name,
-    'uiLocale': uiLocale,
-    'sourceLanguage': sourceLanguage,
-    'targetLanguage': targetLanguage,
+    if (uiLocale != null) 'uiLocale': uiLocale,
+    if (sourceLanguage != null) 'sourceLanguage': sourceLanguage,
+    if (targetLanguage != null) 'targetLanguage': targetLanguage,
+    if (activeCourseId != null) 'activeCourseId': activeCourseId,
     if (ageBand != null) 'ageBand': ageBand!.apiValue,
     if (learningGoal != null) 'learningGoal': learningGoal,
     'preferences': preferences.toJson(),

@@ -1,3 +1,5 @@
+import '../../../core/models/proficiency_models.dart';
+
 typedef LocalizedText = Map<String, String>;
 
 String localized(LocalizedText values, String locale) =>
@@ -38,12 +40,18 @@ class Course {
     required this.targetLanguage,
     required this.title,
     required this.description,
+    this.proficiency,
   });
 
   factory Course.fromJson(Map<String, dynamic> json) => Course(
     id: json['id'] as String,
     sourceLanguage: json['sourceLanguage'] as String,
     targetLanguage: json['targetLanguage'] as String,
+    proficiency: json['proficiency'] == null
+        ? null
+        : CourseProficiency.fromJson(
+            Map<String, dynamic>.from(json['proficiency'] as Map),
+          ),
     title: localizedText(json['title']),
     description: localizedText(json['description']),
   );
@@ -51,6 +59,7 @@ class Course {
   final String id;
   final String sourceLanguage;
   final String targetLanguage;
+  final CourseProficiency? proficiency;
   final LocalizedText title;
   final LocalizedText description;
 
@@ -58,6 +67,7 @@ class Course {
     'id': id,
     'sourceLanguage': sourceLanguage,
     'targetLanguage': targetLanguage,
+    if (proficiency != null) 'proficiency': proficiency!.toJson(),
     'title': title,
     'description': description,
   };
@@ -134,12 +144,14 @@ class Lesson {
 class Exercise {
   const Exercise({
     required this.id,
+    required this.type,
     required this.prompt,
     required this.options,
   });
 
   factory Exercise.fromJson(Map<String, dynamic> json) => Exercise(
     id: json['id'] as String,
+    type: json['type'] as String,
     prompt: localizedText(json['prompt']),
     options: (json['options'] as List<dynamic>)
         .map((item) => ExerciseOption.fromJson(item as Map<String, dynamic>))
@@ -147,14 +159,37 @@ class Exercise {
   );
 
   final String id;
+  final String type;
   final LocalizedText prompt;
   final List<ExerciseOption> options;
 
   Map<String, dynamic> toJson() => {
     'id': id,
+    'type': type,
     'prompt': prompt,
     'options': options.map((item) => item.toJson()).toList(),
   };
+}
+
+sealed class ExerciseResponse {
+  const ExerciseResponse();
+
+  factory ExerciseResponse.fromJson(Map<String, dynamic> json) =>
+      switch (json['kind']) {
+        'option' => OptionExerciseResponse(json['optionId'] as String),
+        final kind => throw FormatException('Unsupported response kind: $kind'),
+      };
+
+  Map<String, dynamic> toJson();
+}
+
+class OptionExerciseResponse extends ExerciseResponse {
+  const OptionExerciseResponse(this.optionId);
+
+  final String optionId;
+
+  @override
+  Map<String, dynamic> toJson() => {'kind': 'option', 'optionId': optionId};
 }
 
 class ExerciseOption {
@@ -180,7 +215,7 @@ class PendingAttempt {
     required this.lessonId,
     required this.lessonVersion,
     required this.exerciseId,
-    required this.selectedOptionId,
+    required this.response,
     required this.occurredAt,
   });
 
@@ -191,7 +226,7 @@ class PendingAttempt {
   final String lessonId;
   final int lessonVersion;
   final String exerciseId;
-  final String selectedOptionId;
+  final ExerciseResponse response;
   final DateTime occurredAt;
 
   Map<String, dynamic> toJson() => {
@@ -200,7 +235,7 @@ class PendingAttempt {
     'lessonId': lessonId,
     'lessonVersion': lessonVersion,
     'exerciseId': exerciseId,
-    'selectedOptionId': selectedOptionId,
+    'response': response.toJson(),
     'occurredAt': occurredAt.toUtc().toIso8601String(),
   };
 }

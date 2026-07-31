@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import org.springframework.http.HttpStatus;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,18 +29,27 @@ public class PrivacyRequestService {
     private final List<AccountDataParticipant> dataParticipants;
     private final ObjectMapper objectMapper;
     private final Clock clock;
+    private final long exportTargetDays;
+    private final long deletionTargetDays;
+    private final long inactiveGuestDays;
 
     public PrivacyRequestService(
             JdbcClient jdbc,
             IdentityProfileService identityProfileService,
             List<AccountDataParticipant> dataParticipants,
             ObjectMapper objectMapper,
-            Clock clock) {
+            Clock clock,
+            @Value("${esquilospeak.privacy.export-target-days}") long exportTargetDays,
+            @Value("${esquilospeak.privacy.deletion-target-days}") long deletionTargetDays,
+            @Value("${esquilospeak.privacy.inactive-guest-days}") long inactiveGuestDays) {
         this.jdbc = jdbc;
         this.identityProfileService = identityProfileService;
         this.dataParticipants = dataParticipants;
         this.objectMapper = objectMapper;
         this.clock = clock;
+        this.exportTargetDays = exportTargetDays;
+        this.deletionTargetDays = deletionTargetDays;
+        this.inactiveGuestDays = inactiveGuestDays;
     }
 
     @Transactional
@@ -129,7 +139,7 @@ public class PrivacyRequestService {
                         for update of l skip locked
                         limit 1
                         """)
-                .param("inactiveBefore", Timestamp.from(clock.instant().minus(90, ChronoUnit.DAYS)))
+                .param("inactiveBefore", Timestamp.from(clock.instant().minus(inactiveGuestDays, ChronoUnit.DAYS)))
                 .query(UUID.class)
                 .optional()
                 .orElse(null);
@@ -171,8 +181,8 @@ public class PrivacyRequestService {
             UUID idempotencyKey) {
         Instant now = clock.instant();
         Instant targetAt = requestType == RequestType.EXPORT
-                ? now.plus(7, ChronoUnit.DAYS)
-                : now.plus(30, ChronoUnit.DAYS);
+                ? now.plus(exportTargetDays, ChronoUnit.DAYS)
+                : now.plus(deletionTargetDays, ChronoUnit.DAYS);
         UUID requestId = UUID.randomUUID();
         jdbc.sql("""
                         insert into privacy_requests (

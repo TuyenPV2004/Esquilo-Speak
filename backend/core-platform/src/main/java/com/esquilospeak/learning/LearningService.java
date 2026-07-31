@@ -68,7 +68,7 @@ public class LearningService {
                 request.lessonId(),
                 request.lessonVersion(),
                 request.exerciseId(),
-                request.selectedOptionId());
+                request.response());
         StoredAttempt created = new StoredAttempt(
                 UUID.randomUUID(),
                 request.clientAttemptId(),
@@ -79,6 +79,7 @@ public class LearningService {
                 request.lessonVersion(),
                 request.exerciseId(),
                 request.selectedOptionId(),
+                request.response(),
                 answer.correct(),
                 clock.instant());
         try {
@@ -86,12 +87,12 @@ public class LearningService {
                             insert into attempts (
                                 id, learner_id, client_attempt_id, idempotency_key, request_hash,
                                 course_id, lesson_id, lesson_version, exercise_id,
-                                selected_option_id, correct, occurred_at, accepted_at, response_time_ms,
+                                selected_option_id, response, correct, occurred_at, accepted_at, response_time_ms,
                                 session_id
                             ) values (
                                 :id, :learnerId, :clientAttemptId, :idempotencyKey, :requestHash,
                                 :courseId, :lessonId, :lessonVersion, :exerciseId,
-                                :selectedOptionId, :correct, :occurredAt, :acceptedAt, :responseTimeMs,
+                                :selectedOptionId, cast(:response as jsonb), :correct, :occurredAt, :acceptedAt, :responseTimeMs,
                                 :sessionId
                             )
                             """)
@@ -104,7 +105,8 @@ public class LearningService {
                     .param("lessonId", created.lessonId())
                     .param("lessonVersion", created.lessonVersion())
                     .param("exerciseId", created.exerciseId())
-                    .param("selectedOptionId", created.selectedOptionId())
+                    .param("selectedOptionId", created.selectedOptionId(), Types.VARCHAR)
+                    .param("response", writeJson(created.response()))
                     .param("correct", created.correct())
                     .param("occurredAt", Timestamp.from(request.occurredAt()))
                     .param("acceptedAt", Timestamp.from(created.acceptedAt()))
@@ -329,7 +331,7 @@ public class LearningService {
                 attempt.lessonId(),
                 attempt.lessonVersion(),
                 attempt.exerciseId(),
-                attempt.selectedOptionId());
+                attempt.response());
         Feedback feedback = new Feedback(
                 attempt.correct()
                         ? Map.of("vi", "Chính xác!", "en", "Correct!")
@@ -350,7 +352,7 @@ public class LearningService {
     private StoredAttempt findExisting(String learnerId, UUID idempotencyKey, UUID clientAttemptId) {
         return jdbc.sql("""
                         select id, client_attempt_id, idempotency_key, request_hash, course_id,
-                               lesson_id, lesson_version, exercise_id, selected_option_id,
+                               lesson_id, lesson_version, exercise_id, selected_option_id, response::text,
                                correct, accepted_at
                         from attempts
                         where learner_id = :learnerId
@@ -370,6 +372,7 @@ public class LearningService {
                         rs.getInt("lesson_version"),
                         rs.getString("exercise_id"),
                         rs.getString("selected_option_id"),
+                        readMap(rs.getString("response")),
                         rs.getBoolean("correct"),
                         rs.getTimestamp("accepted_at").toInstant()))
                 .optional()
@@ -394,6 +397,23 @@ public class LearningService {
         }
     }
 
+    private String writeJson(Map<String, Object> value) {
+        try {
+            return objectMapper.writeValueAsString(value);
+        } catch (JacksonException exception) {
+            throw new IllegalStateException("Could not serialize an attempt response.", exception);
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    private Map<String, Object> readMap(String value) {
+        try {
+            return objectMapper.readValue(value, Map.class);
+        } catch (JacksonException exception) {
+            throw new IllegalStateException("Stored attempt response is invalid.", exception);
+        }
+    }
+
     public record AttemptRequest(
             UUID clientAttemptId,
             String courseId,
@@ -401,9 +421,23 @@ public class LearningService {
             int lessonVersion,
             String exerciseId,
             String selectedOptionId,
+            Map<String, Object> response,
             Instant occurredAt,
             Integer responseTimeMs,
-            UUID sessionId) {}
+            UUID sessionId) {
+        public AttemptRequest {
+            if (response == null && selectedOptionId != null && !selectedOptionId.isBlank()) {
+                response = Map.of("kind", "option", "optionId", selectedOptionId);
+            }
+            if (response == null || response.isEmpty()) {
+                throw new ApiException(
+                        HttpStatus.BAD_REQUEST,
+                        "ATTEMPT_RESPONSE_REQUIRED",
+                        "An exercise response is required.");
+            }
+            response = Map.copyOf(response);
+        }
+    }
 
     public record AttemptResult(
             UUID attemptId,
@@ -449,6 +483,7 @@ public class LearningService {
             int lessonVersion,
             String exerciseId,
             String selectedOptionId,
+            Map<String, Object> response,
             boolean correct,
             Instant acceptedAt) {}
 

@@ -73,15 +73,25 @@ class AppDependencies {
     final api = ApiClient(httpClient, environment.apiBaseUrl, session);
     final sync = SyncCoordinator(database, api);
     final remoteRepository = RemoteLearningRepository(LearningApiService(api));
-    final learningViewModel = LearningViewModel(
-      OfflineLearningRepository(remoteRepository, sync, database),
-    )..loadCatalog();
     final profileViewModel = LearnerProfileViewModel(
       LearnerProfileService(api, database),
       session,
       telemetry,
     );
     await profileViewModel.load();
+    final learningViewModel = LearningViewModel(
+      OfflineLearningRepository(remoteRepository, sync, database),
+      learningContext: () {
+        final profile = profileViewModel.profile;
+        if (profile == null) return const LearningContextSnapshot.empty();
+        return LearningContextSnapshot(
+          sourceLanguage: profile.sourceLanguage,
+          targetLanguage: profile.targetLanguage,
+          activeCourseId: profile.activeCourseId,
+        );
+      },
+      onCourseSelected: profileViewModel.setActiveCourse,
+    )..loadCatalog();
     final insightsViewModel = LearningInsightsViewModel(
       LearningInsightsService(api, database),
     )..load();
@@ -89,6 +99,10 @@ class AppDependencies {
       P1ApiService(api),
       AndroidAdvancedLearningPlatform(environment, session),
       closedTestingCommerceEnabled: environment.isLocal,
+      closedTestingProductId: environment.closedTestingProductId,
+      selectedCourseId: () =>
+          profileViewModel.profile?.activeCourseId ??
+          learningViewModel.selectedCourse?.id,
     )..load();
 
     return AppDependencies._(

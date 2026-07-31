@@ -2,9 +2,9 @@ package com.esquilospeak.assessment;
 
 import com.esquilospeak.identityprofile.IdentityProfileService;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
 import java.util.List;
 import java.util.UUID;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -28,19 +29,23 @@ class AssessmentController {
     }
 
     @GetMapping("/placement")
-    AssessmentService.AssessmentDefinition placement(@AuthenticationPrincipal Jwt jwt) {
+    AssessmentService.AssessmentDefinition placement(
+            @AuthenticationPrincipal Jwt jwt,
+            @RequestParam String courseId) {
         identities.requireLearningAccess(jwt);
-        return service.definition();
+        return service.definition(courseId);
     }
 
     @PostMapping("/placement/attempts")
     AssessmentService.AssessmentResult submit(
             @AuthenticationPrincipal Jwt jwt, @Valid @RequestBody AttemptBody body) {
         UUID learnerId = identities.requireLearningAccess(jwt).learnerId();
-        return service.submit(learnerId, body.clientAttemptId(), body.answers());
+        return service.submit(
+                learnerId, body.clientAttemptId(), body.assessmentId(), body.answers());
     }
 
     record AttemptBody(
             @NotNull UUID clientAttemptId,
-            @NotEmpty @Size(min = 4, max = 4) List<@NotNull String> answers) {}
+            @NotBlank String assessmentId,
+            @NotEmpty List<@NotNull String> answers) {}
 }

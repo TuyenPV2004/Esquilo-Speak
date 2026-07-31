@@ -26,6 +26,57 @@
       },
       "additionalProperties": false
     },
+    "proficiencyReference": {
+      "type": "object",
+      "description": "A level in a versioned proficiency framework. Framework and level codes are data, not application enums.",
+      "required": ["frameworkCode", "frameworkVersion", "levelCode"],
+      "properties": {
+        "frameworkCode": {
+          "type": "string",
+          "pattern": "^[A-Za-z][A-Za-z0-9._-]{0,49}$"
+        },
+        "frameworkVersion": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 50
+        },
+        "levelCode": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,49}$"
+        }
+      },
+      "additionalProperties": false
+    },
+    "courseProficiency": {
+      "type": "object",
+      "description": "The entry and target levels for one course version in one versioned framework.",
+      "required": [
+        "frameworkCode",
+        "frameworkVersion",
+        "entryLevelCode",
+        "targetLevelCode"
+      ],
+      "properties": {
+        "frameworkCode": {
+          "type": "string",
+          "pattern": "^[A-Za-z][A-Za-z0-9._-]{0,49}$"
+        },
+        "frameworkVersion": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 50
+        },
+        "entryLevelCode": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,49}$"
+        },
+        "targetLevelCode": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,49}$"
+        }
+      },
+      "additionalProperties": false
+    },
     "contentStatus": {
       "type": "string",
       "enum": ["draft", "review", "approved", "scheduled", "published", "retired"]

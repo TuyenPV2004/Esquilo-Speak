@@ -35,7 +35,7 @@ separate public-release compliance gate.
 6. Record consent by purpose and policy version. P0 does not collect, upload, or
    retain voice.
 7. Provide asynchronous, auditable export and deletion workflows with the
-   targets and retention periods defined in `docs/roadmap/P0_GATE.md`.
+   targets and retention periods defined in `docs/plans/P0_GATE.md`.
 8. Keep subscription and entitlement outside P0. Add commerce only after a P1
    product decision and use platform-compliant billing for Android digital
    benefits.
@@ -64,7 +64,7 @@ separate public-release compliance gate.
 
 Detailed invariants, retention periods, acceptance criteria, service targets,
 and the dependency-ordered backlog are maintained in
-`docs/roadmap/P0_GATE.md`.
+`docs/plans/P0_GATE.md`.
 
 ## Compliance references
 

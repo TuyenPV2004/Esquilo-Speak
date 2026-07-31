@@ -6,14 +6,28 @@ import '../../../core/design_system/responsive_content.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../advanced_learning/presentation/p1_view_model.dart';
 
-class PlacementScreen extends StatelessWidget {
+class PlacementScreen extends StatefulWidget {
   const PlacementScreen({required this.viewModel, super.key});
 
   final P1ViewModel viewModel;
 
   @override
+  State<PlacementScreen> createState() => _PlacementScreenState();
+}
+
+class _PlacementScreenState extends State<PlacementScreen> {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) widget.viewModel.loadPlacement();
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     final strings = AppLocalizations.of(context);
+    final viewModel = widget.viewModel;
     return Scaffold(
       appBar: AppBar(title: Text(strings.placementTitle)),
       body: SafeArea(
@@ -29,8 +43,14 @@ class PlacementScreen extends StatelessWidget {
                       ? Icons.verified_outlined
                       : Icons.school_outlined,
                   message: result.passed
-                      ? strings.placementPassed(result.score)
-                      : strings.placementNotPassed(result.score),
+                      ? strings.placementPassed(
+                          result.score,
+                          result.proficiency.levelCode,
+                        )
+                      : strings.placementNotPassed(
+                          result.score,
+                          result.proficiency.levelCode,
+                        ),
                   actionLabel: strings.tryAgain,
                   onAction: viewModel.resetPlacement,
                 );
@@ -39,9 +59,11 @@ class PlacementScreen extends StatelessWidget {
               if (assessment == null) {
                 return AppMessageState(
                   icon: Icons.cloud_download_outlined,
-                  message: strings.placementLoading,
+                  message: viewModel.courseSelectionRequired
+                      ? strings.placementCourseRequired
+                      : strings.placementLoading,
                   actionLabel: strings.retry,
-                  onAction: viewModel.load,
+                  onAction: viewModel.loadPlacement,
                 );
               }
               final allAnswered = assessment.questions.every(
@@ -55,6 +77,12 @@ class PlacementScreen extends StatelessWidget {
                   Text(
                     strings.placementInternalNotice,
                     style: Theme.of(context).textTheme.bodyLarge,
+                  ),
+                  const SizedBox(height: AppSpacing.xs),
+                  Text(
+                    '${assessment.proficiency.frameworkCode.toUpperCase()} '
+                    '${assessment.proficiency.levelCode}',
+                    style: Theme.of(context).textTheme.labelLarge,
                   ),
                   const SizedBox(height: AppSpacing.lg),
                   ...assessment.questions.indexed.map((entry) {

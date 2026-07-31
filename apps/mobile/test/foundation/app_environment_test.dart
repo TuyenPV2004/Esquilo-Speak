@@ -10,6 +10,7 @@ void main() {
       oidcClientId: null,
       oidcRedirectUrl: null,
       oidcPostLogoutRedirectUrl: null,
+      closedTestingProductId: 'premium-monthly',
     );
 
     expect(environment.validate, throwsStateError);
@@ -26,6 +27,7 @@ void main() {
         host: 'oauthredirect',
       ),
       oidcPostLogoutRedirectUrl: null,
+      closedTestingProductId: 'premium-monthly',
     );
 
     expect(environment.hasOidcConfiguration, isTrue);

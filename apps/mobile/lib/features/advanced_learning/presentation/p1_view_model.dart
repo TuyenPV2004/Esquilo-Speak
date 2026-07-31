@@ -12,14 +12,19 @@ class P1ViewModel extends ChangeNotifier {
     this._gateway,
     this._platform, {
     required this.closedTestingCommerceEnabled,
+    required this.closedTestingProductId,
+    required this.selectedCourseId,
   });
 
   final P1Gateway _gateway;
   final AdvancedLearningPlatform _platform;
+  final String? Function() selectedCourseId;
   final bool closedTestingCommerceEnabled;
+  final String closedTestingProductId;
 
   bool busy = false;
   bool recording = false;
+  bool courseSelectionRequired = false;
   UserFacingFailure? failure;
   P1PermissionIssue? permissionIssue;
   AdvancedFeedback? pronunciationFeedback;
@@ -32,16 +37,36 @@ class P1ViewModel extends ChangeNotifier {
   SupportTicket? supportTicket;
   final Map<String, String> assessmentAnswers = {};
   final Set<String> downloadedMediaIds = {};
+  List<AdvancedActivityDefinition> advancedActivities = const [];
+
+  AdvancedActivityDefinition? get activeActivity =>
+      advancedActivities.firstOrNull;
 
   Future<void> load() async {
     await _run(() async {
-      final values = await Future.wait([
-        _gateway.getPlacement(),
-        _gateway.getEngagement(),
-      ]);
-      assessment = values[0] as PlacementAssessment;
-      engagement = values[1] as EngagementStatus;
+      engagement = await _gateway.getEngagement();
+      final courseId = selectedCourseId();
+      advancedActivities = courseId == null
+          ? const []
+          : await _gateway.advancedActivities(courseId);
+      await _loadPlacementIfAvailable();
     });
+  }
+
+  Future<void> loadPlacement() => _run(_loadPlacementIfAvailable);
+
+  Future<void> _loadPlacementIfAvailable() async {
+    final courseId = selectedCourseId();
+    if (courseId == null) {
+      courseSelectionRequired = true;
+      assessment = null;
+      return;
+    }
+    courseSelectionRequired = false;
+    if (assessment?.courseId == courseId) return;
+    assessmentAnswers.clear();
+    placementResult = null;
+    assessment = await _gateway.getPlacement(courseId);
   }
 
   Future<void> playMedia(String mediaId) => _run(
@@ -85,9 +110,14 @@ class P1ViewModel extends ChangeNotifier {
     required String input,
     required String locale,
   }) => _run(() async {
+    final activity = activeActivity;
+    if (activity == null) {
+      failure = UserFacingFailure.unavailable;
+      return;
+    }
     final feedback = await _gateway.textFeedback(
       kind: kind,
-      contentRef: 'lesson-basic-greetings',
+      contentRef: activity.contentRef,
       input: input,
       locale: locale,
     );
@@ -120,16 +150,22 @@ class P1ViewModel extends ChangeNotifier {
       return;
     }
     placementResult = await _gateway.submitPlacement(
-      current.questions
+      assessmentId: current.id,
+      answers: current.questions
           .map((question) => assessmentAnswers[question.id]!)
           .toList(growable: false),
     );
   });
 
   Future<void> recordLearningActivity() => _run(() async {
+    final activity = activeActivity;
+    if (activity == null) {
+      failure = UserFacingFailure.unavailable;
+      return;
+    }
     engagement = await _gateway.recordActivity(
       eventType: 'advanced_practice_completed',
-      xpAwarded: 15,
+      evidenceRef: activity.id,
     );
   });
 
@@ -138,6 +174,8 @@ class P1ViewModel extends ChangeNotifier {
     required String locale,
     required String title,
     required String body,
+    required int hour,
+    required int minute,
   }) => _run(() async {
     if (enabled) {
       final allowed = await _platform.requestNotificationPermission();
@@ -148,13 +186,15 @@ class P1ViewModel extends ChangeNotifier {
     }
     await _gateway.updateReminder(
       enabled: enabled,
-      reminderTime: '19:30:00',
+      reminderTime:
+          '${hour.toString().padLeft(2, '0')}:${minute.toString().padLeft(2, '0')}:00',
       locale: locale,
+      timezone: await _platform.systemTimezone(),
     );
     if (enabled) {
       await _platform.scheduleDailyReminder(
-        hour: 19,
-        minute: 30,
+        hour: hour,
+        minute: minute,
         title: title,
         body: body,
       );
@@ -169,7 +209,9 @@ class P1ViewModel extends ChangeNotifier {
       failure = UserFacingFailure.unavailable;
       return;
     }
-    entitlement = await _gateway.verifyClosedTestingPurchase('premium-monthly');
+    entitlement = await _gateway.verifyClosedTestingPurchase(
+      closedTestingProductId,
+    );
   });
 
   Future<void> refundPremium() => _run(() async {
@@ -178,7 +220,7 @@ class P1ViewModel extends ChangeNotifier {
       return;
     }
     entitlement = await _gateway.refundLatestClosedTestingPurchase(
-      'premium-monthly',
+      closedTestingProductId,
     );
   });
 

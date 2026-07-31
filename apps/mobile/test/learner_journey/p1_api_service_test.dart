@@ -10,12 +10,20 @@ import 'package:http/testing.dart';
 void main() {
   test('maps P1 assessment and feedback contracts', () async {
     final paths = <String>[];
+    final queries = <Map<String, String>>[];
+    final requestBodies = <Map<String, dynamic>>[];
     final client = MockClient((request) async {
       paths.add(request.url.path);
+      queries.add(request.url.queryParameters);
       if (request.url.path.endsWith('/placement')) {
         return _json({
           'id': 'placement-a1-v1',
-          'level': 'A1',
+          'courseId': 'course-en-for-vi',
+          'proficiency': {
+            'frameworkCode': 'cefr',
+            'frameworkVersion': '2020',
+            'levelCode': 'A1',
+          },
           'passScore': 80,
           'questions': [
             {
@@ -24,6 +32,22 @@ void main() {
               'options': ['hello', 'later'],
             },
           ],
+        });
+      }
+      if (request.url.path.endsWith('/placement/attempts')) {
+        requestBodies.add(
+          Map<String, dynamic>.from(jsonDecode(request.body) as Map),
+        );
+        return _json({
+          'score': 100,
+          'passed': true,
+          'proficiency': {
+            'frameworkCode': 'cefr',
+            'frameworkVersion': '2020',
+            'levelCode': 'A1',
+          },
+          'completedAt': '2026-07-30T00:00:00Z',
+          'completionRecord': {'id': 'completion-1'},
         });
       }
       return _json({
@@ -42,7 +66,11 @@ void main() {
       ),
     );
 
-    final placement = await service.getPlacement();
+    final placement = await service.getPlacement('course-en-for-vi');
+    final result = await service.submitPlacement(
+      assessmentId: placement.id,
+      answers: const ['hello'],
+    );
     final feedback = await service.textFeedback(
       kind: 'writing',
       contentRef: 'lesson-basic-greetings',
@@ -51,9 +79,14 @@ void main() {
     );
 
     expect(placement.questions.single.options.first, 'hello');
+    expect(placement.proficiency.frameworkCode, 'cefr');
+    expect(result.proficiency.levelCode, 'A1');
+    expect(queries.first, {'courseId': 'course-en-for-vi'});
+    expect(requestBodies.single['assessmentId'], 'placement-a1-v1');
     expect(feedback.feedback['summary'], 'Clear response.');
     expect(paths, [
       '/api/mobile/v1/assessments/placement',
+      '/api/mobile/v1/assessments/placement/attempts',
       '/api/mobile/v1/advanced/writing',
     ]);
   });

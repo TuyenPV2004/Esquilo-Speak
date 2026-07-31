@@ -20,9 +20,9 @@ Các nội dung trong tài liệu đều là **đề xuất định hướng**. 
 Tài liệu chi tiết:
 
 - [Phạm vi và mô hình sản phẩm](Project.md).
-- [Tech stack và kiến trúc hệ thống](Tech_Stack_And_Architecture.md).
-- [Cấu trúc repository và thư mục](Repository_Structure.md).
-- [Sơ đồ cây thư mục được đề xuất](assets/esquilospeak-repository-structure.png).
+- [Tech stack và kiến trúc hệ thống](../architecture/Tech_Stack_And_Architecture.md).
+- [Cấu trúc repository và thư mục](../architecture/Repository_Structure.md).
+- [Sơ đồ cây thư mục được đề xuất](../assets/esquilospeak-repository-structure.png).
 - ADR trong `docs/ADR-*.md` khi một quyết định dài hạn được chấp nhận.
 
 ## 2. Ý tưởng dự án

@@ -6,6 +6,7 @@ import '../../../core/design_system/responsive_content.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../l10n/user_facing_failure_localization.dart';
 import '../data/learning_models.dart';
+import 'exercise_renderer_registry.dart';
 import 'learning_view_model.dart';
 
 class LearningFlowScreen extends StatelessWidget {
@@ -68,6 +69,7 @@ class LearningFlowScreen extends StatelessWidget {
     return switch (viewModel.step) {
       LearningStep.catalog => _Catalog(
         languages: viewModel.languages,
+        sourceLanguage: viewModel.learningContext().sourceLanguage,
         onSelected: viewModel.chooseLanguage,
         emptyLabel: strings.empty,
       ),
@@ -83,7 +85,7 @@ class LearningFlowScreen extends StatelessWidget {
         actionLabel: strings.startLesson,
         emptyLabel: strings.empty,
       ),
-      LearningStep.lesson => _LessonExercise(
+      LearningStep.lesson => ExerciseRendererRegistry(
         lesson: viewModel.selectedLesson!,
         selectedOptionId: viewModel.selectedOptionId,
         selectionError: viewModel.selectionError == null
@@ -92,6 +94,7 @@ class LearningFlowScreen extends StatelessWidget {
         onSelected: viewModel.selectOption,
         onSubmit: viewModel.submitAnswer,
         submitLabel: strings.submitAnswer,
+        unsupportedLabel: strings.destinationUnavailable,
       ),
       LearningStep.queued => AppMessageState(
         icon: Icons.cloud_done_outlined,
@@ -121,18 +124,20 @@ String _locale(BuildContext context) =>
 class _Catalog extends StatelessWidget {
   const _Catalog({
     required this.languages,
+    required this.sourceLanguage,
     required this.onSelected,
     required this.emptyLabel,
   });
 
   final List<LearningLanguage> languages;
+  final String? sourceLanguage;
   final ValueChanged<LearningLanguage> onSelected;
   final String emptyLabel;
 
   @override
   Widget build(BuildContext context) {
     final available = languages
-        .where((item) => item.languageTag != 'vi')
+        .where((item) => item.languageTag != sourceLanguage)
         .toList();
     if (available.isEmpty) return _EmptyState(label: emptyLabel);
     return ListView.separated(
@@ -242,85 +247,6 @@ class _Lessons extends StatelessWidget {
           ),
         );
       },
-    );
-  }
-}
-
-class _LessonExercise extends StatelessWidget {
-  const _LessonExercise({
-    required this.lesson,
-    required this.selectedOptionId,
-    required this.selectionError,
-    required this.onSelected,
-    required this.onSubmit,
-    required this.submitLabel,
-  });
-
-  final Lesson lesson;
-  final String? selectedOptionId;
-  final String? selectionError;
-  final ValueChanged<String> onSelected;
-  final VoidCallback onSubmit;
-  final String submitLabel;
-
-  @override
-  Widget build(BuildContext context) {
-    final exercise = lesson.exercises.first;
-    final locale = _locale(context);
-    return ListView(
-      key: const ValueKey('lesson'),
-      padding: const EdgeInsets.all(16),
-      children: [
-        Text(
-          localized(lesson.title, locale),
-          style: Theme.of(context).textTheme.headlineSmall,
-        ),
-        const SizedBox(height: 12),
-        Text(localized(lesson.objectives.first, locale)),
-        const SizedBox(height: 24),
-        Text(
-          localized(exercise.prompt, locale),
-          style: Theme.of(context).textTheme.titleLarge,
-        ),
-        const SizedBox(height: 12),
-        RadioGroup<String>(
-          groupValue: selectedOptionId,
-          onChanged: (value) {
-            if (value != null) onSelected(value);
-          },
-          child: Column(
-            children: exercise.options
-                .map(
-                  (option) => Semantics(
-                    selected: selectedOptionId == option.id,
-                    child: RadioListTile<String>(
-                      key: ValueKey('option-${option.id}'),
-                      value: option.id,
-                      title: Text(localized(option.text, locale)),
-                    ),
-                  ),
-                )
-                .toList(),
-          ),
-        ),
-        if (selectionError != null)
-          Semantics(
-            liveRegion: true,
-            child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 8),
-              child: Text(
-                selectionError!,
-                style: TextStyle(color: Theme.of(context).colorScheme.error),
-              ),
-            ),
-          ),
-        const SizedBox(height: 12),
-        FilledButton(
-          key: const ValueKey('attempt-submit'),
-          onPressed: onSubmit,
-          child: Text(submitLabel),
-        ),
-      ],
     );
   }
 }

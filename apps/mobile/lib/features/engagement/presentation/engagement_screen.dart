@@ -67,15 +67,18 @@ class EngagementScreen extends StatelessWidget {
                     child: SwitchListTile(
                       key: const ValueKey('reminder-toggle'),
                       title: Text(strings.learningReminder),
-                      subtitle: Text(strings.reminderSchedule),
+                      subtitle: Text(
+                        status.reminderTime ?? strings.reminderSchedule,
+                      ),
                       value: status.reminderEnabled,
                       onChanged: viewModel.busy
                           ? null
-                          : (enabled) => viewModel.updateReminder(
-                              enabled: enabled,
-                              locale: locale,
-                              title: strings.reminderNotificationTitle,
-                              body: strings.reminderNotificationBody,
+                          : (enabled) => _changeReminder(
+                              context,
+                              status.reminderTime,
+                              enabled,
+                              locale,
+                              strings,
                             ),
                     ),
                   ),
@@ -104,7 +107,9 @@ class EngagementScreen extends StatelessWidget {
                           title: Text(
                             achievement.code == 'first-step'
                                 ? strings.firstStepAchievement
-                                : strings.sevenDayAchievement,
+                                : achievement.code == 'seven-day-streak'
+                                ? strings.sevenDayAchievement
+                                : achievement.code,
                           ),
                         ),
                       ),
@@ -115,6 +120,34 @@ class EngagementScreen extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+
+  Future<void> _changeReminder(
+    BuildContext context,
+    String? currentValue,
+    bool enabled,
+    String locale,
+    AppLocalizations strings,
+  ) async {
+    final currentParts = currentValue?.split(':');
+    final initial = currentParts != null && currentParts.length >= 2
+        ? TimeOfDay(
+            hour: int.parse(currentParts[0]),
+            minute: int.parse(currentParts[1]),
+          )
+        : TimeOfDay.now();
+    final selected = enabled
+        ? await showTimePicker(context: context, initialTime: initial)
+        : initial;
+    if (selected == null || !context.mounted) return;
+    await viewModel.updateReminder(
+      enabled: enabled,
+      locale: locale,
+      title: strings.reminderNotificationTitle,
+      body: strings.reminderNotificationBody,
+      hour: selected.hour,
+      minute: selected.minute,
     );
   }
 }

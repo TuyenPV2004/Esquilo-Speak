@@ -60,6 +60,15 @@ class CurriculumContentPublishingIntegrationTest {
     ObjectMapper objectMapper;
 
     @Test
+    void exposesPublishedAdvancedActivityDefinitionsWithoutAuthentication() throws Exception {
+        mockMvc.perform(get("/api/mobile/v1/courses/{courseId}/advanced-activities",
+                        "course-en-for-vi"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.items[0].id").value("activity-basic-greetings"))
+                .andExpect(jsonPath("$.items[0].targetLocale").value("en"));
+    }
+
+    @Test
     void rejectsLearnerRoleAndBrokenAuthoringReferences() throws Exception {
         mockMvc.perform(put("/api/admin/v1/content/courses/{courseId}/versions/{version}",
                                 "course-p0-validation", 1)
@@ -129,7 +138,13 @@ class CurriculumContentPublishingIntegrationTest {
                         .param("targetLanguage", "en"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.items[?(@.id == 'course-versioned-p0')].version")
-                        .value(version));
+                        .value(version))
+                .andExpect(jsonPath(
+                                "$.items[?(@.id == 'course-versioned-p0')].proficiency.frameworkCode")
+                        .value("cefr"))
+                .andExpect(jsonPath(
+                                "$.items[?(@.id == 'course-versioned-p0')].proficiency.targetLevelCode")
+                        .value("A1"));
 
         mockMvc.perform(get("/api/mobile/v1/lessons/{lessonId}", "lesson-versioned-greetings")
                         .param("version", String.valueOf(version)))
@@ -311,6 +326,12 @@ class CurriculumContentPublishingIntegrationTest {
                   "targetLanguage": "en",
                   "locale": "vi",
                   "compatibilityVersion": 1,
+                  "proficiency": {
+                    "frameworkCode": "cefr",
+                    "frameworkVersion": "2020",
+                    "entryLevelCode": "PRE_A1",
+                    "targetLevelCode": "A1"
+                  },
                   "title": {"vi": "Tiếng Anh có version", "en": "Versioned English"},
                   "description": {
                     "vi": "Nội dung kiểm thử publishing.",

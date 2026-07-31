@@ -4,6 +4,8 @@ import '../../../core/network/api_client.dart';
 import 'p1_models.dart';
 
 abstract interface class P1Gateway {
+  Future<List<AdvancedActivityDefinition>> advancedActivities(String courseId);
+
   Future<AdvancedFeedback> assessPronunciation({
     required String audioBase64,
     required String expectedText,
@@ -17,21 +19,25 @@ abstract interface class P1Gateway {
     required String locale,
   });
 
-  Future<PlacementAssessment> getPlacement();
+  Future<PlacementAssessment> getPlacement(String courseId);
 
-  Future<PlacementResult> submitPlacement(List<String> answers);
+  Future<PlacementResult> submitPlacement({
+    required String assessmentId,
+    required List<String> answers,
+  });
 
   Future<EngagementStatus> getEngagement();
 
   Future<EngagementStatus> recordActivity({
     required String eventType,
-    required int xpAwarded,
+    required String evidenceRef,
   });
 
   Future<void> updateReminder({
     required bool enabled,
     required String reminderTime,
     required String locale,
+    required String timezone,
   });
 
   Future<Entitlement> verifyClosedTestingPurchase(String productId);
@@ -52,6 +58,22 @@ class P1ApiService implements P1Gateway {
   final ApiClient _api;
   final Uuid uuid;
   String? _closedTestingPurchaseToken;
+
+  @override
+  Future<List<AdvancedActivityDefinition>> advancedActivities(
+    String courseId,
+  ) async {
+    final response = await _api.get(
+      '/api/mobile/v1/courses/$courseId/advanced-activities',
+    );
+    return (response['items'] as List<dynamic>)
+        .map(
+          (item) => AdvancedActivityDefinition.fromJson(
+            Map<String, dynamic>.from(item as Map),
+          ),
+        )
+        .toList(growable: false);
+  }
 
   @override
   Future<AdvancedFeedback> assessPronunciation({
@@ -93,24 +115,31 @@ class P1ApiService implements P1Gateway {
   );
 
   @override
-  Future<PlacementAssessment> getPlacement() async =>
+  Future<PlacementAssessment> getPlacement(String courseId) async =>
       PlacementAssessment.fromJson(
         await _api.get(
           '/api/mobile/v1/assessments/placement',
+          query: {'courseId': courseId},
           authenticated: true,
         ),
       );
 
   @override
-  Future<PlacementResult> submitPlacement(List<String> answers) async =>
-      PlacementResult.fromJson(
-        await _api.post(
-          '/api/mobile/v1/assessments/placement/attempts',
-          authenticated: true,
-          idempotencyKey: uuid.v4(),
-          body: {'clientAttemptId': uuid.v4(), 'answers': answers},
-        ),
-      );
+  Future<PlacementResult> submitPlacement({
+    required String assessmentId,
+    required List<String> answers,
+  }) async => PlacementResult.fromJson(
+    await _api.post(
+      '/api/mobile/v1/assessments/placement/attempts',
+      authenticated: true,
+      idempotencyKey: uuid.v4(),
+      body: {
+        'clientAttemptId': uuid.v4(),
+        'assessmentId': assessmentId,
+        'answers': answers,
+      },
+    ),
+  );
 
   @override
   Future<EngagementStatus> getEngagement() async => EngagementStatus.fromJson(
@@ -120,7 +149,7 @@ class P1ApiService implements P1Gateway {
   @override
   Future<EngagementStatus> recordActivity({
     required String eventType,
-    required int xpAwarded,
+    required String evidenceRef,
   }) async => EngagementStatus.fromJson(
     await _api.post(
       '/api/mobile/v1/engagement/activities',
@@ -129,7 +158,7 @@ class P1ApiService implements P1Gateway {
       body: {
         'clientEventId': uuid.v4(),
         'eventType': eventType,
-        'xpAwarded': xpAwarded,
+        'evidenceRef': evidenceRef,
       },
     ),
   );
@@ -139,6 +168,7 @@ class P1ApiService implements P1Gateway {
     required bool enabled,
     required String reminderTime,
     required String locale,
+    required String timezone,
   }) async {
     await _api.put(
       '/api/mobile/v1/engagement/notification-preference',
@@ -148,6 +178,7 @@ class P1ApiService implements P1Gateway {
         'enabled': enabled,
         'reminderTime': reminderTime,
         'locale': locale,
+        'timezone': timezone,
       },
     );
   }

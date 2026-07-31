@@ -15,7 +15,7 @@ Tài liệu này:
 - Phân biệt baseline cần thiết với công nghệ chỉ thêm khi có điều kiện.
 - Ghi lại trade-off, rủi ro và thời điểm cần xem lại.
 
-Phạm vi sản phẩm nằm trong [Project.md](Project.md). Cấu trúc source code nằm trong [Repository_Structure.md](Repository_Structure.md). Tóm tắt dành cho người đọc mới nằm trong [Esquilo_Speak.md](Esquilo_Speak.md).
+Phạm vi sản phẩm nằm trong [Project.md](../shared/Project.md). Cấu trúc source code nằm trong [Repository_Structure.md](Repository_Structure.md). Tóm tắt dành cho người đọc mới nằm trong [Esquilo_Speak.md](../shared/Esquilo_Speak.md).
 
 ## 2. Trạng thái quyết định
 
@@ -354,14 +354,14 @@ Tách dần bằng [Strangler Fig Pattern](https://docs.aws.amazon.com/prescript
 
 | ID | Đề xuất | Trạng thái |
 | --- | --- | --- |
-| A-001 | Flutter cho mobile Android/iOS | Accepted — [ADR-002](Adr_002_Foundation_And_First_Learning_Slice.md) |
+| A-001 | Flutter cho mobile Android/iOS | Accepted — [ADR-002](../decisions/ADR-002-foundation-and-first-learning-slice.md) |
 | A-002 | Next.js/TypeScript cho admin web | Proposed |
-| A-003 | Java 21 + Spring Boot + Spring Modulith cho core | Accepted — [ADR-002](Adr_002_Foundation_And_First_Learning_Slice.md) |
-| A-004 | Modular Monolith là kiến trúc backend chính | Accepted — [ADR-002](Adr_002_Foundation_And_First_Learning_Slice.md) |
+| A-003 | Java 21 + Spring Boot + Spring Modulith cho core | Accepted — [ADR-002](../decisions/ADR-002-foundation-and-first-learning-slice.md) |
+| A-004 | Modular Monolith là kiến trúc backend chính | Accepted — [ADR-002](../decisions/ADR-002-foundation-and-first-learning-slice.md) |
 | A-005 | DDD Bounded Contexts xác định module boundary | Proposed |
 | A-006 | Hexagonal Architecture cho module nghiệp vụ phức tạp | Proposed |
-| A-007 | PostgreSQL là transactional source of truth | Accepted — [ADR-002](Adr_002_Foundation_And_First_Learning_Slice.md) |
-| A-008 | REST/OpenAPI cho client contract | Accepted — [contract baseline](../contracts/openapi/esquilospeak-learning-v1.yaml) |
+| A-007 | PostgreSQL là transactional source of truth | Accepted — [ADR-002](../decisions/ADR-002-foundation-and-first-learning-slice.md) |
+| A-008 | REST/OpenAPI cho client contract | Accepted — [contract baseline](../../contracts/openapi/esquilospeak-learning-v1.yaml) |
 | A-009 | Event-driven nội bộ có chọn lọc; broker chỉ khi đủ điều kiện | Proposed |
 | A-010 | AI/speech dùng provider adapter trước, Python service có điều kiện | Proposed |
 | A-011 | MVVM + Repository + Offline-First cho Flutter | Proposed |

@@ -74,11 +74,15 @@ public class CurriculumContentAdminService {
             jdbc.sql("""
                             insert into course_versions (
                                 course_id, version, state, source_language, target_language,
-                                locale, compatibility_version, content, owner_name,
-                                license_name, created_at, updated_at
+                                locale, compatibility_version,
+                                proficiency_framework_code, proficiency_framework_version,
+                                entry_level_code, target_level_code,
+                                content, owner_name, license_name, created_at, updated_at
                             ) values (
                                 :courseId, :version, 'draft', :sourceLanguage,
                                 :targetLanguage, :locale, :compatibilityVersion,
+                                :frameworkCode, :frameworkVersion,
+                                :entryLevelCode, :targetLevelCode,
                                 cast(:content as jsonb), :ownerName, :licenseName,
                                 :now, :now
                             )
@@ -89,6 +93,10 @@ public class CurriculumContentAdminService {
                     .param("targetLanguage", draft.targetLanguage())
                     .param("locale", draft.locale())
                     .param("compatibilityVersion", draft.compatibilityVersion())
+                    .param("frameworkCode", draft.proficiency().frameworkCode())
+                    .param("frameworkVersion", draft.proficiency().frameworkVersion())
+                    .param("entryLevelCode", draft.proficiency().entryLevelCode())
+                    .param("targetLevelCode", draft.proficiency().targetLevelCode())
                     .param("content", writeJson(coursePayload))
                     .param("ownerName", draft.owner())
                     .param("licenseName", draft.license())
@@ -101,6 +109,10 @@ public class CurriculumContentAdminService {
                                 target_language = :targetLanguage,
                                 locale = :locale,
                                 compatibility_version = :compatibilityVersion,
+                                proficiency_framework_code = :frameworkCode,
+                                proficiency_framework_version = :frameworkVersion,
+                                entry_level_code = :entryLevelCode,
+                                target_level_code = :targetLevelCode,
                                 content = cast(:content as jsonb),
                                 owner_name = :ownerName,
                                 license_name = :licenseName,
@@ -113,6 +125,10 @@ public class CurriculumContentAdminService {
                     .param("targetLanguage", draft.targetLanguage())
                     .param("locale", draft.locale())
                     .param("compatibilityVersion", draft.compatibilityVersion())
+                    .param("frameworkCode", draft.proficiency().frameworkCode())
+                    .param("frameworkVersion", draft.proficiency().frameworkVersion())
+                    .param("entryLevelCode", draft.proficiency().entryLevelCode())
+                    .param("targetLevelCode", draft.proficiency().targetLevelCode())
                     .param("content", writeJson(coursePayload))
                     .param("ownerName", draft.owner())
                     .param("licenseName", draft.license())
@@ -406,6 +422,7 @@ public class CurriculumContentAdminService {
         }
         ensureLanguageExists(draft.sourceLanguage());
         ensureLanguageExists(draft.targetLanguage());
+        ensureProficiencyExists(draft.targetLanguage(), draft.proficiency());
         requireLocalized(draft.title(), draft.locale(), "course title");
         requireLocalized(draft.description(), draft.locale(), "course description");
         if (blank(draft.owner()) || blank(draft.license()) || draft.units() == null || draft.units().isEmpty()) {
@@ -561,6 +578,7 @@ public class CurriculumContentAdminService {
         payload.put("version", version);
         payload.put("sourceLanguage", draft.sourceLanguage());
         payload.put("targetLanguage", draft.targetLanguage());
+        payload.put("proficiency", draft.proficiency());
         payload.put("locale", draft.locale());
         payload.put("title", draft.title());
         payload.put("description", draft.description());
@@ -680,6 +698,46 @@ public class CurriculumContentAdminService {
                 .single();
         if (!exists) {
             invalid("The content references an unavailable language.");
+        }
+    }
+
+    private void ensureProficiencyExists(
+            String targetLanguage, CourseProficiency proficiency) {
+        if (proficiency == null
+                || blank(proficiency.frameworkCode())
+                || blank(proficiency.frameworkVersion())
+                || blank(proficiency.entryLevelCode())
+                || blank(proficiency.targetLevelCode())) {
+            invalid("A versioned proficiency framework with entry and target levels is required.");
+        }
+        boolean exists = jdbc.sql("""
+                        select exists(
+                            select 1
+                            from proficiency_frameworks framework
+                            join proficiency_levels entry_level
+                              on entry_level.framework_code = framework.code
+                             and entry_level.framework_version = framework.version
+                             and entry_level.code = :entryLevelCode
+                            join proficiency_levels target_level
+                              on target_level.framework_code = framework.code
+                             and target_level.framework_version = framework.version
+                             and target_level.code = :targetLevelCode
+                            where framework.code = :frameworkCode
+                              and framework.version = :frameworkVersion
+                              and (framework.applies_to_language is null
+                                   or framework.applies_to_language = :targetLanguage)
+                              and entry_level.ordinal <= target_level.ordinal
+                        )
+                        """)
+                .param("entryLevelCode", proficiency.entryLevelCode())
+                .param("targetLevelCode", proficiency.targetLevelCode())
+                .param("frameworkCode", proficiency.frameworkCode())
+                .param("frameworkVersion", proficiency.frameworkVersion())
+                .param("targetLanguage", targetLanguage)
+                .query(Boolean.class)
+                .single();
+        if (!exists) {
+            invalid("The course references an unavailable or invalid proficiency range.");
         }
     }
 
@@ -808,11 +866,18 @@ public class CurriculumContentAdminService {
             String targetLanguage,
             String locale,
             int compatibilityVersion,
+            CourseProficiency proficiency,
             Map<String, String> title,
             Map<String, String> description,
             String owner,
             String license,
             List<UnitDraft> units) {}
+
+    public record CourseProficiency(
+            String frameworkCode,
+            String frameworkVersion,
+            String entryLevelCode,
+            String targetLevelCode) {}
 
     public record UnitDraft(String id, Map<String, String> title, List<LessonDraft> lessons) {}
 

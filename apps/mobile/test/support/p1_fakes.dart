@@ -1,4 +1,5 @@
 import 'package:esquilospeak_mobile/core/platform/advanced_learning_platform.dart';
+import 'package:esquilospeak_mobile/core/models/proficiency_models.dart';
 import 'package:esquilospeak_mobile/features/advanced_learning/data/p1_api_service.dart';
 import 'package:esquilospeak_mobile/features/advanced_learning/data/p1_models.dart';
 
@@ -6,6 +7,20 @@ class FakeP1Gateway implements P1Gateway {
   int activities = 0;
   bool reminderEnabled = false;
   bool premiumActive = false;
+
+  @override
+  Future<List<AdvancedActivityDefinition>> advancedActivities(
+    String courseId,
+  ) async => const [
+    AdvancedActivityDefinition(
+      id: 'activity-basic-greetings',
+      contentRef: 'lesson-basic-greetings@1',
+      mediaId: 'a1-hello',
+      expectedText: 'Hello, my name is Ana.',
+      targetLocale: 'en',
+      feedbackLocale: 'vi',
+    ),
+  ];
 
   @override
   Future<AdvancedFeedback> assessPronunciation({
@@ -52,41 +67,49 @@ class FakeP1Gateway implements P1Gateway {
             ),
           ],
     reminderEnabled: reminderEnabled,
+    reminderTime: reminderEnabled ? '19:30:00' : null,
+    timezone: 'Asia/Ho_Chi_Minh',
   );
 
   @override
-  Future<PlacementAssessment> getPlacement() async => const PlacementAssessment(
-    id: 'placement-a1-v1',
-    level: 'A1',
-    passScore: 80,
-    questions: [
-      PlacementQuestion(
-        id: 'q1',
-        prompt: 'Greeting',
-        options: ['hello', 'later', 'thanks'],
-      ),
-      PlacementQuestion(
-        id: 'q2',
-        prompt: 'Name',
-        options: ['name', 'day', 'food'],
-      ),
-      PlacementQuestion(
-        id: 'q3',
-        prompt: 'Three',
-        options: ['two', 'three', 'four'],
-      ),
-      PlacementQuestion(
-        id: 'q4',
-        prompt: 'Farewell',
-        options: ['goodbye', 'please', 'water'],
-      ),
-    ],
-  );
+  Future<PlacementAssessment> getPlacement(String courseId) async =>
+      PlacementAssessment(
+        id: 'placement-a1-v1',
+        courseId: courseId,
+        proficiency: const ProficiencyReference(
+          frameworkCode: 'cefr',
+          frameworkVersion: '2020',
+          levelCode: 'A1',
+        ),
+        passScore: 80,
+        questions: [
+          PlacementQuestion(
+            id: 'q1',
+            prompt: 'Greeting',
+            options: ['hello', 'later', 'thanks'],
+          ),
+          PlacementQuestion(
+            id: 'q2',
+            prompt: 'Name',
+            options: ['name', 'day', 'food'],
+          ),
+          PlacementQuestion(
+            id: 'q3',
+            prompt: 'Three',
+            options: ['two', 'three', 'four'],
+          ),
+          PlacementQuestion(
+            id: 'q4',
+            prompt: 'Farewell',
+            options: ['goodbye', 'please', 'water'],
+          ),
+        ],
+      );
 
   @override
   Future<EngagementStatus> recordActivity({
     required String eventType,
-    required int xpAwarded,
+    required String evidenceRef,
   }) async {
     activities++;
     return getEngagement();
@@ -101,13 +124,20 @@ class FakeP1Gateway implements P1Gateway {
   }
 
   @override
-  Future<PlacementResult> submitPlacement(List<String> answers) async =>
-      PlacementResult(
-        score: 100,
-        passed: true,
-        completedAt: DateTime.utc(2026, 7, 30),
-        hasCompletionRecord: true,
-      );
+  Future<PlacementResult> submitPlacement({
+    required String assessmentId,
+    required List<String> answers,
+  }) async => PlacementResult(
+    score: 100,
+    passed: true,
+    proficiency: const ProficiencyReference(
+      frameworkCode: 'cefr',
+      frameworkVersion: '2020',
+      levelCode: 'A1',
+    ),
+    completedAt: DateTime.utc(2026, 7, 30),
+    hasCompletionRecord: true,
+  );
 
   @override
   Future<AdvancedFeedback> textFeedback({
@@ -128,6 +158,7 @@ class FakeP1Gateway implements P1Gateway {
     required bool enabled,
     required String reminderTime,
     required String locale,
+    required String timezone,
   }) async {
     reminderEnabled = enabled;
   }
@@ -147,6 +178,8 @@ class FakeP1Gateway implements P1Gateway {
 }
 
 class FakeAdvancedLearningPlatform implements AdvancedLearningPlatform {
+  @override
+  Future<String> systemTimezone() async => 'Asia/Ho_Chi_Minh';
   bool microphoneAllowed = true;
   bool notificationAllowed = true;
   bool recording = false;

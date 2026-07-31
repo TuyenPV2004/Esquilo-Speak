@@ -15,7 +15,7 @@ abstract interface class LearningRepository {
   PendingAttempt createAttempt({
     required Lesson lesson,
     required Exercise exercise,
-    required String selectedOptionId,
+    required ExerciseResponse response,
   });
 
   Future<AttemptFeedback> submitAttempt(PendingAttempt attempt);

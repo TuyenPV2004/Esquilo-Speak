@@ -4,6 +4,21 @@ import 'package:flutter_test/flutter_test.dart';
 import '../support/p1_fakes.dart';
 
 void main() {
+  test('requires a selected course before loading placement', () async {
+    final viewModel = P1ViewModel(
+      FakeP1Gateway(),
+      FakeAdvancedLearningPlatform(),
+      closedTestingCommerceEnabled: true,
+      closedTestingProductId: 'premium-monthly',
+      selectedCourseId: () => null,
+    );
+
+    await viewModel.loadPlacement();
+
+    expect(viewModel.courseSelectionRequired, isTrue);
+    expect(viewModel.assessment, isNull);
+  });
+
   test(
     'coordinates media, recording and derived pronunciation feedback',
     () async {
@@ -13,6 +28,8 @@ void main() {
         gateway,
         platform,
         closedTestingCommerceEnabled: true,
+        closedTestingProductId: 'premium-monthly',
+        selectedCourseId: () => 'course-en-for-vi',
       );
 
       await viewModel.downloadMedia('a1-hello');
@@ -39,6 +56,8 @@ void main() {
         gateway,
         platform,
         closedTestingCommerceEnabled: true,
+        closedTestingProductId: 'premium-monthly',
+        selectedCourseId: () => 'course-en-for-vi',
       );
       await viewModel.load();
       for (final question in viewModel.assessment!.questions) {
@@ -52,6 +71,8 @@ void main() {
         locale: 'en',
         title: 'Reminder',
         body: 'Practise',
+        hour: 19,
+        minute: 30,
       );
       await viewModel.purchasePremium();
       await viewModel.refundPremium();
@@ -74,6 +95,8 @@ void main() {
         gateway,
         platform,
         closedTestingCommerceEnabled: true,
+        closedTestingProductId: 'premium-monthly',
+        selectedCourseId: () => 'course-en-for-vi',
       );
       await viewModel.load();
 
@@ -86,6 +109,8 @@ void main() {
         locale: 'en',
         title: 'Reminder',
         body: 'Practise',
+        hour: 19,
+        minute: 30,
       );
       expect(viewModel.engagement?.reminderEnabled, isFalse);
       expect(platform.reminderScheduled, isFalse);
