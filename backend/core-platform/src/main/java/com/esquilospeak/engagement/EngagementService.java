@@ -20,17 +20,24 @@ import org.springframework.http.HttpStatus;
 import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import tools.jackson.core.JacksonException;
+import tools.jackson.core.type.TypeReference;
+import tools.jackson.databind.ObjectMapper;
 
 @Service
 @Order(220)
 public class EngagementService implements AccountDataParticipant {
 
+    private static final TypeReference<Map<String, String>> LOCALIZED_TEXT = new TypeReference<>() {};
+
     private final JdbcClient jdbc;
     private final Clock clock;
+    private final ObjectMapper objectMapper;
 
-    EngagementService(JdbcClient jdbc, Clock clock) {
+    EngagementService(JdbcClient jdbc, Clock clock, ObjectMapper objectMapper) {
         this.jdbc = jdbc;
         this.clock = clock;
+        this.objectMapper = objectMapper;
     }
 
     @Transactional(readOnly = true)
@@ -50,12 +57,20 @@ public class EngagementService implements AccountDataParticipant {
                 .optional()
                 .orElse(new Profile(0, 0, 0, null));
         List<Achievement> achievements = jdbc.sql("""
-                        select code, earned_at from learner_achievements
-                        where learner_id = :learnerId order by earned_at, code
+                        select achievement.code, achievement.earned_at,
+                               policy.title::text, policy.description::text
+                        from learner_achievements achievement
+                        join engagement_achievement_policies policy
+                          on policy.code = achievement.code
+                        where achievement.learner_id = :learnerId
+                        order by achievement.earned_at, achievement.code
                         """)
                 .param("learnerId", learnerId)
                 .query((rs, rowNum) -> new Achievement(
-                        rs.getString("code"), rs.getTimestamp("earned_at").toInstant()))
+                        rs.getString("code"),
+                        readLocalizedText(rs.getString("title")),
+                        readLocalizedText(rs.getString("description")),
+                        rs.getTimestamp("earned_at").toInstant()))
                 .list();
         NotificationPreference preference = preference(learnerId);
         return new EngagementStatus(
@@ -253,6 +268,14 @@ public class EngagementService implements AccountDataParticipant {
         }
     }
 
+    private Map<String, String> readLocalizedText(String value) {
+        try {
+            return objectMapper.readValue(value, LOCALIZED_TEXT);
+        } catch (JacksonException exception) {
+            throw new IllegalStateException("Stored localized achievement text is invalid.", exception);
+        }
+    }
+
     @Override
     public String dataDomain() {
         return "engagement";
@@ -296,7 +319,11 @@ public class EngagementService implements AccountDataParticipant {
 
     private record EventPolicy(int version, int xpAwarded) {}
 
-    public record Achievement(String code, Instant earnedAt) {}
+    public record Achievement(
+            String code,
+            Map<String, String> title,
+            Map<String, String> description,
+            Instant earnedAt) {}
 
     public record NotificationPreference(
             boolean enabled, LocalTime reminderTime, String locale, String timezone, Instant updatedAt) {}

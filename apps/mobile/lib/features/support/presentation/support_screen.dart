@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../../../core/design_system/app_tokens.dart';
 import '../../../core/design_system/responsive_content.dart';
 import '../../../l10n/app_localizations.dart';
+import '../../../l10n/domain_state_localization.dart';
 import '../../advanced_learning/presentation/p1_view_model.dart';
 
 class SupportScreen extends StatefulWidget {
@@ -29,7 +30,7 @@ class _SupportScreenState extends State<SupportScreen> {
   @override
   Widget build(BuildContext context) {
     final strings = AppLocalizations.of(context);
-    final locale = Localizations.localeOf(context).languageCode;
+    final locale = Localizations.localeOf(context).toLanguageTag();
     return Scaffold(
       appBar: AppBar(title: Text(strings.supportTitle)),
       body: SafeArea(
@@ -112,7 +113,10 @@ class _SupportScreenState extends State<SupportScreen> {
                           title: Text(strings.supportSubmitted),
                           subtitle: Text(
                             strings.supportTicketStatus(
-                              widget.viewModel.supportTicket!.status,
+                              localizedSupportStatus(
+                                strings,
+                                widget.viewModel.supportTicket!.status,
+                              ),
                             ),
                           ),
                         ),

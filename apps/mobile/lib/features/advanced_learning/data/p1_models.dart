@@ -1,5 +1,7 @@
 import 'package:flutter/foundation.dart';
 
+import '../../../core/localization/localized_text.dart';
+
 import '../../../core/models/proficiency_models.dart';
 
 @immutable
@@ -73,16 +75,36 @@ class PlacementQuestion {
     required this.options,
   });
 
-  factory PlacementQuestion.fromJson(Map<String, dynamic> json) =>
-      PlacementQuestion(
+  factory PlacementQuestion.fromJson(
+    Map<String, dynamic> json,
+  ) => PlacementQuestion(
+    id: json['id'] as String,
+    prompt: localizedText(json['prompt']),
+    options: (json['options'] as List)
+        .map(
+          (item) =>
+              PlacementOption.fromJson(Map<String, dynamic>.from(item as Map)),
+        )
+        .toList(growable: false),
+  );
+
+  final String id;
+  final LocalizedText prompt;
+  final List<PlacementOption> options;
+}
+
+@immutable
+class PlacementOption {
+  const PlacementOption({required this.id, required this.text});
+
+  factory PlacementOption.fromJson(Map<String, dynamic> json) =>
+      PlacementOption(
         id: json['id'] as String,
-        prompt: json['prompt'] as String,
-        options: (json['options'] as List).cast<String>(),
+        text: localizedText(json['text']),
       );
 
   final String id;
-  final String prompt;
-  final List<String> options;
+  final LocalizedText text;
 }
 
 @immutable
@@ -90,6 +112,7 @@ class PlacementAssessment {
   const PlacementAssessment({
     required this.id,
     required this.courseId,
+    required this.defaultLocale,
     required this.proficiency,
     required this.passScore,
     required this.questions,
@@ -99,6 +122,7 @@ class PlacementAssessment {
       PlacementAssessment(
         id: json['id'] as String,
         courseId: json['courseId'] as String,
+        defaultLocale: json['defaultLocale'] as String,
         proficiency: ProficiencyReference.fromJson(
           Map<String, dynamic>.from(json['proficiency'] as Map),
         ),
@@ -114,6 +138,7 @@ class PlacementAssessment {
 
   final String id;
   final String courseId;
+  final String defaultLocale;
   final ProficiencyReference proficiency;
   final int passScore;
   final List<PlacementQuestion> questions;
@@ -149,14 +174,23 @@ class PlacementResult {
 
 @immutable
 class Achievement {
-  const Achievement({required this.code, required this.earnedAt});
+  const Achievement({
+    required this.code,
+    required this.title,
+    required this.description,
+    required this.earnedAt,
+  });
 
   factory Achievement.fromJson(Map<String, dynamic> json) => Achievement(
     code: json['code'] as String,
+    title: localizedText(json['title']),
+    description: localizedText(json['description']),
     earnedAt: DateTime.parse(json['earnedAt'] as String),
   );
 
   final String code;
+  final LocalizedText title;
+  final LocalizedText description;
   final DateTime earnedAt;
 }
 

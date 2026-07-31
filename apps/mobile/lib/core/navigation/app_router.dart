@@ -126,8 +126,10 @@ GoRouter createAppRouter(AppDependencies dependencies) => GoRouter(
             GoRoute(
               path: '/profile',
               name: 'profile',
-              builder: (context, state) =>
-                  ProfileScreen(viewModel: dependencies.profileViewModel),
+              builder: (context, state) => ProfileScreen(
+                viewModel: dependencies.profileViewModel,
+                languages: dependencies.learningViewModel.languages,
+              ),
             ),
           ],
         ),

@@ -32,7 +32,11 @@ class FakeP1Gateway implements P1Gateway {
     kind: 'pronunciation',
     transcript: expectedText,
     score: 88,
-    feedback: const {'summary': 'Clear pronunciation.'},
+    feedback: const {
+      'code': 'pronunciation.sampleAccepted',
+      'parameters': <String, dynamic>{},
+      'locale': 'en',
+    },
     provider: 'test',
     createdAt: DateTime.utc(2026, 7, 30),
   );
@@ -63,6 +67,11 @@ class FakeP1Gateway implements P1Gateway {
         : [
             Achievement(
               code: 'first-step',
+              title: {'en': 'First step', 'vi': 'Bước đầu tiên'},
+              description: {
+                'en': 'Completed the first learning activity.',
+                'vi': 'Đã hoàn thành hoạt động học đầu tiên.',
+              },
               earnedAt: DateTime.utc(2026, 7, 30),
             ),
           ],
@@ -76,6 +85,7 @@ class FakeP1Gateway implements P1Gateway {
       PlacementAssessment(
         id: 'placement-a1-v1',
         courseId: courseId,
+        defaultLocale: 'en',
         proficiency: const ProficiencyReference(
           frameworkCode: 'cefr',
           frameworkVersion: '2020',
@@ -85,23 +95,39 @@ class FakeP1Gateway implements P1Gateway {
         questions: [
           PlacementQuestion(
             id: 'q1',
-            prompt: 'Greeting',
-            options: ['hello', 'later', 'thanks'],
+            prompt: const {'en': 'Greeting', 'vi': 'Lời chào'},
+            options: const [
+              PlacementOption(id: 'hello', text: {'en': 'Hello'}),
+              PlacementOption(id: 'later', text: {'en': 'Later'}),
+              PlacementOption(id: 'thanks', text: {'en': 'Thanks'}),
+            ],
           ),
           PlacementQuestion(
             id: 'q2',
-            prompt: 'Name',
-            options: ['name', 'day', 'food'],
+            prompt: const {'en': 'Name'},
+            options: const [
+              PlacementOption(id: 'name', text: {'en': 'Name'}),
+              PlacementOption(id: 'day', text: {'en': 'Day'}),
+              PlacementOption(id: 'food', text: {'en': 'Food'}),
+            ],
           ),
           PlacementQuestion(
             id: 'q3',
-            prompt: 'Three',
-            options: ['two', 'three', 'four'],
+            prompt: const {'en': 'Three'},
+            options: const [
+              PlacementOption(id: 'two', text: {'en': 'Two'}),
+              PlacementOption(id: 'three', text: {'en': 'Three'}),
+              PlacementOption(id: 'four', text: {'en': 'Four'}),
+            ],
           ),
           PlacementQuestion(
             id: 'q4',
-            prompt: 'Farewell',
-            options: ['goodbye', 'please', 'water'],
+            prompt: const {'en': 'Farewell'},
+            options: const [
+              PlacementOption(id: 'goodbye', text: {'en': 'Goodbye'}),
+              PlacementOption(id: 'please', text: {'en': 'Please'}),
+              PlacementOption(id: 'water', text: {'en': 'Water'}),
+            ],
           ),
         ],
       );
@@ -148,7 +174,11 @@ class FakeP1Gateway implements P1Gateway {
   }) async => AdvancedFeedback(
     id: 'feedback-$kind',
     kind: kind,
-    feedback: const {'summary': 'Clear response with enough detail.'},
+    feedback: const {
+      'code': 'writing.clearResponse',
+      'parameters': {'wordCount': 6},
+      'locale': 'en',
+    },
     provider: 'test',
     createdAt: DateTime.utc(2026, 7, 30),
   );

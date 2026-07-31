@@ -17,20 +17,30 @@ import org.springframework.core.annotation.Order;
 import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import tools.jackson.core.JacksonException;
+import tools.jackson.core.type.TypeReference;
+import tools.jackson.databind.ObjectMapper;
 
 @Service
 @Order(10)
 public class ReviewSchedulerService implements AccountDataParticipant {
 
+    private static final TypeReference<Map<String, String>> LOCALIZED_TEXT = new TypeReference<>() {};
+
     private final JdbcClient jdbc;
     private final ApplicationEventPublisher events;
     private final Clock clock;
+    private final ObjectMapper objectMapper;
 
     public ReviewSchedulerService(
-            JdbcClient jdbc, ApplicationEventPublisher events, Clock clock) {
+            JdbcClient jdbc,
+            ApplicationEventPublisher events,
+            Clock clock,
+            ObjectMapper objectMapper) {
         this.jdbc = jdbc;
         this.events = events;
         this.clock = clock;
+        this.objectMapper = objectMapper;
     }
 
     @EventListener
@@ -99,11 +109,16 @@ public class ReviewSchedulerService implements AccountDataParticipant {
 
     public List<ReviewItem> dueQueue(String learnerId, int limit) {
         return jdbc.sql("""
-                        select concept_id, model_version, due_at, interval_days,
-                               ease_factor, repetitions, last_result
-                        from review_schedules
-                        where learner_id = :learnerId and due_at <= :now
-                        order by due_at, concept_id
+                        select schedule.concept_id,
+                               coalesce(concept.default_locale, 'und') as default_locale,
+                               coalesce(concept.title, jsonb_build_object('und', schedule.concept_id))::text as title,
+                               schedule.model_version,
+                               schedule.due_at, schedule.interval_days,
+                               schedule.ease_factor, schedule.repetitions, schedule.last_result
+                        from review_schedules schedule
+                        left join learning_concepts concept on concept.id = schedule.concept_id
+                        where schedule.learner_id = :learnerId and schedule.due_at <= :now
+                        order by schedule.due_at, schedule.concept_id
                         limit :limit
                         """)
                 .param("learnerId", learnerId)
@@ -111,6 +126,8 @@ public class ReviewSchedulerService implements AccountDataParticipant {
                 .param("limit", limit)
                 .query((rs, rowNum) -> new ReviewItem(
                         rs.getString("concept_id"),
+                        rs.getString("default_locale"),
+                        readLocalizedText(rs.getString("title")),
                         rs.getInt("model_version"),
                         rs.getTimestamp("due_at").toInstant(),
                         rs.getInt("interval_days"),
@@ -118,6 +135,14 @@ public class ReviewSchedulerService implements AccountDataParticipant {
                         rs.getInt("repetitions"),
                         rs.getString("last_result")))
                 .list();
+    }
+
+    private Map<String, String> readLocalizedText(String value) {
+        try {
+            return objectMapper.readValue(value, LOCALIZED_TEXT);
+        } catch (JacksonException exception) {
+            throw new IllegalStateException("Stored localized concept text is invalid.", exception);
+        }
     }
 
     private StoredSchedule find(String learnerId, String conceptId) {
@@ -144,15 +169,22 @@ public class ReviewSchedulerService implements AccountDataParticipant {
     @Override
     public Map<String, Object> exportData(UUID learnerId) {
         List<ReviewItem> items = jdbc.sql("""
-                        select concept_id, model_version, due_at, interval_days,
-                               ease_factor, repetitions, last_result
-                        from review_schedules
-                        where learner_id = :learnerId
-                        order by due_at, concept_id
+                        select schedule.concept_id,
+                               coalesce(concept.default_locale, 'und') as default_locale,
+                               coalesce(concept.title, jsonb_build_object('und', schedule.concept_id))::text as title,
+                               schedule.model_version,
+                               schedule.due_at, schedule.interval_days,
+                               schedule.ease_factor, schedule.repetitions, schedule.last_result
+                        from review_schedules schedule
+                        left join learning_concepts concept on concept.id = schedule.concept_id
+                        where schedule.learner_id = :learnerId
+                        order by schedule.due_at, schedule.concept_id
                         """)
                 .param("learnerId", learnerId.toString())
                 .query((rs, rowNum) -> new ReviewItem(
                         rs.getString("concept_id"),
+                        rs.getString("default_locale"),
+                        readLocalizedText(rs.getString("title")),
                         rs.getInt("model_version"),
                         rs.getTimestamp("due_at").toInstant(),
                         rs.getInt("interval_days"),
@@ -200,6 +232,8 @@ public class ReviewSchedulerService implements AccountDataParticipant {
 
     public record ReviewItem(
             String conceptId,
+            String defaultLocale,
+            Map<String, String> title,
             int modelVersion,
             Instant dueAt,
             int intervalDays,

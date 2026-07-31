@@ -290,7 +290,15 @@ class _FeedbackCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final summary = feedback.feedback['summary']?.toString() ?? '';
+    final strings = AppLocalizations.of(context);
+    final summary = switch (feedback.feedback['code']) {
+      'pronunciation.sampleAccepted' => strings.pronunciationSampleAccepted,
+      'writing.clearResponse' => strings.writingClearResponse,
+      'writing.addSentence' => strings.writingAddSentence,
+      'feedback.automaticEvaluationBlocked' =>
+        strings.automaticEvaluationBlocked,
+      _ => strings.feedbackUnavailable,
+    };
     return Semantics(
       key: ValueKey('${feedback.kind}-feedback'),
       liveRegion: true,
@@ -306,7 +314,7 @@ class _FeedbackCard extends StatelessWidget {
           children: [
             if (feedback.score != null)
               Text(
-                '${feedback.score!.round()}/100',
+                strings.scoreOutOf(feedback.score!.round(), 100),
                 style: Theme.of(context).textTheme.titleLarge,
               ),
             Text(summary),

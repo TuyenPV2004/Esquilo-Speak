@@ -96,20 +96,26 @@ class _OptionExerciseRenderer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final locale = Localizations.localeOf(context).languageCode;
+    final locale = Localizations.localeOf(context).toLanguageTag();
     return ListView(
       key: const ValueKey('lesson'),
       padding: const EdgeInsets.all(16),
       children: [
         Text(
-          localized(lesson.title, locale),
+          localized(lesson.title, locale, defaultLocale: lesson.locale),
           style: Theme.of(context).textTheme.headlineSmall,
         ),
         const SizedBox(height: 12),
-        Text(localized(lesson.objectives.first, locale)),
+        Text(
+          localized(
+            lesson.objectives.first,
+            locale,
+            defaultLocale: lesson.locale,
+          ),
+        ),
         const SizedBox(height: 24),
         Text(
-          localized(exercise.prompt, locale),
+          localized(exercise.prompt, locale, defaultLocale: lesson.locale),
           style: Theme.of(context).textTheme.titleLarge,
         ),
         const SizedBox(height: 12),
@@ -126,7 +132,13 @@ class _OptionExerciseRenderer extends StatelessWidget {
                     child: RadioListTile<String>(
                       key: ValueKey('option-${option.id}'),
                       value: option.id,
-                      title: Text(localized(option.text, locale)),
+                      title: Text(
+                        localized(
+                          option.text,
+                          locale,
+                          defaultLocale: lesson.locale,
+                        ),
+                      ),
                     ),
                   ),
                 )

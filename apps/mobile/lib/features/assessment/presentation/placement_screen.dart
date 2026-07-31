@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 import '../../../core/design_system/app_tokens.dart';
 import '../../../core/design_system/component_states.dart';
 import '../../../core/design_system/responsive_content.dart';
 import '../../../l10n/app_localizations.dart';
+import '../../../core/localization/localized_text.dart';
 import '../../advanced_learning/presentation/p1_view_model.dart';
 
 class PlacementScreen extends StatefulWidget {
@@ -37,6 +39,9 @@ class _PlacementScreenState extends State<PlacementScreen> {
             builder: (context, _) {
               final result = viewModel.placementResult;
               if (result != null) {
+                final formattedScore = NumberFormat.percentPattern(
+                  Localizations.localeOf(context).toLanguageTag(),
+                ).format(result.score / 100);
                 return AppMessageState(
                   key: const ValueKey('placement-result'),
                   icon: result.passed
@@ -44,11 +49,11 @@ class _PlacementScreenState extends State<PlacementScreen> {
                       : Icons.school_outlined,
                   message: result.passed
                       ? strings.placementPassed(
-                          result.score,
+                          formattedScore,
                           result.proficiency.levelCode,
                         )
                       : strings.placementNotPassed(
-                          result.score,
+                          formattedScore,
                           result.proficiency.levelCode,
                         ),
                   actionLabel: strings.tryAgain,
@@ -70,6 +75,7 @@ class _PlacementScreenState extends State<PlacementScreen> {
                 (question) =>
                     viewModel.assessmentAnswers.containsKey(question.id),
               );
+              final locale = Localizations.localeOf(context).toLanguageTag();
               return ListView(
                 key: const ValueKey('placement-assessment'),
                 padding: const EdgeInsets.symmetric(vertical: AppSpacing.md),
@@ -102,7 +108,11 @@ class _PlacementScreenState extends State<PlacementScreen> {
                               ),
                               const SizedBox(height: AppSpacing.xs),
                               Text(
-                                question.prompt,
+                                resolveLocalizedText(
+                                  question.prompt,
+                                  locale,
+                                  defaultLocale: assessment.defaultLocale,
+                                ),
                                 style: Theme.of(context).textTheme.titleLarge,
                               ),
                               const SizedBox(height: AppSpacing.sm),
@@ -122,10 +132,17 @@ class _PlacementScreenState extends State<PlacementScreen> {
                                       .map(
                                         (option) => RadioListTile<String>(
                                           key: ValueKey(
-                                            'placement-${question.id}-$option',
+                                            'placement-${question.id}-${option.id}',
                                           ),
-                                          value: option,
-                                          title: Text(option),
+                                          value: option.id,
+                                          title: Text(
+                                            resolveLocalizedText(
+                                              option.text,
+                                              locale,
+                                              defaultLocale:
+                                                  assessment.defaultLocale,
+                                            ),
+                                          ),
                                         ),
                                       )
                                       .toList(growable: false),

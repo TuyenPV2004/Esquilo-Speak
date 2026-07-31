@@ -38,7 +38,7 @@ void main() {
         jsonEncode({
           'correct': true,
           'feedback': {
-            'message': {'vi': 'Chính xác!', 'en': 'Correct!'},
+            'messageCode': 'answer.correct',
             'correctOptionId': 'option-hello',
             'explanation': {
               'vi': 'Hello là lời chào thông dụng.',

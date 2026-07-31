@@ -61,7 +61,10 @@ void main() {
       );
       await viewModel.load();
       for (final question in viewModel.assessment!.questions) {
-        viewModel.selectAssessmentAnswer(question.id, question.options.first);
+        viewModel.selectAssessmentAnswer(
+          question.id,
+          question.options.first.id,
+        );
       }
 
       await viewModel.submitPlacement();

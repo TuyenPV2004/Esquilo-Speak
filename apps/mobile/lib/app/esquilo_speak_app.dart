@@ -68,46 +68,58 @@ class _EsquiloSpeakAppState extends State<EsquiloSpeakApp> {
   Widget build(BuildContext context) {
     final router = _router;
     if (router == null) return _bootstrapApp();
-    return MaterialApp.router(
-      routerConfig: router,
-      onGenerateTitle: (context) => AppLocalizations.of(context).appTitle,
-      debugShowCheckedModeBanner: false,
-      localizationsDelegates: const [
-        AppLocalizations.delegate,
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-      ],
-      supportedLocales: AppLocalizations.supportedLocales,
-      theme: AppTheme.light(),
-      darkTheme: AppTheme.dark(),
-      themeMode: ThemeMode.system,
+    return ListenableBuilder(
+      listenable: _dependencies!.localeController,
+      builder: (context, _) => MaterialApp.router(
+        routerConfig: router,
+        locale: _dependencies!.localeController.locale,
+        onGenerateTitle: (context) => AppLocalizations.of(context).appTitle,
+        debugShowCheckedModeBanner: false,
+        localizationsDelegates: _localizationsDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
+        theme: AppTheme.light(),
+        darkTheme: AppTheme.dark(),
+        themeMode: ThemeMode.system,
+      ),
     );
   }
 
   Widget _bootstrapApp() => MaterialApp(
     debugShowCheckedModeBanner: false,
+    localizationsDelegates: _localizationsDelegates,
+    supportedLocales: AppLocalizations.supportedLocales,
     theme: AppTheme.light(),
     darkTheme: AppTheme.dark(),
-    home: Scaffold(
-      body: SafeArea(
-        child: Center(
-          child: _bootstrapError == null
-              ? Semantics(
-                  liveRegion: true,
-                  label: 'Loading EsquiloSpeak',
-                  child: const CircularProgressIndicator(),
-                )
-              : const Padding(
-                  padding: EdgeInsets.all(24),
-                  child: Text(
-                    'EsquiloSpeak could not start. Check the environment '
-                    'configuration and try again.',
-                    textAlign: TextAlign.center,
-                  ),
-                ),
-        ),
-      ),
+    home: Builder(
+      builder: (context) {
+        final strings = AppLocalizations.of(context);
+        return Scaffold(
+          body: SafeArea(
+            child: Center(
+              child: _bootstrapError == null
+                  ? Semantics(
+                      liveRegion: true,
+                      label: strings.loadingApp,
+                      child: const CircularProgressIndicator(),
+                    )
+                  : Padding(
+                      padding: const EdgeInsets.all(24),
+                      child: Text(
+                        strings.bootstrapFailure,
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+            ),
+          ),
+        );
+      },
     ),
   );
+
+  static const _localizationsDelegates = <LocalizationsDelegate<dynamic>>[
+    AppLocalizations.delegate,
+    GlobalMaterialLocalizations.delegate,
+    GlobalWidgetsLocalizations.delegate,
+    GlobalCupertinoLocalizations.delegate,
+  ];
 }

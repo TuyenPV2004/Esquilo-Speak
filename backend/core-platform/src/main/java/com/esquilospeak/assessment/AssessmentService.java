@@ -45,6 +45,7 @@ public class AssessmentService implements AccountDataParticipant {
         return new AssessmentDefinition(
                 configuration.id(),
                 configuration.courseId(),
+                configuration.defaultLocale(),
                 configuration.proficiency(),
                 configuration.passScore(),
                 configuration.questions());
@@ -191,7 +192,7 @@ public class AssessmentService implements AccountDataParticipant {
         return jdbc.sql("""
                         select assessment.id, assessment.course_id,
                                assessment.framework_code, assessment.framework_version,
-                               assessment.level_code, assessment.pass_score,
+                               assessment.level_code, assessment.pass_score, assessment.default_locale,
                                assessment.questions::text, assessment.answer_key::text
                         from placement_assessments assessment
                         join course_versions course_version
@@ -211,6 +212,7 @@ public class AssessmentService implements AccountDataParticipant {
                         rs.getString("framework_version"),
                         rs.getString("level_code"),
                         rs.getInt("pass_score"),
+                        rs.getString("default_locale"),
                         rs.getString("questions"),
                         rs.getString("answer_key")))
                 .optional()
@@ -223,7 +225,7 @@ public class AssessmentService implements AccountDataParticipant {
     private AssessmentConfiguration configuration(String assessmentId) {
         return jdbc.sql("""
                         select id, course_id, framework_code, framework_version,
-                               level_code, pass_score, questions::text, answer_key::text
+                               level_code, pass_score, default_locale, questions::text, answer_key::text
                         from placement_assessments
                         where id = :assessmentId
                         """)
@@ -235,6 +237,7 @@ public class AssessmentService implements AccountDataParticipant {
                         rs.getString("framework_version"),
                         rs.getString("level_code"),
                         rs.getInt("pass_score"),
+                        rs.getString("default_locale"),
                         rs.getString("questions"),
                         rs.getString("answer_key")))
                 .optional()
@@ -251,11 +254,13 @@ public class AssessmentService implements AccountDataParticipant {
             String frameworkVersion,
             String levelCode,
             int passScore,
+            String defaultLocale,
             String questions,
             String answerKey) {
         return new AssessmentConfiguration(
                 id,
                 courseId,
+                defaultLocale,
                 new ProficiencyReference(frameworkCode, frameworkVersion, levelCode),
                 passScore,
                 read(questions, QUESTION_LIST),
@@ -322,7 +327,9 @@ public class AssessmentService implements AccountDataParticipant {
         }
     }
 
-    public record Question(String id, String prompt, List<String> options) {}
+    public record Question(String id, Map<String, String> prompt, List<Option> options) {}
+
+    public record Option(String id, Map<String, String> text) {}
 
     public record ProficiencyReference(
             String frameworkCode, String frameworkVersion, String levelCode) {}
@@ -330,6 +337,7 @@ public class AssessmentService implements AccountDataParticipant {
     public record AssessmentDefinition(
             String id,
             String courseId,
+            String defaultLocale,
             ProficiencyReference proficiency,
             int passScore,
             List<Question> questions) {}
@@ -348,6 +356,7 @@ public class AssessmentService implements AccountDataParticipant {
     private record AssessmentConfiguration(
             String id,
             String courseId,
+            String defaultLocale,
             ProficiencyReference proficiency,
             int passScore,
             List<Question> questions,

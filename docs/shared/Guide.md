@@ -533,3 +533,11 @@ Log liên quan đã loại bỏ token, password và dữ liệu nhạy cảm:
 4. Advanced practice phải gọi `GET /courses/{courseId}/advanced-activities`; media, câu phát âm và `contentRef` lấy từ response.
 5. Engagement activity chỉ gửi `eventType` và `evidenceRef`; XP do policy server quyết định.
 6. Khi bật reminder, app phải hiện time picker và gửi giờ đã chọn cùng IANA timezone của thiết bị, không tự gán 19:30.
+7. Trong onboarding và Profile, đổi **Ngôn ngữ giao diện** giữa English/Tiếng
+   Việt rồi kiểm tra app đổi text ngay, giữ lựa chọn sau khi khởi động lại và
+   không đổi cặp ngôn ngữ học.
+8. Kiểm tra giờ nhắc dùng định dạng 12/24 giờ của locale thiết bị; phần trăm và
+   số điểm không được ghép thủ công bằng ký tự `%` hoặc `/100`.
+9. Placement hiển thị câu hỏi/đáp án theo locale nhưng vẫn chấm đúng stable
+   option ID; Review/Engagement không hiển thị raw concept/achievement code khi
+   server đã trả presentation metadata.

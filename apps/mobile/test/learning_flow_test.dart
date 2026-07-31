@@ -237,7 +237,7 @@ class FakeLearningRepository implements LearningRepository {
   Future<AttemptFeedback> submitAttempt(PendingAttempt attempt) async =>
       const AttemptFeedback(
         correct: true,
-        message: {'vi': 'Chính xác!', 'en': 'Correct!'},
+        messageCode: 'answer.correct',
         correctOptionId: 'option-hello',
         explanation: {
           'vi': 'Hello là lời chào thông dụng.',

@@ -5,6 +5,7 @@ import '../../../core/design_system/app_tokens.dart';
 import '../../../core/design_system/responsive_content.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../l10n/user_facing_failure_localization.dart';
+import '../../../l10n/ui_locale_name.dart';
 import '../data/learner_profile_models.dart';
 import 'learner_profile_view_model.dart';
 import '../../learning/data/learning_models.dart';
@@ -33,6 +34,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   String? _sourceLanguage;
   String? _targetLanguage;
   Course? _activeCourse;
+  String? _uiLocale;
 
   @override
   void initState() {
@@ -40,6 +42,14 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     if (widget.learningViewModel.languages.isEmpty) {
       widget.learningViewModel.loadCatalog();
     }
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _uiLocale ??=
+        widget.viewModel.profile?.uiLocale ??
+        Localizations.localeOf(context).toLanguageTag();
   }
 
   @override
@@ -77,6 +87,27 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                     listenable: widget.learningViewModel,
                     builder: (context, _) => Column(
                       children: [
+                        DropdownButtonFormField<String>(
+                          key: const ValueKey('interface-language'),
+                          initialValue: _supportedUiLanguage(_uiLocale),
+                          decoration: InputDecoration(
+                            labelText: strings.interfaceLanguage,
+                          ),
+                          items: AppLocalizations.supportedLocales
+                              .map(
+                                (locale) => DropdownMenuItem(
+                                  value: locale.toLanguageTag(),
+                                  child: UiLocaleName(locale),
+                                ),
+                              )
+                              .toList(growable: false),
+                          onChanged: (value) {
+                            if (value == null) return;
+                            setState(() => _uiLocale = value);
+                            widget.viewModel.previewUiLocale(value);
+                          },
+                        ),
+                        const SizedBox(height: AppSpacing.md),
                         DropdownButtonFormField<String>(
                           key: const ValueKey('source-language'),
                           initialValue: _sourceLanguage,
@@ -116,7 +147,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                                         course.title,
                                         Localizations.localeOf(
                                           context,
-                                        ).languageCode,
+                                        ).toLanguageTag(),
+                                        defaultLocale: course.locale,
                                       ),
                                     ),
                                   ),
@@ -305,7 +337,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
           child: Text(
             localized(
               language.name,
-              Localizations.localeOf(context).languageCode,
+              Localizations.localeOf(context).toLanguageTag(),
             ),
           ),
         ),
@@ -356,7 +388,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     }
     final completed = await widget.viewModel.completeOnboarding(
       ageBand: ageBand,
-      uiLocale: Localizations.localeOf(context).toLanguageTag(),
+      uiLocale: _uiLocale ?? Localizations.localeOf(context).toLanguageTag(),
       sourceLanguage: sourceLanguage,
       targetLanguage: targetLanguage,
       activeCourseId: activeCourse.id,
@@ -366,6 +398,16 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     );
     if (completed) await widget.learningViewModel.loadCatalog();
     if (completed && mounted) context.go('/home');
+  }
+
+  String _supportedUiLanguage(String? languageTag) {
+    final requestedLanguage = languageTag?.split(RegExp('[-_]')).first;
+    return AppLocalizations.supportedLocales
+        .firstWhere(
+          (locale) => locale.languageCode == requestedLanguage,
+          orElse: () => AppLocalizations.supportedLocales.first,
+        )
+        .toLanguageTag();
   }
 }
 

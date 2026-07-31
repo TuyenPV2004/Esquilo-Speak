@@ -102,7 +102,8 @@ class AdvancedLearningApiIntegrationTest {
                                 }
                                 """.formatted(UUID.randomUUID())))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.feedback.wordCount").value(5));
+                .andExpect(jsonPath("$.feedback.code").value("writing.clearResponse"))
+                .andExpect(jsonPath("$.feedback.parameters.wordCount").value(5));
     }
 
     private RequestPostProcessor learner(String subject) {

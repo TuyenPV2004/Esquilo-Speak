@@ -333,9 +333,7 @@ public class LearningService {
                 attempt.exerciseId(),
                 attempt.response());
         Feedback feedback = new Feedback(
-                attempt.correct()
-                        ? Map.of("vi", "Chính xác!", "en", "Correct!")
-                        : Map.of("vi", "Chưa chính xác. Hãy xem phần giải thích.", "en", "Not quite. Review the explanation."),
+                attempt.correct() ? "answer.correct" : "answer.incorrect",
                 answer.correctOptionId(),
                 answer.explanation());
         return new AttemptResult(
@@ -452,7 +450,7 @@ public class LearningService {
     public record Scoring(int modelVersion, int earnedPoints, int maxPoints) {}
 
     public record Feedback(
-            Map<String, String> message,
+            String messageCode,
             String correctOptionId,
             Map<String, String> explanation) {}
 

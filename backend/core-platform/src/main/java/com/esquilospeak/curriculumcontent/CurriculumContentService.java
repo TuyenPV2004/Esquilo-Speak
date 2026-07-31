@@ -83,6 +83,7 @@ public class CurriculumContentService {
                     return Map.of(
                             "id", rs.getString("id"),
                             "version", rs.getInt("version"),
+                            "locale", lesson.get("locale"),
                             "title", lesson.get("title"),
                             "estimatedMinutes", lesson.get("estimatedMinutes"));
                 })

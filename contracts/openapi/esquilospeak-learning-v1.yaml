@@ -1683,13 +1683,15 @@ components:
       additionalProperties: false
     LessonSummary:
       type: object
-      required: [id, version, title, estimatedMinutes]
+      required: [id, version, locale, title, estimatedMinutes]
       properties:
         id:
           $ref: '#/components/schemas/Identifier'
         version:
           type: integer
           minimum: 1
+        locale:
+          $ref: '#/components/schemas/Locale'
         title:
           $ref: '#/components/schemas/LocalizedText'
         estimatedMinutes:
@@ -1785,10 +1787,12 @@ components:
       additionalProperties: false
     Feedback:
       type: object
-      required: [message, correctOptionId, explanation]
+      required: [messageCode, correctOptionId, explanation]
       properties:
-        message:
-          $ref: '#/components/schemas/LocalizedText'
+        messageCode:
+          type: string
+          pattern: '^[a-z][a-z0-9]*(\.[a-z][a-z0-9]*)+$'
+          description: Stable client-localized feedback message key.
         correctOptionId:
           $ref: '#/components/schemas/Identifier'
         explanation:
@@ -1907,11 +1911,15 @@ components:
     MasteryState:
       type: object
       required:
-        [conceptId, modelVersion, score, correctEvidenceCount, evidenceCount,
+        [conceptId, defaultLocale, title, modelVersion, score, correctEvidenceCount, evidenceCount,
          lastEvidenceAt, explanation]
       properties:
         conceptId:
           $ref: '#/components/schemas/Identifier'
+        defaultLocale:
+          $ref: '#/components/schemas/Locale'
+        title:
+          $ref: '#/components/schemas/LocalizedText'
         modelVersion:
           type: integer
           minimum: 1
@@ -1935,11 +1943,15 @@ components:
     ReviewItem:
       type: object
       required:
-        [conceptId, modelVersion, dueAt, intervalDays, easeFactor, repetitions,
+        [conceptId, defaultLocale, title, modelVersion, dueAt, intervalDays, easeFactor, repetitions,
          lastResult]
       properties:
         conceptId:
           $ref: '#/components/schemas/Identifier'
+        defaultLocale:
+          $ref: '#/components/schemas/Locale'
+        title:
+          $ref: '#/components/schemas/LocalizedText'
         modelVersion:
           type: integer
           minimum: 1
@@ -2097,7 +2109,17 @@ components:
           maximum: 100
         feedback:
           type: object
-          additionalProperties: true
+          required: [code, parameters, locale]
+          properties:
+            code:
+              type: string
+              pattern: '^[a-z][A-Za-z0-9]*(\.[a-z][A-Za-z0-9]*)+$'
+            parameters:
+              type: object
+              additionalProperties: true
+            locale:
+              $ref: '#/components/schemas/Locale'
+          additionalProperties: false
         provider:
           type: string
         createdAt:
@@ -2122,12 +2144,14 @@ components:
       additionalProperties: false
     AssessmentDefinition:
       type: object
-      required: [id, courseId, proficiency, passScore, questions]
+      required: [id, courseId, defaultLocale, proficiency, passScore, questions]
       properties:
         id:
           $ref: '#/components/schemas/Identifier'
         courseId:
           $ref: '#/components/schemas/Identifier'
+        defaultLocale:
+          $ref: '#/components/schemas/Locale'
         proficiency:
           $ref: '#/components/schemas/ProficiencyReference'
         passScore:
@@ -2143,11 +2167,18 @@ components:
               id:
                 $ref: '#/components/schemas/Identifier'
               prompt:
-                type: string
+                $ref: '#/components/schemas/LocalizedText'
               options:
                 type: array
                 items:
-                  type: string
+                  type: object
+                  required: [id, text]
+                  properties:
+                    id:
+                      $ref: '#/components/schemas/Identifier'
+                    text:
+                      $ref: '#/components/schemas/LocalizedText'
+                  additionalProperties: false
             additionalProperties: false
       additionalProperties: false
     AssessmentResult:
@@ -2226,10 +2257,14 @@ components:
           type: array
           items:
             type: object
-            required: [code, earnedAt]
+            required: [code, title, description, earnedAt]
             properties:
               code:
                 $ref: '#/components/schemas/Identifier'
+              title:
+                $ref: '#/components/schemas/LocalizedText'
+              description:
+                $ref: '#/components/schemas/LocalizedText'
               earnedAt:
                 type: string
                 format: date-time

@@ -13,8 +13,9 @@ import java.util.Calendar
 
 class LearningReminderReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
-        val title = intent.getStringExtra(extraTitle) ?: "EsquiloSpeak"
-        val body = intent.getStringExtra(extraBody) ?: "Time for a small learning step."
+        val title = intent.getStringExtra(extraTitle) ?: context.getString(R.string.app_name)
+        val body = intent.getStringExtra(extraBody)
+            ?: context.getString(R.string.learning_reminder_body)
         createChannel(context)
         val manager = context.getSystemService(NotificationManager::class.java)
         if (manager.areNotificationsEnabled()) {
@@ -35,13 +36,11 @@ class LearningReminderReceiver : BroadcastReceiver() {
             )
         }
         val preferences = context.getSharedPreferences(preferencesName, Context.MODE_PRIVATE)
-        LearningReminderScheduler.schedule(
-            context,
-            preferences.getInt(extraHour, 19),
-            preferences.getInt(extraMinute, 30),
-            title,
-            body,
-        )
+        val hour = preferences.getInt(extraHour, -1)
+        val minute = preferences.getInt(extraMinute, -1)
+        if (hour in 0..23 && minute in 0..59) {
+            LearningReminderScheduler.schedule(context, hour, minute, title, body)
+        }
     }
 
     private fun createChannel(context: Context) {
@@ -50,7 +49,7 @@ class LearningReminderReceiver : BroadcastReceiver() {
         manager.createNotificationChannel(
             NotificationChannel(
                 channelId,
-                "Learning reminders",
+                context.getString(R.string.learning_reminder_channel),
                 NotificationManager.IMPORTANCE_DEFAULT,
             ),
         )
@@ -106,12 +105,12 @@ object LearningReminderScheduler {
         )
         val title = preferences.getString(
             LearningReminderReceiver.extraTitle,
-            "EsquiloSpeak",
-        ) ?: "EsquiloSpeak"
+            context.getString(R.string.app_name),
+        ) ?: context.getString(R.string.app_name)
         val body = preferences.getString(
             LearningReminderReceiver.extraBody,
-            "Time for a small learning step.",
-        ) ?: "Time for a small learning step."
+            context.getString(R.string.learning_reminder_body),
+        ) ?: context.getString(R.string.learning_reminder_body)
         context.getSystemService(AlarmManager::class.java).cancel(
             pendingIntent(context, title, body),
         )

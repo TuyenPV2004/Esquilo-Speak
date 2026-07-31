@@ -54,7 +54,9 @@ void main() {
 
     for (final question in viewModel.assessment!.questions) {
       final answer = question.options.first;
-      final finder = find.byKey(ValueKey('placement-${question.id}-$answer'));
+      final finder = find.byKey(
+        ValueKey('placement-${question.id}-${answer.id}'),
+      );
       await _scrollTo(tester, finder);
       await tester.tap(finder);
       await tester.pump();
@@ -122,7 +124,7 @@ void main() {
 
     await _scrollTo(tester, find.byKey(const ValueKey('support-success')));
     expect(find.byKey(const ValueKey('support-success')), findsOneWidget);
-    expect(find.text('Status: open'), findsOneWidget);
+    expect(find.text('Status: Open'), findsOneWidget);
   });
 
   testWidgets('hub provides all five discoverable P1 destinations', (

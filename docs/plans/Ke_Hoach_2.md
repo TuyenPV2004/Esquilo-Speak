@@ -98,13 +98,18 @@ của course tiếng Anh đầu tiên, không phải enum hoặc nhánh logic to
   database foreign key.
 - [x] Placement definition, attempt và completion record giữ nguyên framework
   version/level code của evidence.
-- [ ] Contract và Flutter consumer đọc proficiency reference động, không dùng
-  `const: A1` hoặc chuỗi A1 trong logic. Implementation và contract lint đã
-  hoàn tất; chỉ đánh dấu xong sau khi Flutter analyzer/test chạy lại với SDK.
+- [x] Contract và Flutter consumer đọc proficiency reference động, không dùng
+  `const: A1` hoặc chuỗi A1 trong logic; OpenAPI lint, Flutter analyzer và toàn
+  bộ Flutter test đã pass ngày 2026-07-31.
 - [x] Seed CEFR/A1 cho course `vi → en` hiện tại nhưng cho phép bổ sung A2, B1
   hoặc framework khác mà không sửa application code.
-- [ ] Chọn source/target language và active course từ learner state thay vì
+- [x] Chọn source/target language và active course từ learner state thay vì
   mặc định cố định `vi → en` trong learner journey.
+- [x] Tách `uiLocale` khỏi source/target language; app cho phép đổi ngôn ngữ
+  giao diện độc lập và giữ BCP 47 language tag trong profile/cache.
+- [x] Nội dung placement, feedback, concept và achievement dùng localized
+  metadata hoặc message code từ contract, không hiển thị raw domain ID/code
+  trong luồng production thông thường.
 - [ ] Chốt learner persona, nhu cầu giao tiếp và phạm vi loại trừ của course A1.
 - [ ] Chốt course outcome và can-do outcome cho từng unit theo CEFR phù hợp.
 - [ ] Thiết kế 4 unit, khoảng 20 lesson và checkpoint của từng unit.

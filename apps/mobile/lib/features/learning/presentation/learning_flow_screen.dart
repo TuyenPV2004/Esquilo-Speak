@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 import '../../../core/design_system/app_tokens.dart';
 import '../../../core/design_system/component_states.dart';
@@ -84,6 +85,7 @@ class LearningFlowScreen extends StatelessWidget {
         onSelected: viewModel.chooseLesson,
         actionLabel: strings.startLesson,
         emptyLabel: strings.empty,
+        strings: strings,
       ),
       LearningStep.lesson => ExerciseRendererRegistry(
         lesson: viewModel.selectedLesson!,
@@ -119,7 +121,7 @@ class LearningFlowScreen extends StatelessWidget {
 }
 
 String _locale(BuildContext context) =>
-    Localizations.localeOf(context).languageCode;
+    Localizations.localeOf(context).toLanguageTag();
 
 class _Catalog extends StatelessWidget {
   const _Catalog({
@@ -191,11 +193,21 @@ class _Courses extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 Text(
-                  localized(course.title, _locale(context)),
+                  localized(
+                    course.title,
+                    _locale(context),
+                    defaultLocale: course.locale,
+                  ),
                   style: Theme.of(context).textTheme.titleLarge,
                 ),
                 const SizedBox(height: 8),
-                Text(localized(course.description, _locale(context))),
+                Text(
+                  localized(
+                    course.description,
+                    _locale(context),
+                    defaultLocale: course.locale,
+                  ),
+                ),
                 const SizedBox(height: 16),
                 FilledButton(
                   key: ValueKey('course-${course.id}'),
@@ -217,12 +229,14 @@ class _Lessons extends StatelessWidget {
     required this.onSelected,
     required this.actionLabel,
     required this.emptyLabel,
+    required this.strings,
   });
 
   final List<LessonSummary> lessons;
   final ValueChanged<LessonSummary> onSelected;
   final String actionLabel;
   final String emptyLabel;
+  final AppLocalizations strings;
 
   @override
   Widget build(BuildContext context) {
@@ -237,8 +251,14 @@ class _Lessons extends StatelessWidget {
         return Card(
           child: ListTile(
             minTileHeight: 72,
-            title: Text(localized(lesson.title, _locale(context))),
-            subtitle: Text('${lesson.estimatedMinutes} min'),
+            title: Text(
+              localized(
+                lesson.title,
+                _locale(context),
+                defaultLocale: lesson.locale,
+              ),
+            ),
+            subtitle: Text(strings.minutesShort(lesson.estimatedMinutes)),
             trailing: TextButton(
               key: ValueKey('lesson-${lesson.id}'),
               onPressed: () => onSelected(lesson),
@@ -265,6 +285,7 @@ class _Feedback extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final locale = _locale(context);
+    final strings = AppLocalizations.of(context);
     final color = feedback.correct
         ? Theme.of(context).colorScheme.primaryContainer
         : Theme.of(context).colorScheme.errorContainer;
@@ -283,10 +304,11 @@ class _Feedback extends StatelessWidget {
                 children: [
                   Icon(feedback.correct ? Icons.check_circle : Icons.info),
                   const SizedBox(height: 12),
-                  Text(
-                    localized(feedback.message, locale),
-                    style: Theme.of(context).textTheme.titleLarge,
-                  ),
+                  Text(switch (feedback.messageCode) {
+                    'answer.correct' => strings.answerCorrect,
+                    'answer.incorrect' => strings.answerIncorrect,
+                    _ => strings.feedbackUnavailable,
+                  }, style: Theme.of(context).textTheme.titleLarge),
                   const SizedBox(height: 12),
                   Text(localized(feedback.explanation, locale)),
                 ],
@@ -321,7 +343,9 @@ class _Progress extends StatelessWidget {
         padding: const EdgeInsets.all(24),
         child: Semantics(
           label: summary,
-          value: '${(value * 100).round()}%',
+          value: NumberFormat.percentPattern(
+            Localizations.localeOf(context).toLanguageTag(),
+          ).format(value),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [

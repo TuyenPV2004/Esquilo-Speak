@@ -274,8 +274,8 @@ class IdentityProfileApiIntegrationTest {
                         .with(owner))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.state").value("completed"))
-                .andExpect(jsonPath("$.artifact.identityProfile.profile.sourceLanguage")
-                        .value("vi"))
+                .andExpect(jsonPath("$.artifact.identityProfile.profile.actorType")
+                        .value("GUEST"))
                 .andExpect(jsonPath("$.artifact.learning.attempts.length()").value(1));
 
         mockMvc.perform(get("/api/mobile/v1/me/privacy/requests/{requestId}", requestId)

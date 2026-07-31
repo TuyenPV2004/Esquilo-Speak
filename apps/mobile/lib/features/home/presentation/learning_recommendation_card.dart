@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 import '../../../core/design_system/app_tokens.dart';
+import '../../../core/localization/localized_text.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../review/data/learning_insights_models.dart';
 
@@ -19,7 +21,10 @@ class LearningRecommendationCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final strings = AppLocalizations.of(context);
-    final copy = _copy(strings);
+    final copy = _copy(
+      strings,
+      Localizations.localeOf(context).toLanguageTag(),
+    );
     final opensReview =
         recommendation.kind == LearningRecommendationKind.reviewDue;
     return Card(
@@ -65,17 +70,25 @@ class LearningRecommendationCard extends StatelessWidget {
     );
   }
 
-  _RecommendationCopy _copy(AppLocalizations strings) {
-    final conceptId = recommendation.conceptId ?? '';
+  _RecommendationCopy _copy(AppLocalizations strings, String locale) {
+    final conceptTitle = recommendation.conceptTitle == null
+        ? ''
+        : resolveLocalizedText(
+            recommendation.conceptTitle!,
+            locale,
+            defaultLocale: recommendation.defaultLocale,
+          );
     return switch (recommendation.kind) {
       LearningRecommendationKind.reviewDue => _RecommendationCopy(
-        strings.recommendedReviewTitle(conceptId),
+        strings.recommendedReviewTitle(conceptTitle),
         strings.recommendedReviewReason,
       ),
       LearningRecommendationKind.strengthenWeakConcept => _RecommendationCopy(
-        strings.recommendedPracticeTitle(conceptId),
+        strings.recommendedPracticeTitle(conceptTitle),
         strings.recommendedPracticeReason(
-          ((recommendation.masteryScore ?? 0) * 100).round(),
+          NumberFormat.percentPattern(
+            locale,
+          ).format(recommendation.masteryScore ?? 0),
         ),
       ),
       LearningRecommendationKind.continueLearning => _RecommendationCopy(

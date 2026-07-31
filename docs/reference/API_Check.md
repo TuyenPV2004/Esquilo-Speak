@@ -29,6 +29,26 @@ File này là bản giải thích dễ đọc cho con người, không thay th�
 | Chống gửi trùng | Các API có ghi `Idempotency-Key` phải dùng lại cùng key khi retry cùng một request; không tái sử dụng key cho payload khác |
 | Lỗi API | Lỗi chuẩn dùng `application/problem+json`; khi báo lỗi nên giữ status, error code và correlation ID nhưng loại bỏ token/dữ liệu nhạy cảm |
 
+### 2.1. Quy ước locale và nội dung trình bày
+
+- `uiLocale` là ngôn ngữ giao diện; `sourceLanguage` là ngôn ngữ người học hiểu;
+  `targetLanguage` là ngôn ngữ đang học. Ba giá trị có vai trò độc lập.
+- Locale truyền qua API dùng BCP 47 language tag. Client ưu tiên exact tag, sau
+  đó language match, rồi `defaultLocale` của chính entity; không có fallback
+  toàn cục cố định sang tiếng Anh.
+- Course, lesson, placement question/option, concept và achievement trả
+  `LocalizedText`. Placement option dùng `id` ổn định để chấm, không gửi lại text.
+- Attempt feedback và advanced feedback trả stable message `code`; mobile ánh xạ
+  code sang ARB của ngôn ngữ giao diện. Parameters chỉ chứa dữ liệu để định dạng.
+- Trạng thái support/privacy là domain code; mobile đổi sang nhãn đã dịch trước
+  khi hiển thị.
+
+Căn cứ kỹ thuật: [Flutter internationalization](https://docs.flutter.dev/ui/internationalization),
+[Android localization](https://developer.android.com/guide/topics/resources/localization),
+[Unicode Locale Identifiers and matching](https://www.unicode.org/reports/tr35/tr35.html),
+[Dart `DateFormat`](https://api.flutter.dev/flutter/package-intl_intl/DateFormat-class.html)
+và [`NumberFormat`](https://api.flutter.dev/flutter/package-intl_intl/NumberFormat-class.html).
+
 Trong môi trường local, app lấy guest JWT từ `POST /internal/dev/token`. Endpoint này chỉ
 phục vụ phát triển, không được xem là API production.
 
@@ -199,6 +219,12 @@ Ma trận thao tác kiểm thử A01–O04 và API mong đợi nằm trong
 - `POST /api/mobile/v1/engagement/activities` nhận `eventType` và `evidenceRef`; server chọn XP theo policy version thay vì tin điểm do client gửi.
 - `PUT /api/mobile/v1/engagement/notification-preference` nhận giờ, locale và IANA timezone; streak được tính theo ngày học tại timezone đó.
 - Profile trước onboarding có thể chưa có locale/cặp ngôn ngữ/course. `PUT /me/profile` bắt buộc active course đã publish và khớp source/target.
+- Placement trả `defaultLocale`, prompt/option đa locale và stable option ID.
+  Attempt chỉ gửi option ID.
+- Attempt feedback trả `messageCode`; advanced feedback trả `code`, `parameters`
+  và `locale`, không trả câu tiếng Anh dùng trực tiếp làm UI.
+- Mastery/review/achievement trả title/description đa locale để client không hiện
+  raw concept hoặc achievement code trong luồng thông thường.
 
 ## 7. Checklist khi chỉnh sửa API
 

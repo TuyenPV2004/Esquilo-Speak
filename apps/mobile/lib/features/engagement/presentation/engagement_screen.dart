@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../../../core/design_system/app_tokens.dart';
 import '../../../core/design_system/component_states.dart';
 import '../../../core/design_system/responsive_content.dart';
+import '../../../core/localization/localized_text.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../l10n/user_facing_failure_localization.dart';
 import '../../advanced_learning/presentation/p1_view_model.dart';
@@ -15,7 +16,7 @@ class EngagementScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final strings = AppLocalizations.of(context);
-    final locale = Localizations.localeOf(context).languageCode;
+    final locale = Localizations.localeOf(context).toLanguageTag();
     return Scaffold(
       appBar: AppBar(title: Text(strings.engagementTitle)),
       body: SafeArea(
@@ -68,7 +69,11 @@ class EngagementScreen extends StatelessWidget {
                       key: const ValueKey('reminder-toggle'),
                       title: Text(strings.learningReminder),
                       subtitle: Text(
-                        status.reminderTime ?? strings.reminderSchedule,
+                        _timeOfDay(status.reminderTime) == null
+                            ? strings.reminderSchedule
+                            : MaterialLocalizations.of(context).formatTimeOfDay(
+                                _timeOfDay(status.reminderTime)!,
+                              ),
                       ),
                       value: status.reminderEnabled,
                       onChanged: viewModel.busy
@@ -105,11 +110,13 @@ class EngagementScreen extends StatelessWidget {
                         child: ListTile(
                           leading: const Icon(Icons.emoji_events_outlined),
                           title: Text(
-                            achievement.code == 'first-step'
-                                ? strings.firstStepAchievement
-                                : achievement.code == 'seven-day-streak'
-                                ? strings.sevenDayAchievement
-                                : achievement.code,
+                            resolveLocalizedText(achievement.title, locale),
+                          ),
+                          subtitle: Text(
+                            resolveLocalizedText(
+                              achievement.description,
+                              locale,
+                            ),
                           ),
                         ),
                       ),
@@ -130,13 +137,7 @@ class EngagementScreen extends StatelessWidget {
     String locale,
     AppLocalizations strings,
   ) async {
-    final currentParts = currentValue?.split(':');
-    final initial = currentParts != null && currentParts.length >= 2
-        ? TimeOfDay(
-            hour: int.parse(currentParts[0]),
-            minute: int.parse(currentParts[1]),
-          )
-        : TimeOfDay.now();
+    final initial = _timeOfDay(currentValue) ?? TimeOfDay.now();
     final selected = enabled
         ? await showTimePicker(context: context, initialTime: initial)
         : initial;
@@ -149,6 +150,17 @@ class EngagementScreen extends StatelessWidget {
       hour: selected.hour,
       minute: selected.minute,
     );
+  }
+
+  TimeOfDay? _timeOfDay(String? value) {
+    final parts = value?.split(':');
+    if (parts == null || parts.length < 2) return null;
+    final hour = int.tryParse(parts[0]);
+    final minute = int.tryParse(parts[1]);
+    if (hour == null || minute == null || hour > 23 || minute > 59) {
+      return null;
+    }
+    return TimeOfDay(hour: hour, minute: minute);
   }
 }
 

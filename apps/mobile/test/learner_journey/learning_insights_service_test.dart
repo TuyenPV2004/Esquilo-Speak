@@ -26,6 +26,8 @@ void main() {
           'items': [
             {
               'conceptId': 'greeting.hello',
+              'defaultLocale': 'en',
+              'title': {'en': 'Hello greeting'},
               'modelVersion': 1,
               'score': 1.0,
               'correctEvidenceCount': 1,
@@ -41,6 +43,8 @@ void main() {
         'items': [
           {
             'conceptId': 'greeting.hello',
+            'defaultLocale': 'en',
+            'title': {'en': 'Hello greeting'},
             'modelVersion': 1,
             'dueAt': '2026-07-30T00:00:00Z',
             'intervalDays': 1,
@@ -146,6 +150,8 @@ Future<LearningInsights> _loadInsights({
 
 Map<String, dynamic> _mastery(String conceptId, double score) => {
   'conceptId': conceptId,
+  'defaultLocale': 'en',
+  'title': {'en': conceptId},
   'modelVersion': 1,
   'score': score,
   'correctEvidenceCount': score == 1 ? 1 : 0,

@@ -77,3 +77,8 @@ Kế hoạch bám theo Giai đoạn 1–3 và các dependency engagement/commerc
 
 - Rule hạn chế hardcode: đã được developer yêu cầu bổ sung.
 - Thay đổi application/contract/schema/migration: developer đã phê duyệt; triển khai và quality gate đang được thực hiện.
+- Slice i18n/l10n và presentation metadata: đã hoàn tất ngày 2026-07-31 với
+  Flyway V12, OpenAPI lint, backend test, Flutter analyzer/test và Android debug
+  APK. Các policy sản phẩm còn lại như goal catalog, daily-session composer và
+  recommendation strategy tiếp tục thuộc Giai đoạn 5 của `Ke_Hoach_2.md`, không
+  được giả lập thành cấu hình locale.
