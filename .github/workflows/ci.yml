@@ -262,6 +262,12 @@ jobs:
         working-directory: apps/mobile
         run: flutter pub get
 
+      - name: Prebuild Android debug APK
+        working-directory: apps/mobile
+        run: >-
+          flutter build apk --debug --flavor local
+          --dart-define=ESQUILO_ENV=local
+
       - name: Start backend
         working-directory: backend/core-platform
         run: |
@@ -292,9 +298,19 @@ jobs:
         with:
           api-level: 35
           arch: x86_64
-          profile: pixel_7_pro
+          profile: pixel_2
+          cores: 2
+          ram-size: 2048M
+          heap-size: 512M
+          cmake: 3.22.1
+          emulator-options: >-
+            -no-window -gpu swiftshader_indirect -no-snapshot -noaudio
+            -no-boot-anim -camera-back none -camera-front none
+            -feature -Vulkan
+          disable-animations: true
           script: >-
             cd apps/mobile &&
             flutter test integration_test/learning_flow_integration_test.dart
+            --no-pub
             --flavor local --dart-define=ESQUILO_ENV=local
             -d emulator-5554
