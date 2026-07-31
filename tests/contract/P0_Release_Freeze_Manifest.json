@@ -1,0 +1,11 @@
+{
+  "release": "p0-android-0.4.0",
+  "openapi": {
+    "path": "contracts/openapi/esquilospeak-learning-v1-0.4.0.yaml",
+    "version": "0.4.0",
+    "sha256": "6b070c22281847f395a77b85902d5c39ab2b98693df881a20c87fc7ca6bc2037"
+  },
+  "fixtures": {
+    "P0_Android_Integration.json": "e1ff0ef7d9486ecd180be9e68ab00197a31f95db71d145ce0a7c29f6a37c3eed"
+  }
+}

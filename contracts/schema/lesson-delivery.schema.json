@@ -1,0 +1,133 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.esquilospeak.com/content/lesson-delivery.schema.json",
+  "title": "Learner lesson delivery",
+  "description": "Published learner-safe lesson payload without answers or explanations.",
+  "type": "object",
+  "required": [
+    "id",
+    "courseId",
+    "courseVersion",
+    "unitId",
+    "locale",
+    "version",
+    "title",
+    "objectives",
+    "estimatedMinutes",
+    "exercises"
+  ],
+  "properties": {
+    "id": { "$ref": "common.schema.json#/$defs/identifier" },
+    "courseId": { "$ref": "common.schema.json#/$defs/identifier" },
+    "courseVersion": { "type": "integer", "minimum": 1 },
+    "unitId": { "$ref": "common.schema.json#/$defs/identifier" },
+    "locale": { "$ref": "common.schema.json#/$defs/locale" },
+    "version": { "type": "integer", "minimum": 1 },
+    "title": { "$ref": "common.schema.json#/$defs/localizedText" },
+    "objectives": {
+      "type": "array",
+      "items": { "$ref": "common.schema.json#/$defs/localizedText" },
+      "minItems": 1
+    },
+    "estimatedMinutes": { "type": "integer", "minimum": 1, "maximum": 120 },
+    "exercises": {
+      "type": "array",
+      "items": {
+        "oneOf": [
+          { "$ref": "#/$defs/multipleChoiceExercise" },
+          { "$ref": "#/$defs/trueFalseExercise" }
+        ]
+      },
+      "minItems": 1
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "exerciseBase": {
+      "type": "object",
+      "required": ["id", "type", "prompt", "skill", "conceptIds"],
+      "properties": {
+        "id": { "$ref": "common.schema.json#/$defs/identifier" },
+        "type": { "type": "string" },
+        "prompt": { "$ref": "common.schema.json#/$defs/localizedText" },
+        "skill": {
+          "type": "string",
+          "enum": ["reading", "listening", "writing", "speaking", "vocabulary", "grammar"]
+        },
+        "conceptIds": {
+          "type": "array",
+          "items": { "$ref": "common.schema.json#/$defs/identifier" },
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "media": { "$ref": "common.schema.json#/$defs/mediaMetadata" }
+      }
+    },
+    "multipleChoiceExercise": {
+      "allOf": [
+        { "$ref": "#/$defs/exerciseBase" },
+        {
+          "type": "object",
+          "required": ["options"],
+          "properties": {
+            "type": { "const": "multiple_choice" },
+            "options": {
+              "type": "array",
+              "items": { "$ref": "#/$defs/exerciseOption" },
+              "minItems": 2,
+              "uniqueItems": true
+            }
+          }
+        }
+      ],
+      "unevaluatedProperties": false
+    },
+    "trueFalseExercise": {
+      "allOf": [
+        { "$ref": "#/$defs/exerciseBase" },
+        {
+          "type": "object",
+          "required": ["options"],
+          "properties": {
+            "type": { "const": "true_false" },
+            "options": {
+              "type": "array",
+              "prefixItems": [
+                {
+                  "type": "object",
+                  "properties": {
+                    "id": { "const": "true" },
+                    "text": { "$ref": "common.schema.json#/$defs/localizedText" }
+                  },
+                  "required": ["id", "text"],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "id": { "const": "false" },
+                    "text": { "$ref": "common.schema.json#/$defs/localizedText" }
+                  },
+                  "required": ["id", "text"],
+                  "additionalProperties": false
+                }
+              ],
+              "minItems": 2,
+              "maxItems": 2
+            }
+          }
+        }
+      ],
+      "unevaluatedProperties": false
+    },
+    "exerciseOption": {
+      "type": "object",
+      "required": ["id", "text"],
+      "properties": {
+        "id": { "$ref": "common.schema.json#/$defs/identifier" },
+        "text": { "$ref": "common.schema.json#/$defs/localizedText" }
+      },
+      "additionalProperties": false
+    }
+  }
+}

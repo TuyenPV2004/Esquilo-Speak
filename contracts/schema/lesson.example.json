@@ -1,6 +1,9 @@
 {
   "id": "lesson-basic-greetings",
   "courseId": "course-en-for-vi",
+  "courseVersion": 1,
+  "unitId": "unit-foundation",
+  "locale": "vi",
   "title": {
     "vi": "Lời chào cơ bản",
     "en": "Basic greetings"
@@ -44,11 +47,5 @@
       "skill": "vocabulary",
       "conceptIds": ["concept-basic-greetings"]
     }
-  ],
-  "metadata": {
-    "version": 1,
-    "status": "draft",
-    "owner": "EsquiloSpeak content team",
-    "license": "Proprietary"
-  }
+  ]
 }

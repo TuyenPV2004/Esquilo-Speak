@@ -1,11 +1,14 @@
 openapi: 3.1.1
 info:
   title: EsquiloSpeak Learning API
-  version: 0.1.0
+  version: 0.5.0
   description: >-
-    Contract for the first vertical slice: discover a course, load a lesson,
-    submit a multiple-choice attempt, receive feedback, and read progress.
-    Authentication token issuance and mastery scheduling are outside this slice.
+    Mobile contract for identity/profile onboarding and the first learning
+    vertical slice: resolve a guest or account learner, manage profile and
+    consent, merge guest progress, request privacy workflows, discover a
+    course, load a lesson, submit an append-only attempt, read explainable
+    mastery and review schedules, and reconcile offline mutations. Account
+    authentication remains owned by an external OIDC provider.
   contact:
     name: EsquiloSpeak
 servers:
@@ -13,8 +16,21 @@ servers:
     description: Local development
 tags:
   - name: Catalog
+  - name: Identity
+  - name: Profile
+  - name: Consent
+  - name: Privacy
+  - name: Content Admin
   - name: Learning
   - name: Progress
+  - name: Mastery
+  - name: Review
+  - name: Sync
+  - name: Advanced Learning
+  - name: Assessment
+  - name: Engagement
+  - name: Commerce
+  - name: Support
 paths:
   /api/mobile/v1/languages:
     get:
@@ -22,6 +38,8 @@ paths:
       operationId: listLearningLanguages
       summary: List enabled learning languages
       security: []
+      parameters:
+        - $ref: '#/components/parameters/CorrelationId'
       responses:
         '200':
           description: Enabled languages
@@ -44,6 +62,7 @@ paths:
       summary: List published courses for a language pair
       security: []
       parameters:
+        - $ref: '#/components/parameters/CorrelationId'
         - name: sourceLanguage
           in: query
           required: true
@@ -76,6 +95,7 @@ paths:
       summary: List published lesson versions in course order
       security: []
       parameters:
+        - $ref: '#/components/parameters/CorrelationId'
         - $ref: '#/components/parameters/CourseId'
       responses:
         '200':
@@ -101,6 +121,7 @@ paths:
       summary: Get an immutable published lesson version
       security: []
       parameters:
+        - $ref: '#/components/parameters/CorrelationId'
         - $ref: '#/components/parameters/LessonId'
         - name: version
           in: query
@@ -120,7 +141,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: ../schema/lesson.schema.json
+                $ref: ../schema/lesson-delivery.schema.json
         '404':
           $ref: '#/components/responses/ErrorResponse'
         default:
@@ -137,6 +158,7 @@ paths:
       security:
         - bearerAuth: []
       parameters:
+        - $ref: '#/components/parameters/CorrelationId'
         - $ref: '#/components/parameters/IdempotencyKey'
       requestBody:
         required: true
@@ -173,6 +195,7 @@ paths:
       security:
         - bearerAuth: []
       parameters:
+        - $ref: '#/components/parameters/CorrelationId'
         - $ref: '#/components/parameters/CourseId'
       responses:
         '200':
@@ -187,6 +210,926 @@ paths:
           $ref: '#/components/responses/ErrorResponse'
         default:
           $ref: '#/components/responses/ErrorResponse'
+  /api/mobile/v1/learning-sessions:
+    post:
+      tags: [Learning]
+      operationId: startLearningSession
+      summary: Start an idempotent learning session against one content version
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/CorrelationId'
+        - $ref: '#/components/parameters/IdempotencyKey'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StartLearningSession'
+      responses:
+        '200':
+          description: Canonical learning session
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LearningSession'
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+  /api/mobile/v1/learning-sessions/{sessionId}/completion:
+    post:
+      tags: [Learning]
+      operationId: completeLearningSession
+      summary: Complete a learning session idempotently
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/CorrelationId'
+        - name: sessionId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Completed learning session
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LearningSession'
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+  /api/mobile/v1/mastery:
+    get:
+      tags: [Mastery]
+      operationId: listMasteryStates
+      summary: List versioned and explainable mastery states
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/CorrelationId'
+      responses:
+        '200':
+          description: Current mastery state
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [modelVersion, items]
+                properties:
+                  modelVersion:
+                    type: integer
+                    minimum: 1
+                  items:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/MasteryState'
+                additionalProperties: false
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+  /api/mobile/v1/reviews:
+    get:
+      tags: [Review]
+      operationId: listDueReviews
+      summary: List review items due at the server clock
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/CorrelationId'
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+            default: 20
+      responses:
+        '200':
+          description: Due review queue
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReviewQueue'
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+  /api/mobile/v1/sync/push:
+    post:
+      tags: [Sync]
+      operationId: pushOfflineMutations
+      summary: Push an ordered batch of retry-safe offline mutations
+      description: >-
+        attempt.submit is append-only. A stale baseCursor is rebased and never
+        overwrites accepted attempts. Reusing a clientMutationId with a
+        different canonical payload returns 409.
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/CorrelationId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SyncPushRequest'
+      responses:
+        '200':
+          description: Canonical mutation results and next pull cursor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SyncPushResult'
+        '409':
+          $ref: '#/components/responses/ErrorResponse'
+        '422':
+          $ref: '#/components/responses/ErrorResponse'
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+  /api/mobile/v1/sync/pull:
+    get:
+      tags: [Sync]
+      operationId: pullLearningChanges
+      summary: Pull canonical learner changes after an opaque cursor
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/CorrelationId'
+        - name: cursor
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+            default: 50
+      responses:
+        '200':
+          description: One page of canonical changes, including tombstones
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SyncPullResult'
+        '400':
+          $ref: '#/components/responses/ErrorResponse'
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+  /api/mobile/v1/me/profile:
+    get:
+      tags: [Profile]
+      operationId: getLearnerProfile
+      summary: Get the current guest or account learner profile
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/CorrelationId'
+      responses:
+        '200':
+          description: Current learner profile
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LearnerProfile'
+        '401':
+          $ref: '#/components/responses/ErrorResponse'
+        '403':
+          $ref: '#/components/responses/ErrorResponse'
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+    put:
+      tags: [Profile]
+      operationId: replaceLearnerProfile
+      summary: Complete or replace profile and onboarding choices
+      description: >-
+        Account learners must complete an age band before learning data can be
+        synchronized. Under-16 accounts require a separately approved guardian
+        consent flow and are rejected in P0.
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/CorrelationId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProfileUpdate'
+      responses:
+        '200':
+          description: Updated learner profile
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LearnerProfile'
+        '400':
+          $ref: '#/components/responses/ErrorResponse'
+        '401':
+          $ref: '#/components/responses/ErrorResponse'
+        '403':
+          $ref: '#/components/responses/ErrorResponse'
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+  /api/mobile/v1/me/consents:
+    get:
+      tags: [Consent]
+      operationId: listCurrentConsents
+      summary: List the latest record for every consent purpose
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/CorrelationId'
+      responses:
+        '200':
+          description: Current consent records
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [items]
+                properties:
+                  items:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ConsentRecord'
+                additionalProperties: false
+        '401':
+          $ref: '#/components/responses/ErrorResponse'
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+  /api/mobile/v1/me/consents/{purpose}:
+    put:
+      tags: [Consent]
+      operationId: recordConsent
+      summary: Append a versioned consent decision
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/CorrelationId'
+        - name: purpose
+          in: path
+          required: true
+          schema:
+            $ref: '#/components/schemas/ConsentPurpose'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ConsentUpdate'
+      responses:
+        '200':
+          description: Recorded consent decision
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConsentRecord'
+        '400':
+          $ref: '#/components/responses/ErrorResponse'
+        '401':
+          $ref: '#/components/responses/ErrorResponse'
+        '422':
+          $ref: '#/components/responses/ErrorResponse'
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+  /api/mobile/v1/me/guest-merge-tickets:
+    post:
+      tags: [Identity]
+      operationId: createGuestMergeTicket
+      summary: Create a short-lived one-time guest merge ticket
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/CorrelationId'
+      responses:
+        '201':
+          description: One-time merge ticket
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GuestMergeTicket'
+        '401':
+          $ref: '#/components/responses/ErrorResponse'
+        '403':
+          $ref: '#/components/responses/ErrorResponse'
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+  /api/mobile/v1/me/guest-merges:
+    post:
+      tags: [Identity]
+      operationId: mergeGuestIntoAccount
+      summary: Merge guest learning data into the current account
+      description: >-
+        Authenticate as the account learner. Repeating the same request with
+        the same Idempotency-Key returns the canonical merge result.
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/CorrelationId'
+        - $ref: '#/components/parameters/IdempotencyKey'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [mergeTicket]
+              properties:
+                mergeTicket:
+                  type: string
+                  minLength: 1
+                  maxLength: 200
+              additionalProperties: false
+      responses:
+        '200':
+          description: Canonical merge result
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GuestMergeResult'
+        '401':
+          $ref: '#/components/responses/ErrorResponse'
+        '403':
+          $ref: '#/components/responses/ErrorResponse'
+        '409':
+          $ref: '#/components/responses/ErrorResponse'
+        '422':
+          $ref: '#/components/responses/ErrorResponse'
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+  /api/mobile/v1/me/privacy/exports:
+    post:
+      tags: [Privacy]
+      operationId: requestAccountExport
+      summary: Request an asynchronous machine-readable account export
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/CorrelationId'
+        - $ref: '#/components/parameters/IdempotencyKey'
+      responses:
+        '202':
+          description: Export request accepted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PrivacyRequest'
+        '401':
+          $ref: '#/components/responses/ErrorResponse'
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+  /api/mobile/v1/me/privacy/deletions:
+    post:
+      tags: [Privacy]
+      operationId: requestAccountDeletion
+      summary: Request account deletion and immediately restrict the learner
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/CorrelationId'
+        - $ref: '#/components/parameters/IdempotencyKey'
+      responses:
+        '202':
+          description: Deletion request accepted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PrivacyRequest'
+        '401':
+          $ref: '#/components/responses/ErrorResponse'
+        '409':
+          $ref: '#/components/responses/ErrorResponse'
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+  /api/mobile/v1/me/privacy/requests/{requestId}:
+    get:
+      tags: [Privacy]
+      operationId: getPrivacyRequest
+      summary: Get a privacy request owned by the current learner
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/CorrelationId'
+        - $ref: '#/components/parameters/PrivacyRequestId'
+      responses:
+        '200':
+          description: Current request state
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PrivacyRequest'
+        '401':
+          $ref: '#/components/responses/ErrorResponse'
+        '404':
+          $ref: '#/components/responses/ErrorResponse'
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+  /api/admin/v1/content/courses/{courseId}/versions/{version}:
+    put:
+      tags: [Content Admin]
+      operationId: saveCourseVersionDraft
+      summary: Create or replace a draft course version
+      description: >-
+        Authoring payload includes scoring answers and is never returned by a
+        learner endpoint. Only a draft version can be replaced.
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/CorrelationId'
+        - $ref: '#/components/parameters/CourseId'
+        - $ref: '#/components/parameters/ContentVersion'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CourseVersionDraft'
+      responses:
+        '201':
+          description: Saved draft
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContentVersion'
+        '403':
+          $ref: '#/components/responses/ErrorResponse'
+        '409':
+          $ref: '#/components/responses/ErrorResponse'
+        '422':
+          $ref: '#/components/responses/ErrorResponse'
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+    get:
+      tags: [Content Admin]
+      operationId: getCourseVersionAuthoring
+      summary: Preview one authoring course version
+      description: Requires content scope and content-staff or admin role.
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/CorrelationId'
+        - $ref: '#/components/parameters/CourseId'
+        - $ref: '#/components/parameters/ContentVersion'
+      responses:
+        '200':
+          description: Authoring version, including scoring data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContentVersion'
+        '403':
+          $ref: '#/components/responses/ErrorResponse'
+        '404':
+          $ref: '#/components/responses/ErrorResponse'
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+  /api/admin/v1/content/courses/{courseId}/versions/{version}/transitions:
+    post:
+      tags: [Content Admin]
+      operationId: transitionCourseVersion
+      summary: Move a course version through its publishing lifecycle
+      description: >-
+        Supported lifecycle is draft → review → approved →
+        scheduled/published → retired. A future effectiveAt requires scheduled.
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/CorrelationId'
+        - $ref: '#/components/parameters/CourseId'
+        - $ref: '#/components/parameters/ContentVersion'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ContentTransition'
+      responses:
+        '200':
+          description: Updated lifecycle state
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContentVersion'
+        '403':
+          $ref: '#/components/responses/ErrorResponse'
+        '409':
+          $ref: '#/components/responses/ErrorResponse'
+        '422':
+          $ref: '#/components/responses/ErrorResponse'
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+  /api/admin/v1/content/courses/{courseId}/rollbacks:
+    post:
+      tags: [Content Admin]
+      operationId: rollbackCourseVersion
+      summary: Restore a previously published and retired course version
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/CorrelationId'
+        - $ref: '#/components/parameters/CourseId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [targetVersion]
+              properties:
+                targetVersion:
+                  type: integer
+                  minimum: 1
+              additionalProperties: false
+      responses:
+        '200':
+          description: Restored published version
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContentVersion'
+        '403':
+          $ref: '#/components/responses/ErrorResponse'
+        '404':
+          $ref: '#/components/responses/ErrorResponse'
+        '409':
+          $ref: '#/components/responses/ErrorResponse'
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+  /api/mobile/v1/media/{mediaId}:
+    get:
+      tags: [Advanced Learning]
+      operationId: getLearningMedia
+      summary: Stream an authenticated learning-media asset
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/CorrelationId'
+        - name: mediaId
+          in: path
+          required: true
+          schema:
+            $ref: '#/components/schemas/Identifier'
+      responses:
+        '200':
+          description: WAV media bytes for the requested learning asset
+          headers:
+            ETag:
+              schema:
+                type: string
+          content:
+            audio/wav:
+              schema:
+                type: string
+                format: binary
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+  /api/mobile/v1/advanced/pronunciation:
+    post:
+      tags: [Advanced Learning]
+      operationId: assessPronunciation
+      summary: Assess a short pronunciation sample without retaining raw voice
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/CorrelationId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [clientRequestId, audioBase64, expectedText, locale]
+              properties:
+                clientRequestId:
+                  type: string
+                  format: uuid
+                audioBase64:
+                  type: string
+                  contentEncoding: base64
+                  maxLength: 2700000
+                expectedText:
+                  type: string
+                  maxLength: 500
+                locale:
+                  $ref: '#/components/schemas/Locale'
+              additionalProperties: false
+      responses:
+        '200':
+          description: Derived pronunciation feedback
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdvancedFeedbackResult'
+        '429':
+          $ref: '#/components/responses/ErrorResponse'
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+  /api/mobile/v1/advanced/writing:
+    post:
+      tags: [Advanced Learning]
+      operationId: getWritingFeedback
+      summary: Get safety-filtered writing feedback
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/CorrelationId'
+      requestBody:
+        $ref: '#/components/requestBodies/TextFeedbackRequest'
+      responses:
+        '200':
+          description: Writing feedback
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdvancedFeedbackResult'
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+  /api/mobile/v1/advanced/conversation:
+    post:
+      tags: [Advanced Learning]
+      operationId: getConversationFeedback
+      summary: Continue a safety-filtered guided conversation
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/CorrelationId'
+      requestBody:
+        $ref: '#/components/requestBodies/TextFeedbackRequest'
+      responses:
+        '200':
+          description: Conversation feedback
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdvancedFeedbackResult'
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+  /api/mobile/v1/assessments/placement:
+    get:
+      tags: [Assessment]
+      operationId: getA1PlacementAssessment
+      summary: Get the internal A1 placement assessment
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Placement definition without answer keys
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AssessmentDefinition'
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+  /api/mobile/v1/assessments/placement/attempts:
+    post:
+      tags: [Assessment]
+      operationId: submitA1PlacementAssessment
+      summary: Score placement and issue a non-accredited completion record
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [clientAttemptId, answers]
+              properties:
+                clientAttemptId:
+                  type: string
+                  format: uuid
+                answers:
+                  type: array
+                  minItems: 4
+                  maxItems: 4
+                  items:
+                    type: string
+              additionalProperties: false
+      responses:
+        '200':
+          description: Placement result
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AssessmentResult'
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+  /api/mobile/v1/engagement:
+    get:
+      tags: [Engagement]
+      operationId: getEngagementStatus
+      summary: Get streak, XP, achievements, and reminder preference
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Current engagement state
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EngagementStatus'
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+  /api/mobile/v1/engagement/activities:
+    post:
+      tags: [Engagement]
+      operationId: recordEngagementActivity
+      summary: Record one idempotent learning activity
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [clientEventId, eventType, xpAwarded]
+              properties:
+                clientEventId:
+                  type: string
+                  format: uuid
+                eventType:
+                  type: string
+                  maxLength: 40
+                xpAwarded:
+                  type: integer
+                  minimum: 0
+                  maximum: 1000
+              additionalProperties: false
+      responses:
+        '200':
+          description: Updated engagement state
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EngagementStatus'
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+  /api/mobile/v1/engagement/notification-preference:
+    put:
+      tags: [Engagement]
+      operationId: updateNotificationPreference
+      summary: Configure local reminder delivery preferences
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NotificationPreference'
+      responses:
+        '200':
+          description: Updated reminder preference
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotificationPreference'
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+  /api/mobile/v1/commerce/entitlements:
+    get:
+      tags: [Commerce]
+      operationId: listEntitlements
+      summary: List server-authoritative learner entitlements
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Learner entitlements
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Entitlement'
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+  /api/mobile/v1/commerce/purchases/verify:
+    post:
+      tags: [Commerce]
+      operationId: verifyPurchase
+      summary: Verify a Play purchase and grant its entitlement
+      security:
+        - bearerAuth: []
+      requestBody:
+        $ref: '#/components/requestBodies/PurchaseRequest'
+      responses:
+        '200':
+          description: Active entitlement
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Entitlement'
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+  /api/mobile/v1/commerce/purchases/refund:
+    post:
+      tags: [Commerce]
+      operationId: verifyRefund
+      summary: Verify a refund event and revoke its entitlement
+      security:
+        - bearerAuth: []
+      requestBody:
+        $ref: '#/components/requestBodies/PurchaseRequest'
+      responses:
+        '200':
+          description: Revoked entitlement
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Entitlement'
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+  /api/mobile/v1/support/tickets:
+    get:
+      tags: [Support]
+      operationId: listOwnSupportTickets
+      summary: List the learner's support and content-report tickets
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Learner tickets
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SupportTicket'
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+    post:
+      tags: [Support]
+      operationId: createSupportTicket
+      summary: Submit a support request or content report
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [type, locale, description]
+              properties:
+                type:
+                  type: string
+                  enum: [support, content_report]
+                contentRef:
+                  type: string
+                  maxLength: 160
+                locale:
+                  $ref: '#/components/schemas/Locale'
+                description:
+                  type: string
+                  maxLength: 2000
+              additionalProperties: false
+      responses:
+        '200':
+          description: Created ticket
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SupportTicket'
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+  /api/support/v1/tickets/{ticketId}/status:
+    patch:
+      tags: [Support]
+      operationId: updateSupportTicketStatus
+      summary: Triage or resolve a ticket as support staff
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: ticketId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [status]
+              properties:
+                status:
+                  type: string
+                  enum: [triaged, resolved, dismissed]
+              additionalProperties: false
+      responses:
+        '200':
+          description: Updated ticket
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SupportTicket'
+        default:
+          $ref: '#/components/responses/ErrorResponse'
 components:
   securitySchemes:
     bearerAuth:
@@ -194,9 +1137,22 @@ components:
       scheme: bearer
       bearerFormat: JWT
       description: >-
-        Token for an authenticated or guest learner session. Token issuance and
-        account merge behavior will be defined by a later identity contract.
+        External OIDC account token or local-development guest token. Protected
+        mobile operations require the learning scope and learner role; the
+        actor_type claim must be guest or account.
   parameters:
+    CorrelationId:
+      name: X-Correlation-ID
+      in: header
+      required: false
+      description: >-
+        Caller-provided correlation identifier. Invalid or omitted values are
+        replaced by the server and the canonical value is returned in the
+        response header and error traceId.
+      schema:
+        type: string
+        pattern: '^[A-Za-z0-9._-]{1,64}$'
+        maxLength: 64
     CourseId:
       name: courseId
       in: path
@@ -217,6 +1173,57 @@ components:
       schema:
         type: string
         format: uuid
+    PrivacyRequestId:
+      name: requestId
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+    ContentVersion:
+      name: version
+      in: path
+      required: true
+      schema:
+        type: integer
+        minimum: 1
+  requestBodies:
+    TextFeedbackRequest:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            required: [clientRequestId, contentRef, input, locale]
+            properties:
+              clientRequestId:
+                type: string
+                format: uuid
+              contentRef:
+                type: string
+                maxLength: 160
+              input:
+                type: string
+                maxLength: 4000
+              locale:
+                $ref: '#/components/schemas/Locale'
+            additionalProperties: false
+    PurchaseRequest:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            required: [purchaseToken, productId]
+            properties:
+              purchaseToken:
+                type: string
+                maxLength: 4096
+                writeOnly: true
+              productId:
+                type: string
+                maxLength: 120
+            additionalProperties: false
   responses:
     ErrorResponse:
       description: Request could not be completed
@@ -234,6 +1241,373 @@ components:
       type: string
       pattern: '^[A-Za-z]{2,3}(?:-[A-Za-z0-9]{2,8})*$'
       examples: [vi, en, pt-BR]
+    AgeBand:
+      type: string
+      enum: [under_16, 16_17, adult]
+    ActorType:
+      type: string
+      enum: [guest, account]
+    LearnerProfile:
+      type: object
+      required:
+        - learnerId
+        - actorType
+        - uiLocale
+        - sourceLanguage
+        - targetLanguage
+        - preferences
+        - updatedAt
+      properties:
+        learnerId:
+          type: string
+          format: uuid
+        actorType:
+          $ref: '#/components/schemas/ActorType'
+        uiLocale:
+          $ref: '#/components/schemas/Locale'
+        sourceLanguage:
+          $ref: '#/components/schemas/Locale'
+        targetLanguage:
+          $ref: '#/components/schemas/Locale'
+        ageBand:
+          $ref: '#/components/schemas/AgeBand'
+        learningGoal:
+          type: string
+          maxLength: 50
+        preferences:
+          type: object
+          additionalProperties: true
+        updatedAt:
+          type: string
+          format: date-time
+      additionalProperties: false
+    ProfileUpdate:
+      type: object
+      required:
+        - uiLocale
+        - sourceLanguage
+        - targetLanguage
+        - ageBand
+      properties:
+        uiLocale:
+          $ref: '#/components/schemas/Locale'
+        sourceLanguage:
+          $ref: '#/components/schemas/Locale'
+        targetLanguage:
+          $ref: '#/components/schemas/Locale'
+        ageBand:
+          $ref: '#/components/schemas/AgeBand'
+        learningGoal:
+          type: string
+          maxLength: 50
+        preferences:
+          type: object
+          additionalProperties: true
+      additionalProperties: false
+    ConsentPurpose:
+      type: string
+      enum:
+        - required_service
+        - operational_telemetry
+        - marketing_notifications
+    ConsentUpdate:
+      type: object
+      required: [policyVersion, granted]
+      properties:
+        policyVersion:
+          type: string
+          minLength: 1
+          maxLength: 50
+        granted:
+          type: boolean
+      additionalProperties: false
+    ConsentRecord:
+      type: object
+      required: [purpose, policyVersion, granted, recordedAt]
+      properties:
+        purpose:
+          $ref: '#/components/schemas/ConsentPurpose'
+        policyVersion:
+          type: string
+          minLength: 1
+          maxLength: 50
+        granted:
+          type: boolean
+        recordedAt:
+          type: string
+          format: date-time
+      additionalProperties: false
+    GuestMergeTicket:
+      type: object
+      required: [mergeTicket, expiresAt]
+      properties:
+        mergeTicket:
+          type: string
+          minLength: 1
+          maxLength: 200
+        expiresAt:
+          type: string
+          format: date-time
+      additionalProperties: false
+    GuestMergeResult:
+      type: object
+      required: [guestLearnerId, accountLearnerId, mergedAt]
+      properties:
+        guestLearnerId:
+          type: string
+          format: uuid
+        accountLearnerId:
+          type: string
+          format: uuid
+        mergedAt:
+          type: string
+          format: date-time
+      additionalProperties: false
+    PrivacyRequest:
+      type: object
+      required:
+        - requestId
+        - requestType
+        - state
+        - requestedAt
+        - targetAt
+      properties:
+        requestId:
+          type: string
+          format: uuid
+        requestType:
+          type: string
+          enum: [export, deletion]
+        state:
+          type: string
+          enum: [requested, processing, completed, failed]
+        requestedAt:
+          type: string
+          format: date-time
+        targetAt:
+          type: string
+          format: date-time
+        completedAt:
+          type: string
+          format: date-time
+        artifact:
+          type: object
+          additionalProperties: true
+        artifactExpiresAt:
+          type: string
+          format: date-time
+        failureCode:
+          type: string
+          maxLength: 80
+      additionalProperties: false
+    ContentState:
+      type: string
+      enum: [draft, review, approved, scheduled, published, retired]
+    ContentVersion:
+      type: object
+      required: [courseId, version, state, compatibilityVersion, content]
+      properties:
+        courseId:
+          $ref: '#/components/schemas/Identifier'
+        version:
+          type: integer
+          minimum: 1
+        state:
+          $ref: '#/components/schemas/ContentState'
+        compatibilityVersion:
+          type: integer
+          minimum: 1
+        effectiveAt:
+          type: string
+          format: date-time
+        publishedAt:
+          type: string
+          format: date-time
+        retiredAt:
+          type: string
+          format: date-time
+        content:
+          type: object
+          additionalProperties: true
+      additionalProperties: false
+    ContentTransition:
+      type: object
+      required: [targetState]
+      properties:
+        targetState:
+          $ref: '#/components/schemas/ContentState'
+        effectiveAt:
+          type: string
+          format: date-time
+      additionalProperties: false
+    CourseVersionDraft:
+      type: object
+      required:
+        - sourceLanguage
+        - targetLanguage
+        - locale
+        - compatibilityVersion
+        - title
+        - description
+        - owner
+        - license
+        - units
+      properties:
+        sourceLanguage:
+          $ref: '#/components/schemas/Locale'
+        targetLanguage:
+          $ref: '#/components/schemas/Locale'
+        locale:
+          $ref: '#/components/schemas/Locale'
+        compatibilityVersion:
+          type: integer
+          minimum: 1
+        title:
+          $ref: '#/components/schemas/LocalizedText'
+        description:
+          $ref: '#/components/schemas/LocalizedText'
+        owner:
+          type: string
+          minLength: 1
+          maxLength: 200
+        license:
+          type: string
+          minLength: 1
+          maxLength: 200
+        units:
+          type: array
+          minItems: 1
+          items:
+            $ref: '#/components/schemas/UnitDraft'
+      additionalProperties: false
+    UnitDraft:
+      type: object
+      required: [id, title, lessons]
+      properties:
+        id:
+          $ref: '#/components/schemas/Identifier'
+        title:
+          $ref: '#/components/schemas/LocalizedText'
+        lessons:
+          type: array
+          minItems: 1
+          items:
+            $ref: '#/components/schemas/LessonDraft'
+      additionalProperties: false
+    LessonDraft:
+      type: object
+      required: [id, locale, title, objectives, estimatedMinutes, exercises]
+      properties:
+        id:
+          $ref: '#/components/schemas/Identifier'
+        locale:
+          $ref: '#/components/schemas/Locale'
+        title:
+          $ref: '#/components/schemas/LocalizedText'
+        objectives:
+          type: array
+          minItems: 1
+          items:
+            $ref: '#/components/schemas/LocalizedText'
+        estimatedMinutes:
+          type: integer
+          minimum: 1
+          maximum: 120
+        exercises:
+          type: array
+          minItems: 1
+          items:
+            oneOf:
+              - $ref: '#/components/schemas/MultipleChoiceExerciseDraft'
+              - $ref: '#/components/schemas/TrueFalseExerciseDraft'
+      additionalProperties: false
+    ExerciseDraftBase:
+      type: object
+      required: [id, type, prompt, explanation, skill, conceptIds]
+      properties:
+        id:
+          $ref: '#/components/schemas/Identifier'
+        type:
+          type: string
+        prompt:
+          $ref: '#/components/schemas/LocalizedText'
+        explanation:
+          $ref: '#/components/schemas/LocalizedText'
+        skill:
+          type: string
+          enum: [reading, listening, writing, speaking, vocabulary, grammar]
+        conceptIds:
+          type: array
+          minItems: 1
+          uniqueItems: true
+          items:
+            $ref: '#/components/schemas/Identifier'
+        media:
+          $ref: '#/components/schemas/MediaMetadata'
+    MultipleChoiceExerciseDraft:
+      allOf:
+        - $ref: '#/components/schemas/ExerciseDraftBase'
+        - type: object
+          required: [options, correctOptionId]
+          properties:
+            type:
+              const: multiple_choice
+            options:
+              type: array
+              minItems: 2
+              items:
+                $ref: '#/components/schemas/ExerciseOptionDraft'
+            correctOptionId:
+              $ref: '#/components/schemas/Identifier'
+      unevaluatedProperties: false
+    TrueFalseExerciseDraft:
+      allOf:
+        - $ref: '#/components/schemas/ExerciseDraftBase'
+        - type: object
+          required: [correctAnswer]
+          properties:
+            type:
+              const: true_false
+            correctAnswer:
+              type: boolean
+      unevaluatedProperties: false
+    ExerciseOptionDraft:
+      type: object
+      required: [id, text]
+      properties:
+        id:
+          $ref: '#/components/schemas/Identifier'
+        text:
+          $ref: '#/components/schemas/LocalizedText'
+      additionalProperties: false
+    MediaMetadata:
+      type: object
+      description: >-
+        Metadata reference only. Binary media is stored behind an object-storage
+        boundary when production media is introduced.
+      required: [id, type, objectKey, checksum, locale]
+      properties:
+        id:
+          $ref: '#/components/schemas/Identifier'
+        type:
+          type: string
+          enum: [audio, image]
+        objectKey:
+          type: string
+          minLength: 1
+          maxLength: 500
+        checksum:
+          type: string
+          minLength: 8
+          maxLength: 200
+        locale:
+          $ref: '#/components/schemas/Locale'
+        durationMs:
+          type: integer
+          minimum: 0
+        altText:
+          $ref: '#/components/schemas/LocalizedText'
+      additionalProperties: false
     LocalizedText:
       type: object
       minProperties: 1
@@ -289,6 +1663,9 @@ components:
         responseTimeMs:
           type: integer
           minimum: 0
+        sessionId:
+          type: string
+          format: uuid
       additionalProperties: false
     AttemptResult:
       type: object
@@ -297,6 +1674,7 @@ components:
         - clientAttemptId
         - acceptedAt
         - correct
+        - scoring
         - feedback
         - progress
         - syncCursor
@@ -312,6 +1690,20 @@ components:
           format: date-time
         correct:
           type: boolean
+        scoring:
+          type: object
+          required: [modelVersion, earnedPoints, maxPoints]
+          properties:
+            modelVersion:
+              type: integer
+              minimum: 1
+            earnedPoints:
+              type: integer
+              minimum: 0
+            maxPoints:
+              type: integer
+              minimum: 1
+          additionalProperties: false
         feedback:
           $ref: '#/components/schemas/Feedback'
         progress:
@@ -339,6 +1731,9 @@ components:
         - totalExerciseCount
         - lastActivityAt
         - lessonProgress
+        - completedLessonCount
+        - totalLessonCount
+        - completed
       properties:
         courseId:
           $ref: '#/components/schemas/Identifier'
@@ -355,6 +1750,14 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/LessonProgress'
+        completedLessonCount:
+          type: integer
+          minimum: 0
+        totalLessonCount:
+          type: integer
+          minimum: 0
+        completed:
+          type: boolean
       additionalProperties: false
     LessonProgress:
       type: object
@@ -374,6 +1777,381 @@ components:
         totalExerciseCount:
           type: integer
           minimum: 1
+      additionalProperties: false
+    StartLearningSession:
+      type: object
+      required: [clientSessionId, courseId, contentVersion]
+      properties:
+        clientSessionId:
+          type: string
+          format: uuid
+        courseId:
+          $ref: '#/components/schemas/Identifier'
+        contentVersion:
+          type: integer
+          minimum: 1
+      additionalProperties: false
+    LearningSession:
+      type: object
+      required:
+        [sessionId, clientSessionId, courseId, contentVersion, state, startedAt]
+      properties:
+        sessionId:
+          type: string
+          format: uuid
+        clientSessionId:
+          type: string
+          format: uuid
+        courseId:
+          $ref: '#/components/schemas/Identifier'
+        contentVersion:
+          type: integer
+          minimum: 1
+        state:
+          type: string
+          enum: [active, completed]
+        startedAt:
+          type: string
+          format: date-time
+        completedAt:
+          type: string
+          format: date-time
+      additionalProperties: false
+    MasteryState:
+      type: object
+      required:
+        [conceptId, modelVersion, score, correctEvidenceCount, evidenceCount,
+         lastEvidenceAt, explanation]
+      properties:
+        conceptId:
+          $ref: '#/components/schemas/Identifier'
+        modelVersion:
+          type: integer
+          minimum: 1
+        score:
+          type: number
+          minimum: 0
+          maximum: 1
+        correctEvidenceCount:
+          type: integer
+          minimum: 0
+        evidenceCount:
+          type: integer
+          minimum: 1
+        lastEvidenceAt:
+          type: string
+          format: date-time
+        explanation:
+          type: object
+          additionalProperties: true
+      additionalProperties: false
+    ReviewItem:
+      type: object
+      required:
+        [conceptId, modelVersion, dueAt, intervalDays, easeFactor, repetitions,
+         lastResult]
+      properties:
+        conceptId:
+          $ref: '#/components/schemas/Identifier'
+        modelVersion:
+          type: integer
+          minimum: 1
+        dueAt:
+          type: string
+          format: date-time
+        intervalDays:
+          type: integer
+          minimum: 0
+        easeFactor:
+          type: number
+          minimum: 1.3
+        repetitions:
+          type: integer
+          minimum: 0
+        lastResult:
+          type: string
+          enum: [correct, incorrect]
+      additionalProperties: false
+    ReviewQueue:
+      type: object
+      required: [generatedAt, items]
+      properties:
+        generatedAt:
+          type: string
+          format: date-time
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/ReviewItem'
+      additionalProperties: false
+    SyncPushRequest:
+      type: object
+      required: [clientBatchId, mutations]
+      properties:
+        clientBatchId:
+          type: string
+          format: uuid
+        baseCursor:
+          type: string
+        mutations:
+          type: array
+          minItems: 1
+          maxItems: 100
+          items:
+            type: object
+            required: [clientMutationId, type, idempotencyKey, payload]
+            properties:
+              clientMutationId:
+                type: string
+                format: uuid
+              type:
+                const: attempt.submit
+              idempotencyKey:
+                type: string
+                format: uuid
+              payload:
+                $ref: '#/components/schemas/AttemptRequest'
+            additionalProperties: false
+      additionalProperties: false
+    SyncPushResult:
+      type: object
+      required: [clientBatchId, rebased, nextCursor, results]
+      properties:
+        clientBatchId:
+          type: string
+          format: uuid
+        rebased:
+          type: boolean
+        nextCursor:
+          type: string
+        results:
+          type: array
+          items:
+            type: object
+            required: [clientMutationId, status, result]
+            properties:
+              clientMutationId:
+                type: string
+                format: uuid
+              status:
+                type: string
+                enum: [applied, replayed]
+              result:
+                $ref: '#/components/schemas/AttemptResult'
+            additionalProperties: false
+      additionalProperties: false
+    SyncPullResult:
+      type: object
+      required: [nextCursor, hasMore, changes]
+      properties:
+        nextCursor:
+          type: string
+        hasMore:
+          type: boolean
+        changes:
+          type: array
+          items:
+            type: object
+            required: [entityType, entityId, operation, payload, occurredAt]
+            properties:
+              entityType:
+                type: string
+                enum:
+                  [attempt, mastery, reviewSchedule, lessonCompletion,
+                   learningSession]
+              entityId:
+                type: string
+              operation:
+                type: string
+                enum: [upsert, delete]
+              payload:
+                type: object
+                additionalProperties: true
+              occurredAt:
+                type: string
+                format: date-time
+            additionalProperties: false
+      additionalProperties: false
+    AdvancedFeedbackResult:
+      type: object
+      required: [id, kind, feedback, provider, createdAt]
+      properties:
+        id:
+          type: string
+          format: uuid
+        kind:
+          type: string
+          enum: [pronunciation, writing, conversation]
+        transcript:
+          type: string
+        score:
+          type: number
+          minimum: 0
+          maximum: 100
+        feedback:
+          type: object
+          additionalProperties: true
+        provider:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+      additionalProperties: false
+    AssessmentDefinition:
+      type: object
+      required: [id, level, passScore, questions]
+      properties:
+        id:
+          $ref: '#/components/schemas/Identifier'
+        level:
+          const: A1
+        passScore:
+          type: integer
+          minimum: 0
+          maximum: 100
+        questions:
+          type: array
+          items:
+            type: object
+            required: [id, prompt, options]
+            properties:
+              id:
+                $ref: '#/components/schemas/Identifier'
+              prompt:
+                type: string
+              options:
+                type: array
+                items:
+                  type: string
+            additionalProperties: false
+      additionalProperties: false
+    AssessmentResult:
+      type: object
+      required: [attemptId, level, score, passed, completedAt]
+      properties:
+        attemptId:
+          type: string
+          format: uuid
+        level:
+          const: A1
+        score:
+          type: integer
+          minimum: 0
+          maximum: 100
+        passed:
+          type: boolean
+        completionRecord:
+          type: object
+          required: [id, level, type, issuedAt]
+          properties:
+            id:
+              type: string
+              format: uuid
+            level:
+              const: A1
+            type:
+              const: non_accredited_completion
+            issuedAt:
+              type: string
+              format: date-time
+          additionalProperties: false
+        completedAt:
+          type: string
+          format: date-time
+      additionalProperties: false
+    NotificationPreference:
+      type: object
+      required: [enabled, locale]
+      properties:
+        enabled:
+          type: boolean
+        reminderTime:
+          type: string
+          format: time
+        locale:
+          $ref: '#/components/schemas/Locale'
+        updatedAt:
+          type: string
+          format: date-time
+          readOnly: true
+      additionalProperties: false
+    EngagementStatus:
+      type: object
+      required:
+        [currentStreak, longestStreak, xp, achievements,
+         notificationPreference]
+      properties:
+        currentStreak:
+          type: integer
+          minimum: 0
+        longestStreak:
+          type: integer
+          minimum: 0
+        xp:
+          type: integer
+          minimum: 0
+        lastLearningDate:
+          type: string
+          format: date
+        achievements:
+          type: array
+          items:
+            type: object
+            required: [code, earnedAt]
+            properties:
+              code:
+                $ref: '#/components/schemas/Identifier'
+              earnedAt:
+                type: string
+                format: date-time
+            additionalProperties: false
+        notificationPreference:
+          $ref: '#/components/schemas/NotificationPreference'
+      additionalProperties: false
+    Entitlement:
+      type: object
+      required: [code, status, source, updatedAt]
+      properties:
+        code:
+          $ref: '#/components/schemas/Identifier'
+        status:
+          type: string
+          enum: [active, revoked, expired]
+        validUntil:
+          type: string
+          format: date-time
+        source:
+          type: string
+        updatedAt:
+          type: string
+          format: date-time
+      additionalProperties: false
+    SupportTicket:
+      type: object
+      required:
+        [id, type, locale, description, status, createdAt, updatedAt]
+      properties:
+        id:
+          type: string
+          format: uuid
+        type:
+          type: string
+          enum: [support, content_report]
+        contentRef:
+          type: string
+        locale:
+          $ref: '#/components/schemas/Locale'
+        description:
+          type: string
+        status:
+          type: string
+          enum: [open, triaged, resolved, dismissed]
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
       additionalProperties: false
     ApiError:
       type: object

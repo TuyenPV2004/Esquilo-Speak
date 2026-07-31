@@ -1,44 +1,38 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://schemas.esquilospeak.com/content/course.schema.json",
-  "title": "Course",
+  "title": "Published course version",
   "type": "object",
   "required": [
     "id",
+    "version",
     "sourceLanguage",
     "targetLanguage",
+    "locale",
     "title",
     "description",
-    "lessonIds",
-    "metadata"
+    "unitIds",
+    "compatibilityVersion",
+    "owner",
+    "license"
   ],
   "properties": {
-    "id": {
-      "$ref": "common.schema.json#/$defs/identifier"
-    },
-    "sourceLanguage": {
-      "$ref": "common.schema.json#/$defs/locale"
-    },
-    "targetLanguage": {
-      "$ref": "common.schema.json#/$defs/locale"
-    },
-    "title": {
-      "$ref": "common.schema.json#/$defs/localizedText"
-    },
-    "description": {
-      "$ref": "common.schema.json#/$defs/localizedText"
-    },
-    "lessonIds": {
+    "id": { "$ref": "common.schema.json#/$defs/identifier" },
+    "version": { "type": "integer", "minimum": 1 },
+    "sourceLanguage": { "$ref": "common.schema.json#/$defs/locale" },
+    "targetLanguage": { "$ref": "common.schema.json#/$defs/locale" },
+    "locale": { "$ref": "common.schema.json#/$defs/locale" },
+    "title": { "$ref": "common.schema.json#/$defs/localizedText" },
+    "description": { "$ref": "common.schema.json#/$defs/localizedText" },
+    "unitIds": {
       "type": "array",
-      "items": {
-        "$ref": "common.schema.json#/$defs/identifier"
-      },
+      "items": { "$ref": "common.schema.json#/$defs/identifier" },
       "minItems": 1,
       "uniqueItems": true
     },
-    "metadata": {
-      "$ref": "common.schema.json#/$defs/contentMetadata"
-    }
+    "compatibilityVersion": { "type": "integer", "minimum": 1 },
+    "owner": { "type": "string", "minLength": 1, "maxLength": 200 },
+    "license": { "type": "string", "minLength": 1, "maxLength": 200 }
   },
   "additionalProperties": false
 }

@@ -33,3 +33,225 @@ EsquiloSpeak hướng tới người mới bắt đầu, người học lại t�
 **Esquilo** có nghĩa là “con sóc” trong tiếng Bồ Đào Nha, tượng trưng cho khả năng tích lũy và ghi nhớ. **Speak** thể hiện mục tiêu cuối cùng của việc học ngôn ngữ: có thể nói, hiểu và giao tiếp tự tin.
 
 Hình ảnh chú sóc đang đọc sách đại diện cho hành trình tích lũy từng đơn vị kiến thức nhỏ để xây dựng năng lực ngôn ngữ bền vững.
+
+## Trạng thái triển khai
+
+Repository đã có Foundation Sprint chạy được cho vertical slice học tập đầu tiên:
+
+```text
+Danh mục ngôn ngữ/khóa học
+→ Danh sách bài học
+→ Bài tập trắc nghiệm
+→ Gửi attempt có idempotency
+→ Nhận phản hồi tức thì
+→ Xem tiến độ khóa học
+```
+
+Backend cũng đã có content publishing P0:
+
+```text
+Draft course version
+→ Review
+→ Approve
+→ Schedule/publish
+→ Learner-safe delivery
+→ Retire hoặc rollback
+```
+
+- Mobile: Flutter `3.44.3`, Dart `3.12.2`, Android/iOS.
+- Backend: Java `21`, Spring Boot `4.1.0`, Spring Modulith `2.1.0`.
+- Build backend: Gradle Wrapper `9.6.1`.
+- Data: PostgreSQL `18`, Flyway migration và seed content.
+- Contract: OpenAPI `3.1.1` và JSON Schema `2020-12`.
+
+## Cấu trúc có thể chạy
+
+```text
+apps/mobile/                         Flutter learner application
+backend/core-platform/               Spring Boot modular monolith
+contracts/openapi/                   Mobile API contract
+contracts/schema/                    Authoring và learner delivery schemas
+infrastructure/local/compose/        PostgreSQL local
+```
+
+## Quyết định và release gate
+
+- ADR đã được chấp nhận nằm trong [`docs/decisions/`](docs/decisions/).
+- P0 decision/delivery gate nằm tại
+  [`docs/roadmap/P0_GATE.md`](docs/roadmap/P0_GATE.md).
+- Test và evidence của Android end-to-end nằm trong
+  [`tests/end-to-end/`](tests/end-to-end/).
+
+## Prerequisites
+
+- JDK 21.
+- Flutter 3.44.3 với Dart 3.12.2.
+- Android SDK cho Android development.
+- Docker Desktop hoặc Docker Engine hỗ trợ Compose.
+
+## Chạy local
+
+Hướng dẫn chạy app và ma trận kiểm thử manual cho phạm vi local/closed testing:
+[`Guide.md`](Guide.md).
+
+Sao chép `.env.example` thành `.env`, thay hai giá trị password local và chạy
+PostgreSQL:
+
+```powershell
+docker compose --env-file .env -f infrastructure/local/compose/compose.yml up -d
+```
+
+Nếu cổng `5432` đã được PostgreSQL khác sử dụng, đặt `POSTGRES_PORT` thành một
+cổng host còn trống và dùng cùng cổng đó trong `ESQUILO_DB_URL`. Volume được gắn
+tại `/var/lib/postgresql` theo layout của image PostgreSQL 18.
+
+Chạy backend bằng profile `local`:
+
+```powershell
+cd backend/core-platform
+.\gradlew.bat bootRun
+```
+
+Profile local sinh khóa JWT tạm thời trong bộ nhớ và cung cấp
+`POST /internal/dev/token` để ứng dụng mobile chạy vertical slice. Endpoint này
+không tồn tại trong profile `production`. Mỗi lần gọi endpoint tạo một guest
+identity mới; ứng dụng phải giữ access token trong vòng đời guest session nếu
+muốn tiếp tục cùng tiến độ.
+
+Chạy Flutter trên Android emulator:
+
+```powershell
+cd apps/mobile
+flutter pub get
+flutter run
+```
+
+Android emulator dùng API mặc định `http://10.0.2.2:8080`. Có thể đổi endpoint:
+
+```powershell
+flutter run --dart-define=ESQUILO_API_URL=https://api.example.com
+```
+
+## Kiểm thử
+
+Backend:
+
+```powershell
+cd backend/core-platform
+.\gradlew.bat test
+```
+
+Lệnh này chạy kiểm tra boundary Spring Modulith và integration test với
+PostgreSQL Testcontainers, do đó Docker phải đang hoạt động.
+
+Mobile:
+
+```powershell
+cd apps/mobile
+dart format --output=none --set-exit-if-changed lib test
+flutter analyze
+flutter test
+```
+
+Contract:
+
+```powershell
+npx --yes @redocly/cli@2.39.0 lint contracts/openapi/esquilospeak-learning-v1.yaml --extends=spec
+```
+
+## Content publishing
+
+Admin content API nằm dưới `/api/admin/v1/content` và yêu cầu
+`SCOPE_content` cùng `ROLE_CONTENT_STAFF` hoặc `ROLE_ADMIN`. API quản lý course
+version bất biến, unit/lesson/exercise, lifecycle, effective date, audit và
+rollback.
+
+Authoring payload chứa scoring data; learner API chỉ đọc `learner_content` đã
+loại `correctOptionId`, `correctAnswer` và `explanation`. P0 hỗ trợ
+`multiple_choice` và `true_false`.
+
+Media production vẫn chỉ có metadata (`objectKey`, checksum, locale,
+duration/alt text). Profile local của backend P1 có endpoint WAV deterministic
+để Android closed testing kiểm tra playback/download; repository chưa thêm
+object storage và production profile không dùng media giả.
+
+## Learning, mastery, review và offline sync
+
+- `POST /api/mobile/v1/learning-sessions` tạo session theo course content
+  version; endpoint completion đóng session theo cách idempotent.
+- `POST /api/mobile/v1/attempts` vẫn là API attempt đơn append-only và trả
+  scoring/feedback/progress canonical.
+- `GET /api/mobile/v1/mastery` trả mastery model version 1 cùng evidence count
+  có thể giải thích; `GET /api/mobile/v1/reviews` chỉ trả item đã due theo server
+  clock.
+- `POST /api/mobile/v1/sync/push` nhận tối đa 100 `attempt.submit` mutation.
+  `clientMutationId` và `idempotencyKey` phải được lưu trong local outbox và giữ
+  nguyên khi retry.
+- `GET /api/mobile/v1/sync/pull` phân trang change log bằng cursor opaque.
+  Client chỉ ghi cursor mới sau khi áp dụng thành công toàn bộ page; operation
+  `delete` là tombstone, không được bỏ qua.
+
+Chi tiết completion, conflict, mastery và review rule nằm trong
+[`ADR-005`](docs/decisions/ADR-005-learning-mastery-review-offline-sync.md).
+
+## Advanced learning P1 cho closed testing
+
+- OpenAPI `0.5.0` bổ sung media, pronunciation, writing/conversation, placement
+  A1, engagement, commerce/entitlement và support.
+- Local profile dùng adapter deterministic. Production profile trả `503` cho
+  provider-dependent operation cho đến khi media/STT/AI/Play verifier thật được
+  cấu hình.
+- Pronunciation không lưu raw voice; chỉ transcript, score và feedback dẫn xuất
+  được tham gia privacy export/delete.
+- Purchase token chỉ được xử lý trong request và lưu SHA-256. Entitlement
+  `premium` được grant/revoke theo purchase/refund verification.
+- Placement chỉ phát hành `non_accredited_completion`; đây không phải chứng chỉ
+  được công nhận.
+- Rate limit P1 áp dụng riêng cho advanced feedback, commerce và support.
+- Android local/closed-testing đã có hub P1 cho media online/offline, ghi âm
+  có permission và retention disclosure, writing/conversation, placement,
+  insight có thể giải thích, engagement/reminder, premium entitlement và
+  support/content report. Production Play Billing và provider thật vẫn thuộc
+  release gate.
+
+Quyết định và production gates nằm trong
+[`ADR-007`](docs/decisions/ADR-007-closed-testing-advanced-learning-p1.md).
+
+## Backend operations
+
+- Liveness/readiness: `/livez`, `/readyz`.
+- Prometheus: `/actuator/prometheus`, yêu cầu `SCOPE_operations` cùng
+  `ROLE_SUPPORT` hoặc `ROLE_ADMIN`.
+- OTLP trace/metric/log export tắt mặc định; chỉ bật với collector đã được phê
+  duyệt.
+- Rate limit P0 áp dụng cho attempt, sync push, privacy request và content admin
+  mutation; response `429` có `Retry-After`.
+- Backup/restore, forward-fix, graceful shutdown và incident procedure:
+  [`Backend_Operations_Runbook.md`](docs/Backend_Operations_Runbook.md).
+- SLO/load harness:
+  [`Backend_Slo_And_Load_Test.md`](docs/Backend_Slo_And_Load_Test.md).
+- Security self-review:
+  [`Backend_Asvs_Review.md`](docs/Backend_Asvs_Review.md).
+- Backend release-gate evidence:
+  [`Backend_Release_Gate.md`](docs/Backend_Release_Gate.md).
+
+## Cấu hình production
+
+- Kích hoạt Spring profile `production`.
+- Cung cấp `ESQUILO_DB_URL`, `ESQUILO_DB_USERNAME`,
+  `ESQUILO_DB_PASSWORD`, `ESQUILO_JWT_ISSUER_URI` và
+  `ESQUILO_JWT_AUDIENCE` từ secret store.
+- External OIDC provider phải phát JWT có `iss`, `sub`, audience khớp cấu hình,
+  `actor_type` là `guest` hoặc `account`, scope `learning`, và role thuộc
+  `learner`, `content_staff`, `support`, `admin`. Mobile API hiện yêu cầu
+  `SCOPE_learning` cùng `ROLE_LEARNER`; role không thuộc allow-list bị bỏ qua.
+- Account learner phải hoàn tất age band trước khi đồng bộ tiến độ. P0 từ chối
+  account dưới 16 tuổi cho đến khi có guardian-consent flow được phê duyệt.
+- Không sử dụng local token endpoint hoặc password trong `.env.example` cho
+  production.
+- Cấu hình adapter production cho media, STT/AI và Play purchase verification;
+  không bật local deterministic adapter ngoài profile `local`.
+
+External account registration, login, password/MFA và account recovery thuộc
+OIDC provider. Backend chỉ lưu SHA-256 mapping của `issuer + subject`, không lưu
+raw subject.

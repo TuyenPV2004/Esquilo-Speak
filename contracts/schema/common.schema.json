@@ -28,7 +28,7 @@
     },
     "contentStatus": {
       "type": "string",
-      "enum": ["draft", "in_review", "approved", "scheduled", "published", "retired"]
+      "enum": ["draft", "review", "approved", "scheduled", "published", "retired"]
     },
     "contentMetadata": {
       "type": "object",
@@ -59,6 +59,21 @@
           "type": "string",
           "format": "date-time"
         }
+      },
+      "additionalProperties": false
+    },
+    "mediaMetadata": {
+      "type": "object",
+      "description": "Reference metadata only. Binary media belongs in an object store when production media is introduced.",
+      "required": ["id", "type", "objectKey", "checksum", "locale"],
+      "properties": {
+        "id": { "$ref": "#/$defs/identifier" },
+        "type": { "type": "string", "enum": ["audio", "image"] },
+        "objectKey": { "type": "string", "minLength": 1, "maxLength": 500 },
+        "checksum": { "type": "string", "minLength": 8, "maxLength": 200 },
+        "locale": { "$ref": "#/$defs/locale" },
+        "durationMs": { "type": "integer", "minimum": 0 },
+        "altText": { "$ref": "#/$defs/localizedText" }
       },
       "additionalProperties": false
     }

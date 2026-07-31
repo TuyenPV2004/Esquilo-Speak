@@ -1,0 +1,470 @@
+{
+  "release": "p0-android-0.4.0",
+  "operations": {
+    "listLearningLanguages": {
+      "response": {
+        "items": [
+          {
+            "id": "english",
+            "languageTag": "en",
+            "name": {
+              "vi": "Tiếng Anh",
+              "en": "English"
+            },
+            "enabled": true
+          }
+        ]
+      }
+    },
+    "listCourses": {
+      "response": {
+        "items": [
+          {
+            "id": "course-en-for-vi",
+            "version": 1,
+            "sourceLanguage": "vi",
+            "targetLanguage": "en",
+            "locale": "vi",
+            "title": {
+              "vi": "Tiếng Anh cho người Việt",
+              "en": "English for Vietnamese learners"
+            },
+            "description": {
+              "vi": "Khóa học tiếng Anh nền tảng.",
+              "en": "A foundational English course."
+            },
+            "unitIds": [
+              "unit-foundations"
+            ],
+            "compatibilityVersion": 1,
+            "owner": "EsquiloSpeak",
+            "license": "Proprietary"
+          }
+        ]
+      }
+    },
+    "listCourseLessons": {
+      "response": {
+        "items": [
+          {
+            "id": "lesson-basic-greetings",
+            "version": 1,
+            "title": {
+              "vi": "Lời chào cơ bản",
+              "en": "Basic greetings"
+            },
+            "estimatedMinutes": 5
+          }
+        ]
+      }
+    },
+    "getLesson": {
+      "response": {
+        "id": "lesson-basic-greetings",
+        "courseId": "course-en-for-vi",
+        "courseVersion": 1,
+        "unitId": "unit-foundations",
+        "locale": "vi",
+        "version": 1,
+        "title": {
+          "vi": "Lời chào cơ bản",
+          "en": "Basic greetings"
+        },
+        "objectives": [
+          {
+            "vi": "Nhận biết lời chào thông dụng.",
+            "en": "Recognize a common greeting."
+          }
+        ],
+        "estimatedMinutes": 5,
+        "exercises": [
+          {
+            "id": "exercise-choose-hello",
+            "type": "multiple_choice",
+            "prompt": {
+              "vi": "Từ nào có nghĩa là xin chào?",
+              "en": "Which word is a greeting?"
+            },
+            "skill": "vocabulary",
+            "conceptIds": [
+              "concept-greeting-hello"
+            ],
+            "options": [
+              {
+                "id": "option-hello",
+                "text": {
+                  "vi": "Hello",
+                  "en": "Hello"
+                }
+              },
+              {
+                "id": "option-goodbye",
+                "text": {
+                  "vi": "Goodbye",
+                  "en": "Goodbye"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "submitAttempt": {
+      "request": {
+        "clientAttemptId": "00000000-0000-4000-8000-000000000001",
+        "courseId": "course-en-for-vi",
+        "lessonId": "lesson-basic-greetings",
+        "lessonVersion": 1,
+        "exerciseId": "exercise-choose-hello",
+        "selectedOptionId": "option-hello",
+        "occurredAt": "2026-07-30T03:00:00Z",
+        "responseTimeMs": 250
+      },
+      "response": {
+        "attemptId": "00000000-0000-4000-8000-000000000002",
+        "clientAttemptId": "00000000-0000-4000-8000-000000000001",
+        "acceptedAt": "2026-07-30T03:00:01Z",
+        "correct": true,
+        "scoring": {
+          "modelVersion": 1,
+          "earnedPoints": 1,
+          "maxPoints": 1
+        },
+        "feedback": {
+          "message": {
+            "vi": "Chính xác!",
+            "en": "Correct!"
+          },
+          "correctOptionId": "option-hello",
+          "explanation": {
+            "vi": "Hello là lời chào thông dụng.",
+            "en": "Hello is a common greeting."
+          }
+        },
+        "progress": {
+          "courseId": "course-en-for-vi",
+          "completedExerciseCount": 1,
+          "totalExerciseCount": 1,
+          "lastActivityAt": "2026-07-30T03:00:01Z",
+          "lessonProgress": [
+            {
+              "lessonId": "lesson-basic-greetings",
+              "lessonVersion": 1,
+              "status": "completed",
+              "completedExerciseCount": 1,
+              "totalExerciseCount": 1
+            }
+          ],
+          "completedLessonCount": 1,
+          "totalLessonCount": 1,
+          "completed": true
+        },
+        "syncCursor": "v1:1"
+      }
+    },
+    "getCourseProgress": {
+      "response": {
+        "courseId": "course-en-for-vi",
+        "completedExerciseCount": 1,
+        "totalExerciseCount": 1,
+        "lastActivityAt": "2026-07-30T03:00:01Z",
+        "lessonProgress": [
+          {
+            "lessonId": "lesson-basic-greetings",
+            "lessonVersion": 1,
+            "status": "completed",
+            "completedExerciseCount": 1,
+            "totalExerciseCount": 1
+          }
+        ],
+        "completedLessonCount": 1,
+        "totalLessonCount": 1,
+        "completed": true
+      }
+    },
+    "startLearningSession": {
+      "request": {
+        "clientSessionId": "00000000-0000-4000-8000-000000000003",
+        "courseId": "course-en-for-vi",
+        "contentVersion": 1
+      },
+      "response": {
+        "sessionId": "00000000-0000-4000-8000-000000000004",
+        "clientSessionId": "00000000-0000-4000-8000-000000000003",
+        "courseId": "course-en-for-vi",
+        "contentVersion": 1,
+        "state": "active",
+        "startedAt": "2026-07-30T03:00:00Z"
+      }
+    },
+    "completeLearningSession": {
+      "response": {
+        "sessionId": "00000000-0000-4000-8000-000000000004",
+        "clientSessionId": "00000000-0000-4000-8000-000000000003",
+        "courseId": "course-en-for-vi",
+        "contentVersion": 1,
+        "state": "completed",
+        "startedAt": "2026-07-30T03:00:00Z",
+        "completedAt": "2026-07-30T03:05:00Z"
+      }
+    },
+    "listMasteryStates": {
+      "response": {
+        "items": [
+          {
+            "conceptId": "concept-greeting-hello",
+            "modelVersion": 1,
+            "score": 1,
+            "correctEvidenceCount": 1,
+            "evidenceCount": 1,
+            "lastEvidenceAt": "2026-07-30T03:00:01Z",
+            "explanation": {
+              "correctEvidenceCount": 1,
+              "evidenceCount": 1
+            }
+          }
+        ]
+      }
+    },
+    "listDueReviews": {
+      "response": {
+        "generatedAt": "2026-07-31T03:00:01Z",
+        "items": [
+          {
+            "conceptId": "concept-greeting-hello",
+            "modelVersion": 1,
+            "dueAt": "2026-07-31T03:00:01Z",
+            "intervalDays": 1,
+            "easeFactor": 2.5,
+            "repetitions": 1,
+            "lastResult": "correct"
+          }
+        ]
+      }
+    },
+    "pushOfflineMutations": {
+      "request": {
+        "clientBatchId": "00000000-0000-4000-8000-000000000005",
+        "baseCursor": "v1:0",
+        "mutations": [
+          {
+            "clientMutationId": "00000000-0000-4000-8000-000000000006",
+            "type": "attempt.submit",
+            "idempotencyKey": "00000000-0000-4000-8000-000000000007",
+            "payload": {
+              "clientAttemptId": "00000000-0000-4000-8000-000000000001",
+              "courseId": "course-en-for-vi",
+              "lessonId": "lesson-basic-greetings",
+              "lessonVersion": 1,
+              "exerciseId": "exercise-choose-hello",
+              "selectedOptionId": "option-hello",
+              "occurredAt": "2026-07-30T03:00:00Z",
+              "responseTimeMs": 250
+            }
+          }
+        ]
+      },
+      "response": {
+        "clientBatchId": "00000000-0000-4000-8000-000000000005",
+        "rebased": false,
+        "nextCursor": "v1:5",
+        "results": [
+          {
+            "clientMutationId": "00000000-0000-4000-8000-000000000006",
+            "status": "applied",
+            "result": {
+              "attemptId": "00000000-0000-4000-8000-000000000002",
+              "clientAttemptId": "00000000-0000-4000-8000-000000000001",
+              "acceptedAt": "2026-07-30T03:00:01Z",
+              "correct": true,
+              "scoring": {
+                "modelVersion": 1,
+                "earnedPoints": 1,
+                "maxPoints": 1
+              },
+              "feedback": {
+                "message": {
+                  "vi": "Chính xác!",
+                  "en": "Correct!"
+                },
+                "correctOptionId": "option-hello",
+                "explanation": {
+                  "vi": "Hello là lời chào thông dụng.",
+                  "en": "Hello is a common greeting."
+                }
+              },
+              "progress": {
+                "courseId": "course-en-for-vi",
+                "completedExerciseCount": 1,
+                "totalExerciseCount": 1,
+                "lastActivityAt": "2026-07-30T03:00:01Z",
+                "lessonProgress": [
+                  {
+                    "lessonId": "lesson-basic-greetings",
+                    "lessonVersion": 1,
+                    "status": "completed",
+                    "completedExerciseCount": 1,
+                    "totalExerciseCount": 1
+                  }
+                ],
+                "completedLessonCount": 1,
+                "totalLessonCount": 1,
+                "completed": true
+              },
+              "syncCursor": "v1:5"
+            }
+          }
+        ]
+      }
+    },
+    "pullLearningChanges": {
+      "response": {
+        "nextCursor": "v1:5",
+        "hasMore": false,
+        "changes": [
+          {
+            "entityType": "attempt",
+            "entityId": "00000000-0000-4000-8000-000000000002",
+            "operation": "upsert",
+            "payload": {
+              "correct": true,
+              "courseId": "course-en-for-vi",
+              "lessonId": "lesson-basic-greetings"
+            },
+            "occurredAt": "2026-07-30T03:00:01Z"
+          }
+        ]
+      }
+    },
+    "getLearnerProfile": {
+      "response": {
+        "learnerId": "00000000-0000-4000-8000-000000000008",
+        "actorType": "account",
+        "uiLocale": "vi",
+        "sourceLanguage": "vi",
+        "targetLanguage": "en",
+        "ageBand": "adult",
+        "learningGoal": "daily_practice",
+        "preferences": {
+          "dailyReminder": false
+        },
+        "updatedAt": "2026-07-30T03:00:00Z"
+      }
+    },
+    "replaceLearnerProfile": {
+      "request": {
+        "uiLocale": "vi",
+        "sourceLanguage": "vi",
+        "targetLanguage": "en",
+        "ageBand": "adult",
+        "learningGoal": "daily_practice",
+        "preferences": {
+          "dailyReminder": false
+        }
+      },
+      "response": {
+        "learnerId": "00000000-0000-4000-8000-000000000008",
+        "actorType": "account",
+        "uiLocale": "vi",
+        "sourceLanguage": "vi",
+        "targetLanguage": "en",
+        "ageBand": "adult",
+        "learningGoal": "daily_practice",
+        "preferences": {
+          "dailyReminder": false
+        },
+        "updatedAt": "2026-07-30T03:00:00Z"
+      }
+    },
+    "listCurrentConsents": {
+      "response": {
+        "items": [
+          {
+            "purpose": "required_service",
+            "policyVersion": "p0-v1",
+            "granted": true,
+            "recordedAt": "2026-07-30T03:00:00Z"
+          }
+        ]
+      }
+    },
+    "recordConsent": {
+      "request": {
+        "policyVersion": "p0-v1",
+        "granted": true
+      },
+      "response": {
+        "purpose": "required_service",
+        "policyVersion": "p0-v1",
+        "granted": true,
+        "recordedAt": "2026-07-30T03:00:00Z"
+      }
+    },
+    "createGuestMergeTicket": {
+      "response": {
+        "mergeTicket": "synthetic-fixture-ticket",
+        "expiresAt": "2026-07-30T03:15:00Z"
+      }
+    },
+    "mergeGuestIntoAccount": {
+      "request": {
+        "mergeTicket": "synthetic-fixture-ticket"
+      },
+      "response": {
+        "guestLearnerId": "00000000-0000-4000-8000-000000000009",
+        "accountLearnerId": "00000000-0000-4000-8000-000000000008",
+        "mergedAt": "2026-07-30T03:00:00Z"
+      }
+    },
+    "requestAccountExport": {
+      "response": {
+        "requestId": "00000000-0000-4000-8000-000000000010",
+        "requestType": "export",
+        "state": "requested",
+        "requestedAt": "2026-07-30T03:00:00Z",
+        "targetAt": "2026-08-06T03:00:00Z"
+      }
+    },
+    "requestAccountDeletion": {
+      "response": {
+        "requestId": "00000000-0000-4000-8000-000000000011",
+        "requestType": "deletion",
+        "state": "requested",
+        "requestedAt": "2026-07-30T03:00:00Z",
+        "targetAt": "2026-08-29T03:00:00Z"
+      }
+    },
+    "getPrivacyRequest": {
+      "response": {
+        "requestId": "00000000-0000-4000-8000-000000000010",
+        "requestType": "export",
+        "state": "completed",
+        "requestedAt": "2026-07-30T03:00:00Z",
+        "targetAt": "2026-08-06T03:00:00Z",
+        "completedAt": "2026-07-30T03:05:00Z",
+        "artifact": {
+          "format": "json",
+          "synthetic": true
+        },
+        "artifactExpiresAt": "2026-08-06T03:05:00Z"
+      }
+    },
+    "problemResponse": {
+      "response": {
+        "type": "https://api.esquilospeak.com/problems/invalid_request",
+        "title": "Bad Request",
+        "status": 400,
+        "detail": "The request body is invalid.",
+        "code": "INVALID_REQUEST",
+        "traceId": "fixture-correlation-id",
+        "retryable": false,
+        "violations": [
+          {
+            "field": "selectedOptionId",
+            "code": "INVALID"
+          }
+        ]
+      }
+    }
+  }
+}
