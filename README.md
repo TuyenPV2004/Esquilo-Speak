@@ -82,6 +82,8 @@ infrastructure/local/compose/        PostgreSQL local
   [`docs/plans/P0_GATE.md`](docs/plans/P0_GATE.md).
 - Test và evidence của Android end-to-end nằm trong
   [`tests/end-to-end/`](tests/end-to-end/).
+- Curriculum và content-as-code hiện hành nằm trong
+  [`content/`](content/README.md).
 
 ## Prerequisites
 
@@ -197,9 +199,9 @@ Chi tiết completion, conflict, mastery và review rule nằm trong
 
 ## Advanced learning P1 cho closed testing
 
-- OpenAPI `0.6.0` bổ sung proficiency framework có phiên bản và placement theo
-  course, bên cạnh media, pronunciation, writing/conversation, engagement,
-  commerce/entitlement và support.
+- OpenAPI `0.7.0` bổ sung proficiency framework có phiên bản, placement theo
+  course và presentation metadata đa locale, bên cạnh media, pronunciation,
+  writing/conversation, engagement, commerce/entitlement và support.
 - Local profile dùng adapter deterministic. Production profile trả `503` cho
   provider-dependent operation cho đến khi media/STT/AI/Play verifier thật được
   cấu hình.

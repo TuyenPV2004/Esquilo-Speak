@@ -95,11 +95,14 @@ class FakeP1Gateway implements P1Gateway {
         questions: [
           PlacementQuestion(
             id: 'q1',
-            prompt: const {'en': 'Greeting', 'vi': 'Lời chào'},
+            prompt: const {
+              'en': 'Complete: My ___ is Ana.',
+              'vi': 'Hoàn thành: My ___ is Ana.',
+            },
             options: const [
-              PlacementOption(id: 'hello', text: {'en': 'Hello'}),
-              PlacementOption(id: 'later', text: {'en': 'Later'}),
-              PlacementOption(id: 'thanks', text: {'en': 'Thanks'}),
+              PlacementOption(id: 'name', text: {'en': 'name', 'vi': 'tên'}),
+              PlacementOption(id: 'day', text: {'en': 'day', 'vi': 'ngày'}),
+              PlacementOption(id: 'food', text: {'en': 'food', 'vi': 'đồ ăn'}),
             ],
           ),
           PlacementQuestion(

@@ -75,7 +75,7 @@ class _PlacementScreenState extends State<PlacementScreen> {
                 (question) =>
                     viewModel.assessmentAnswers.containsKey(question.id),
               );
-              final locale = Localizations.localeOf(context).toLanguageTag();
+              final assessmentLocale = assessment.defaultLocale;
               return ListView(
                 key: const ValueKey('placement-assessment'),
                 padding: const EdgeInsets.symmetric(vertical: AppSpacing.md),
@@ -110,7 +110,7 @@ class _PlacementScreenState extends State<PlacementScreen> {
                               Text(
                                 resolveLocalizedText(
                                   question.prompt,
-                                  locale,
+                                  assessmentLocale,
                                   defaultLocale: assessment.defaultLocale,
                                 ),
                                 style: Theme.of(context).textTheme.titleLarge,
@@ -138,7 +138,7 @@ class _PlacementScreenState extends State<PlacementScreen> {
                                           title: Text(
                                             resolveLocalizedText(
                                               option.text,
-                                              locale,
+                                              assessmentLocale,
                                               defaultLocale:
                                                   assessment.defaultLocale,
                                             ),

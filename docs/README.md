@@ -32,6 +32,8 @@ docs/
   đoạn 13 release readiness đang tạm khóa.
 - [Kế hoạch Phần 2](plans/Ke_Hoach_2.md): các giai đoạn hoàn thiện learning
   product trước khi mở Giai đoạn 13.
+- [Kế hoạch triển khai](plans/implementation_plan.md): kế hoạch kỹ thuật chi tiết cho
+  các thay đổi đang hoặc đã được phê duyệt.
 - [P0 Gate](plans/P0_GATE.md): quyết định, acceptance criteria và service target P0.
 
 ### Shared
@@ -58,6 +60,8 @@ docs/
 ### Process
 
 - [Quy trình phát triển](process/General_Software_Development_Workflow.md)
+- [Walkthrough](process/Walkthrough.md): luồng tái hiện, kết quả mong đợi và bằng
+  chứng xác nhận cho lỗi đang được xử lý.
 - [Nhật ký thay đổi](process/Development_Change_Log.md)
 
 ## Quy tắc đường dẫn

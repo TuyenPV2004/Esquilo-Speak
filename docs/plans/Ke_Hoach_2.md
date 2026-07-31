@@ -110,23 +110,31 @@ của course tiếng Anh đầu tiên, không phải enum hoặc nhánh logic to
 - [x] Nội dung placement, feedback, concept và achievement dùng localized
   metadata hoặc message code từ contract, không hiển thị raw domain ID/code
   trong luồng production thông thường.
-- [ ] Chốt learner persona, nhu cầu giao tiếp và phạm vi loại trừ của course A1.
-- [ ] Chốt course outcome và can-do outcome cho từng unit theo CEFR phù hợp.
-- [ ] Thiết kế 4 unit, khoảng 20 lesson và checkpoint của từng unit.
-- [ ] Gắn prerequisite, skill, concept và evidence mong đợi cho từng lesson.
-- [ ] Lập vocabulary/phrase/grammar inventory có thứ tự giới thiệu và tái xuất hiện.
-- [ ] Định nghĩa lesson template: warm-up, introduction, guided practice,
+- [x] Chốt learner persona, nhu cầu giao tiếp và phạm vi loại trừ của course A1.
+- [x] Chốt course outcome và can-do outcome cho từng unit theo CEFR phù hợp.
+- [x] Thiết kế 4 unit, khoảng 20 lesson và checkpoint của từng unit.
+- [x] Gắn prerequisite, skill, concept và evidence mong đợi cho từng lesson.
+- [x] Lập vocabulary/phrase/grammar inventory có thứ tự giới thiệu và tái xuất hiện.
+- [x] Định nghĩa lesson template: warm-up, introduction, guided practice,
   independent practice, mistake review và summary.
-- [ ] Định nghĩa difficulty policy, hint, retry, partial credit và answer policy.
-- [ ] Viết content style guide EN/VI, tone, cultural review và safety rule.
-- [ ] Chốt media guideline: giọng đọc, tốc độ, license, transcript và text alternative.
-- [ ] Chốt acceptance rubric cho language, pedagogy, media và accessibility review.
+- [x] Định nghĩa difficulty policy, hint, retry, partial credit và answer policy.
+- [x] Viết content style guide EN/VI, tone, cultural review và safety rule.
+- [x] Chốt media guideline: giọng đọc, tốc độ, license, transcript và text alternative.
+- [x] Chốt acceptance rubric cho language, pedagogy, media và accessibility review.
 
 ### Gate
 
 - [ ] Curriculum owner phê duyệt course map và Unit 1 specification.
-- [ ] Mỗi lesson Unit 1 có outcome, concept, skill, vocabulary và assessment evidence.
-- [ ] Không còn quyết định pedagogy blocking việc mở rộng schema/exercise engine.
+- [x] Mỗi lesson Unit 1 có outcome, concept, skill, vocabulary và assessment evidence.
+- [x] Không còn quyết định pedagogy blocking việc mở rộng schema/exercise engine.
+
+Trạng thái gate: curriculum specification, Unit 1 specification và content
+standards đã được tạo dưới
+[`content/courses/course-en-for-vi/`](../../content/courses/course-en-for-vi/).
+Các artifact khóa persona, 4 unit/20 lesson, progression, evidence, lesson flow,
+scoring/feedback, media, cultural safety và acceptance rubric dựa trên CEFR 2020.
+Giai đoạn 1 còn chờ curriculum owner/developer review và phê duyệt course map
+cùng Unit 1 specification; chưa mở Giai đoạn 2 chỉ bằng việc tự đánh dấu gate.
 
 ## Giai đoạn 2 — Content contract và authoring pipeline
 

@@ -69,6 +69,29 @@ void main() {
     expect(find.textContaining('non-accredited'), findsOneWidget);
   });
 
+  testWidgets('placement content uses target locale when UI is Vietnamese', (
+    tester,
+  ) async {
+    final viewModel = _viewModel();
+    await viewModel.load();
+    await tester.pumpWidget(
+      _TestApp(
+        locale: const Locale('vi'),
+        child: PlacementScreen(viewModel: viewModel),
+      ),
+    );
+
+    expect(find.text('Xếp trình độ'), findsOneWidget);
+    expect(find.text('Complete: My ___ is Ana.'), findsOneWidget);
+    expect(find.text('name'), findsOneWidget);
+    expect(find.text('day'), findsOneWidget);
+    expect(find.text('food'), findsOneWidget);
+    expect(find.text('Hoàn thành: My ___ is Ana.'), findsNothing);
+    expect(find.text('tên'), findsNothing);
+    expect(find.text('ngày'), findsNothing);
+    expect(find.text('đồ ăn'), findsNothing);
+  });
+
   testWidgets('engagement and premium expose closed-testing lifecycle', (
     tester,
   ) async {
@@ -163,13 +186,14 @@ P1ViewModel _viewModel() => P1ViewModel(
 );
 
 class _TestApp extends StatelessWidget {
-  const _TestApp({required this.child});
+  const _TestApp({required this.child, this.locale = const Locale('en')});
 
   final Widget child;
+  final Locale locale;
 
   @override
   Widget build(BuildContext context) => MaterialApp(
-    locale: const Locale('en'),
+    locale: locale,
     theme: AppTheme.light(),
     localizationsDelegates: const [
       AppLocalizations.delegate,

@@ -82,3 +82,62 @@ Kế hoạch bám theo Giai đoạn 1–3 và các dependency engagement/commerc
   APK. Các policy sản phẩm còn lại như goal catalog, daily-session composer và
   recommendation strategy tiếp tục thuộc Giai đoạn 5 của `Ke_Hoach_2.md`, không
   được giả lập thành cấu hình locale.
+
+## 8. Sửa lỗi Placement Test dùng sai locale
+
+### Mục tiêu
+
+Giữ chrome của màn hình Xếp trình độ theo `uiLocale`, nhưng bắt buộc prompt và
+đáp án của assessment dùng locale nội dung thuộc course target để score phản ánh
+khả năng target language thay vì khả năng đọc bản dịch.
+
+### Nguyên nhân đã xác nhận
+
+`PlacementScreen` truyền `Localizations.localeOf(context)` vào resolver của cả
+`question.prompt` và `option.text`. Assessment đã trả `defaultLocale: en`, nhưng
+field này chỉ được dùng làm fallback nên bản `vi` được ưu tiên khi UI là tiếng Việt.
+
+### File dự kiến thay đổi
+
+- `apps/mobile/lib/features/assessment/presentation/placement_screen.dart`.
+- `apps/mobile/test/learner_journey/p1_screens_test.dart`.
+- `apps/mobile/test/support/p1_fakes.dart` để fixture có cùng prompt/option EN/VI
+  đã gây lỗi trong dữ liệu local.
+- `docs/process/Walkthrough.md` và
+  `docs/process/errors/Error_Placement_Target_Language.md`.
+- `docs/process/Development_Change_Log.md` sau khi validation hoàn tất.
+
+### Cách triển khai
+
+1. Tách `uiLocale` dùng cho format/chrome khỏi `assessmentLocale` dùng cho nội dung test.
+2. Resolve prompt và option theo `assessment.defaultLocale`.
+3. Thêm widget regression test với UI `vi`, assessment `en`; kiểm tra prompt và
+   các option English xuất hiện, bản dịch Vietnamese không xuất hiện.
+4. Không sửa API/schema/migration vì assessment response đã có locale canonical.
+
+### Validation
+
+1. `dart format --output=none --set-exit-if-changed` cho source/test thay đổi.
+2. `flutter analyze` và targeted/full Flutter test nếu SDK khả dụng.
+3. P0 release-freeze validator và JSON Schema parse.
+4. Kiểm tra local Markdown link, UTF-8 và `git diff --check`.
+
+### Rủi ro và kiểm soát
+
+- `defaultLocale` phải tiếp tục là locale canonical của assessment content; test
+  fixture và backend integration hiện bảo vệ giá trị `en` cho course target English.
+- Chỉ thay presentation resolution; answer ID, submission order và scoring không đổi.
+
+### Phê duyệt
+
+Developer đã phê duyệt thực hiện bản sửa ngày 2026-08-01 bằng yêu cầu “Thực hiện sửa”.
+
+### Kết quả
+
+- Implementation hoàn tất: prompt và option dùng `assessment.defaultLocale`;
+  chrome tiếp tục dùng `uiLocale`.
+- Targeted Placement/P1 widget suite: 6 test pass.
+- Dart format pass và Flutter analyzer không có issue trong container Flutter
+  3.44.0/Dart 3.12.0; repo vẫn giữ constraint Flutter 3.44.3/Dart 3.12.2.
+- 42 test khác pass trong full-suite run; P0 fixture test pass khi chạy lại với
+  layout thư mục tạm đúng repository.
