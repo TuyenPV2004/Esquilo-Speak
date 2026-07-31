@@ -1,5 +1,6 @@
 package com.esquilospeak.engagement;
 
+import com.esquilospeak.ApiException;
 import com.esquilospeak.identityprofile.AccountDataParticipant;
 import java.sql.Date;
 import java.sql.Time;
@@ -8,26 +9,35 @@ import java.time.Clock;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.time.ZoneOffset;
+import java.time.DateTimeException;
+import java.time.ZoneId;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import org.springframework.core.annotation.Order;
+import org.springframework.http.HttpStatus;
 import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import tools.jackson.core.JacksonException;
+import tools.jackson.core.type.TypeReference;
+import tools.jackson.databind.ObjectMapper;
 
 @Service
 @Order(220)
 public class EngagementService implements AccountDataParticipant {
 
+    private static final TypeReference<Map<String, String>> LOCALIZED_TEXT = new TypeReference<>() {};
+
     private final JdbcClient jdbc;
     private final Clock clock;
+    private final ObjectMapper objectMapper;
 
-    EngagementService(JdbcClient jdbc, Clock clock) {
+    EngagementService(JdbcClient jdbc, Clock clock, ObjectMapper objectMapper) {
         this.jdbc = jdbc;
         this.clock = clock;
+        this.objectMapper = objectMapper;
     }
 
     @Transactional(readOnly = true)
@@ -47,12 +57,20 @@ public class EngagementService implements AccountDataParticipant {
                 .optional()
                 .orElse(new Profile(0, 0, 0, null));
         List<Achievement> achievements = jdbc.sql("""
-                        select code, earned_at from learner_achievements
-                        where learner_id = :learnerId order by earned_at, code
+                        select achievement.code, achievement.earned_at,
+                               policy.title::text, policy.description::text
+                        from learner_achievements achievement
+                        join engagement_achievement_policies policy
+                          on policy.code = achievement.code
+                        where achievement.learner_id = :learnerId
+                        order by achievement.earned_at, achievement.code
                         """)
                 .param("learnerId", learnerId)
                 .query((rs, rowNum) -> new Achievement(
-                        rs.getString("code"), rs.getTimestamp("earned_at").toInstant()))
+                        rs.getString("code"),
+                        readLocalizedText(rs.getString("title")),
+                        readLocalizedText(rs.getString("description")),
+                        rs.getTimestamp("earned_at").toInstant()))
                 .list();
         NotificationPreference preference = preference(learnerId);
         return new EngagementStatus(
@@ -66,9 +84,10 @@ public class EngagementService implements AccountDataParticipant {
 
     @Transactional
     public EngagementStatus recordActivity(
-            UUID learnerId, UUID clientEventId, String eventType, int xpAwarded) {
+            UUID learnerId, UUID clientEventId, String eventType, String evidenceRef) {
         Instant now = clock.instant();
-        LocalDate today = now.atZone(ZoneOffset.UTC).toLocalDate();
+        EventPolicy policy = activePolicy(eventType);
+        LocalDate today = now.atZone(zoneId(preference(learnerId).timezone())).toLocalDate();
         jdbc.sql("""
                         insert into engagement_profiles (
                             learner_id, current_streak, longest_streak, xp, updated_at
@@ -81,19 +100,21 @@ public class EngagementService implements AccountDataParticipant {
         int inserted = jdbc.sql("""
                         insert into engagement_events (
                             id, learner_id, client_event_id, event_type,
-                            xp_awarded, occurred_on, created_at
+                            xp_awarded, occurred_on, created_at, policy_version, evidence_ref
                         ) values (
                             :id, :learnerId, :clientEventId, :eventType,
-                            :xpAwarded, :occurredOn, :createdAt
+                            :xpAwarded, :occurredOn, :createdAt, :policyVersion, :evidenceRef
                         ) on conflict (learner_id, client_event_id) do nothing
                         """)
                 .param("id", UUID.randomUUID())
                 .param("learnerId", learnerId)
                 .param("clientEventId", clientEventId)
                 .param("eventType", eventType)
-                .param("xpAwarded", xpAwarded)
+                .param("xpAwarded", policy.xpAwarded())
                 .param("occurredOn", Date.valueOf(today))
                 .param("createdAt", Timestamp.from(now))
+                .param("policyVersion", policy.version())
+                .param("evidenceRef", evidenceRef)
                 .update();
         if (inserted == 0) {
             return status(learnerId);
@@ -123,40 +144,40 @@ public class EngagementService implements AccountDataParticipant {
                         """)
                 .param("streak", streak)
                 .param("longest", longest)
-                .param("xpAwarded", xpAwarded)
+                .param("xpAwarded", policy.xpAwarded())
                 .param("today", Date.valueOf(today))
                 .param("now", Timestamp.from(now))
                 .param("learnerId", learnerId)
                 .update();
-        award(learnerId, "first-step", now);
-        if (streak >= 7) {
-            award(learnerId, "seven-day-streak", now);
-        }
+        awardEligible(learnerId, streak, now);
         return status(learnerId);
     }
 
     @Transactional
     public NotificationPreference updatePreference(
-            UUID learnerId, boolean enabled, LocalTime reminderTime, String locale) {
+            UUID learnerId, boolean enabled, LocalTime reminderTime, String locale, String timezone) {
+        zoneId(timezone);
         Instant now = clock.instant();
         jdbc.sql("""
                         insert into notification_preferences (
-                            learner_id, enabled, reminder_time, locale, updated_at
+                            learner_id, enabled, reminder_time, locale, timezone, updated_at
                         ) values (
-                            :learnerId, :enabled, :reminderTime, :locale, :updatedAt
+                            :learnerId, :enabled, :reminderTime, :locale, :timezone, :updatedAt
                         ) on conflict (learner_id) do update
                         set enabled = excluded.enabled,
                             reminder_time = excluded.reminder_time,
                             locale = excluded.locale,
+                            timezone = excluded.timezone,
                             updated_at = excluded.updated_at
                         """)
                 .param("learnerId", learnerId)
                 .param("enabled", enabled)
                 .param("reminderTime", reminderTime == null ? null : Time.valueOf(reminderTime))
                 .param("locale", locale)
+                .param("timezone", timezone)
                 .param("updatedAt", Timestamp.from(now))
                 .update();
-        return new NotificationPreference(enabled, reminderTime, locale, now);
+        return new NotificationPreference(enabled, reminderTime, locale, timezone, now);
     }
 
     private int calculateStreak(Profile current, LocalDate today) {
@@ -182,9 +203,28 @@ public class EngagementService implements AccountDataParticipant {
                 .update();
     }
 
+    private void awardEligible(UUID learnerId, int streak, Instant now) {
+        int activityCount = jdbc.sql("select count(*) from engagement_events where learner_id = :learnerId")
+                .param("learnerId", learnerId)
+                .query(Integer.class)
+                .single();
+        jdbc.sql("""
+                        select code from engagement_achievement_policies
+                        where enabled = true
+                          and ((trigger_type = 'activity_count' and threshold <= :activityCount)
+                            or (trigger_type = 'streak' and threshold <= :streak))
+                        order by code
+                        """)
+                .param("activityCount", activityCount)
+                .param("streak", streak)
+                .query(String.class)
+                .list()
+                .forEach(code -> award(learnerId, code, now));
+    }
+
     private NotificationPreference preference(UUID learnerId) {
         return jdbc.sql("""
-                        select enabled, reminder_time, locale, updated_at
+                        select enabled, reminder_time, locale, timezone, updated_at
                         from notification_preferences where learner_id = :learnerId
                         """)
                 .param("learnerId", learnerId)
@@ -194,9 +234,46 @@ public class EngagementService implements AccountDataParticipant {
                                 ? null
                                 : rs.getTime("reminder_time").toLocalTime(),
                         rs.getString("locale"),
+                        rs.getString("timezone"),
                         rs.getTimestamp("updated_at").toInstant()))
                 .optional()
-                .orElse(new NotificationPreference(false, null, "vi", null));
+                .orElse(new NotificationPreference(false, null, "und", "UTC", null));
+    }
+
+    private EventPolicy activePolicy(String eventType) {
+        return jdbc.sql("""
+                        select version, xp_awarded
+                        from engagement_event_policies
+                        where event_type = :eventType and enabled = true
+                        order by version desc limit 1
+                        """)
+                .param("eventType", eventType)
+                .query((rs, rowNum) -> new EventPolicy(
+                        rs.getInt("version"), rs.getInt("xp_awarded")))
+                .optional()
+                .orElseThrow(() -> new ApiException(
+                        HttpStatus.BAD_REQUEST,
+                        "ENGAGEMENT_EVENT_UNSUPPORTED",
+                        "The engagement event type is not supported."));
+    }
+
+    private ZoneId zoneId(String timezone) {
+        try {
+            return ZoneId.of(timezone);
+        } catch (DateTimeException exception) {
+            throw new ApiException(
+                    HttpStatus.BAD_REQUEST,
+                    "TIMEZONE_INVALID",
+                    "The timezone must be a valid IANA zone ID.");
+        }
+    }
+
+    private Map<String, String> readLocalizedText(String value) {
+        try {
+            return objectMapper.readValue(value, LOCALIZED_TEXT);
+        } catch (JacksonException exception) {
+            throw new IllegalStateException("Stored localized achievement text is invalid.", exception);
+        }
     }
 
     @Override
@@ -240,10 +317,16 @@ public class EngagementService implements AccountDataParticipant {
 
     private record Profile(int currentStreak, int longestStreak, int xp, LocalDate lastLearningDate) {}
 
-    public record Achievement(String code, Instant earnedAt) {}
+    private record EventPolicy(int version, int xpAwarded) {}
+
+    public record Achievement(
+            String code,
+            Map<String, String> title,
+            Map<String, String> description,
+            Instant earnedAt) {}
 
     public record NotificationPreference(
-            boolean enabled, LocalTime reminderTime, String locale, Instant updatedAt) {}
+            boolean enabled, LocalTime reminderTime, String locale, String timezone, Instant updatedAt) {}
 
     public record EngagementStatus(
             int currentStreak,

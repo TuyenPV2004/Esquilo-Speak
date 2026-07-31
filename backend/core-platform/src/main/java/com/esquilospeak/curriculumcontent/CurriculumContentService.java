@@ -3,6 +3,8 @@ package com.esquilospeak.curriculumcontent;
 import com.esquilospeak.ApiException;
 import java.util.List;
 import java.util.Map;
+import java.util.LinkedHashMap;
+import java.util.function.BiFunction;
 import org.springframework.http.HttpStatus;
 import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.stereotype.Service;
@@ -19,10 +21,16 @@ public class CurriculumContentService {
 
     private final JdbcClient jdbc;
     private final ObjectMapper objectMapper;
+    private final Map<String, BiFunction<Map<String, Object>, Map<String, Object>, ScoredResponse>> scorers;
 
     public CurriculumContentService(JdbcClient jdbc, ObjectMapper objectMapper) {
         this.jdbc = jdbc;
         this.objectMapper = objectMapper;
+        Map<String, BiFunction<Map<String, Object>, Map<String, Object>, ScoredResponse>> registered =
+                new LinkedHashMap<>();
+        registered.put("multiple_choice", this::scoreMultipleChoice);
+        registered.put("true_false", this::scoreTrueFalse);
+        this.scorers = Map.copyOf(registered);
     }
 
     public List<Map<String, Object>> listLanguages() {
@@ -75,10 +83,37 @@ public class CurriculumContentService {
                     return Map.of(
                             "id", rs.getString("id"),
                             "version", rs.getInt("version"),
+                            "locale", lesson.get("locale"),
                             "title", lesson.get("title"),
                             "estimatedMinutes", lesson.get("estimatedMinutes"));
                 })
                 .list();
+    }
+
+    public List<Map<String, Object>> listAdvancedActivities(String courseId) {
+        ensureCourseExists(courseId);
+        return jdbc.sql("""
+                        select activity.value::text as content
+                        from lessons lesson
+                        join course_versions course_version
+                          on course_version.course_id = lesson.course_id
+                         and course_version.version = lesson.course_version
+                        cross join lateral jsonb_array_elements(
+                          coalesce(lesson.learner_content->'advancedActivities', '[]'::jsonb)
+                        ) activity(value)
+                        where lesson.course_id = :courseId
+                          and lesson.status = 'published'
+                          and course_version.state = 'published'
+                          and (course_version.effective_at is null
+                               or course_version.effective_at <= now())
+                        order by lesson.position, activity.value->>'id'
+                        """)
+                .param("courseId", courseId)
+                .query(String.class)
+                .list()
+                .stream()
+                .map(this::readMap)
+                .toList();
     }
 
     public LearnerLesson learnerLesson(String lessonId, Integer requestedVersion) {
@@ -128,7 +163,11 @@ public class CurriculumContentService {
     }
 
     public ExerciseAnswer exerciseAnswer(
-            String courseId, String lessonId, int lessonVersion, String exerciseId, String selectedOptionId) {
+            String courseId,
+            String lessonId,
+            int lessonVersion,
+            String exerciseId,
+            Map<String, Object> response) {
         Map<String, Object> lesson = jdbc.sql("""
                         select content::text
                         from lessons
@@ -168,37 +207,69 @@ public class CurriculumContentService {
                         HttpStatus.UNPROCESSABLE_CONTENT,
                         "EXERCISE_NOT_FOUND",
                         "The exercise does not belong to the lesson."));
-        String correctOptionId;
-        if ("true_false".equals(exercise.get("type"))) {
-            if (!List.of("true", "false").contains(selectedOptionId)) {
-                throw new ApiException(
-                        HttpStatus.UNPROCESSABLE_CONTENT,
-                        "OPTION_NOT_FOUND",
-                        "A true/false answer must be true or false.");
-            }
-            correctOptionId = String.valueOf(exercise.get("correctAnswer"));
-        } else {
-            @SuppressWarnings("unchecked")
-            List<Map<String, Object>> options = (List<Map<String, Object>>) exercise.get("options");
-            boolean optionExists =
-                    options.stream().anyMatch(option -> selectedOptionId.equals(option.get("id")));
-            if (!optionExists) {
-                throw new ApiException(
-                        HttpStatus.UNPROCESSABLE_CONTENT,
-                        "OPTION_NOT_FOUND",
-                        "The selected option does not belong to the exercise.");
-            }
-            correctOptionId = (String) exercise.get("correctOptionId");
+        String type = String.valueOf(exercise.get("type"));
+        BiFunction<Map<String, Object>, Map<String, Object>, ScoredResponse> scorer = scorers.get(type);
+        if (scorer == null) {
+            throw new ApiException(
+                    HttpStatus.UNPROCESSABLE_CONTENT,
+                    "EXERCISE_TYPE_UNSUPPORTED",
+                    "No scorer is registered for the exercise type.");
         }
+        ScoredResponse scored = scorer.apply(exercise, response);
         @SuppressWarnings("unchecked")
         Map<String, String> explanation = (Map<String, String>) exercise.get("explanation");
         @SuppressWarnings("unchecked")
         List<String> conceptIds = (List<String>) exercise.getOrDefault("conceptIds", List.of());
         return new ExerciseAnswer(
-                correctOptionId,
+                scored.correctOptionId(),
+                scored.correctResponse(),
                 explanation,
-                selectedOptionId.equals(correctOptionId),
+                scored.correct(),
                 List.copyOf(conceptIds));
+    }
+
+    private ScoredResponse scoreMultipleChoice(
+            Map<String, Object> exercise, Map<String, Object> response) {
+        String selectedOptionId = optionId(response);
+        @SuppressWarnings("unchecked")
+        List<Map<String, Object>> options = (List<Map<String, Object>>) exercise.get("options");
+        boolean optionExists = options.stream()
+                .anyMatch(option -> selectedOptionId.equals(option.get("id")));
+        if (!optionExists) {
+            throw invalidOption("The selected option does not belong to the exercise.");
+        }
+        String correctOptionId = (String) exercise.get("correctOptionId");
+        return new ScoredResponse(
+                selectedOptionId.equals(correctOptionId),
+                correctOptionId,
+                Map.of("kind", "option", "optionId", correctOptionId));
+    }
+
+    private ScoredResponse scoreTrueFalse(
+            Map<String, Object> exercise, Map<String, Object> response) {
+        String selectedOptionId = optionId(response);
+        if (!List.of("true", "false").contains(selectedOptionId)) {
+            throw invalidOption("A true/false answer must be true or false.");
+        }
+        String correctOptionId = String.valueOf(exercise.get("correctAnswer"));
+        return new ScoredResponse(
+                selectedOptionId.equals(correctOptionId),
+                correctOptionId,
+                Map.of("kind", "option", "optionId", correctOptionId));
+    }
+
+    private String optionId(Map<String, Object> response) {
+        if (!"option".equals(response.get("kind")) || !(response.get("optionId") instanceof String optionId)) {
+            throw new ApiException(
+                    HttpStatus.UNPROCESSABLE_CONTENT,
+                    "ATTEMPT_RESPONSE_INVALID",
+                    "This exercise requires an option response.");
+        }
+        return optionId;
+    }
+
+    private ApiException invalidOption(String message) {
+        return new ApiException(HttpStatus.UNPROCESSABLE_CONTENT, "OPTION_NOT_FOUND", message);
     }
 
     public List<LessonStructure> courseStructure(String courseId) {
@@ -263,9 +334,15 @@ public class CurriculumContentService {
 
     public record ExerciseAnswer(
             String correctOptionId,
+            Map<String, Object> correctResponse,
             Map<String, String> explanation,
             boolean correct,
             List<String> conceptIds) {}
+
+    private record ScoredResponse(
+            boolean correct,
+            String correctOptionId,
+            Map<String, Object> correctResponse) {}
 
     public record LessonStructure(String lessonId, int lessonVersion, int exerciseCount) {}
 }

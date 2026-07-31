@@ -1,7 +1,7 @@
 openapi: 3.1.1
 info:
   title: EsquiloSpeak Learning API
-  version: 0.5.0
+  version: 0.7.0
   description: >-
     Mobile contract for identity/profile onboarding and the first learning
     vertical slice: resolve a guest or account learner, manage profile and
@@ -210,6 +210,32 @@ paths:
           $ref: '#/components/responses/ErrorResponse'
         default:
           $ref: '#/components/responses/ErrorResponse'
+  /api/mobile/v1/courses/{courseId}/advanced-activities:
+    get:
+      tags: [Advanced Learning]
+      operationId: listCourseAdvancedActivities
+      summary: List content-defined advanced activities for a published course
+      security: []
+      parameters:
+        - $ref: '#/components/parameters/CorrelationId'
+        - $ref: '#/components/parameters/CourseId'
+      responses:
+        '200':
+          description: Ordered advanced activity definitions
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [items]
+                properties:
+                  items:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/AdvancedActivityDefinition'
+        '404':
+          $ref: '#/components/responses/ErrorResponse'
+        default:
+          $ref: '#/components/responses/ErrorResponse'
   /api/mobile/v1/learning-sessions:
     post:
       tags: [Learning]
@@ -403,9 +429,11 @@ paths:
       operationId: replaceLearnerProfile
       summary: Complete or replace profile and onboarding choices
       description: >-
-        Account learners must complete an age band before learning data can be
-        synchronized. Under-16 accounts require a separately approved guardian
-        consent flow and are rejected in P0.
+        The selected source language, target language and active course are
+        validated against the enabled published catalog. Account learners must
+        complete an age band before learning data can be synchronized. Under-16
+        accounts require a separately approved guardian consent flow and are
+        rejected in P0.
       security:
         - bearerAuth: []
       parameters:
@@ -868,10 +896,17 @@ paths:
   /api/mobile/v1/assessments/placement:
     get:
       tags: [Assessment]
-      operationId: getA1PlacementAssessment
-      summary: Get the internal A1 placement assessment
+      operationId: getPlacementAssessment
+      summary: Get the active placement assessment for a course
       security:
         - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/CorrelationId'
+        - name: courseId
+          in: query
+          required: true
+          schema:
+            $ref: '#/components/schemas/Identifier'
       responses:
         '200':
           description: Placement definition without answer keys
@@ -884,7 +919,7 @@ paths:
   /api/mobile/v1/assessments/placement/attempts:
     post:
       tags: [Assessment]
-      operationId: submitA1PlacementAssessment
+      operationId: submitPlacementAssessment
       summary: Score placement and issue a non-accredited completion record
       security:
         - bearerAuth: []
@@ -894,15 +929,17 @@ paths:
           application/json:
             schema:
               type: object
-              required: [clientAttemptId, answers]
+              required: [clientAttemptId, assessmentId, answers]
               properties:
                 clientAttemptId:
                   type: string
                   format: uuid
+                assessmentId:
+                  $ref: '#/components/schemas/Identifier'
                 answers:
                   type: array
-                  minItems: 4
-                  maxItems: 4
+                  minItems: 1
+                  maxItems: 100
                   items:
                     type: string
               additionalProperties: false
@@ -944,7 +981,7 @@ paths:
           application/json:
             schema:
               type: object
-              required: [clientEventId, eventType, xpAwarded]
+              required: [clientEventId, eventType, evidenceRef]
               properties:
                 clientEventId:
                   type: string
@@ -952,10 +989,9 @@ paths:
                 eventType:
                   type: string
                   maxLength: 40
-                xpAwarded:
-                  type: integer
-                  minimum: 0
-                  maximum: 1000
+                evidenceRef:
+                  type: string
+                  maxLength: 160
               additionalProperties: false
       responses:
         '200':
@@ -1252,9 +1288,6 @@ components:
       required:
         - learnerId
         - actorType
-        - uiLocale
-        - sourceLanguage
-        - targetLanguage
         - preferences
         - updatedAt
       properties:
@@ -1269,6 +1302,9 @@ components:
           $ref: '#/components/schemas/Locale'
         targetLanguage:
           $ref: '#/components/schemas/Locale'
+        activeCourseId:
+          type: string
+          pattern: '^[a-z0-9]+(?:-[a-z0-9]+)*$'
         ageBand:
           $ref: '#/components/schemas/AgeBand'
         learningGoal:
@@ -1287,6 +1323,7 @@ components:
         - uiLocale
         - sourceLanguage
         - targetLanguage
+        - activeCourseId
         - ageBand
       properties:
         uiLocale:
@@ -1295,6 +1332,9 @@ components:
           $ref: '#/components/schemas/Locale'
         targetLanguage:
           $ref: '#/components/schemas/Locale'
+        activeCourseId:
+          type: string
+          pattern: '^[a-z0-9]+(?:-[a-z0-9]+)*$'
         ageBand:
           $ref: '#/components/schemas/AgeBand'
         learningGoal:
@@ -1447,6 +1487,7 @@ components:
         - targetLanguage
         - locale
         - compatibilityVersion
+        - proficiency
         - title
         - description
         - owner
@@ -1462,6 +1503,8 @@ components:
         compatibilityVersion:
           type: integer
           minimum: 1
+        proficiency:
+          $ref: '#/components/schemas/CourseProficiency'
         title:
           $ref: '#/components/schemas/LocalizedText'
         description:
@@ -1479,6 +1522,28 @@ components:
           minItems: 1
           items:
             $ref: '#/components/schemas/UnitDraft'
+      additionalProperties: false
+    CourseProficiency:
+      type: object
+      required:
+        - frameworkCode
+        - frameworkVersion
+        - entryLevelCode
+        - targetLevelCode
+      properties:
+        frameworkCode:
+          type: string
+          pattern: '^[a-z][a-z0-9._-]{0,49}$'
+        frameworkVersion:
+          type: string
+          minLength: 1
+          maxLength: 50
+        entryLevelCode:
+          type: string
+          pattern: '^[A-Za-z0-9][A-Za-z0-9._-]{0,49}$'
+        targetLevelCode:
+          type: string
+          pattern: '^[A-Za-z0-9][A-Za-z0-9._-]{0,49}$'
       additionalProperties: false
     UnitDraft:
       type: object
@@ -1618,13 +1683,15 @@ components:
       additionalProperties: false
     LessonSummary:
       type: object
-      required: [id, version, title, estimatedMinutes]
+      required: [id, version, locale, title, estimatedMinutes]
       properties:
         id:
           $ref: '#/components/schemas/Identifier'
         version:
           type: integer
           minimum: 1
+        locale:
+          $ref: '#/components/schemas/Locale'
         title:
           $ref: '#/components/schemas/LocalizedText'
         estimatedMinutes:
@@ -1640,7 +1707,6 @@ components:
         - lessonId
         - lessonVersion
         - exerciseId
-        - selectedOptionId
         - occurredAt
       properties:
         clientAttemptId:
@@ -1657,6 +1723,10 @@ components:
           $ref: '#/components/schemas/Identifier'
         selectedOptionId:
           $ref: '#/components/schemas/Identifier'
+          deprecated: true
+          description: Legacy option response retained during the Exercise Engine V2 transition.
+        response:
+          $ref: '#/components/schemas/ExerciseResponse'
         occurredAt:
           type: string
           format: date-time
@@ -1667,6 +1737,9 @@ components:
           type: string
           format: uuid
       additionalProperties: false
+      anyOf:
+        - required: [response]
+        - required: [selectedOptionId]
     AttemptResult:
       type: object
       required:
@@ -1714,10 +1787,12 @@ components:
       additionalProperties: false
     Feedback:
       type: object
-      required: [message, correctOptionId, explanation]
+      required: [messageCode, correctOptionId, explanation]
       properties:
-        message:
-          $ref: '#/components/schemas/LocalizedText'
+        messageCode:
+          type: string
+          pattern: '^[a-z][a-z0-9]*(\.[a-z][a-z0-9]*)+$'
+          description: Stable client-localized feedback message key.
         correctOptionId:
           $ref: '#/components/schemas/Identifier'
         explanation:
@@ -1758,6 +1833,22 @@ components:
           minimum: 0
         completed:
           type: boolean
+      additionalProperties: false
+    ExerciseResponse:
+      oneOf:
+        - $ref: '#/components/schemas/OptionExerciseResponse'
+      discriminator:
+        propertyName: kind
+        mapping:
+          option: '#/components/schemas/OptionExerciseResponse'
+    OptionExerciseResponse:
+      type: object
+      required: [kind, optionId]
+      properties:
+        kind:
+          const: option
+        optionId:
+          $ref: '#/components/schemas/Identifier'
       additionalProperties: false
     LessonProgress:
       type: object
@@ -1820,11 +1911,15 @@ components:
     MasteryState:
       type: object
       required:
-        [conceptId, modelVersion, score, correctEvidenceCount, evidenceCount,
+        [conceptId, defaultLocale, title, modelVersion, score, correctEvidenceCount, evidenceCount,
          lastEvidenceAt, explanation]
       properties:
         conceptId:
           $ref: '#/components/schemas/Identifier'
+        defaultLocale:
+          $ref: '#/components/schemas/Locale'
+        title:
+          $ref: '#/components/schemas/LocalizedText'
         modelVersion:
           type: integer
           minimum: 1
@@ -1848,11 +1943,15 @@ components:
     ReviewItem:
       type: object
       required:
-        [conceptId, modelVersion, dueAt, intervalDays, easeFactor, repetitions,
+        [conceptId, defaultLocale, title, modelVersion, dueAt, intervalDays, easeFactor, repetitions,
          lastResult]
       properties:
         conceptId:
           $ref: '#/components/schemas/Identifier'
+        defaultLocale:
+          $ref: '#/components/schemas/Locale'
+        title:
+          $ref: '#/components/schemas/LocalizedText'
         modelVersion:
           type: integer
           minimum: 1
@@ -1972,6 +2071,26 @@ components:
                 format: date-time
             additionalProperties: false
       additionalProperties: false
+    AdvancedActivityDefinition:
+      type: object
+      required: [id, contentRef, mediaId, expectedText, targetLocale, feedbackLocale]
+      properties:
+        id:
+          type: string
+          pattern: '^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$'
+        contentRef:
+          type: string
+          maxLength: 160
+        mediaId:
+          type: string
+          pattern: '^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$'
+        expectedText:
+          type: string
+          maxLength: 500
+        targetLocale:
+          type: string
+        feedbackLocale:
+          type: string
     AdvancedFeedbackResult:
       type: object
       required: [id, kind, feedback, provider, createdAt]
@@ -1990,21 +2109,51 @@ components:
           maximum: 100
         feedback:
           type: object
-          additionalProperties: true
+          required: [code, parameters, locale]
+          properties:
+            code:
+              type: string
+              pattern: '^[a-z][A-Za-z0-9]*(\.[a-z][A-Za-z0-9]*)+$'
+            parameters:
+              type: object
+              additionalProperties: true
+            locale:
+              $ref: '#/components/schemas/Locale'
+          additionalProperties: false
         provider:
           type: string
         createdAt:
           type: string
           format: date-time
       additionalProperties: false
+    ProficiencyReference:
+      type: object
+      description: A level in a versioned framework selected by content data.
+      required: [frameworkCode, frameworkVersion, levelCode]
+      properties:
+        frameworkCode:
+          type: string
+          pattern: '^[A-Za-z][A-Za-z0-9._-]{0,49}$'
+        frameworkVersion:
+          type: string
+          minLength: 1
+          maxLength: 50
+        levelCode:
+          type: string
+          pattern: '^[A-Za-z0-9][A-Za-z0-9._-]{0,49}$'
+      additionalProperties: false
     AssessmentDefinition:
       type: object
-      required: [id, level, passScore, questions]
+      required: [id, courseId, defaultLocale, proficiency, passScore, questions]
       properties:
         id:
           $ref: '#/components/schemas/Identifier'
-        level:
-          const: A1
+        courseId:
+          $ref: '#/components/schemas/Identifier'
+        defaultLocale:
+          $ref: '#/components/schemas/Locale'
+        proficiency:
+          $ref: '#/components/schemas/ProficiencyReference'
         passScore:
           type: integer
           minimum: 0
@@ -2018,22 +2167,29 @@ components:
               id:
                 $ref: '#/components/schemas/Identifier'
               prompt:
-                type: string
+                $ref: '#/components/schemas/LocalizedText'
               options:
                 type: array
                 items:
-                  type: string
+                  type: object
+                  required: [id, text]
+                  properties:
+                    id:
+                      $ref: '#/components/schemas/Identifier'
+                    text:
+                      $ref: '#/components/schemas/LocalizedText'
+                  additionalProperties: false
             additionalProperties: false
       additionalProperties: false
     AssessmentResult:
       type: object
-      required: [attemptId, level, score, passed, completedAt]
+      required: [attemptId, proficiency, score, passed, completedAt]
       properties:
         attemptId:
           type: string
           format: uuid
-        level:
-          const: A1
+        proficiency:
+          $ref: '#/components/schemas/ProficiencyReference'
         score:
           type: integer
           minimum: 0
@@ -2042,13 +2198,13 @@ components:
           type: boolean
         completionRecord:
           type: object
-          required: [id, level, type, issuedAt]
+          required: [id, proficiency, type, issuedAt]
           properties:
             id:
               type: string
               format: uuid
-            level:
-              const: A1
+            proficiency:
+              $ref: '#/components/schemas/ProficiencyReference'
             type:
               const: non_accredited_completion
             issuedAt:
@@ -2061,7 +2217,7 @@ components:
       additionalProperties: false
     NotificationPreference:
       type: object
-      required: [enabled, locale]
+      required: [enabled, locale, timezone]
       properties:
         enabled:
           type: boolean
@@ -2070,6 +2226,10 @@ components:
           format: time
         locale:
           $ref: '#/components/schemas/Locale'
+        timezone:
+          type: string
+          description: IANA timezone used to calculate learning dates and streaks.
+          maxLength: 80
         updatedAt:
           type: string
           format: date-time
@@ -2097,10 +2257,14 @@ components:
           type: array
           items:
             type: object
-            required: [code, earnedAt]
+            required: [code, title, description, earnedAt]
             properties:
               code:
                 $ref: '#/components/schemas/Identifier'
+              title:
+                $ref: '#/components/schemas/LocalizedText'
+              description:
+                $ref: '#/components/schemas/LocalizedText'
               earnedAt:
                 type: string
                 format: date-time

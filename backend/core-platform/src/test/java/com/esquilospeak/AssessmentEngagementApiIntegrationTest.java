@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.http.MediaType;
+import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
@@ -42,13 +43,19 @@ class AssessmentEngagementApiIntegrationTest {
     }
 
     @Autowired MockMvc mockMvc;
+    @Autowired JdbcClient jdbc;
 
     @Test
-    void scoresA1PlacementAndIssuesNonAccreditedRecord() throws Exception {
+    void scoresVersionedPlacementAndIssuesNonAccreditedRecord() throws Exception {
         RequestPostProcessor learner = learner("assessment-" + UUID.randomUUID());
-        mockMvc.perform(get("/api/mobile/v1/assessments/placement").with(learner))
+        mockMvc.perform(get("/api/mobile/v1/assessments/placement")
+                        .param("courseId", "course-en-for-vi")
+                        .with(learner))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.level").value("A1"))
+                .andExpect(jsonPath("$.courseId").value("course-en-for-vi"))
+                .andExpect(jsonPath("$.proficiency.frameworkCode").value("cefr"))
+                .andExpect(jsonPath("$.proficiency.frameworkVersion").value("2020"))
+                .andExpect(jsonPath("$.proficiency.levelCode").value("A1"))
                 .andExpect(jsonPath("$.questions.length()").value(4));
         mockMvc.perform(post("/api/mobile/v1/assessments/placement/attempts")
                         .with(learner)
@@ -56,14 +63,27 @@ class AssessmentEngagementApiIntegrationTest {
                         .content("""
                                 {
                                   "clientAttemptId": "%s",
+                                  "assessmentId": "placement-en-vi-a1-v1",
                                   "answers": ["hello", "name", "three", "goodbye"]
                                 }
                                 """.formatted(UUID.randomUUID())))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.score").value(100))
                 .andExpect(jsonPath("$.passed").value(true))
+                .andExpect(jsonPath("$.proficiency.frameworkCode").value("cefr"))
+                .andExpect(jsonPath("$.proficiency.levelCode").value("A1"))
                 .andExpect(jsonPath("$.completionRecord.type")
                         .value("non_accredited_completion"));
+
+        Integer futureLevels = jdbc.sql("""
+                        select count(*) from proficiency_levels
+                        where framework_code = 'cefr'
+                          and framework_version = '2020'
+                          and code in ('A2', 'B1')
+                        """)
+                .query(Integer.class)
+                .single();
+        org.junit.jupiter.api.Assertions.assertEquals(2, futureLevels);
     }
 
     @Test
@@ -71,7 +91,7 @@ class AssessmentEngagementApiIntegrationTest {
         RequestPostProcessor learner = learner("engagement-" + UUID.randomUUID());
         UUID eventId = UUID.randomUUID();
         String event = """
-                {"clientEventId":"%s","eventType":"lesson_completed","xpAwarded":25}
+                {"clientEventId":"%s","eventType":"lesson_completed","evidenceRef":"lesson-test@1"}
                 """.formatted(eventId);
         mockMvc.perform(post("/api/mobile/v1/engagement/activities")
                         .with(learner)
@@ -91,7 +111,7 @@ class AssessmentEngagementApiIntegrationTest {
                         .with(learner)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("""
-                                {"enabled":true,"reminderTime":"19:30:00","locale":"vi"}
+                                {"enabled":true,"reminderTime":"19:30:00","locale":"vi","timezone":"Asia/Ho_Chi_Minh"}
                                 """))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.enabled").value(true));

@@ -69,6 +69,8 @@ class LearningInsightsService {
         algorithmVersion: 1,
         kind: LearningRecommendationKind.reviewDue,
         conceptId: due.conceptId,
+        defaultLocale: due.defaultLocale,
+        conceptTitle: due.title,
         masteryScore: matchingMastery?.score,
       );
     }
@@ -91,6 +93,8 @@ class LearningInsightsService {
         algorithmVersion: 1,
         kind: LearningRecommendationKind.strengthenWeakConcept,
         conceptId: weakest.conceptId,
+        defaultLocale: weakest.defaultLocale,
+        conceptTitle: weakest.title,
         masteryScore: weakest.score,
       );
     }

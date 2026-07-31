@@ -50,7 +50,7 @@ class RemoteLearningRepository implements LearningRepository {
   PendingAttempt createAttempt({
     required Lesson lesson,
     required Exercise exercise,
-    required String selectedOptionId,
+    required ExerciseResponse response,
   }) {
     return PendingAttempt(
       clientAttemptId: _uuid.v4(),
@@ -60,7 +60,7 @@ class RemoteLearningRepository implements LearningRepository {
       lessonId: lesson.id,
       lessonVersion: lesson.version,
       exerciseId: exercise.id,
-      selectedOptionId: selectedOptionId,
+      response: response,
       occurredAt: DateTime.now().toUtc(),
     );
   }

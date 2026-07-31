@@ -39,6 +39,11 @@
         ]
       },
       "minItems": 1
+    },
+    "advancedActivities": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/advancedActivity" },
+      "uniqueItems": true
     }
   },
   "additionalProperties": false,
@@ -126,6 +131,19 @@
       "properties": {
         "id": { "$ref": "common.schema.json#/$defs/identifier" },
         "text": { "$ref": "common.schema.json#/$defs/localizedText" }
+      },
+      "additionalProperties": false
+    },
+    "advancedActivity": {
+      "type": "object",
+      "required": ["id", "contentRef", "mediaId", "expectedText", "targetLocale", "feedbackLocale"],
+      "properties": {
+        "id": { "$ref": "common.schema.json#/$defs/identifier" },
+        "contentRef": { "type": "string", "minLength": 1, "maxLength": 160 },
+        "mediaId": { "$ref": "common.schema.json#/$defs/identifier" },
+        "expectedText": { "type": "string", "minLength": 1, "maxLength": 500 },
+        "targetLocale": { "$ref": "common.schema.json#/$defs/locale" },
+        "feedbackLocale": { "$ref": "common.schema.json#/$defs/locale" }
       },
       "additionalProperties": false
     }

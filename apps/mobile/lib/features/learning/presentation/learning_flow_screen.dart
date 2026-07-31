@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 import '../../../core/design_system/app_tokens.dart';
 import '../../../core/design_system/component_states.dart';
@@ -6,6 +7,7 @@ import '../../../core/design_system/responsive_content.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../l10n/user_facing_failure_localization.dart';
 import '../data/learning_models.dart';
+import 'exercise_renderer_registry.dart';
 import 'learning_view_model.dart';
 
 class LearningFlowScreen extends StatelessWidget {
@@ -68,6 +70,7 @@ class LearningFlowScreen extends StatelessWidget {
     return switch (viewModel.step) {
       LearningStep.catalog => _Catalog(
         languages: viewModel.languages,
+        sourceLanguage: viewModel.learningContext().sourceLanguage,
         onSelected: viewModel.chooseLanguage,
         emptyLabel: strings.empty,
       ),
@@ -82,8 +85,9 @@ class LearningFlowScreen extends StatelessWidget {
         onSelected: viewModel.chooseLesson,
         actionLabel: strings.startLesson,
         emptyLabel: strings.empty,
+        strings: strings,
       ),
-      LearningStep.lesson => _LessonExercise(
+      LearningStep.lesson => ExerciseRendererRegistry(
         lesson: viewModel.selectedLesson!,
         selectedOptionId: viewModel.selectedOptionId,
         selectionError: viewModel.selectionError == null
@@ -92,6 +96,7 @@ class LearningFlowScreen extends StatelessWidget {
         onSelected: viewModel.selectOption,
         onSubmit: viewModel.submitAnswer,
         submitLabel: strings.submitAnswer,
+        unsupportedLabel: strings.destinationUnavailable,
       ),
       LearningStep.queued => AppMessageState(
         icon: Icons.cloud_done_outlined,
@@ -116,23 +121,25 @@ class LearningFlowScreen extends StatelessWidget {
 }
 
 String _locale(BuildContext context) =>
-    Localizations.localeOf(context).languageCode;
+    Localizations.localeOf(context).toLanguageTag();
 
 class _Catalog extends StatelessWidget {
   const _Catalog({
     required this.languages,
+    required this.sourceLanguage,
     required this.onSelected,
     required this.emptyLabel,
   });
 
   final List<LearningLanguage> languages;
+  final String? sourceLanguage;
   final ValueChanged<LearningLanguage> onSelected;
   final String emptyLabel;
 
   @override
   Widget build(BuildContext context) {
     final available = languages
-        .where((item) => item.languageTag != 'vi')
+        .where((item) => item.languageTag != sourceLanguage)
         .toList();
     if (available.isEmpty) return _EmptyState(label: emptyLabel);
     return ListView.separated(
@@ -186,11 +193,21 @@ class _Courses extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 Text(
-                  localized(course.title, _locale(context)),
+                  localized(
+                    course.title,
+                    _locale(context),
+                    defaultLocale: course.locale,
+                  ),
                   style: Theme.of(context).textTheme.titleLarge,
                 ),
                 const SizedBox(height: 8),
-                Text(localized(course.description, _locale(context))),
+                Text(
+                  localized(
+                    course.description,
+                    _locale(context),
+                    defaultLocale: course.locale,
+                  ),
+                ),
                 const SizedBox(height: 16),
                 FilledButton(
                   key: ValueKey('course-${course.id}'),
@@ -212,12 +229,14 @@ class _Lessons extends StatelessWidget {
     required this.onSelected,
     required this.actionLabel,
     required this.emptyLabel,
+    required this.strings,
   });
 
   final List<LessonSummary> lessons;
   final ValueChanged<LessonSummary> onSelected;
   final String actionLabel;
   final String emptyLabel;
+  final AppLocalizations strings;
 
   @override
   Widget build(BuildContext context) {
@@ -232,8 +251,14 @@ class _Lessons extends StatelessWidget {
         return Card(
           child: ListTile(
             minTileHeight: 72,
-            title: Text(localized(lesson.title, _locale(context))),
-            subtitle: Text('${lesson.estimatedMinutes} min'),
+            title: Text(
+              localized(
+                lesson.title,
+                _locale(context),
+                defaultLocale: lesson.locale,
+              ),
+            ),
+            subtitle: Text(strings.minutesShort(lesson.estimatedMinutes)),
             trailing: TextButton(
               key: ValueKey('lesson-${lesson.id}'),
               onPressed: () => onSelected(lesson),
@@ -242,85 +267,6 @@ class _Lessons extends StatelessWidget {
           ),
         );
       },
-    );
-  }
-}
-
-class _LessonExercise extends StatelessWidget {
-  const _LessonExercise({
-    required this.lesson,
-    required this.selectedOptionId,
-    required this.selectionError,
-    required this.onSelected,
-    required this.onSubmit,
-    required this.submitLabel,
-  });
-
-  final Lesson lesson;
-  final String? selectedOptionId;
-  final String? selectionError;
-  final ValueChanged<String> onSelected;
-  final VoidCallback onSubmit;
-  final String submitLabel;
-
-  @override
-  Widget build(BuildContext context) {
-    final exercise = lesson.exercises.first;
-    final locale = _locale(context);
-    return ListView(
-      key: const ValueKey('lesson'),
-      padding: const EdgeInsets.all(16),
-      children: [
-        Text(
-          localized(lesson.title, locale),
-          style: Theme.of(context).textTheme.headlineSmall,
-        ),
-        const SizedBox(height: 12),
-        Text(localized(lesson.objectives.first, locale)),
-        const SizedBox(height: 24),
-        Text(
-          localized(exercise.prompt, locale),
-          style: Theme.of(context).textTheme.titleLarge,
-        ),
-        const SizedBox(height: 12),
-        RadioGroup<String>(
-          groupValue: selectedOptionId,
-          onChanged: (value) {
-            if (value != null) onSelected(value);
-          },
-          child: Column(
-            children: exercise.options
-                .map(
-                  (option) => Semantics(
-                    selected: selectedOptionId == option.id,
-                    child: RadioListTile<String>(
-                      key: ValueKey('option-${option.id}'),
-                      value: option.id,
-                      title: Text(localized(option.text, locale)),
-                    ),
-                  ),
-                )
-                .toList(),
-          ),
-        ),
-        if (selectionError != null)
-          Semantics(
-            liveRegion: true,
-            child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 8),
-              child: Text(
-                selectionError!,
-                style: TextStyle(color: Theme.of(context).colorScheme.error),
-              ),
-            ),
-          ),
-        const SizedBox(height: 12),
-        FilledButton(
-          key: const ValueKey('attempt-submit'),
-          onPressed: onSubmit,
-          child: Text(submitLabel),
-        ),
-      ],
     );
   }
 }
@@ -339,6 +285,7 @@ class _Feedback extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final locale = _locale(context);
+    final strings = AppLocalizations.of(context);
     final color = feedback.correct
         ? Theme.of(context).colorScheme.primaryContainer
         : Theme.of(context).colorScheme.errorContainer;
@@ -357,10 +304,11 @@ class _Feedback extends StatelessWidget {
                 children: [
                   Icon(feedback.correct ? Icons.check_circle : Icons.info),
                   const SizedBox(height: 12),
-                  Text(
-                    localized(feedback.message, locale),
-                    style: Theme.of(context).textTheme.titleLarge,
-                  ),
+                  Text(switch (feedback.messageCode) {
+                    'answer.correct' => strings.answerCorrect,
+                    'answer.incorrect' => strings.answerIncorrect,
+                    _ => strings.feedbackUnavailable,
+                  }, style: Theme.of(context).textTheme.titleLarge),
                   const SizedBox(height: 12),
                   Text(localized(feedback.explanation, locale)),
                 ],
@@ -395,7 +343,9 @@ class _Progress extends StatelessWidget {
         padding: const EdgeInsets.all(24),
         child: Semantics(
           label: summary,
-          value: '${(value * 100).round()}%',
+          value: NumberFormat.percentPattern(
+            Localizations.localeOf(context).toLanguageTag(),
+          ).format(value),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [

@@ -30,7 +30,7 @@ class _AdvancedPracticeScreenState extends State<AdvancedPracticeScreen> {
   @override
   Widget build(BuildContext context) {
     final strings = AppLocalizations.of(context);
-    final locale = Localizations.localeOf(context).languageCode;
+    final activity = widget.viewModel.activeActivity;
     return Scaffold(
       appBar: AppBar(title: Text(strings.advancedPracticeTitle)),
       body: SafeArea(
@@ -58,34 +58,37 @@ class _AdvancedPracticeScreenState extends State<AdvancedPracticeScreen> {
                       children: [
                         FilledButton.icon(
                           key: const ValueKey('media-play'),
-                          onPressed: widget.viewModel.busy
+                          onPressed: widget.viewModel.busy || activity == null
                               ? null
-                              : () => widget.viewModel.playMedia('a1-hello'),
+                              : () => widget.viewModel.playMedia(
+                                  activity.mediaId,
+                                ),
                           icon: const Icon(Icons.play_arrow),
                           label: Text(strings.play),
                         ),
                         OutlinedButton.icon(
                           key: const ValueKey('media-download'),
-                          onPressed: widget.viewModel.busy
+                          onPressed: widget.viewModel.busy || activity == null
                               ? null
-                              : () =>
-                                    widget.viewModel.downloadMedia('a1-hello'),
+                              : () => widget.viewModel.downloadMedia(
+                                  activity.mediaId,
+                                ),
                           icon: Icon(
                             widget.viewModel.downloadedMediaIds.contains(
-                                  'a1-hello',
+                                  activity?.mediaId,
                                 )
                                 ? Icons.download_done
                                 : Icons.download,
                             key:
                                 widget.viewModel.downloadedMediaIds.contains(
-                                  'a1-hello',
+                                  activity?.mediaId,
                                 )
                                 ? const ValueKey('media-downloaded')
                                 : null,
                           ),
                           label: Text(
                             widget.viewModel.downloadedMediaIds.contains(
-                                  'a1-hello',
+                                  activity?.mediaId,
                                 )
                                 ? strings.downloaded
                                 : strings.download,
@@ -107,12 +110,12 @@ class _AdvancedPracticeScreenState extends State<AdvancedPracticeScreen> {
                             ? 'recording-stop'
                             : 'recording-start',
                       ),
-                      onPressed: widget.viewModel.busy
+                      onPressed: widget.viewModel.busy || activity == null
                           ? null
                           : widget.viewModel.recording
                           ? () => widget.viewModel.stopAndAssessPronunciation(
-                              expectedText: 'Hello, my name is Ana.',
-                              locale: locale,
+                              expectedText: activity.expectedText,
+                              locale: activity.targetLocale,
                             )
                           : widget.viewModel.startPronunciationRecording,
                       icon: Icon(
@@ -144,7 +147,9 @@ class _AdvancedPracticeScreenState extends State<AdvancedPracticeScreen> {
                   onSubmit: () => widget.viewModel.requestTextFeedback(
                     kind: 'writing',
                     input: _writing.text.trim(),
-                    locale: locale,
+                    locale:
+                        activity?.feedbackLocale ??
+                        Localizations.localeOf(context).toLanguageTag(),
                   ),
                 ),
                 const SizedBox(height: AppSpacing.md),
@@ -161,7 +166,9 @@ class _AdvancedPracticeScreenState extends State<AdvancedPracticeScreen> {
                   onSubmit: () => widget.viewModel.requestTextFeedback(
                     kind: 'conversation',
                     input: _conversation.text.trim(),
-                    locale: locale,
+                    locale:
+                        activity?.feedbackLocale ??
+                        Localizations.localeOf(context).toLanguageTag(),
                   ),
                 ),
                 if (widget.viewModel.busy)
@@ -283,7 +290,15 @@ class _FeedbackCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final summary = feedback.feedback['summary']?.toString() ?? '';
+    final strings = AppLocalizations.of(context);
+    final summary = switch (feedback.feedback['code']) {
+      'pronunciation.sampleAccepted' => strings.pronunciationSampleAccepted,
+      'writing.clearResponse' => strings.writingClearResponse,
+      'writing.addSentence' => strings.writingAddSentence,
+      'feedback.automaticEvaluationBlocked' =>
+        strings.automaticEvaluationBlocked,
+      _ => strings.feedbackUnavailable,
+    };
     return Semantics(
       key: ValueKey('${feedback.kind}-feedback'),
       liveRegion: true,
@@ -299,7 +314,7 @@ class _FeedbackCard extends StatelessWidget {
           children: [
             if (feedback.score != null)
               Text(
-                '${feedback.score!.round()}/100',
+                strings.scoreOutOf(feedback.score!.round(), 100),
                 style: Theme.of(context).textTheme.titleLarge,
               ),
             Text(summary),

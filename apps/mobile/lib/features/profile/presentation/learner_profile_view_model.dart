@@ -2,16 +2,24 @@ import 'package:flutter/foundation.dart';
 
 import '../../../core/auth/auth_session_manager.dart';
 import '../../../core/network/user_facing_failure.dart';
+import '../../../core/localization/app_locale_controller.dart';
 import '../../../core/telemetry/app_telemetry.dart';
 import '../data/learner_profile_models.dart';
 import '../data/learner_profile_service.dart';
+import '../../learning/data/learning_models.dart';
 
 class LearnerProfileViewModel extends ChangeNotifier {
-  LearnerProfileViewModel(this._service, this._session, this._telemetry);
+  LearnerProfileViewModel(
+    this._service,
+    this._session,
+    this._telemetry, [
+    this._localeController,
+  ]);
 
   final LearnerProfileService _service;
   final AuthSessionManager _session;
   final ConsentAwareTelemetry _telemetry;
+  final AppLocaleController? _localeController;
 
   LearnerProfile? profile;
   List<ConsentRecord> consents = const [];
@@ -33,6 +41,7 @@ class LearnerProfileViewModel extends ChangeNotifier {
     notifyListeners();
     try {
       profile = await _service.profile();
+      await _localeController?.setLanguageTag(profile?.uiLocale);
       consents = await _service.consents();
     } on Object catch (error) {
       failure = mapUserFacingFailure(error);
@@ -60,6 +69,10 @@ class LearnerProfileViewModel extends ChangeNotifier {
 
   Future<bool> completeOnboarding({
     required LearnerAgeBand ageBand,
+    required String uiLocale,
+    required String sourceLanguage,
+    required String targetLanguage,
+    required String activeCourseId,
     required String learningGoal,
     required int dailyGoalMinutes,
     required bool notificationsEnabled,
@@ -69,9 +82,10 @@ class LearnerProfileViewModel extends ChangeNotifier {
     notifyListeners();
     try {
       profile = await _service.updateProfile(
-        uiLocale: 'vi',
-        sourceLanguage: 'vi',
-        targetLanguage: 'en',
+        uiLocale: uiLocale,
+        sourceLanguage: sourceLanguage,
+        targetLanguage: targetLanguage,
+        activeCourseId: activeCourseId,
         ageBand: ageBand,
         learningGoal: learningGoal,
         preferences: LearnerPreferences(
@@ -79,10 +93,76 @@ class LearnerProfileViewModel extends ChangeNotifier {
           notificationsEnabled: notificationsEnabled,
         ),
       );
+      await _localeController?.setLanguageTag(profile?.uiLocale);
       return true;
     } on Object catch (error) {
       failure = mapUserFacingFailure(error);
       return false;
+    } finally {
+      saving = false;
+      notifyListeners();
+    }
+  }
+
+  Future<void> setUiLocale(String uiLocale) async {
+    final current = profile;
+    final ageBand = current?.ageBand;
+    final sourceLanguage = current?.sourceLanguage;
+    final targetLanguage = current?.targetLanguage;
+    final activeCourseId = current?.activeCourseId;
+    if (current == null ||
+        ageBand == null ||
+        sourceLanguage == null ||
+        targetLanguage == null ||
+        activeCourseId == null) {
+      return;
+    }
+    saving = true;
+    failure = null;
+    notifyListeners();
+    try {
+      profile = await _service.updateProfile(
+        uiLocale: uiLocale,
+        sourceLanguage: sourceLanguage,
+        targetLanguage: targetLanguage,
+        activeCourseId: activeCourseId,
+        ageBand: ageBand,
+        learningGoal: current.learningGoal ?? 'daily_communication',
+        preferences: current.preferences,
+      );
+      await _localeController?.setLanguageTag(profile?.uiLocale);
+    } on Object catch (error) {
+      failure = mapUserFacingFailure(error);
+    } finally {
+      saving = false;
+      notifyListeners();
+    }
+  }
+
+  Future<void> previewUiLocale(String uiLocale) =>
+      _localeController?.setLanguageTag(uiLocale) ?? Future.value();
+
+  Future<void> setActiveCourse(Course course) async {
+    final current = profile;
+    final ageBand = current?.ageBand;
+    final uiLocale = current?.uiLocale;
+    if (current == null || ageBand == null || uiLocale == null) return;
+    saving = true;
+    failure = null;
+    notifyListeners();
+    try {
+      profile = await _service.updateProfile(
+        uiLocale: uiLocale,
+        sourceLanguage: course.sourceLanguage,
+        targetLanguage: course.targetLanguage,
+        activeCourseId: course.id,
+        ageBand: ageBand,
+        learningGoal: current.learningGoal ?? 'daily_communication',
+        preferences: current.preferences,
+      );
+    } on Object catch (error) {
+      failure = mapUserFacingFailure(error);
+      rethrow;
     } finally {
       saving = false;
       notifyListeners();

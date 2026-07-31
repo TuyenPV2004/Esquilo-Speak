@@ -19,6 +19,7 @@ void main() {
   ) async {
     final semantics = tester.ensureSemantics();
     final viewModel = _viewModel();
+    await viewModel.load();
     await tester.pumpWidget(
       _TestApp(child: AdvancedPracticeScreen(viewModel: viewModel)),
     );
@@ -53,7 +54,9 @@ void main() {
 
     for (final question in viewModel.assessment!.questions) {
       final answer = question.options.first;
-      final finder = find.byKey(ValueKey('placement-${question.id}-$answer'));
+      final finder = find.byKey(
+        ValueKey('placement-${question.id}-${answer.id}'),
+      );
       await _scrollTo(tester, finder);
       await tester.tap(finder);
       await tester.pump();
@@ -121,7 +124,7 @@ void main() {
 
     await _scrollTo(tester, find.byKey(const ValueKey('support-success')));
     expect(find.byKey(const ValueKey('support-success')), findsOneWidget);
-    expect(find.text('Status: open'), findsOneWidget);
+    expect(find.text('Status: Open'), findsOneWidget);
   });
 
   testWidgets('hub provides all five discoverable P1 destinations', (
@@ -155,6 +158,8 @@ P1ViewModel _viewModel() => P1ViewModel(
   FakeP1Gateway(),
   FakeAdvancedLearningPlatform(),
   closedTestingCommerceEnabled: true,
+  closedTestingProductId: 'premium-monthly',
+  selectedCourseId: () => 'course-en-for-vi',
 );
 
 class _TestApp extends StatelessWidget {

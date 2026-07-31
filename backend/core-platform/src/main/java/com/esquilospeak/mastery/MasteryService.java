@@ -17,21 +17,31 @@ import org.springframework.core.annotation.Order;
 import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import tools.jackson.core.JacksonException;
+import tools.jackson.core.type.TypeReference;
+import tools.jackson.databind.ObjectMapper;
 
 @Service
 @Order(10)
 public class MasteryService implements AccountDataParticipant {
 
     public static final int MODEL_VERSION = 1;
+    private static final TypeReference<Map<String, String>> LOCALIZED_TEXT = new TypeReference<>() {};
 
     private final JdbcClient jdbc;
     private final ApplicationEventPublisher events;
     private final Clock clock;
+    private final ObjectMapper objectMapper;
 
-    public MasteryService(JdbcClient jdbc, ApplicationEventPublisher events, Clock clock) {
+    public MasteryService(
+            JdbcClient jdbc,
+            ApplicationEventPublisher events,
+            Clock clock,
+            ObjectMapper objectMapper) {
         this.jdbc = jdbc;
         this.events = events;
         this.clock = clock;
+        this.objectMapper = objectMapper;
     }
 
     @EventListener
@@ -64,15 +74,22 @@ public class MasteryService implements AccountDataParticipant {
 
     public List<MasteryState> states(String learnerId) {
         return jdbc.sql("""
-                        select concept_id, model_version, score, correct_evidence_count,
-                               evidence_count, last_evidence_at, explanation::text
-                        from mastery_states
-                        where learner_id = :learnerId
-                        order by concept_id
+                        select state.concept_id,
+                               coalesce(concept.default_locale, 'und') as default_locale,
+                               coalesce(concept.title, jsonb_build_object('und', state.concept_id))::text as title,
+                               state.model_version, state.score,
+                               state.correct_evidence_count, state.evidence_count,
+                               state.last_evidence_at, state.explanation::text
+                        from mastery_states state
+                        left join learning_concepts concept on concept.id = state.concept_id
+                        where state.learner_id = :learnerId
+                        order by state.concept_id
                         """)
                 .param("learnerId", learnerId)
                 .query((rs, rowNum) -> new MasteryState(
                         rs.getString("concept_id"),
+                        rs.getString("default_locale"),
+                        readLocalizedText(rs.getString("title")),
                         rs.getInt("model_version"),
                         rs.getDouble("score"),
                         rs.getInt("correct_evidence_count"),
@@ -86,6 +103,14 @@ public class MasteryService implements AccountDataParticipant {
                                         + rs.getInt("evidence_count")
                                         + " accepted evidence items were correct.")))
                 .list();
+    }
+
+    private Map<String, String> readLocalizedText(String value) {
+        try {
+            return objectMapper.readValue(value, LOCALIZED_TEXT);
+        } catch (JacksonException exception) {
+            throw new IllegalStateException("Stored localized concept text is invalid.", exception);
+        }
     }
 
     private void recompute(
@@ -219,6 +244,8 @@ public class MasteryService implements AccountDataParticipant {
 
     public record MasteryState(
             String conceptId,
+            String defaultLocale,
+            Map<String, String> title,
             int modelVersion,
             double score,
             int correctEvidenceCount,

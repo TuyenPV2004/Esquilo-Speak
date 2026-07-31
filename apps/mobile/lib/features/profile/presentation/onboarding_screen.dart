@@ -5,13 +5,21 @@ import '../../../core/design_system/app_tokens.dart';
 import '../../../core/design_system/responsive_content.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../l10n/user_facing_failure_localization.dart';
+import '../../../l10n/ui_locale_name.dart';
 import '../data/learner_profile_models.dart';
 import 'learner_profile_view_model.dart';
+import '../../learning/data/learning_models.dart';
+import '../../learning/presentation/learning_view_model.dart';
 
 class OnboardingScreen extends StatefulWidget {
-  const OnboardingScreen({required this.viewModel, super.key});
+  const OnboardingScreen({
+    required this.viewModel,
+    required this.learningViewModel,
+    super.key,
+  });
 
   final LearnerProfileViewModel viewModel;
+  final LearningViewModel learningViewModel;
 
   @override
   State<OnboardingScreen> createState() => _OnboardingScreenState();
@@ -23,6 +31,26 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   int _dailyMinutes = 10;
   bool _notificationsEnabled = false;
   bool _submitted = false;
+  String? _sourceLanguage;
+  String? _targetLanguage;
+  Course? _activeCourse;
+  String? _uiLocale;
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.learningViewModel.languages.isEmpty) {
+      widget.learningViewModel.loadCatalog();
+    }
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _uiLocale ??=
+        widget.viewModel.profile?.uiLocale ??
+        Localizations.localeOf(context).toLanguageTag();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +69,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               children: [
                 Semantics(
                   label: strings.onboardingProgress,
-                  value: '3/3',
+                  value: '4/4',
                   child: const LinearProgressIndicator(value: 1),
                 ),
                 const SizedBox(height: AppSpacing.lg),
@@ -54,6 +82,102 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 const SizedBox(height: AppSpacing.lg),
                 _Section(
                   number: 1,
+                  title: strings.learningLanguagesTitle,
+                  child: ListenableBuilder(
+                    listenable: widget.learningViewModel,
+                    builder: (context, _) => Column(
+                      children: [
+                        DropdownButtonFormField<String>(
+                          key: const ValueKey('interface-language'),
+                          initialValue: _supportedUiLanguage(_uiLocale),
+                          decoration: InputDecoration(
+                            labelText: strings.interfaceLanguage,
+                          ),
+                          items: AppLocalizations.supportedLocales
+                              .map(
+                                (locale) => DropdownMenuItem(
+                                  value: locale.toLanguageTag(),
+                                  child: UiLocaleName(locale),
+                                ),
+                              )
+                              .toList(growable: false),
+                          onChanged: (value) {
+                            if (value == null) return;
+                            setState(() => _uiLocale = value);
+                            widget.viewModel.previewUiLocale(value);
+                          },
+                        ),
+                        const SizedBox(height: AppSpacing.md),
+                        DropdownButtonFormField<String>(
+                          key: const ValueKey('source-language'),
+                          initialValue: _sourceLanguage,
+                          decoration: InputDecoration(
+                            labelText: strings.sourceLanguageTitle,
+                          ),
+                          items: _languageItems(context),
+                          onChanged: (value) => _selectSourceLanguage(value),
+                        ),
+                        const SizedBox(height: AppSpacing.md),
+                        DropdownButtonFormField<String>(
+                          key: const ValueKey('target-language'),
+                          initialValue: _targetLanguage,
+                          decoration: InputDecoration(
+                            labelText: strings.targetLanguageTitle,
+                          ),
+                          items: _languageItems(
+                            context,
+                            excluding: _sourceLanguage,
+                          ),
+                          onChanged: (value) => _selectTargetLanguage(value),
+                        ),
+                        if (widget.learningViewModel.courses.isNotEmpty) ...[
+                          const SizedBox(height: AppSpacing.md),
+                          DropdownButtonFormField<Course>(
+                            key: const ValueKey('active-course'),
+                            initialValue: _activeCourse,
+                            decoration: InputDecoration(
+                              labelText: strings.activeCourseTitle,
+                            ),
+                            items: widget.learningViewModel.courses
+                                .map(
+                                  (course) => DropdownMenuItem(
+                                    value: course,
+                                    child: Text(
+                                      localized(
+                                        course.title,
+                                        Localizations.localeOf(
+                                          context,
+                                        ).toLanguageTag(),
+                                        defaultLocale: course.locale,
+                                      ),
+                                    ),
+                                  ),
+                                )
+                                .toList(growable: false),
+                            onChanged: (course) =>
+                                setState(() => _activeCourse = course),
+                          ),
+                        ],
+                        if (_submitted && !_hasLearningContext)
+                          Semantics(
+                            liveRegion: true,
+                            child: Align(
+                              alignment: Alignment.centerLeft,
+                              child: Text(
+                                strings.learningContextRequired,
+                                style: TextStyle(
+                                  color: Theme.of(context).colorScheme.error,
+                                ),
+                              ),
+                            ),
+                          ),
+                      ],
+                    ),
+                  ),
+                ),
+                const SizedBox(height: AppSpacing.lg),
+                _Section(
+                  number: 2,
                   title: strings.ageBandTitle,
                   child: RadioGroup<LearnerAgeBand>(
                     key: const ValueKey('age-band'),
@@ -97,7 +221,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 ),
                 const SizedBox(height: AppSpacing.lg),
                 _Section(
-                  number: 2,
+                  number: 3,
                   title: strings.learningGoalTitle,
                   child: Wrap(
                     spacing: AppSpacing.sm,
@@ -114,7 +238,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 ),
                 const SizedBox(height: AppSpacing.lg),
                 _Section(
-                  number: 3,
+                  number: 4,
                   title: strings.dailyGoalTitle,
                   child: Column(
                     children: [
@@ -197,17 +321,93 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     onSelected: (_) => setState(() => _dailyMinutes = value),
   );
 
+  bool get _hasLearningContext =>
+      _sourceLanguage != null &&
+      _targetLanguage != null &&
+      _activeCourse != null;
+
+  List<DropdownMenuItem<String>> _languageItems(
+    BuildContext context, {
+    String? excluding,
+  }) => widget.learningViewModel.languages
+      .where((language) => language.languageTag != excluding)
+      .map(
+        (language) => DropdownMenuItem(
+          value: language.languageTag,
+          child: Text(
+            localized(
+              language.name,
+              Localizations.localeOf(context).toLanguageTag(),
+            ),
+          ),
+        ),
+      )
+      .toList(growable: false);
+
+  void _selectSourceLanguage(String? value) {
+    setState(() {
+      _sourceLanguage = value;
+      if (_targetLanguage == value) _targetLanguage = null;
+      _activeCourse = null;
+    });
+    _loadCourses();
+  }
+
+  void _selectTargetLanguage(String? value) {
+    setState(() {
+      _targetLanguage = value;
+      _activeCourse = null;
+    });
+    _loadCourses();
+  }
+
+  Future<void> _loadCourses() async {
+    final sourceLanguage = _sourceLanguage;
+    final targetLanguage = _targetLanguage;
+    if (sourceLanguage == null || targetLanguage == null) return;
+    await widget.learningViewModel.loadCoursesFor(
+      sourceLanguage,
+      targetLanguage,
+    );
+    if (mounted && widget.learningViewModel.courses.length == 1) {
+      setState(() => _activeCourse = widget.learningViewModel.courses.first);
+    }
+  }
+
   Future<void> _complete() async {
     setState(() => _submitted = true);
     final ageBand = _ageBand;
-    if (ageBand == null) return;
+    final sourceLanguage = _sourceLanguage;
+    final targetLanguage = _targetLanguage;
+    final activeCourse = _activeCourse;
+    if (ageBand == null ||
+        sourceLanguage == null ||
+        targetLanguage == null ||
+        activeCourse == null) {
+      return;
+    }
     final completed = await widget.viewModel.completeOnboarding(
       ageBand: ageBand,
+      uiLocale: _uiLocale ?? Localizations.localeOf(context).toLanguageTag(),
+      sourceLanguage: sourceLanguage,
+      targetLanguage: targetLanguage,
+      activeCourseId: activeCourse.id,
       learningGoal: _goal,
       dailyGoalMinutes: _dailyMinutes,
       notificationsEnabled: _notificationsEnabled,
     );
+    if (completed) await widget.learningViewModel.loadCatalog();
     if (completed && mounted) context.go('/home');
+  }
+
+  String _supportedUiLanguage(String? languageTag) {
+    final requestedLanguage = languageTag?.split(RegExp('[-_]')).first;
+    return AppLocalizations.supportedLocales
+        .firstWhere(
+          (locale) => locale.languageCode == requestedLanguage,
+          orElse: () => AppLocalizations.supportedLocales.first,
+        )
+        .toLanguageTag();
   }
 }
 

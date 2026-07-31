@@ -29,3 +29,5 @@ Decision status:
 - [`ADR-007`](ADR-007-closed-testing-advanced-learning-p1.md): provider-neutral
   advanced-learning P1 backend for closed testing and production fail-closed
   boundaries.
+- [`ADR-008`](ADR-008-versioned-proficiency-frameworks.md): versioned,
+  data-driven proficiency frameworks and course-specific placement evidence.

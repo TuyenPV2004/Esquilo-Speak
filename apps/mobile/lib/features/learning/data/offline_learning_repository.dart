@@ -60,11 +60,11 @@ class OfflineLearningRepository implements LearningRepository {
   PendingAttempt createAttempt({
     required Lesson lesson,
     required Exercise exercise,
-    required String selectedOptionId,
+    required ExerciseResponse response,
   }) => _remote.createAttempt(
     lesson: lesson,
     exercise: exercise,
-    selectedOptionId: selectedOptionId,
+    response: response,
   );
 
   @override

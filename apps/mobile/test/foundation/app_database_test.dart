@@ -15,7 +15,9 @@ void main() {
       clientMutationId: '11111111-1111-4111-8111-111111111111',
       idempotencyKey: '22222222-2222-4222-8222-222222222222',
       type: 'attempt.submit',
-      payload: {'selectedOptionId': 'option-hello'},
+      payload: {
+        'response': {'kind': 'option', 'optionId': 'option-hello'},
+      },
       occurredAt: DateTime.utc(2026, 7, 30),
     );
 

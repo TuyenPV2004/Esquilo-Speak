@@ -54,6 +54,7 @@ class SecurityConfiguration {
                                 "/api/mobile/v1/languages",
                                 "/api/mobile/v1/courses",
                                 "/api/mobile/v1/courses/*/lessons",
+                                "/api/mobile/v1/courses/*/advanced-activities",
                                 "/api/mobile/v1/lessons/*",
                                 "/internal/dev/token")
                         .permitAll()

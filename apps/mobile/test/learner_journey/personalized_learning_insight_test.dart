@@ -18,6 +18,8 @@ void main() {
             algorithmVersion: 1,
             kind: LearningRecommendationKind.reviewDue,
             conceptId: 'greeting.hello',
+            defaultLocale: 'en',
+            conceptTitle: {'en': 'Hello greeting'},
             masteryScore: 0.5,
           ),
           onOpenLearning: () {},
@@ -32,7 +34,7 @@ void main() {
       find.byKey(const ValueKey('learning-recommendation')),
       findsOneWidget,
     );
-    expect(find.text('Review greeting.hello'), findsOneWidget);
+    expect(find.text('Review Hello greeting'), findsOneWidget);
     expect(find.text('Why this is recommended'), findsOneWidget);
 
     await tester.ensureVisible(
@@ -53,6 +55,8 @@ void main() {
         child: MasteryInsightCard(
           item: MasteryState(
             conceptId: 'greeting.hello',
+            defaultLocale: 'en',
+            title: const {'en': 'Hello greeting'},
             modelVersion: 1,
             score: 0.5,
             correctEvidenceCount: 1,

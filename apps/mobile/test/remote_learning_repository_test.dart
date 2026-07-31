@@ -38,7 +38,7 @@ void main() {
         jsonEncode({
           'correct': true,
           'feedback': {
-            'message': {'vi': 'Chính xác!', 'en': 'Correct!'},
+            'messageCode': 'answer.correct',
             'correctOptionId': 'option-hello',
             'explanation': {
               'vi': 'Hello là lời chào thông dụng.',
@@ -67,7 +67,7 @@ void main() {
     final attempt = repository.createAttempt(
       lesson: _lesson,
       exercise: _lesson.exercises.first,
-      selectedOptionId: 'option-hello',
+      response: const OptionExerciseResponse('option-hello'),
     );
 
     await repository.submitAttempt(attempt);
@@ -105,6 +105,7 @@ const _lesson = Lesson(
   exercises: [
     Exercise(
       id: 'exercise-choose-hello',
+      type: 'multiple_choice',
       prompt: {
         'vi': 'Từ nào có nghĩa là xin chào?',
         'en': 'Which word is a greeting?',

@@ -67,9 +67,10 @@ class IdentityProfileApiIntegrationTest {
         mockMvc.perform(get("/api/mobile/v1/me/profile").with(guest))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.actorType").value("guest"))
-                .andExpect(jsonPath("$.uiLocale").value("vi"))
-                .andExpect(jsonPath("$.sourceLanguage").value("vi"))
-                .andExpect(jsonPath("$.targetLanguage").value("en"))
+                .andExpect(jsonPath("$.uiLocale").doesNotExist())
+                .andExpect(jsonPath("$.sourceLanguage").doesNotExist())
+                .andExpect(jsonPath("$.targetLanguage").doesNotExist())
+                .andExpect(jsonPath("$.activeCourseId").doesNotExist())
                 .andExpect(jsonPath("$.ageBand").doesNotExist());
 
         mockMvc.perform(put("/api/mobile/v1/me/profile")
@@ -77,7 +78,8 @@ class IdentityProfileApiIntegrationTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(profileJson("under_16")))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.ageBand").value("under_16"));
+                .andExpect(jsonPath("$.ageBand").value("under_16"))
+                .andExpect(jsonPath("$.activeCourseId").value("course-en-for-vi"));
 
         mockMvc.perform(put("/api/mobile/v1/me/consents/operational_telemetry")
                         .with(guest)
@@ -95,6 +97,28 @@ class IdentityProfileApiIntegrationTest {
         mockMvc.perform(get("/api/mobile/v1/me/consents").with(guest))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.items.length()").value(2));
+    }
+
+    @Test
+    void rejectsAProfileCourseThatDoesNotMatchTheSelectedLanguagePair() throws Exception {
+        RequestPostProcessor guest = identityJwt("profile-course-mismatch", "guest");
+
+        mockMvc.perform(put("/api/mobile/v1/me/profile")
+                        .with(guest)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("""
+                                {
+                                  "uiLocale": "vi",
+                                  "sourceLanguage": "en",
+                                  "targetLanguage": "vi",
+                                  "activeCourseId": "course-en-for-vi",
+                                  "ageBand": "adult",
+                                  "learningGoal": "daily_communication",
+                                  "preferences": {}
+                                }
+                                """))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.code").value("ACTIVE_COURSE_MISMATCH"));
     }
 
     @Test
@@ -250,8 +274,8 @@ class IdentityProfileApiIntegrationTest {
                         .with(owner))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.state").value("completed"))
-                .andExpect(jsonPath("$.artifact.identityProfile.profile.sourceLanguage")
-                        .value("vi"))
+                .andExpect(jsonPath("$.artifact.identityProfile.profile.actorType")
+                        .value("GUEST"))
                 .andExpect(jsonPath("$.artifact.learning.attempts.length()").value(1));
 
         mockMvc.perform(get("/api/mobile/v1/me/privacy/requests/{requestId}", requestId)
@@ -368,6 +392,7 @@ class IdentityProfileApiIntegrationTest {
                   "uiLocale": "vi",
                   "sourceLanguage": "vi",
                   "targetLanguage": "en",
+                  "activeCourseId": "course-en-for-vi",
                   "ageBand": "%s",
                   "learningGoal": "daily_communication",
                   "preferences": {"quietMode": true}

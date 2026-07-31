@@ -18,8 +18,8 @@ Tài liệu này chi tiết hóa phần sản phẩm từ [tổng quan đề xu�
 
 Tài liệu này không mô tả chi tiết lựa chọn công nghệ hoặc layout source code. Xem:
 
-- [Tech stack và kiến trúc hệ thống](Tech_Stack_And_Architecture.md).
-- [Cấu trúc repository và thư mục](Repository_Structure.md).
+- [Tech stack và kiến trúc hệ thống](../architecture/Tech_Stack_And_Architecture.md).
+- [Cấu trúc repository và thư mục](../architecture/Repository_Structure.md).
 - [Mô tả nghiệp vụ hoàn chỉnh](Nghiep_Vu.md).
 - [Tổng quan đề xuất EsquiloSpeak](Esquilo_Speak.md) là cổng đọc nhanh, không thay thế tài liệu sản phẩm này.
 
@@ -357,9 +357,9 @@ Mỗi experiment cần:
 | P-005 | Offline và accessibility là yêu cầu sản phẩm nền tảng | Proposed |
 | P-006 | Vertical slice triển khai đầu tiên là language/course catalog → lesson → multiple-choice exercise → attempt → immediate feedback → course progress | Accepted |
 
-Quyết định công nghệ nằm trong [tài liệu tech stack và kiến trúc](Tech_Stack_And_Architecture.md). Quyết định layout source nằm trong [tài liệu cấu trúc repository](Repository_Structure.md).
+Quyết định công nghệ nằm trong [tài liệu tech stack và kiến trúc](../architecture/Tech_Stack_And_Architecture.md). Quyết định layout source nằm trong [tài liệu cấu trúc repository](../architecture/Repository_Structure.md).
 
-Contract của P-006 được định nghĩa tại [`contracts/schema/`](../contracts/schema/README.md) và [`contracts/openapi/esquilospeak-learning-v1.yaml`](../contracts/openapi/esquilospeak-learning-v1.yaml). Identity token issuance, mastery scheduler, review scheduling, AI/voice và admin publishing không thuộc vertical slice đầu tiên.
+Contract của P-006 được định nghĩa tại [`contracts/schema/`](../../contracts/schema/README.md) và [`contracts/openapi/esquilospeak-learning-v1.yaml`](../../contracts/openapi/esquilospeak-learning-v1.yaml). Identity token issuance, mastery scheduler, review scheduling, AI/voice và admin publishing không thuộc vertical slice đầu tiên.
 
 ## 17. Câu hỏi sản phẩm cần chốt
 

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">EsquiloSpeak</string>
+    <string name="learning_reminder_channel">Nhắc lịch học</string>
+    <string name="learning_reminder_body">Đã đến lúc thực hiện một bước học nhỏ.</string>
+</resources>

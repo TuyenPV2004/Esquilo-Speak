@@ -79,10 +79,9 @@ public class IdentityProfileService {
                 .update();
         jdbc.sql("""
                         insert into learner_profiles (
-                            learner_id, ui_locale, source_language, target_language,
-                            preferences, updated_at
+                            learner_id, preferences, updated_at
                         ) values (
-                            :learnerId, 'vi', 'vi', 'en', '{}'::jsonb, :now
+                            :learnerId, '{}'::jsonb, :now
                         )
                         """)
                 .param("learnerId", learnerId)
@@ -168,7 +167,7 @@ public class IdentityProfileService {
     @Transactional(readOnly = true)
     public LearnerProfile profile(LearnerContext learner) {
         return jdbc.sql("""
-                        select ui_locale, source_language, target_language, age_band,
+                        select ui_locale, source_language, target_language, active_course_id, age_band,
                                learning_goal, preferences::text, updated_at
                         from learner_profiles
                         where learner_id = :learnerId
@@ -180,6 +179,7 @@ public class IdentityProfileService {
                         rs.getString("ui_locale"),
                         rs.getString("source_language"),
                         rs.getString("target_language"),
+                        rs.getString("active_course_id"),
                         AgeBand.fromDatabase(rs.getString("age_band")),
                         rs.getString("learning_goal"),
                         readMap(rs.getString("preferences")),
@@ -195,12 +195,14 @@ public class IdentityProfileService {
                     "GUARDIAN_CONSENT_REQUIRED",
                     "An under-16 account cannot synchronize data until guardian consent is available.");
         }
+        validateLearningContext(update);
         Instant now = clock.instant();
         jdbc.sql("""
                         update learner_profiles
                         set ui_locale = :uiLocale,
                             source_language = :sourceLanguage,
                             target_language = :targetLanguage,
+                            active_course_id = :activeCourseId,
                             age_band = :ageBand,
                             learning_goal = :learningGoal,
                             preferences = cast(:preferences as jsonb),
@@ -210,6 +212,7 @@ public class IdentityProfileService {
                 .param("uiLocale", update.uiLocale())
                 .param("sourceLanguage", update.sourceLanguage())
                 .param("targetLanguage", update.targetLanguage())
+                .param("activeCourseId", update.activeCourseId())
                 .param("ageBand", update.ageBand().value)
                 .param("learningGoal", update.learningGoal())
                 .param("preferences", writeJson(update.preferences()))
@@ -222,8 +225,55 @@ public class IdentityProfileService {
                 Map.of(
                         "ageBand", update.ageBand().value,
                         "sourceLanguage", update.sourceLanguage(),
-                        "targetLanguage", update.targetLanguage()));
+                        "targetLanguage", update.targetLanguage(),
+                        "activeCourseId", update.activeCourseId()));
         return profile(learner);
+    }
+
+    private void validateLearningContext(ProfileUpdate update) {
+        if (update.sourceLanguage().equalsIgnoreCase(update.targetLanguage())) {
+            throw new ApiException(
+                    HttpStatus.BAD_REQUEST,
+                    "INVALID_LANGUAGE_PAIR",
+                    "Source and target language must be different.");
+        }
+        long enabledLanguages = jdbc.sql("""
+                        select count(*)
+                        from learning_languages
+                        where enabled = true
+                          and language_tag in (:sourceLanguage, :targetLanguage)
+                        """)
+                .param("sourceLanguage", update.sourceLanguage())
+                .param("targetLanguage", update.targetLanguage())
+                .query(Long.class)
+                .single();
+        if (enabledLanguages != 2) {
+            throw new ApiException(
+                    HttpStatus.BAD_REQUEST,
+                    "UNSUPPORTED_LANGUAGE_PAIR",
+                    "Source and target language must exist in the enabled language catalog.");
+        }
+        boolean courseMatches = jdbc.sql("""
+                        select exists (
+                            select 1
+                            from courses
+                            where id = :activeCourseId
+                              and source_language = :sourceLanguage
+                              and target_language = :targetLanguage
+                              and published = true
+                        )
+                        """)
+                .param("activeCourseId", update.activeCourseId())
+                .param("sourceLanguage", update.sourceLanguage())
+                .param("targetLanguage", update.targetLanguage())
+                .query(Boolean.class)
+                .single();
+        if (!courseMatches) {
+            throw new ApiException(
+                    HttpStatus.BAD_REQUEST,
+                    "ACTIVE_COURSE_MISMATCH",
+                    "The active course must be published for the selected language pair.");
+        }
     }
 
     @Transactional(readOnly = true)
@@ -427,9 +477,10 @@ public class IdentityProfileService {
         Instant now = clock.instant();
         jdbc.sql("""
                         update learner_profiles
-                        set ui_locale = 'vi',
-                            source_language = 'vi',
-                            target_language = 'en',
+                        set ui_locale = null,
+                            source_language = null,
+                            target_language = null,
+                            active_course_id = null,
                             age_band = null,
                             learning_goal = null,
                             preferences = '{}'::jsonb,
@@ -753,6 +804,7 @@ public class IdentityProfileService {
             String uiLocale,
             String sourceLanguage,
             String targetLanguage,
+            String activeCourseId,
             AgeBand ageBand,
             String learningGoal,
             Map<String, Object> preferences,
@@ -762,6 +814,7 @@ public class IdentityProfileService {
             String uiLocale,
             String sourceLanguage,
             String targetLanguage,
+            String activeCourseId,
             AgeBand ageBand,
             String learningGoal,
             Map<String, Object> preferences) {}

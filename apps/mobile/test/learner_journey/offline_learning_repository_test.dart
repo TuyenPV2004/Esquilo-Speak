@@ -40,7 +40,7 @@ void main() {
     final attempt = repository.createAttempt(
       lesson: _lesson,
       exercise: _lesson.exercises.single,
-      selectedOptionId: 'option-hello',
+      response: const OptionExerciseResponse('option-hello'),
     );
     await expectLater(
       repository.submitAttempt(attempt),
@@ -69,7 +69,7 @@ class _ToggleRepository implements LearningRepository {
   PendingAttempt createAttempt({
     required Lesson lesson,
     required Exercise exercise,
-    required String selectedOptionId,
+    required ExerciseResponse response,
   }) => PendingAttempt(
     clientAttemptId: '11111111-1111-4111-8111-111111111111',
     clientMutationId: '22222222-2222-4222-8222-222222222222',
@@ -78,7 +78,7 @@ class _ToggleRepository implements LearningRepository {
     lessonId: lesson.id,
     lessonVersion: lesson.version,
     exerciseId: exercise.id,
-    selectedOptionId: selectedOptionId,
+    response: response,
     occurredAt: DateTime.utc(2026, 7, 30),
   );
 
@@ -119,6 +119,7 @@ const _lesson = Lesson(
   exercises: [
     Exercise(
       id: 'exercise-hello',
+      type: 'multiple_choice',
       prompt: {'vi': 'Chọn lời chào', 'en': 'Choose the greeting'},
       options: [
         ExerciseOption(

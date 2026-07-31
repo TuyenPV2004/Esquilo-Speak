@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 import '../../../core/design_system/app_tokens.dart';
 import '../../../core/design_system/component_states.dart';
 import '../../../core/design_system/responsive_content.dart';
+import '../../../core/localization/localized_text.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../l10n/user_facing_failure_localization.dart';
 import '../data/learning_insights_models.dart';
@@ -72,7 +74,13 @@ class ReviewScreen extends StatelessWidget {
                                 ? Icons.check_circle_outline
                                 : Icons.replay_circle_filled_outlined,
                           ),
-                          title: Text(item.conceptId),
+                          title: Text(
+                            resolveLocalizedText(
+                              item.title,
+                              Localizations.localeOf(context).toLanguageTag(),
+                              defaultLocale: item.defaultLocale,
+                            ),
+                          ),
                           subtitle: Text(
                             strings.reviewInterval(item.intervalDays),
                           ),
@@ -110,8 +118,15 @@ class MasteryInsightCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final strings = AppLocalizations.of(context);
-    final percent = (item.score * 100).round();
-    final masteryLabel = strings.masteryValue(item.conceptId, percent);
+    final percent = NumberFormat.percentPattern(
+      Localizations.localeOf(context).toLanguageTag(),
+    ).format(item.score);
+    final conceptTitle = resolveLocalizedText(
+      item.title,
+      Localizations.localeOf(context).toLanguageTag(),
+      defaultLocale: item.defaultLocale,
+    );
+    final masteryLabel = strings.masteryValue(conceptTitle, percent);
     final localUpdatedAt = item.lastEvidenceAt.toLocal();
     final materialStrings = MaterialLocalizations.of(context);
     final updatedAt = strings.masteryLastUpdated(
@@ -122,7 +137,7 @@ class MasteryInsightCard extends StatelessWidget {
       key: ValueKey('mastery-insight-${item.conceptId}'),
       child: ExpansionTile(
         title: Text(
-          item.conceptId,
+          conceptTitle,
           style: Theme.of(context).textTheme.titleMedium,
         ),
         subtitle: Padding(
@@ -133,7 +148,7 @@ class MasteryInsightCard extends StatelessWidget {
               LinearProgressIndicator(
                 value: item.score,
                 semanticsLabel: masteryLabel,
-                semanticsValue: '$percent%',
+                semanticsValue: percent,
               ),
               const SizedBox(height: AppSpacing.xs),
               Text(

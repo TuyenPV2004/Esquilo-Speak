@@ -4,14 +4,22 @@ import '../../../core/design_system/app_tokens.dart';
 import '../../../core/design_system/component_states.dart';
 import '../../../core/design_system/responsive_content.dart';
 import '../../../l10n/app_localizations.dart';
+import '../../../l10n/domain_state_localization.dart';
 import '../../../l10n/user_facing_failure_localization.dart';
+import '../../../l10n/ui_locale_name.dart';
 import '../data/learner_profile_models.dart';
+import '../../learning/data/learning_models.dart';
 import 'learner_profile_view_model.dart';
 
 class ProfileScreen extends StatelessWidget {
-  const ProfileScreen({required this.viewModel, super.key});
+  const ProfileScreen({
+    required this.viewModel,
+    this.languages = const [],
+    super.key,
+  });
 
   final LearnerProfileViewModel viewModel;
+  final List<LearningLanguage> languages;
 
   @override
   Widget build(BuildContext context) {
@@ -55,8 +63,8 @@ class ProfileScreen extends StatelessWidget {
                       ),
                       subtitle: Text(
                         strings.languagePair(
-                          profile.sourceLanguage.toUpperCase(),
-                          profile.targetLanguage.toUpperCase(),
+                          _languageName(context, profile.sourceLanguage),
+                          _languageName(context, profile.targetLanguage),
                         ),
                       ),
                     ),
@@ -69,6 +77,29 @@ class ProfileScreen extends StatelessWidget {
                   Card(
                     child: Column(
                       children: [
+                        ListTile(
+                          leading: const Icon(Icons.translate_outlined),
+                          title: Text(strings.interfaceLanguage),
+                          trailing: DropdownButton<String>(
+                            key: const ValueKey('interface-language'),
+                            value: _supportedUiLanguage(profile.uiLocale),
+                            onChanged: viewModel.saving
+                                ? null
+                                : (value) {
+                                    if (value != null) {
+                                      viewModel.setUiLocale(value);
+                                    }
+                                  },
+                            items: AppLocalizations.supportedLocales
+                                .map(
+                                  (locale) => DropdownMenuItem(
+                                    value: locale.toLanguageTag(),
+                                    child: UiLocaleName(locale),
+                                  ),
+                                )
+                                .toList(growable: false),
+                          ),
+                        ),
                         ListTile(
                           leading: const Icon(Icons.flag_outlined),
                           title: Text(strings.dailyGoalTitle),
@@ -144,7 +175,10 @@ class ProfileScreen extends StatelessWidget {
                             title: Text(strings.privacyRequestAccepted),
                             subtitle: Text(
                               strings.privacyRequestState(
-                                viewModel.privacyRequest!.state,
+                                localizedPrivacyState(
+                                  strings,
+                                  viewModel.privacyRequest!.state,
+                                ),
                               ),
                             ),
                           ),
@@ -177,6 +211,29 @@ class ProfileScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  String _supportedUiLanguage(String? languageTag) {
+    final requestedLanguage = languageTag?.split(RegExp('[-_]')).first;
+    return AppLocalizations.supportedLocales
+        .firstWhere(
+          (locale) => locale.languageCode == requestedLanguage,
+          orElse: () => AppLocalizations.supportedLocales.first,
+        )
+        .toLanguageTag();
+  }
+
+  String _languageName(BuildContext context, String? languageTag) {
+    if (languageTag == null) return '—';
+    for (final language in languages) {
+      if (language.languageTag == languageTag) {
+        return resolveLocalizedText(
+          language.name,
+          Localizations.localeOf(context).toLanguageTag(),
+        );
+      }
+    }
+    return languageTag;
   }
 
   Future<void> _confirmDeletion(

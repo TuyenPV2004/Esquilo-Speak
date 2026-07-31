@@ -1,10 +1,13 @@
-typedef LocalizedText = Map<String, String>;
+import '../../../core/models/proficiency_models.dart';
+import '../../../core/localization/localized_text.dart';
 
-String localized(LocalizedText values, String locale) =>
-    values[locale] ?? values['en'] ?? values.values.firstOrNull ?? '';
+export '../../../core/localization/localized_text.dart';
 
-LocalizedText localizedText(Object? value) => (value as Map<String, dynamic>)
-    .map((key, item) => MapEntry(key, item as String));
+String localized(
+  LocalizedText values,
+  String locale, {
+  String? defaultLocale,
+}) => resolveLocalizedText(values, locale, defaultLocale: defaultLocale);
 
 class LearningLanguage {
   const LearningLanguage({
@@ -38,12 +41,20 @@ class Course {
     required this.targetLanguage,
     required this.title,
     required this.description,
+    this.locale,
+    this.proficiency,
   });
 
   factory Course.fromJson(Map<String, dynamic> json) => Course(
     id: json['id'] as String,
     sourceLanguage: json['sourceLanguage'] as String,
     targetLanguage: json['targetLanguage'] as String,
+    locale: json['locale'] as String?,
+    proficiency: json['proficiency'] == null
+        ? null
+        : CourseProficiency.fromJson(
+            Map<String, dynamic>.from(json['proficiency'] as Map),
+          ),
     title: localizedText(json['title']),
     description: localizedText(json['description']),
   );
@@ -51,6 +62,8 @@ class Course {
   final String id;
   final String sourceLanguage;
   final String targetLanguage;
+  final String? locale;
+  final CourseProficiency? proficiency;
   final LocalizedText title;
   final LocalizedText description;
 
@@ -58,6 +71,8 @@ class Course {
     'id': id,
     'sourceLanguage': sourceLanguage,
     'targetLanguage': targetLanguage,
+    if (locale != null) 'locale': locale,
+    if (proficiency != null) 'proficiency': proficiency!.toJson(),
     'title': title,
     'description': description,
   };
@@ -69,6 +84,7 @@ class LessonSummary {
     required this.version,
     required this.title,
     required this.estimatedMinutes,
+    this.locale,
   });
 
   factory LessonSummary.fromJson(Map<String, dynamic> json) => LessonSummary(
@@ -76,18 +92,21 @@ class LessonSummary {
     version: json['version'] as int,
     title: localizedText(json['title']),
     estimatedMinutes: json['estimatedMinutes'] as int,
+    locale: json['locale'] as String?,
   );
 
   final String id;
   final int version;
   final LocalizedText title;
   final int estimatedMinutes;
+  final String? locale;
 
   Map<String, dynamic> toJson() => {
     'id': id,
     'version': version,
     'title': title,
     'estimatedMinutes': estimatedMinutes,
+    if (locale != null) 'locale': locale,
   };
 }
 
@@ -99,12 +118,14 @@ class Lesson {
     required this.title,
     required this.objectives,
     required this.exercises,
+    this.locale,
   });
 
   factory Lesson.fromJson(Map<String, dynamic> json) => Lesson(
     id: json['id'] as String,
     courseId: json['courseId'] as String,
     version: json['version'] as int,
+    locale: json['locale'] as String?,
     title: localizedText(json['title']),
     objectives: (json['objectives'] as List<dynamic>)
         .map(localizedText)
@@ -117,6 +138,7 @@ class Lesson {
   final String id;
   final String courseId;
   final int version;
+  final String? locale;
   final LocalizedText title;
   final List<LocalizedText> objectives;
   final List<Exercise> exercises;
@@ -125,6 +147,7 @@ class Lesson {
     'id': id,
     'courseId': courseId,
     'version': version,
+    if (locale != null) 'locale': locale,
     'title': title,
     'objectives': objectives,
     'exercises': exercises.map((item) => item.toJson()).toList(),
@@ -134,12 +157,14 @@ class Lesson {
 class Exercise {
   const Exercise({
     required this.id,
+    required this.type,
     required this.prompt,
     required this.options,
   });
 
   factory Exercise.fromJson(Map<String, dynamic> json) => Exercise(
     id: json['id'] as String,
+    type: json['type'] as String,
     prompt: localizedText(json['prompt']),
     options: (json['options'] as List<dynamic>)
         .map((item) => ExerciseOption.fromJson(item as Map<String, dynamic>))
@@ -147,14 +172,37 @@ class Exercise {
   );
 
   final String id;
+  final String type;
   final LocalizedText prompt;
   final List<ExerciseOption> options;
 
   Map<String, dynamic> toJson() => {
     'id': id,
+    'type': type,
     'prompt': prompt,
     'options': options.map((item) => item.toJson()).toList(),
   };
+}
+
+sealed class ExerciseResponse {
+  const ExerciseResponse();
+
+  factory ExerciseResponse.fromJson(Map<String, dynamic> json) =>
+      switch (json['kind']) {
+        'option' => OptionExerciseResponse(json['optionId'] as String),
+        final kind => throw FormatException('Unsupported response kind: $kind'),
+      };
+
+  Map<String, dynamic> toJson();
+}
+
+class OptionExerciseResponse extends ExerciseResponse {
+  const OptionExerciseResponse(this.optionId);
+
+  final String optionId;
+
+  @override
+  Map<String, dynamic> toJson() => {'kind': 'option', 'optionId': optionId};
 }
 
 class ExerciseOption {
@@ -180,7 +228,7 @@ class PendingAttempt {
     required this.lessonId,
     required this.lessonVersion,
     required this.exerciseId,
-    required this.selectedOptionId,
+    required this.response,
     required this.occurredAt,
   });
 
@@ -191,7 +239,7 @@ class PendingAttempt {
   final String lessonId;
   final int lessonVersion;
   final String exerciseId;
-  final String selectedOptionId;
+  final ExerciseResponse response;
   final DateTime occurredAt;
 
   Map<String, dynamic> toJson() => {
@@ -200,7 +248,7 @@ class PendingAttempt {
     'lessonId': lessonId,
     'lessonVersion': lessonVersion,
     'exerciseId': exerciseId,
-    'selectedOptionId': selectedOptionId,
+    'response': response.toJson(),
     'occurredAt': occurredAt.toUtc().toIso8601String(),
   };
 }
@@ -208,7 +256,7 @@ class PendingAttempt {
 class AttemptFeedback {
   const AttemptFeedback({
     required this.correct,
-    required this.message,
+    required this.messageCode,
     required this.correctOptionId,
     required this.explanation,
     required this.progress,
@@ -218,7 +266,9 @@ class AttemptFeedback {
     final feedback = json['feedback'] as Map<String, dynamic>;
     return AttemptFeedback(
       correct: json['correct'] as bool,
-      message: localizedText(feedback['message']),
+      messageCode:
+          feedback['messageCode'] as String? ??
+          ((json['correct'] as bool) ? 'answer.correct' : 'answer.incorrect'),
       correctOptionId: feedback['correctOptionId'] as String,
       explanation: localizedText(feedback['explanation']),
       progress: CourseProgress.fromJson(
@@ -228,7 +278,7 @@ class AttemptFeedback {
   }
 
   final bool correct;
-  final LocalizedText message;
+  final String messageCode;
   final String correctOptionId;
   final LocalizedText explanation;
   final CourseProgress progress;

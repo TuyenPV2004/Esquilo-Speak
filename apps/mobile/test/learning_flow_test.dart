@@ -9,7 +9,7 @@ import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   testWidgets('completes the first learning vertical slice', (tester) async {
-    final viewModel = LearningViewModel(FakeLearningRepository());
+    final viewModel = _viewModel(FakeLearningRepository());
     await tester.pumpWidget(
       MaterialApp(
         locale: const Locale('vi'),
@@ -54,7 +54,7 @@ void main() {
   testWidgets('announces selection validation before submitting', (
     tester,
   ) async {
-    final viewModel = LearningViewModel(FakeLearningRepository());
+    final viewModel = _viewModel(FakeLearningRepository());
     await viewModel.loadCatalog();
     await viewModel.chooseLanguage(viewModel.languages.last);
     await viewModel.chooseCourse(viewModel.courses.first);
@@ -110,7 +110,7 @@ void main() {
     'retries an attempt with the same logical mutation identifiers',
     () async {
       final repository = RetryOnceLearningRepository();
-      final viewModel = LearningViewModel(repository);
+      final viewModel = _viewModel(repository);
       await viewModel.loadCatalog();
       await viewModel.chooseLanguage(viewModel.languages.last);
       await viewModel.chooseCourse(viewModel.courses.first);
@@ -134,6 +134,17 @@ void main() {
     },
   );
 }
+
+LearningViewModel _viewModel(LearningRepository repository) =>
+    LearningViewModel(
+      repository,
+      learningContext: () => const LearningContextSnapshot(
+        sourceLanguage: 'vi',
+        targetLanguage: null,
+        activeCourseId: null,
+      ),
+      onCourseSelected: (_) async {},
+    );
 
 class FakeLearningRepository implements LearningRepository {
   static const languageVi = LearningLanguage(
@@ -161,6 +172,7 @@ class FakeLearningRepository implements LearningRepository {
   );
   static const exercise = Exercise(
     id: 'exercise-choose-hello',
+    type: 'multiple_choice',
     prompt: {
       'vi': 'Từ nào có nghĩa là xin chào?',
       'en': 'Which word is a greeting?',
@@ -208,7 +220,7 @@ class FakeLearningRepository implements LearningRepository {
   PendingAttempt createAttempt({
     required Lesson lesson,
     required Exercise exercise,
-    required String selectedOptionId,
+    required ExerciseResponse response,
   }) => PendingAttempt(
     clientAttemptId: '11111111-1111-4111-8111-111111111111',
     clientMutationId: '33333333-3333-4333-8333-333333333333',
@@ -217,7 +229,7 @@ class FakeLearningRepository implements LearningRepository {
     lessonId: lesson.id,
     lessonVersion: lesson.version,
     exerciseId: exercise.id,
-    selectedOptionId: selectedOptionId,
+    response: response,
     occurredAt: DateTime.utc(2026, 7, 30),
   );
 
@@ -225,7 +237,7 @@ class FakeLearningRepository implements LearningRepository {
   Future<AttemptFeedback> submitAttempt(PendingAttempt attempt) async =>
       const AttemptFeedback(
         correct: true,
-        message: {'vi': 'Chính xác!', 'en': 'Correct!'},
+        messageCode: 'answer.correct',
         correctOptionId: 'option-hello',
         explanation: {
           'vi': 'Hello là lời chào thông dụng.',
@@ -252,7 +264,15 @@ class RetryOnceLearningRepository extends FakeLearningRepository {
 }
 
 class TestLearningViewModel extends LearningViewModel {
-  TestLearningViewModel(super.repository);
+  TestLearningViewModel(super.repository)
+    : super(
+        learningContext: () => const LearningContextSnapshot(
+          sourceLanguage: 'vi',
+          targetLanguage: null,
+          activeCourseId: null,
+        ),
+        onCourseSelected: (_) async {},
+      );
 
   void showLoading(LearningStep nextStep) {
     step = nextStep;

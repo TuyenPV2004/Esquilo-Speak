@@ -47,7 +47,9 @@ class BackendReleaseGateIntegrationTest {
                 .query(String.class)
                 .list();
 
-        assertEquals(List.of("1", "2", "3", "4", "5", "6"), appliedVersions);
+        assertEquals(
+                List.of("1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"),
+                appliedVersions);
         assertEquals(
                 6,
                 jdbc.sql("""

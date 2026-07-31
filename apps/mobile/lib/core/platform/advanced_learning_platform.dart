@@ -4,6 +4,8 @@ import '../auth/auth_session.dart';
 import '../config/app_environment.dart';
 
 abstract interface class AdvancedLearningPlatform {
+  Future<String> systemTimezone();
+
   Future<void> playRemoteMedia(String mediaId);
 
   Future<void> downloadMedia(String mediaId);
@@ -40,6 +42,10 @@ class AndroidAdvancedLearningPlatform implements AdvancedLearningPlatform {
   final AppEnvironment _environment;
   final AccessTokenProvider _tokens;
   final MethodChannel _channel;
+
+  @override
+  Future<String> systemTimezone() async =>
+      await _channel.invokeMethod<String>('systemTimezone') ?? 'UTC';
 
   @override
   Future<void> playRemoteMedia(String mediaId) async {

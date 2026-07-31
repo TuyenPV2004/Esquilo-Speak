@@ -11,6 +11,7 @@ class AppEnvironment {
     required this.oidcClientId,
     required this.oidcRedirectUrl,
     required this.oidcPostLogoutRedirectUrl,
+    required this.closedTestingProductId,
   });
 
   factory AppEnvironment.fromDefines() {
@@ -36,6 +37,10 @@ class AppEnvironment {
     const postLogoutRedirectUrl = String.fromEnvironment(
       'ESQUILO_OIDC_POST_LOGOUT_REDIRECT_URL',
     );
+    const closedTestingProductId = String.fromEnvironment(
+      'ESQUILO_CLOSED_TEST_PRODUCT_ID',
+      defaultValue: 'premium-monthly',
+    );
 
     final environment = AppEnvironment(
       name: name,
@@ -46,6 +51,7 @@ class AppEnvironment {
       oidcPostLogoutRedirectUrl: postLogoutRedirectUrl.isEmpty
           ? null
           : Uri.parse(postLogoutRedirectUrl),
+      closedTestingProductId: closedTestingProductId,
     );
     environment.validate();
     return environment;
@@ -57,6 +63,7 @@ class AppEnvironment {
   final String? oidcClientId;
   final Uri? oidcRedirectUrl;
   final Uri? oidcPostLogoutRedirectUrl;
+  final String closedTestingProductId;
 
   bool get isLocal => name == AppEnvironmentName.local;
 

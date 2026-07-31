@@ -40,8 +40,8 @@ public final class LocalAdvancedLearningAdapters
                 expectedText,
                 Math.round(score * 100.0) / 100.0,
                 Map.of(
-                        "summary", "Pronunciation sample accepted.",
-                        "nextStep", "Repeat once with a steady pace.",
+                        "code", "pronunciation.sampleAccepted",
+                        "parameters", Map.of(),
                         "locale", locale),
                 "local-deterministic");
     }
@@ -51,17 +51,18 @@ public final class LocalAdvancedLearningAdapters
         String normalized = input.toLowerCase(Locale.ROOT);
         if (normalized.contains("suicide") || normalized.contains("tự sát")) {
             return new TextFeedback(
-                    Map.of("summary", "This response cannot be evaluated automatically."),
+                    Map.of(
+                            "code", "feedback.automaticEvaluationBlocked",
+                            "parameters", Map.of(),
+                            "locale", locale),
                     "blocked",
                     "local-deterministic");
         }
         int words = input.trim().split("\\s+").length;
         return new TextFeedback(
                 Map.of(
-                        "summary", words >= 5
-                                ? "Clear response with enough detail."
-                                : "Add one more complete sentence.",
-                        "wordCount", words,
+                        "code", words >= 5 ? "writing.clearResponse" : "writing.addSentence",
+                        "parameters", Map.of("wordCount", words),
                         "locale", locale,
                         "mode", kind),
                 "allowed",

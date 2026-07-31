@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:intl/intl.dart';
 
 import '../../../core/design_system/app_tokens.dart';
 import '../../../core/design_system/component_states.dart';
@@ -108,7 +109,9 @@ class HomeScreen extends StatelessWidget {
                         Expanded(
                           child: _MetricCard(
                             icon: Icons.trending_up,
-                            value: '$masteryAverage%',
+                            value: NumberFormat.percentPattern(
+                              Localizations.localeOf(context).toLanguageTag(),
+                            ).format(masteryAverage / 100),
                             label: strings.mastery,
                           ),
                         ),

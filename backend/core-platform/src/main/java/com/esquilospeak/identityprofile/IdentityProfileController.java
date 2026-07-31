@@ -66,6 +66,7 @@ class IdentityProfileController {
                         body.uiLocale(),
                         body.sourceLanguage(),
                         body.targetLanguage(),
+                        body.activeCourseId(),
                         AgeBand.fromApi(body.ageBand()),
                         body.learningGoal(),
                         body.preferences() == null ? Map.of() : body.preferences()));
@@ -143,6 +144,7 @@ class IdentityProfileController {
             @NotBlank @Pattern(regexp = LOCALE) String uiLocale,
             @NotBlank @Pattern(regexp = LOCALE) String sourceLanguage,
             @NotBlank @Pattern(regexp = LOCALE) String targetLanguage,
+            @NotBlank @Pattern(regexp = "^[a-z0-9]+(?:-[a-z0-9]+)*$") String activeCourseId,
             @NotBlank @Pattern(regexp = "^(under_16|16_17|adult)$") String ageBand,
             @Size(max = 50) String learningGoal,
             Map<String, Object> preferences) {}
@@ -159,6 +161,7 @@ class IdentityProfileController {
             String uiLocale,
             String sourceLanguage,
             String targetLanguage,
+            String activeCourseId,
             String ageBand,
             String learningGoal,
             Map<String, Object> preferences,
@@ -171,6 +174,7 @@ class IdentityProfileController {
                     profile.uiLocale(),
                     profile.sourceLanguage(),
                     profile.targetLanguage(),
+                    profile.activeCourseId(),
                     profile.ageBand() == null ? null : profile.ageBand().value(),
                     profile.learningGoal(),
                     profile.preferences(),

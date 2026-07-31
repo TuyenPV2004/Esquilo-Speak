@@ -2,8 +2,6 @@ package com.esquilospeak.engagement;
 
 import com.esquilospeak.identityprofile.IdentityProfileService;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -42,7 +40,7 @@ class EngagementController {
                 identities.requireLearningAccess(jwt).learnerId(),
                 body.clientEventId(),
                 body.eventType(),
-                body.xpAwarded());
+                body.evidenceRef());
     }
 
     @PutMapping("/notification-preference")
@@ -52,16 +50,18 @@ class EngagementController {
                 identities.requireLearningAccess(jwt).learnerId(),
                 body.enabled(),
                 body.reminderTime(),
-                body.locale());
+                body.locale(),
+                body.timezone());
     }
 
     record ActivityBody(
             @NotNull UUID clientEventId,
             @NotBlank @Size(max = 40) String eventType,
-            @Min(0) @Max(1000) int xpAwarded) {}
+            @Size(max = 160) String evidenceRef) {}
 
     record PreferenceBody(
             boolean enabled,
             LocalTime reminderTime,
-            @NotBlank @Size(max = 35) String locale) {}
+            @NotBlank @Size(max = 35) String locale,
+            @NotBlank @Size(max = 80) String timezone) {}
 }

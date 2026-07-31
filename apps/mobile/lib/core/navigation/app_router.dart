@@ -45,8 +45,10 @@ GoRouter createAppRouter(AppDependencies dependencies) => GoRouter(
     ),
     GoRoute(
       path: '/onboarding',
-      builder: (context, state) =>
-          OnboardingScreen(viewModel: dependencies.profileViewModel),
+      builder: (context, state) => OnboardingScreen(
+        viewModel: dependencies.profileViewModel,
+        learningViewModel: dependencies.learningViewModel,
+      ),
     ),
     StatefulShellRoute.indexedStack(
       builder: (context, state, navigationShell) =>
@@ -124,8 +126,10 @@ GoRouter createAppRouter(AppDependencies dependencies) => GoRouter(
             GoRoute(
               path: '/profile',
               name: 'profile',
-              builder: (context, state) =>
-                  ProfileScreen(viewModel: dependencies.profileViewModel),
+              builder: (context, state) => ProfileScreen(
+                viewModel: dependencies.profileViewModel,
+                languages: dependencies.learningViewModel.languages,
+              ),
             ),
           ],
         ),

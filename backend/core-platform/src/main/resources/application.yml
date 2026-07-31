@@ -86,6 +86,14 @@ esquilospeak:
     issuer-uri: ${ESQUILO_JWT_ISSUER_URI:}
   operations:
     retention-enabled: ${ESQUILO_OPERATIONAL_RETENTION_ENABLED:true}
+  commerce:
+    local-product-id: ${ESQUILO_LOCAL_PRODUCT_ID:premium-monthly}
+    local-entitlement-code: ${ESQUILO_LOCAL_ENTITLEMENT_CODE:premium}
+    local-duration-days: ${ESQUILO_LOCAL_ENTITLEMENT_DURATION_DAYS:30}
+  privacy:
+    export-target-days: ${ESQUILO_PRIVACY_EXPORT_TARGET_DAYS:7}
+    deletion-target-days: ${ESQUILO_PRIVACY_DELETION_TARGET_DAYS:30}
+    inactive-guest-days: ${ESQUILO_PRIVACY_INACTIVE_GUEST_DAYS:90}
   rate-limit:
     enabled: ${ESQUILO_RATE_LIMIT_ENABLED:true}
     attempts-per-minute: ${ESQUILO_RATE_LIMIT_ATTEMPTS_PER_MINUTE:60}

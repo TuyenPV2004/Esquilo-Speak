@@ -43,6 +43,12 @@ class CurriculumContentController {
         return Map.of("items", contentService.listLessonSummaries(courseId));
     }
 
+    @GetMapping("/courses/{courseId}/advanced-activities")
+    Map<String, List<Map<String, Object>>> advancedActivities(
+            @PathVariable @Pattern(regexp = IDENTIFIER) String courseId) {
+        return Map.of("items", contentService.listAdvancedActivities(courseId));
+    }
+
     @GetMapping("/lessons/{lessonId}")
     ResponseEntity<Map<String, Object>> lesson(
             @PathVariable @Pattern(regexp = IDENTIFIER) String lessonId,
