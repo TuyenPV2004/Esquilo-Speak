@@ -86,7 +86,10 @@ class LearningApiIntegrationTest {
 
         mockMvc.perform(get("/api/mobile/v1/courses/course-en-for-vi/lessons"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.items[0].id").value("lesson-basic-greetings"));
+                .andExpect(jsonPath("$.items[0].id").value("lesson-basic-greetings"))
+                .andExpect(jsonPath("$.items[0].unitId").value("unit-foundation"))
+                .andExpect(jsonPath("$.items[0].unitTitle.en").value("Foundation"))
+                .andExpect(jsonPath("$.items[0].position").value(1));
 
         mockMvc.perform(get("/api/mobile/v1/lessons/lesson-basic-greetings"))
                 .andExpect(status().isOk())
@@ -138,6 +141,24 @@ class LearningApiIntegrationTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.completedExerciseCount").value(1))
                 .andExpect(jsonPath("$.lessonProgress[0].status").value("completed"));
+        String evidence = jdbc.sql("select evidence::text from attempts where client_attempt_id = :id")
+                .param("id", clientAttemptId)
+                .query(String.class)
+                .single();
+        org.junit.jupiter.api.Assertions.assertTrue(evidence.contains("\"hintUsed\": true"));
+        org.junit.jupiter.api.Assertions.assertTrue(evidence.contains("\"inputModality\": \"touch\""));
+    }
+
+    @Test
+    void rejectsInvalidRendererIndependentAttemptEvidence() throws Exception {
+        mockMvc.perform(post("/api/mobile/v1/attempts")
+                        .with(guestJwt("learner-invalid-evidence"))
+                        .header("Idempotency-Key", UUID.randomUUID())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(attemptJson(UUID.randomUUID(), "option-hello")
+                                .replace("\"inputModality\": \"touch\"", "\"inputModality\": \"telepathy\"")))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.code").value("ATTEMPT_EVIDENCE_INVALID"));
     }
 
     @Test
@@ -358,6 +379,14 @@ class LearningApiIntegrationTest {
                   "lessonVersion": 1,
                   "exerciseId": "exercise-choose-hello",
                   "selectedOptionId": "%s",
+                  "evidence": {
+                    "responseTimeMs": 1200,
+                    "hintUsed": true,
+                    "hintLevel": 1,
+                    "retryIndex": 0,
+                    "confidence": 4,
+                    "inputModality": "touch"
+                  },
                   "occurredAt": "%s",
                   "responseTimeMs": 1200
                 }

@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "course": "course.json",
+  "units": [
+    "units/unit-first-contact.json"
+  ],
+  "lessons": [
+    "lessons/lesson-greetings.json",
+    "lessons/lesson-name.json",
+    "lessons/lesson-how-are-you.json",
+    "lessons/lesson-numbers-age.json",
+    "lessons/lesson-checkpoint-first-contact.json"
+  ],
+  "mediaManifest": "media-manifest.json",
+  "reviewEvidence": "review-evidence.json"
+}

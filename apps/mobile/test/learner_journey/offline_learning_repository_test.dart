@@ -47,11 +47,90 @@ void main() {
       throwsA(isA<AttemptQueuedForSync>()),
     );
     expect(await database.pendingMutationCount(), 1);
+
+    const resume = LessonResume(
+      lessonId: 'lesson-basic-greetings',
+      lessonVersion: 1,
+      exerciseIndex: 0,
+      mistakeExerciseIndexes: [0],
+      reviewingMistakes: true,
+    );
+    await repository.saveLessonResume(resume);
+    final restored = await repository.loadLessonResume(
+      resume.lessonId,
+      resume.lessonVersion,
+    );
+    expect(restored?.mistakeExerciseIndexes, [0]);
+    expect(restored?.reviewingMistakes, true);
+    await repository.clearLessonResume(resume.lessonId, resume.lessonVersion);
+    expect(
+      await repository.loadLessonResume(resume.lessonId, resume.lessonVersion),
+      isNull,
+    );
+  });
+
+  test('downloads a complete unit and serves its exact lesson offline', () async {
+    final database = AppDatabase(factory: databaseFactoryFfi);
+    await database.open(path: inMemoryDatabasePath);
+    addTearDown(database.close);
+    final remote = _ToggleRepository();
+    final api = ApiClient(
+      MockClient((request) async => http.Response('{}', 200)),
+      Uri.parse('https://api.example.test'),
+      const _TokenProvider(),
+      maxAttempts: 1,
+    );
+    final repository = OfflineLearningRepository(
+      remote,
+      SyncCoordinator(database, api),
+      database,
+    );
+
+    const summaries = [
+      LessonSummary(
+        id: 'lesson-basic-greetings',
+        version: 1,
+        title: {'en': 'Greetings'},
+        estimatedMinutes: 5,
+        unitId: 'unit-first-contact',
+        unitTitle: {'en': 'First contact'},
+        position: 1,
+      ),
+    ];
+    final first = await repository.downloadUnit(
+      courseId: 'course-en-for-vi',
+      unitId: 'unit-first-contact',
+      lessons: summaries,
+    );
+    final second = await repository.downloadUnit(
+      courseId: 'course-en-for-vi',
+      unitId: 'unit-first-contact',
+      lessons: summaries,
+    );
+    expect(first.downloaded, true);
+    expect(second.downloadedLessonCount, 1);
+    expect(remote.lessonRequests, 2);
+
+    remote.offline = true;
+    final restored = await repository.lesson(
+      'lesson-basic-greetings',
+      version: 1,
+    );
+    expect(restored.id, 'lesson-basic-greetings');
+    expect(
+      (await repository.unitDownloadStatus(
+        courseId: 'course-en-for-vi',
+        unitId: 'unit-first-contact',
+        lessons: summaries,
+      )).downloaded,
+      true,
+    );
   });
 }
 
 class _ToggleRepository implements LearningRepository {
   bool offline = false;
+  int lessonRequests = 0;
 
   @override
   Future<List<LearningLanguage>> languages() async {
@@ -89,7 +168,11 @@ class _ToggleRepository implements LearningRepository {
   }) async => const [];
 
   @override
-  Future<Lesson> lesson(String lessonId, {int? version}) async => _lesson;
+  Future<Lesson> lesson(String lessonId, {int? version}) async {
+    lessonRequests += 1;
+    if (offline) throw const NetworkUnavailable();
+    return _lesson;
+  }
 
   @override
   Future<List<LessonSummary>> lessons(String courseId) async => const [];

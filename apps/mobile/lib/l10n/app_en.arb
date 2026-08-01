@@ -260,5 +260,19 @@
   "supportTicketStatus": "Status: {status}",
   "@supportTicketStatus": {
     "placeholders": { "status": { "type": "String" } }
-  }
+  },
+  "showHint": "Show hint",
+  "flashcardKnow": "I know this",
+  "flashcardLearning": "Still learning",
+  "moveUp": "Move up",
+  "moveDown": "Move down",
+  "continueExercise": "Continue",
+  "reviewMistakes": "Review mistakes",
+  "lessonLocked": "Locked",
+  "lessonCompleted": "Completed",
+  "unitFallbackTitle": "Learning unit",
+  "downloadUnit": "Download unit",
+  "unitDownloaded": "Available offline",
+  "unitProgress": "{completed} of {total} lessons completed",
+  "@unitProgress": { "placeholders": { "completed": { "type": "int" }, "total": { "type": "int" } } }
 }

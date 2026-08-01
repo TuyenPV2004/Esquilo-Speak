@@ -67,6 +67,18 @@ flutter test integration_test/learning_flow_integration_test.dart `
   --flavor local --dart-define=ESQUILO_ENV=local -d emulator-5554
 ```
 
+Unit 1 có thêm Android instrumentation độc lập, đi qua learning path, tải unit và
+toàn bộ 5 lesson/45 exercise bằng repository xác định:
+
+```powershell
+flutter test integration_test/unit_one_android_integration_test.dart `
+  --flavor local -d emulator-5554
+```
+
+Learning path lưu manifest download theo course/unit và exact lesson version. Chỉ khi
+toàn bộ payload đã cache thì unit mới hiện trạng thái tải xong; tải lại cùng version là
+idempotent và nội dung vẫn đọc được khi offline.
+
 If host networking blocks `10.0.2.2`, use a temporary ADB reverse tunnel:
 
 ```powershell

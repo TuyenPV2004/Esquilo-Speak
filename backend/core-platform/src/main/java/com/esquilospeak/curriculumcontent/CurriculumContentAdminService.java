@@ -482,8 +482,35 @@ public class CurriculumContentAdminService {
                 for (ExerciseDraft exercise : lesson.exercises()) {
                     validateExercise(exercise, lesson.locale(), exerciseIds);
                 }
+                validateAdvancedActivities(lesson);
             }
         }
+    }
+
+    private void validateAdvancedActivities(LessonDraft lesson) {
+        if (lesson.advancedActivities() == null) return;
+        Set<String> mediaIds = lesson.exercises().stream()
+                .filter(exercise -> exercise.media() != null)
+                .map(exercise -> exercise.media().id())
+                .collect(java.util.stream.Collectors.toSet());
+        Set<String> activityIds = new HashSet<>();
+        for (Map<String, Object> activity : lesson.advancedActivities()) {
+            String id = String.valueOf(activity.get("id"));
+            String mediaId = String.valueOf(activity.get("mediaId"));
+            if (!identifier(id)
+                    || !activityIds.add(id)
+                    || !validActivityText(activity.get("contentRef"))
+                    || !validActivityText(activity.get("expectedText"))
+                    || !validActivityText(activity.get("targetLocale"))
+                    || !validActivityText(activity.get("feedbackLocale"))
+                    || !mediaIds.contains(mediaId)) {
+                invalid("Advanced activity definitions need unique IDs, valid text/locales, and lesson media references.");
+            }
+        }
+    }
+
+    private boolean validActivityText(Object value) {
+        return value instanceof String text && !blank(text);
     }
 
     private void validateExercise(
@@ -499,11 +526,11 @@ public class CurriculumContentAdminService {
                 || exercise.conceptIds().stream().anyMatch(id -> !identifier(id))) {
             invalid("Exercise skill and concept references must be valid.");
         }
-        if ("multiple_choice".equals(exercise.type())) {
+        if (Set.of("multiple_choice", "listen_select", "comprehension").contains(exercise.type())) {
             if (exercise.options() == null || exercise.options().size() < 2
                     || blank(exercise.correctOptionId())
                     || exercise.correctAnswer() != null) {
-                invalid("Multiple-choice scoring requires options and correctOptionId only.");
+                invalid("Option scoring requires options and correctOptionId.");
             }
             Set<String> optionIds = new HashSet<>();
             for (ExerciseOptionDraft option : exercise.options()) {
@@ -521,8 +548,20 @@ public class CurriculumContentAdminService {
                     || (exercise.options() != null && !exercise.options().isEmpty())) {
                 invalid("True/false scoring requires correctAnswer and no options.");
             }
+        } else if ("flashcard".equals(exercise.type())) {
+            // A flashcard records learner self-assessment and has no canonical wrong answer.
+        } else if ("matching".equals(exercise.type())) {
+            validateMatching(exercise, locale);
+        } else if ("ordering".equals(exercise.type())) {
+            validateOrdering(exercise, locale);
+        } else if (Set.of("fill_blank", "dictation").contains(exercise.type())) {
+            if (exercise.acceptedAnswers() == null
+                    || exercise.acceptedAnswers().isEmpty()
+                    || exercise.acceptedAnswers().stream().anyMatch(CurriculumContentAdminService::blank)) {
+                invalid("Text scoring requires at least one accepted answer.");
+            }
         } else {
-            invalid("Unsupported P0 exercise type.");
+            invalid("Unsupported Exercise Engine V2 type.");
         }
         if (exercise.media() != null) {
             if (!identifier(exercise.media().id())
@@ -555,6 +594,44 @@ public class CurriculumContentAdminService {
         if (unitCount == 0 || lessonCount == 0) {
             invalid("A publishable version requires units and lessons.");
         }
+    }
+
+    private void validateMatching(ExerciseDraft exercise, String locale) {
+        if (exercise.leftItems() == null || exercise.leftItems().size() < 2
+                || exercise.rightItems() == null || exercise.rightItems().size() < 2
+                || exercise.correctPairs() == null
+                || exercise.correctPairs().size() != exercise.leftItems().size()) {
+            invalid("Matching requires two item sets and one canonical pair per left item.");
+        }
+        Set<String> leftIds = validateItems(exercise.leftItems(), locale);
+        Set<String> rightIds = validateItems(exercise.rightItems(), locale);
+        if (exercise.correctPairs().stream()
+                .anyMatch(pair -> !leftIds.contains(pair.leftId()) || !rightIds.contains(pair.rightId()))) {
+            invalid("Matching pairs must reference the exercise item sets.");
+        }
+    }
+
+    private void validateOrdering(ExerciseDraft exercise, String locale) {
+        if (exercise.items() == null || exercise.items().size() < 2
+                || exercise.correctOrder() == null
+                || exercise.correctOrder().size() != exercise.items().size()) {
+            invalid("Ordering requires items and a complete canonical order.");
+        }
+        Set<String> itemIds = validateItems(exercise.items(), locale);
+        if (!itemIds.equals(new HashSet<>(exercise.correctOrder()))) {
+            invalid("Ordering answer must contain every item exactly once.");
+        }
+    }
+
+    private Set<String> validateItems(List<ExerciseOptionDraft> items, String locale) {
+        Set<String> ids = new HashSet<>();
+        for (ExerciseOptionDraft item : items) {
+            if (!identifier(item.id()) || !ids.add(item.id())) {
+                invalid("Exercise item identifiers must be valid and unique.");
+            }
+            requireLocalized(item.text(), locale, "exercise item text");
+        }
+        return ids;
     }
 
     private void validateReviewEvidence(ReviewEvidence reviewEvidence) {
@@ -637,6 +714,9 @@ public class CurriculumContentAdminService {
         content.put("objectives", lesson.objectives());
         content.put("estimatedMinutes", lesson.estimatedMinutes());
         content.put("exercises", lesson.exercises());
+        content.put("advancedActivities", lesson.advancedActivities() == null
+                ? List.of()
+                : lesson.advancedActivities());
         return objectMapper.convertValue(content, MAP_TYPE);
     }
 
@@ -648,6 +728,10 @@ public class CurriculumContentAdminService {
         exercises.forEach(exercise -> {
             exercise.remove("correctOptionId");
             exercise.remove("correctAnswer");
+            exercise.remove("correctPairs");
+            exercise.remove("correctOrder");
+            exercise.remove("acceptedAnswers");
+            exercise.remove("caseSensitive");
             exercise.remove("explanation");
             if ("true_false".equals(exercise.get("type"))) {
                 @SuppressWarnings("unchecked")
@@ -923,7 +1007,8 @@ public class CurriculumContentAdminService {
             Map<String, String> title,
             List<Map<String, String>> objectives,
             int estimatedMinutes,
-            List<ExerciseDraft> exercises) {}
+            List<ExerciseDraft> exercises,
+            List<Map<String, Object>> advancedActivities) {}
 
     public record ExerciseDraft(
             String id,
@@ -935,9 +1020,21 @@ public class CurriculumContentAdminService {
             Map<String, String> explanation,
             String skill,
             List<String> conceptIds,
-            MediaMetadata media) {}
+            MediaMetadata media,
+            List<ExerciseOptionDraft> items,
+            List<ExerciseOptionDraft> leftItems,
+            List<ExerciseOptionDraft> rightItems,
+            List<ExercisePairDraft> correctPairs,
+            List<String> correctOrder,
+            List<String> acceptedAnswers,
+            Boolean caseSensitive,
+            Map<String, String> instruction,
+            Map<String, String> hint,
+            Map<String, String> transcript) {}
 
     public record ExerciseOptionDraft(String id, Map<String, String> text) {}
+
+    public record ExercisePairDraft(String leftId, String rightId) {}
 
     public record MediaMetadata(
             String id,

@@ -1,0 +1,214 @@
+{
+  "media": [
+    {
+      "id": "media-greetings-listen",
+      "type": "audio",
+      "objectKey": "content/audio/unit-1/media-greetings-listen.wav",
+      "assetPath": "media/media-greetings-listen.wav",
+      "checksum": "sha256:a06903c9cd549418f6975d82ebe57bb24659902d1eab3f19c4514bb7c483e7a4",
+      "locale": "en",
+      "license": "Project-owned synthetic media; content-owner review required",
+      "source": "https://learn.microsoft.com/windows/win32/speech/sapi-5-3",
+      "generator": "Microsoft Speech API 5.4 local TTS",
+      "voice": "Microsoft Zira Desktop - English (United States)",
+      "durationMs": 1379,
+      "transcript": {
+        "vi": "Hello",
+        "en": "Hello"
+      },
+      "captions": {
+        "vi": "Hello",
+        "en": "Hello"
+      }
+    },
+    {
+      "id": "media-greetings-dictation",
+      "type": "audio",
+      "objectKey": "content/audio/unit-1/media-greetings-dictation.wav",
+      "assetPath": "media/media-greetings-dictation.wav",
+      "checksum": "sha256:a06903c9cd549418f6975d82ebe57bb24659902d1eab3f19c4514bb7c483e7a4",
+      "locale": "en",
+      "license": "Project-owned synthetic media; content-owner review required",
+      "source": "https://learn.microsoft.com/windows/win32/speech/sapi-5-3",
+      "generator": "Microsoft Speech API 5.4 local TTS",
+      "voice": "Microsoft Zira Desktop - English (United States)",
+      "durationMs": 1379,
+      "transcript": {
+        "vi": "Hello",
+        "en": "Hello"
+      },
+      "captions": {
+        "vi": "Hello",
+        "en": "Hello"
+      }
+    },
+    {
+      "id": "media-name-listen",
+      "type": "audio",
+      "objectKey": "content/audio/unit-1/media-name-listen.wav",
+      "assetPath": "media/media-name-listen.wav",
+      "checksum": "sha256:1a6277751bc74f6d2f3f82cd185c8d3a6f0d2d1197dc2651f9d01a77e7d041ff",
+      "locale": "en",
+      "license": "Project-owned synthetic media; content-owner review required",
+      "source": "https://learn.microsoft.com/windows/win32/speech/sapi-5-3",
+      "generator": "Microsoft Speech API 5.4 local TTS",
+      "voice": "Microsoft Zira Desktop - English (United States)",
+      "durationMs": 1439,
+      "transcript": {
+        "vi": "name",
+        "en": "name"
+      },
+      "captions": {
+        "vi": "name",
+        "en": "name"
+      }
+    },
+    {
+      "id": "media-name-dictation",
+      "type": "audio",
+      "objectKey": "content/audio/unit-1/media-name-dictation.wav",
+      "assetPath": "media/media-name-dictation.wav",
+      "checksum": "sha256:f929caad31505346b44488483be22903ffa391fbd1bb79588aa16730eae89abe",
+      "locale": "en",
+      "license": "Project-owned synthetic media; content-owner review required",
+      "source": "https://learn.microsoft.com/windows/win32/speech/sapi-5-3",
+      "generator": "Microsoft Speech API 5.4 local TTS",
+      "voice": "Microsoft Zira Desktop - English (United States)",
+      "durationMs": 1964,
+      "transcript": {
+        "vi": "My name is Ana",
+        "en": "My name is Ana"
+      },
+      "captions": {
+        "vi": "My name is Ana",
+        "en": "My name is Ana"
+      }
+    },
+    {
+      "id": "media-feelings-listen",
+      "type": "audio",
+      "objectKey": "content/audio/unit-1/media-feelings-listen.wav",
+      "assetPath": "media/media-feelings-listen.wav",
+      "checksum": "sha256:367eb9c650d42edb087b67af711056fc8b163464faffbb0e74723db32d808d40",
+      "locale": "en",
+      "license": "Project-owned synthetic media; content-owner review required",
+      "source": "https://learn.microsoft.com/windows/win32/speech/sapi-5-3",
+      "generator": "Microsoft Speech API 5.4 local TTS",
+      "voice": "Microsoft Zira Desktop - English (United States)",
+      "durationMs": 1509,
+      "transcript": {
+        "vi": "fine",
+        "en": "fine"
+      },
+      "captions": {
+        "vi": "fine",
+        "en": "fine"
+      }
+    },
+    {
+      "id": "media-feelings-dictation",
+      "type": "audio",
+      "objectKey": "content/audio/unit-1/media-feelings-dictation.wav",
+      "assetPath": "media/media-feelings-dictation.wav",
+      "checksum": "sha256:f775309dd42cde6878e4c1fb748a545f1819d07f7350a16fbb37a0d98e0debcc",
+      "locale": "en",
+      "license": "Project-owned synthetic media; content-owner review required",
+      "source": "https://learn.microsoft.com/windows/win32/speech/sapi-5-3",
+      "generator": "Microsoft Speech API 5.4 local TTS",
+      "voice": "Microsoft Zira Desktop - English (United States)",
+      "durationMs": 1654,
+      "transcript": {
+        "vi": "How are you",
+        "en": "How are you"
+      },
+      "captions": {
+        "vi": "How are you",
+        "en": "How are you"
+      }
+    },
+    {
+      "id": "media-age-listen",
+      "type": "audio",
+      "objectKey": "content/audio/unit-1/media-age-listen.wav",
+      "assetPath": "media/media-age-listen.wav",
+      "checksum": "sha256:32fde2512b26005d3db2161f56735109370a998b7ac5978a90c3f656ccdf744b",
+      "locale": "en",
+      "license": "Project-owned synthetic media; content-owner review required",
+      "source": "https://learn.microsoft.com/windows/win32/speech/sapi-5-3",
+      "generator": "Microsoft Speech API 5.4 local TTS",
+      "voice": "Microsoft Zira Desktop - English (United States)",
+      "durationMs": 1544,
+      "transcript": {
+        "vi": "twelve",
+        "en": "twelve"
+      },
+      "captions": {
+        "vi": "twelve",
+        "en": "twelve"
+      }
+    },
+    {
+      "id": "media-age-dictation",
+      "type": "audio",
+      "objectKey": "content/audio/unit-1/media-age-dictation.wav",
+      "assetPath": "media/media-age-dictation.wav",
+      "checksum": "sha256:0e669cfa5a027f5a10ae7d70c352c88e0ec92b6001c1ef15689ea172d8324e2b",
+      "locale": "en",
+      "license": "Project-owned synthetic media; content-owner review required",
+      "source": "https://learn.microsoft.com/windows/win32/speech/sapi-5-3",
+      "generator": "Microsoft Speech API 5.4 local TTS",
+      "voice": "Microsoft Zira Desktop - English (United States)",
+      "durationMs": 1639,
+      "transcript": {
+        "vi": "I am ten",
+        "en": "I am ten"
+      },
+      "captions": {
+        "vi": "I am ten",
+        "en": "I am ten"
+      }
+    },
+    {
+      "id": "media-checkpoint-listen",
+      "type": "audio",
+      "objectKey": "content/audio/unit-1/media-checkpoint-listen.wav",
+      "assetPath": "media/media-checkpoint-listen.wav",
+      "checksum": "sha256:79f24c227de54788ff2b1d30952c6008ff5000928f3ffe2d72fd9680adf065e0",
+      "locale": "en",
+      "license": "Project-owned synthetic media; content-owner review required",
+      "source": "https://learn.microsoft.com/windows/win32/speech/sapi-5-3",
+      "generator": "Microsoft Speech API 5.4 local TTS",
+      "voice": "Microsoft Zira Desktop - English (United States)",
+      "durationMs": 1634,
+      "transcript": {
+        "vi": "introduce",
+        "en": "introduce"
+      },
+      "captions": {
+        "vi": "introduce",
+        "en": "introduce"
+      }
+    },
+    {
+      "id": "media-checkpoint-dictation",
+      "type": "audio",
+      "objectKey": "content/audio/unit-1/media-checkpoint-dictation.wav",
+      "assetPath": "media/media-checkpoint-dictation.wav",
+      "checksum": "sha256:5765b52fa52dc281e6a4ba29725cc753e7c7c0504198d942b3f54194cc07344a",
+      "locale": "en",
+      "license": "Project-owned synthetic media; content-owner review required",
+      "source": "https://learn.microsoft.com/windows/win32/speech/sapi-5-3",
+      "generator": "Microsoft Speech API 5.4 local TTS",
+      "voice": "Microsoft Zira Desktop - English (United States)",
+      "durationMs": 2929,
+      "transcript": {
+        "vi": "Hello, my name is Sam",
+        "en": "Hello, my name is Sam"
+      },
+      "captions": {
+        "vi": "Hello, my name is Sam",
+        "en": "Hello, my name is Sam"
+      }
+    }
+  ]
+}

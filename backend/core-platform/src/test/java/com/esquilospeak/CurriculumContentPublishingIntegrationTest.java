@@ -8,7 +8,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.esquilospeak.curriculumcontent.CurriculumContentAdminService;
+import com.esquilospeak.curriculumcontent.CurriculumContentService;
 import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.Objects;
@@ -29,6 +31,7 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.postgresql.PostgreSQLContainer;
 import org.testcontainers.utility.DockerImageName;
 import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.JsonNode;
 
 @Testcontainers
 @SpringBootTest(properties = {
@@ -59,7 +62,177 @@ class CurriculumContentPublishingIntegrationTest {
     CurriculumContentAdminService contentAdminService;
 
     @Autowired
+    CurriculumContentService contentService;
+
+    @Autowired
     ObjectMapper objectMapper;
+
+    @Test
+    void publishesAndScoresEveryExerciseEngineV2Type() throws Exception {
+        String courseId = "course-engine-v2-fixture";
+        int version = 1;
+        String draft;
+        try (var stream = Objects.requireNonNull(getClass()
+                .getResourceAsStream("/content/unit-one-v2-admin-draft.json"))) {
+            draft = new String(stream.readAllBytes(), StandardCharsets.UTF_8);
+        }
+        mockMvc.perform(put("/api/admin/v1/content/courses/{courseId}/versions/{version}",
+                                courseId, version)
+                        .with(contentStaffJwt())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(draft))
+                .andExpect(status().isCreated());
+        transition(courseId, version, "review", null);
+        transition(courseId, version, "approved", null);
+        transition(courseId, version, "published", null);
+
+        assertCorrect(courseId, "lesson-greetings", version,
+                "exercise-greetings-flashcard", java.util.Map.of("kind", "self_assessment", "value", "learning"));
+        assertCorrect(courseId, "lesson-greetings", version,
+                "exercise-greetings-choice", java.util.Map.of("kind", "option", "optionId", "option-meaning"));
+        assertCorrect(courseId, "lesson-greetings", version,
+                "exercise-greetings-listen", java.util.Map.of("kind", "option", "optionId", "option-first"));
+        assertCorrect(courseId, "lesson-greetings", version,
+                "exercise-greetings-matching", java.util.Map.of(
+                        "kind", "pairs",
+                        "pairs", java.util.List.of(
+                                java.util.Map.of("leftId", "left-hello", "rightId", "right-hello"),
+                                java.util.Map.of("leftId", "left-goodbye", "rightId", "right-goodbye"))));
+        assertCorrect(courseId, "lesson-greetings", version,
+                "exercise-greetings-ordering", java.util.Map.of(
+                        "kind", "sequence", "itemIds", java.util.List.of("item-good", "item-morning")));
+        assertCorrect(courseId, "lesson-greetings", version,
+                "exercise-greetings-fill", java.util.Map.of("kind", "text", "text", "  hello,   ANA! "));
+        assertCorrect(courseId, "lesson-greetings", version,
+                "exercise-greetings-truth", java.util.Map.of("kind", "boolean", "value", true));
+        org.junit.jupiter.api.Assertions.assertEquals(
+                java.util.Map.of("kind", "boolean", "value", true),
+                contentService.exerciseAnswer(
+                                courseId,
+                                "lesson-greetings",
+                                version,
+                                "exercise-greetings-truth",
+                                java.util.Map.of("kind", "boolean", "value", true))
+                        .correctResponse());
+        assertCorrect(courseId, "lesson-greetings", version,
+                "exercise-greetings-comprehension", java.util.Map.of("kind", "option", "optionId", "option-answer"));
+        assertCorrect(courseId, "lesson-greetings", version,
+                "exercise-greetings-dictation", java.util.Map.of("kind", "text", "text", "hello"));
+
+        mockMvc.perform(get("/api/mobile/v1/lessons/{lessonId}", "lesson-greetings")
+                        .param("version", String.valueOf(version)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.exercises.length()").value(9))
+                .andExpect(jsonPath("$.exercises[2].transcript.en").value("Hello"))
+                .andExpect(jsonPath("$.exercises[3].correctPairs").doesNotExist())
+                .andExpect(jsonPath("$.exercises[4].correctOrder").doesNotExist())
+                .andExpect(jsonPath("$.exercises[5].acceptedAnswers").doesNotExist());
+
+        mockMvc.perform(get("/api/mobile/v1/courses/{courseId}/lessons", courseId))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.items.length()").value(5))
+                .andExpect(jsonPath("$.items[0].unitId").value("unit-first-contact"))
+                .andExpect(jsonPath("$.items[0].unitTitle.en").value("First contact"))
+                .andExpect(jsonPath("$.items[4].position").value(5));
+
+        String learnerSubject = "unit-one-learner-" + UUID.randomUUID();
+        JsonNode fixture = objectMapper.readTree(draft);
+        int submitted = 0;
+        for (JsonNode lesson : fixture.get("units").get(0).get("lessons")) {
+            for (JsonNode exercise : lesson.get("exercises")) {
+                UUID clientAttemptId = UUID.randomUUID();
+                java.util.Map<String, Object> request = new java.util.LinkedHashMap<>();
+                request.put("clientAttemptId", clientAttemptId.toString());
+                request.put("courseId", courseId);
+                request.put("lessonId", lesson.get("id").asString());
+                request.put("lessonVersion", version);
+                request.put("exerciseId", exercise.get("id").asString());
+                request.put("response", correctResponse(exercise));
+                request.put("occurredAt", Instant.now().plus(submitted, ChronoUnit.SECONDS).toString());
+                request.put("evidence", java.util.Map.of(
+                        "responseTimeMs", 1000,
+                        "hintUsed", false,
+                        "hintLevel", 0,
+                        "retryIndex", 0,
+                        "inputModality", "touch"));
+                mockMvc.perform(post("/api/mobile/v1/attempts")
+                                .with(learnerJwt(learnerSubject))
+                                .header("Idempotency-Key", UUID.randomUUID())
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(objectMapper.writeValueAsString(request)))
+                        .andExpect(status().isOk())
+                        .andExpect(jsonPath("$.correct").value(true));
+                submitted++;
+            }
+        }
+        org.junit.jupiter.api.Assertions.assertEquals(45, submitted);
+        mockMvc.perform(get("/api/mobile/v1/progress/courses/{courseId}", courseId)
+                        .with(learnerJwt(learnerSubject)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.completedExerciseCount").value(45))
+                .andExpect(jsonPath("$.totalExerciseCount").value(45))
+                .andExpect(jsonPath("$.lessonProgress.length()").value(5))
+                .andExpect(jsonPath("$.lessonProgress[4].status").value("completed"));
+        mockMvc.perform(get("/api/mobile/v1/mastery").with(learnerJwt(learnerSubject)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.items.length()").value(5))
+                .andExpect(jsonPath("$.items[0].evidenceCount").value(9));
+        Long schedules = jdbc.sql("""
+                        select count(*)
+                        from review_schedules schedule
+                        join identity_subjects subject on subject.learner_id::text = schedule.learner_id
+                        where subject.subject_hash = :subjectHash
+                        """)
+                .param("subjectHash", java.util.HexFormat.of().formatHex(
+                        MessageDigest.getInstance("SHA-256").digest(
+                                ("https://identity.test\0" + learnerSubject)
+                                        .getBytes(StandardCharsets.UTF_8))))
+                .query(Long.class)
+                .single();
+        org.junit.jupiter.api.Assertions.assertEquals(5L, schedules);
+    }
+
+    private java.util.Map<String, Object> correctResponse(JsonNode exercise) {
+        String type = exercise.get("type").asString();
+        return switch (type) {
+            case "flashcard" -> java.util.Map.of("kind", "self_assessment", "value", "learning");
+            case "multiple_choice", "listen_select", "comprehension" -> java.util.Map.of(
+                    "kind", "option", "optionId", exercise.get("correctOptionId").asString());
+            case "true_false" -> java.util.Map.of(
+                    "kind", "boolean", "value", exercise.get("correctAnswer").asBoolean());
+            case "fill_blank", "dictation" -> java.util.Map.of(
+                    "kind", "text", "text", exercise.get("acceptedAnswers").get(0).asString());
+            case "ordering" -> java.util.Map.of(
+                    "kind", "sequence", "itemIds", stringValues(exercise.get("correctOrder")));
+            case "matching" -> java.util.Map.of(
+                    "kind", "pairs", "pairs", pairValues(exercise.get("correctPairs")));
+            default -> throw new IllegalArgumentException("Unsupported fixture type " + type);
+        };
+    }
+
+    private java.util.List<String> stringValues(JsonNode values) {
+        java.util.List<String> result = new java.util.ArrayList<>();
+        values.forEach(value -> result.add(value.asString()));
+        return result;
+    }
+
+    private java.util.List<java.util.Map<String, String>> pairValues(JsonNode values) {
+        java.util.List<java.util.Map<String, String>> result = new java.util.ArrayList<>();
+        values.forEach(value -> result.add(java.util.Map.of(
+                "leftId", value.get("leftId").asString(),
+                "rightId", value.get("rightId").asString())));
+        return result;
+    }
+
+    private void assertCorrect(
+            String courseId,
+            String lessonId,
+            int version,
+            String exerciseId,
+            java.util.Map<String, Object> response) {
+        org.junit.jupiter.api.Assertions.assertTrue(contentService.exerciseAnswer(
+                courseId, lessonId, version, exerciseId, response).correct());
+    }
 
     @Test
     void exposesPublishedAdvancedActivityDefinitionsWithoutAuthentication() throws Exception {
@@ -358,10 +531,14 @@ class CurriculumContentPublishingIntegrationTest {
     }
 
     private RequestPostProcessor learnerJwt() {
+        return learnerJwt("content-learner");
+    }
+
+    private RequestPostProcessor learnerJwt(String subject) {
         return jwt()
                 .jwt(token -> token
                         .issuer("https://identity.test")
-                        .subject("content-learner")
+                        .subject(subject)
                         .claim("scope", "learning")
                         .claim("actor_type", "guest")
                         .claim("roles", java.util.List.of("learner")))

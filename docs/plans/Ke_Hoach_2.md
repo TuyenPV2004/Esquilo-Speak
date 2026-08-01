@@ -184,32 +184,32 @@ attempt, feedback, mastery và offline behavior.
 
 ### Checklist nền tảng
 
-- [ ] Thiết kế registry/renderer theo exercise type, không tạo một màn hình lớn
+- [x] Thiết kế registry/renderer theo exercise type, không tạo một màn hình lớn
   chứa mọi nhánh.
-- [ ] Chuẩn hóa response payload, validation, answer normalization và scoring result.
-- [ ] Chuẩn hóa hint usage, retry, response time, confidence và input modality evidence.
-- [ ] Định nghĩa accessibility behavior và silent/audio mode cho từng type.
-- [ ] Định nghĩa offline serialization, outbox mutation và reconnect reconciliation.
-- [ ] Thêm test contract fixture cho mọi exercise type.
+- [x] Chuẩn hóa response payload, validation, answer normalization và scoring result.
+- [x] Chuẩn hóa hint usage, retry, response time, confidence và input modality evidence.
+- [x] Định nghĩa accessibility behavior và silent/audio mode cho từng type.
+- [x] Định nghĩa offline serialization, outbox mutation và reconnect reconciliation.
+- [x] Thêm test contract fixture cho mọi exercise type.
 
 ### Checklist kiểu hoạt động
 
 - [ ] Multiple choice được harden cho text/image/audio option.
-- [ ] True/false được harden cho feedback và accessibility.
-- [ ] Flashcard/reveal với `Know` và `Still learning`.
-- [ ] Matching term–definition hoặc phrase–meaning.
-- [ ] Listen and select.
-- [ ] Word/sentence ordering.
-- [ ] Fill in the blank với answer normalization.
-- [ ] Dictation ngắn với transcript/diacritic policy.
-- [ ] Reading/listening comprehension dùng chung primitive ổn định.
-- [ ] Writing, pronunciation và conversation P1 được tích hợp như hoạt động lesson.
+- [x] True/false được harden cho feedback và accessibility.
+- [x] Flashcard/reveal với `Know` và `Still learning`.
+- [x] Matching term–definition hoặc phrase–meaning.
+- [x] Listen and select.
+- [x] Word/sentence ordering.
+- [x] Fill in the blank với answer normalization.
+- [x] Dictation ngắn với transcript/diacritic policy.
+- [x] Reading/listening comprehension dùng chung primitive ổn định.
+- [x] Writing, pronunciation và conversation P1 được tích hợp như hoạt động lesson.
 
 ### Gate
 
-- [ ] Tối thiểu 8 kiểu hoạt động P0 chạy được trong cùng learner journey.
-- [ ] Mỗi type có unit/widget/contract test và error state.
-- [ ] Attempt, mastery và review evidence không phụ thuộc UI type cụ thể.
+- [x] Tối thiểu 8 kiểu hoạt động P0 chạy được trong cùng learner journey.
+- [x] Mỗi type có unit/widget/contract test và error state.
+- [x] Attempt, mastery và review evidence không phụ thuộc UI type cụ thể.
 
 ## Giai đoạn 4 — Unit 1 vertical slice hoàn chỉnh
 
@@ -228,22 +228,29 @@ không chỉ fixture kỹ thuật.
 
 ### Checklist
 
-- [ ] Biên soạn và review đủ 5 lesson theo template đã duyệt.
-- [ ] Thu âm/tạo media có transcript, provenance và accessibility alternative.
-- [ ] Mỗi lesson dùng phối hợp nhận biết, recall, listening và production.
-- [ ] Lesson cuối unit có checkpoint nhiều skill, không chỉ vocabulary recognition.
-- [ ] Learning path hiển thị unit, lesson, trạng thái khóa/mở và tiến độ.
-- [ ] Resume lesson hoạt động đúng sau khi đóng app.
-- [ ] Mistake review xuất hiện trước session summary.
-- [ ] Hoàn thành Unit 1 cập nhật progress, mastery và review schedule đúng.
-- [ ] Unit 1 tải được để học offline và đồng bộ lại không ghi trùng attempt.
-- [ ] Chạy content QA, accessibility QA và E2E Android cho toàn unit.
+- [x] Biên soạn và review đủ 5 lesson theo template đã duyệt.
+- [x] Thu âm/tạo media có transcript, provenance và accessibility alternative.
+- [x] Mỗi lesson dùng phối hợp nhận biết, recall, listening và production.
+- [x] Lesson cuối unit có checkpoint nhiều skill, không chỉ vocabulary recognition.
+- [x] Learning path hiển thị unit, lesson, trạng thái khóa/mở và tiến độ.
+- [x] Resume lesson hoạt động đúng sau khi đóng app.
+- [x] Mistake review xuất hiện trước session summary.
+- [x] Hoàn thành Unit 1 cập nhật progress, mastery và review schedule đúng.
+- [x] Unit 1 tải được để học offline và đồng bộ lại không ghi trùng attempt.
+- [x] Chạy content QA, accessibility QA và E2E Android cho toàn unit.
 
 ### Gate
 
 - [ ] Một learner mới đi từ onboarding đến hoàn thành Unit 1 không cần thao tác kỹ thuật.
 - [ ] Không có lỗi P0 làm mất progress, attempt hoặc chặn hành trình.
 - [ ] Content owner ký xác nhận chất lượng ngôn ngữ và pedagogy Unit 1.
+
+Trạng thái ngày 2026-08-01: checklist kỹ thuật của vertical slice đã hoàn tất. Media
+gồm 10 tệp WAV có transcript, silent alternative, checksum và provenance; learning
+path/download được kiểm chứng offline và idempotent; backend xử lý đủ 45 attempt của
+5 lesson; Android instrumentation pass trên emulator API 37. Ba gate phía trên vẫn
+mở vì chưa có một lần chạy liên thông onboarding → Unit 1 với backend thật, chưa đủ
+bằng chứng để loại trừ mọi lỗi P0 trong hành trình đó và chưa có content-owner sign-off.
 
 ## Giai đoạn 5 — Daily learning loop và Home V2
 

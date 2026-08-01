@@ -87,12 +87,12 @@ public class LearningService {
                             insert into attempts (
                                 id, learner_id, client_attempt_id, idempotency_key, request_hash,
                                 course_id, lesson_id, lesson_version, exercise_id,
-                                selected_option_id, response, correct, occurred_at, accepted_at, response_time_ms,
+                                selected_option_id, response, evidence, correct, occurred_at, accepted_at, response_time_ms,
                                 session_id
                             ) values (
                                 :id, :learnerId, :clientAttemptId, :idempotencyKey, :requestHash,
                                 :courseId, :lessonId, :lessonVersion, :exerciseId,
-                                :selectedOptionId, cast(:response as jsonb), :correct, :occurredAt, :acceptedAt, :responseTimeMs,
+                                :selectedOptionId, cast(:response as jsonb), cast(:evidence as jsonb), :correct, :occurredAt, :acceptedAt, :responseTimeMs,
                                 :sessionId
                             )
                             """)
@@ -107,6 +107,7 @@ public class LearningService {
                     .param("exerciseId", created.exerciseId())
                     .param("selectedOptionId", created.selectedOptionId(), Types.VARCHAR)
                     .param("response", writeJson(created.response()))
+                    .param("evidence", writeJson(request.evidence()))
                     .param("correct", created.correct())
                     .param("occurredAt", Timestamp.from(request.occurredAt()))
                     .param("acceptedAt", Timestamp.from(created.acceptedAt()))
@@ -335,6 +336,7 @@ public class LearningService {
         Feedback feedback = new Feedback(
                 attempt.correct() ? "answer.correct" : "answer.incorrect",
                 answer.correctOptionId(),
+                answer.correctResponse(),
                 answer.explanation());
         return new AttemptResult(
                 attempt.id(),
@@ -420,6 +422,7 @@ public class LearningService {
             String exerciseId,
             String selectedOptionId,
             Map<String, Object> response,
+            Map<String, Object> evidence,
             Instant occurredAt,
             Integer responseTimeMs,
             UUID sessionId) {
@@ -433,7 +436,41 @@ public class LearningService {
                         "ATTEMPT_RESPONSE_REQUIRED",
                         "An exercise response is required.");
             }
+            evidence = evidence == null ? Map.of() : Map.copyOf(evidence);
+            Set<String> allowedEvidence = Set.of(
+                    "responseTimeMs", "hintUsed", "hintLevel", "retryIndex", "confidence", "inputModality");
+            if (!allowedEvidence.containsAll(evidence.keySet())
+                    || !validInteger(evidence.get("responseTimeMs"), 0, Integer.MAX_VALUE)
+                    || !validBoolean(evidence.get("hintUsed"))
+                    || !validInteger(evidence.get("hintLevel"), 0, 5)
+                    || !validInteger(evidence.get("retryIndex"), 0, 20)
+                    || !validInteger(evidence.get("confidence"), 1, 5)
+                    || !validModality(evidence.get("inputModality"))) {
+                throw new ApiException(
+                        HttpStatus.BAD_REQUEST,
+                        "ATTEMPT_EVIDENCE_INVALID",
+                        "Attempt evidence contains an unsupported field or value.");
+            }
             response = Map.copyOf(response);
+        }
+
+        private static boolean validInteger(Object value, int minimum, int maximum) {
+            return value == null
+                    || value instanceof Number number
+                            && number.longValue() == number.doubleValue()
+                            && number.longValue() >= minimum
+                            && number.longValue() <= maximum;
+        }
+
+        private static boolean validBoolean(Object value) {
+            return value == null || value instanceof Boolean;
+        }
+
+        private static boolean validModality(Object value) {
+            return value == null
+                    || value instanceof String modality
+                            && Set.of("touch", "keyboard", "voice", "assistive_technology", "unknown")
+                                    .contains(modality);
         }
     }
 
@@ -452,6 +489,7 @@ public class LearningService {
     public record Feedback(
             String messageCode,
             String correctOptionId,
+            Map<String, Object> correctResponse,
             Map<String, String> explanation) {}
 
     public record CourseProgress(

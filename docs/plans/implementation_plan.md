@@ -210,3 +210,138 @@ backend mà không sửa Dart hoặc Java cho từng lesson.
   không lộ answer/explanation và published version không thể bị ghi đè.
 - OpenAPI nâng lên `0.8.0`; Redocly lint, P0 release-freeze, targeted/full backend
   test, Modulith verification và `bootJar` đã pass trên JDK 21/PostgreSQL 18.
+
+## 10. Giai đoạn 3–4 — Exercise Engine V2 và Unit 1 vertical slice
+
+### Mục tiêu
+
+Mở rộng learner journey từ hai dạng chọn đáp án sang một engine dữ liệu hỗ trợ ít
+nhất tám dạng bài P0, dùng cùng response/evidence contract, scoring canonical phía
+server và offline outbox. Phát hành Unit 1 A1 gồm năm lesson theo đặc tả curriculum,
+có resume, sửa lỗi trước tổng kết và cập nhật tiến độ.
+
+### Phạm vi triển khai
+
+1. Chuẩn hóa response theo `kind` và evidence theo schema độc lập UI; giữ adapter
+   `selectedOptionId` trong một vòng tương thích.
+2. Đăng ký validator/scorer cho multiple choice, true/false, flashcard,
+   matching, listen-select, ordering, fill-blank, dictation và comprehension.
+3. Mở rộng authoring/delivery schema và content pipeline; learner payload phải loại
+   toàn bộ đáp án canonical nhưng giữ instruction, hint, media transcript và metadata
+   accessibility cần cho silent mode.
+4. Refactor Flutter renderer thành registry theo type; hỗ trợ option, text, thứ tự,
+   ghép cặp và self-assessment, đồng thời ghi response time, hint, retry, confidence
+   và input modality vào attempt/outbox.
+5. Điều phối toàn bộ exercise trong lesson, lưu checkpoint resume, đưa câu sai qua
+   mistake review trước summary và chỉ mở lesson kế tiếp khi lesson trước hoàn tất.
+6. Author content-as-code Unit 1 gồm greetings, name, how-are-you, numbers-age và
+   checkpoint-first-contact; mỗi lesson có 8–12 task và checkpoint trộn nhiều kỹ năng.
+7. Bổ sung fixture/test contract, scorer, widget, offline serialization và E2E learner
+   journey; chỉ đánh dấu roadmap theo evidence thật sự chạy được.
+
+### Validation
+
+1. Parse/validate toàn bộ JSON Schema; chạy content pipeline test, validate, compile
+   và learner-safe preview cho Unit 1.
+2. Redocly lint OpenAPI và P0 release-freeze/backward-compatibility validator.
+3. Backend compile, targeted/full integration tests, Modulith verification và
+   `bootJar` trên JDK 21/PostgreSQL Testcontainers.
+4. Dart format, `flutter analyze`, full widget/unit test, integration test và Android
+   debug APK khi Flutter SDK phù hợp khả dụng.
+5. Static audit answer leakage, hardcode locale, stable ID/idempotency, Markdown,
+   UTF-8 và `git diff --check`.
+
+### Giả định và rủi ro
+
+- Yêu cầu ngày 2026-08-01 là phê duyệt thay đổi contract/runtime cần thiết cho hai
+  giai đoạn; không thêm framework hoặc dependency mới.
+- Flashcard là self-assessment: cả `know` và `learning` đều là response hợp lệ để ghi
+  evidence, không được diễn giải `learning` thành câu trả lời sai.
+- Audio vẫn phải có transcript/silent path. Metadata/provenance được kiểm tra trong
+  pipeline; chất lượng thu âm thật và curriculum-owner sign-off chỉ được đánh dấu khi
+  có evidence tương ứng, không suy diễn từ test kỹ thuật.
+- Writing/pronunciation/conversation P1 tiếp tục đi qua provider boundary hiện hữu;
+  Unit 1 chỉ liên kết activity definition, không nhân đôi scorer bất định vào P0.
+
+### Kết quả
+
+- OpenAPI 0.9.0, ADR-009 và V13 đã khóa response/evidence contract; server chấm
+  canonical chín type và learner delivery loại toàn bộ answer policy.
+- Flutter renderer registry hỗ trợ option/boolean, flashcard, text, ordering và
+  matching primitive; lesson runtime có hint/retry evidence, resume, mistake review,
+  progress summary và lesson lock.
+- Unit 1 V2 có 5 lesson, 45 exercise (9 task/lesson), 9 type, 3 activity P1 cùng
+  transcript/provenance/silent metadata; content validator và learner-safe preview pass.
+- Contract/content tests, release freeze, Redocly, backend full suite 35/35 cùng
+  `bootJar`, Flutter analyzer và 46 test Flutter pass. Android device E2E chưa chạy vì không có
+  thiết bị; APK retry bị Docker `unexpected EOF`, nên các gate tương ứng vẫn để mở.
+- Media hiện mới là manifest/object-key/provenance, chưa có binary thu âm được content
+  owner duyệt. Unit download chủ động và curriculum-owner sign-off cũng chưa có evidence.
+
+## 11. Giai đoạn 4 — Đóng khoảng trống Unit 1 offline, media và Android E2E
+
+### Mục tiêu
+
+Đưa Unit 1 từ vertical slice có content/runtime sang một gói học có thể nhận diện theo
+unit, tải trọn vẹn để học offline, dùng media nhị phân có thể kiểm chứng và có bằng
+chứng E2E/QA mạnh nhất mà môi trường Android hiện tại cho phép.
+
+### Phạm vi triển khai
+
+1. Mở rộng lesson summary theo hướng tương thích ngược với `unitId`, `unitTitle` và
+   `position`; learning path nhóm bài theo unit, hiển thị tiến độ cùng trạng thái
+   khóa/mở bằng nhãn và icon, không chỉ bằng màu.
+2. Thêm capability tải unit vào offline repository. Một download chỉ được đánh dấu
+   hoàn tất sau khi summary và đúng version của mọi lesson trong unit đã được cache;
+   tải lại cùng version phải idempotent và dữ liệu đã tải phải đọc được khi mất mạng.
+3. Thay checksum/object placeholder của Unit 1 bằng tệp WAV thực được tạo từ TTS local,
+   khai báo rõ engine/voice/provenance, transcript và silent alternative. Pipeline phải
+   xác minh file tồn tại, checksum và duration thay vì chỉ kiểm tra hình thức metadata.
+4. Bổ sung contract/backend/mobile/content test cho unit metadata, download và media;
+   mở rộng integration journey để đi qua toàn bộ năm lesson/45 exercise khi fixture
+   Android/backend phù hợp khả dụng.
+5. Chạy content QA, accessibility/widget QA và Android E2E/APK. Checkbox Android hoặc
+   content-owner sign-off chỉ đóng khi có bằng chứng thiết bị/người duyệt tương ứng.
+
+### Validation
+
+1. Content generator, validator, pipeline tests, compile và learner-safe preview Unit 1.
+2. OpenAPI lint/release-freeze; backend targeted/full tests và `bootJar`.
+3. Dart format, Flutter analyzer, targeted/full unit/widget tests, bao gồm offline
+   download, trạng thái unit path và text scaling 200%.
+4. `adb devices -l`, Flutter integration test và Android debug APK trên môi trường có
+   thiết bị; ghi rõ blocker nếu không có target Android khả dụng.
+5. `git diff --check`, rà soát answer leakage, checksum, provenance và roadmap evidence.
+
+### Giả định và rủi ro
+
+- Unit 1 là unit publish duy nhất của course version 2 hiện tại, nhưng contract/download
+  được thiết kế theo `unitId` để không hardcode trường hợp một unit.
+- TTS local tạo media nhị phân kỹ thuật và provenance trung thực; nó không thay thế
+  language/content-owner review. Vì vậy sign-off chất lượng ngôn ngữ vẫn là gate riêng.
+- Không thêm dependency phát audio trong lượt này nếu runtime hiện chưa có primitive
+  phát media phù hợp; binary, delivery metadata và offline content phải sẵn sàng trước,
+  còn playback thiết bị chỉ được đánh dấu khi đã chạy Android.
+- Android E2E phụ thuộc thiết bị/emulator và backend local. Không suy diễn pass từ widget
+  test hoặc build APK.
+
+### Phê duyệt
+
+Developer phê duyệt thực hiện ngày 2026-08-01 bằng yêu cầu ưu tiên Android E2E, unit
+download và media thật để đóng các checkbox còn mở của Giai đoạn 4.
+
+### Kết quả
+
+- Contract 0.10.0 và backend trả `unitId`, `unitTitle`, `position`; Android nhóm learning
+  path theo unit, hiển thị tiến độ/trạng thái bằng icon lẫn nhãn và có hành động tải unit.
+- Offline repository chỉ hoàn tất manifest khi đúng version của toàn bộ lesson đã nằm
+  trong cache; test xác nhận đọc mất mạng và tải lại idempotent. Outbox/sync regression
+  tiếp tục xác nhận attempt không bị ghi trùng.
+- Unit 1 có 10 tệp WAV TTS Microsoft Zira với transcript, silent alternative, SHA-256,
+  duration và provenance. Validator đọc binary thật để đối chiếu checksum/duration;
+  content-owner review vẫn là gate độc lập.
+- Backend integration hoàn tất 45/45 attempt, 5/5 lesson, mastery evidence và review
+  schedule. Flutter analyzer pass, 49/49 test pass, gồm text scaling 200%.
+- `connectedLocalDebugAndroidTest` pass trên emulator Android API 37 cho learning path,
+  unit download và toàn bộ 5 lesson/45 exercise. Test Android dùng repository xác định;
+  bằng chứng backend thật được kiểm tra riêng, nên chưa tuyên bố gate onboarding liên thông.

@@ -54,6 +54,23 @@ Validator trả `CODE path: message` để author sửa đúng field. Validation
 Preview compile về learner-safe shape rồi mới render HTML. `answerPolicy`, đáp án
 đúng và `feedbackRule.explanation` không xuất hiện trong preview.
 
+Exercise Engine V2 hỗ trợ `multiple_choice`, `true_false`, `flashcard`,
+`matching`, `listen_select`, `ordering`, `fill_blank`, `dictation` và
+`comprehension`. Mỗi type phải khai báo answer policy tương ứng; audio task phải có
+transcript và silent path. Package Unit 1 có thể tái sinh và kiểm tra bằng:
+
+```powershell
+./content/tools/generate-unit-one-media.ps1
+node content/tools/generate-unit-one.mjs
+node content/tools/content-pipeline.mjs validate `
+  content/courses/course-en-for-vi/unit-1-v2/content-package.json
+```
+
+Validator mở tệp được khai báo qua `assetPath`, đối chiếu SHA-256 và đọc duration từ
+header WAV. Không được sửa checksum/duration bằng tay để làm validation pass. TTS local
+là media nhị phân có provenance phục vụ kỹ thuật; language/pedagogy review của content
+owner vẫn bắt buộc trước khi coi nội dung là đã được phê duyệt.
+
 ## Import hoặc cập nhật draft
 
 CLI chỉ nhận token qua biến môi trường và không ghi token vào artifact/log:

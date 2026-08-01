@@ -1,0 +1,110 @@
+{
+  "id": "course-en-for-vi",
+  "version": 2,
+  "sourceLanguage": "vi",
+  "targetLanguage": "en",
+  "proficiency": {
+    "frameworkCode": "cefr",
+    "frameworkVersion": "2020",
+    "entryLevelCode": "PRE_A1",
+    "targetLevelCode": "A1"
+  },
+  "locale": "vi",
+  "requiredLocales": [
+    "vi",
+    "en"
+  ],
+  "title": {
+    "vi": "Tiếng Anh A1 — Unit 1",
+    "en": "English A1 — Unit 1"
+  },
+  "description": {
+    "vi": "Vertical slice giao tiếp lần đầu theo CEFR A1.",
+    "en": "A CEFR A1 first-contact vertical slice."
+  },
+  "outcomes": [
+    {
+      "id": "outcome-greetings",
+      "description": {
+        "vi": "Chào và tạm biệt phù hợp trong lần gặp đầu tiên.",
+        "en": "Greet and say goodbye appropriately in a first meeting."
+      }
+    },
+    {
+      "id": "outcome-name",
+      "description": {
+        "vi": "Hỏi và giới thiệu tên bằng mẫu câu A1.",
+        "en": "Ask for and give a name with an A1 pattern."
+      }
+    },
+    {
+      "id": "outcome-feelings",
+      "description": {
+        "vi": "Hỏi thăm và trả lời về trạng thái đơn giản.",
+        "en": "Ask and answer about a simple state."
+      }
+    },
+    {
+      "id": "outcome-age",
+      "description": {
+        "vi": "Hiểu số 1–20 và hỏi, nói tuổi.",
+        "en": "Understand 1–20 and ask or state age."
+      }
+    },
+    {
+      "id": "outcome-first-contact",
+      "description": {
+        "vi": "Kết hợp chào hỏi, tên, trạng thái và tuổi trong hội thoại ngắn.",
+        "en": "Combine greetings, name, state and age in a short exchange."
+      }
+    }
+  ],
+  "concepts": [
+    {
+      "id": "concept-greetings",
+      "description": {
+        "vi": "Chào và tạm biệt phù hợp trong lần gặp đầu tiên.",
+        "en": "Greet and say goodbye appropriately in a first meeting."
+      },
+      "prerequisiteConceptIds": []
+    },
+    {
+      "id": "concept-name",
+      "description": {
+        "vi": "Hỏi và giới thiệu tên bằng mẫu câu A1.",
+        "en": "Ask for and give a name with an A1 pattern."
+      },
+      "prerequisiteConceptIds": []
+    },
+    {
+      "id": "concept-feelings",
+      "description": {
+        "vi": "Hỏi thăm và trả lời về trạng thái đơn giản.",
+        "en": "Ask and answer about a simple state."
+      },
+      "prerequisiteConceptIds": []
+    },
+    {
+      "id": "concept-age",
+      "description": {
+        "vi": "Hiểu số 1–20 và hỏi, nói tuổi.",
+        "en": "Understand 1–20 and ask or state age."
+      },
+      "prerequisiteConceptIds": []
+    },
+    {
+      "id": "concept-first-contact",
+      "description": {
+        "vi": "Kết hợp chào hỏi, tên, trạng thái và tuổi trong hội thoại ngắn.",
+        "en": "Combine greetings, name, state and age in a short exchange."
+      },
+      "prerequisiteConceptIds": []
+    }
+  ],
+  "unitIds": [
+    "unit-first-contact"
+  ],
+  "compatibilityVersion": 2,
+  "owner": "EsquiloSpeak content team",
+  "license": "Proprietary"
+}

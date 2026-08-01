@@ -181,6 +181,9 @@ class AppDatabase {
         as Map<String, dynamic>;
   }
 
+  Future<void> deleteCachedJson(String key) =>
+      _db.delete('content_cache', where: 'cache_key = ?', whereArgs: [key]);
+
   Future<int> pendingMutationCount() async {
     final rows = await _db.rawQuery(
       'SELECT COUNT(*) AS pending_count FROM pending_mutation',

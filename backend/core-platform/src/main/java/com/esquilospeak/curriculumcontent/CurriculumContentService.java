@@ -2,8 +2,13 @@ package com.esquilospeak.curriculumcontent;
 
 import com.esquilospeak.ApiException;
 import java.util.List;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 import java.util.LinkedHashMap;
+import java.text.Normalizer;
 import java.util.function.BiFunction;
 import org.springframework.http.HttpStatus;
 import org.springframework.jdbc.core.simple.JdbcClient;
@@ -30,6 +35,13 @@ public class CurriculumContentService {
                 new LinkedHashMap<>();
         registered.put("multiple_choice", this::scoreMultipleChoice);
         registered.put("true_false", this::scoreTrueFalse);
+        registered.put("flashcard", this::scoreFlashcard);
+        registered.put("matching", this::scoreMatching);
+        registered.put("listen_select", this::scoreMultipleChoice);
+        registered.put("ordering", this::scoreOrdering);
+        registered.put("fill_blank", this::scoreText);
+        registered.put("dictation", this::scoreText);
+        registered.put("comprehension", this::scoreMultipleChoice);
         this.scorers = Map.copyOf(registered);
     }
 
@@ -64,12 +76,17 @@ public class CurriculumContentService {
     public List<Map<String, Object>> listLessonSummaries(String courseId) {
         ensureCourseExists(courseId);
         return jdbc.sql("""
-                        select lesson.id, lesson.version,
-                               lesson.learner_content::text as content
+                        select lesson.id, lesson.version, lesson.position,
+                               lesson.unit_id, lesson.learner_content::text as content,
+                               course_unit.content::text as unit_content
                         from lessons lesson
                         join course_versions course_version
                           on course_version.course_id = lesson.course_id
                          and course_version.version = lesson.course_version
+                        join course_units course_unit
+                          on course_unit.course_id = lesson.course_id
+                         and course_unit.course_version = lesson.course_version
+                         and course_unit.id = lesson.unit_id
                         where lesson.course_id = :courseId
                           and course_version.state = 'published'
                           and lesson.status = 'published'
@@ -80,12 +97,17 @@ public class CurriculumContentService {
                 .param("courseId", courseId)
                 .query((rs, rowNum) -> {
                     Map<String, Object> lesson = readMap(rs.getString("content"));
-                    return Map.of(
-                            "id", rs.getString("id"),
-                            "version", rs.getInt("version"),
-                            "locale", lesson.get("locale"),
-                            "title", lesson.get("title"),
-                            "estimatedMinutes", lesson.get("estimatedMinutes"));
+                    Map<String, Object> unit = readMap(rs.getString("unit_content"));
+                    Map<String, Object> summary = new LinkedHashMap<>();
+                    summary.put("id", rs.getString("id"));
+                    summary.put("version", rs.getInt("version"));
+                    summary.put("locale", lesson.get("locale"));
+                    summary.put("title", lesson.get("title"));
+                    summary.put("estimatedMinutes", lesson.get("estimatedMinutes"));
+                    summary.put("unitId", rs.getString("unit_id"));
+                    summary.put("unitTitle", unit.get("title"));
+                    summary.put("position", rs.getInt("position"));
+                    return summary;
                 })
                 .list();
     }
@@ -247,7 +269,12 @@ public class CurriculumContentService {
 
     private ScoredResponse scoreTrueFalse(
             Map<String, Object> exercise, Map<String, Object> response) {
-        String selectedOptionId = optionId(response);
+        String selectedOptionId;
+        if ("boolean".equals(response.get("kind")) && response.get("value") instanceof Boolean value) {
+            selectedOptionId = value.toString();
+        } else {
+            selectedOptionId = optionId(response);
+        }
         if (!List.of("true", "false").contains(selectedOptionId)) {
             throw invalidOption("A true/false answer must be true or false.");
         }
@@ -255,7 +282,80 @@ public class CurriculumContentService {
         return new ScoredResponse(
                 selectedOptionId.equals(correctOptionId),
                 correctOptionId,
-                Map.of("kind", "option", "optionId", correctOptionId));
+                Map.of("kind", "boolean", "value", Boolean.valueOf(correctOptionId)));
+    }
+
+    private ScoredResponse scoreFlashcard(
+            Map<String, Object> exercise, Map<String, Object> response) {
+        Object value = response.get("value");
+        if (!"self_assessment".equals(response.get("kind"))
+                || !(value instanceof String assessment)
+                || !Set.of("know", "learning").contains(assessment)) {
+            throw invalidResponse("A flashcard response must be know or learning.");
+        }
+        return new ScoredResponse(true, null, Map.of("kind", "self_assessment", "value", value));
+    }
+
+    @SuppressWarnings("unchecked")
+    private ScoredResponse scoreMatching(
+            Map<String, Object> exercise, Map<String, Object> response) {
+        if (!"pairs".equals(response.get("kind")) || !(response.get("pairs") instanceof List<?> rawPairs)) {
+            throw invalidResponse("This exercise requires pair responses.");
+        }
+        List<Map<String, Object>> canonical = (List<Map<String, Object>>) exercise.get("correctPairs");
+        List<String> expected = canonical.stream().map(this::pairKey).sorted().toList();
+        List<String> actual = new ArrayList<>();
+        for (Object item : rawPairs) {
+            if (!(item instanceof Map<?, ?> pair)) throw invalidResponse("Every pair must be an object.");
+            actual.add(pairKey((Map<String, Object>) pair));
+        }
+        actual.sort(Comparator.naturalOrder());
+        Map<String, Object> correct = Map.of("kind", "pairs", "pairs", canonical);
+        return new ScoredResponse(expected.equals(actual), null, correct);
+    }
+
+    @SuppressWarnings("unchecked")
+    private ScoredResponse scoreOrdering(
+            Map<String, Object> exercise, Map<String, Object> response) {
+        if (!"sequence".equals(response.get("kind")) || !(response.get("itemIds") instanceof List<?> raw)) {
+            throw invalidResponse("This exercise requires an ordered sequence.");
+        }
+        List<String> expected = (List<String>) exercise.get("correctOrder");
+        List<String> actual = raw.stream().map(String::valueOf).toList();
+        return new ScoredResponse(
+                expected.equals(actual), null, Map.of("kind", "sequence", "itemIds", expected));
+    }
+
+    @SuppressWarnings("unchecked")
+    private ScoredResponse scoreText(
+            Map<String, Object> exercise, Map<String, Object> response) {
+        if (!"text".equals(response.get("kind")) || !(response.get("text") instanceof String text)) {
+            throw invalidResponse("This exercise requires a text response.");
+        }
+        boolean caseSensitive = Boolean.TRUE.equals(exercise.get("caseSensitive"));
+        List<String> accepted = (List<String>) exercise.get("acceptedAnswers");
+        String normalized = normalizeText(text, caseSensitive);
+        boolean correct = accepted.stream()
+                .map(answer -> normalizeText(answer, caseSensitive))
+                .anyMatch(normalized::equals);
+        return new ScoredResponse(
+                correct, null, Map.of("kind", "text", "text", accepted.getFirst()));
+    }
+
+    private String pairKey(Map<String, Object> pair) {
+        Object left = pair.get("leftId");
+        Object right = pair.get("rightId");
+        if (!(left instanceof String) || !(right instanceof String)) {
+            throw invalidResponse("Every pair needs leftId and rightId.");
+        }
+        return left + "\u0000" + right;
+    }
+
+    private String normalizeText(String value, boolean caseSensitive) {
+        String normalized = Normalizer.normalize(value, Normalizer.Form.NFKC)
+                .trim()
+                .replaceAll("\\s+", " ");
+        return caseSensitive ? normalized : normalized.toLowerCase(Locale.ROOT);
     }
 
     private String optionId(Map<String, Object> response) {
@@ -270,6 +370,10 @@ public class CurriculumContentService {
 
     private ApiException invalidOption(String message) {
         return new ApiException(HttpStatus.UNPROCESSABLE_CONTENT, "OPTION_NOT_FOUND", message);
+    }
+
+    private ApiException invalidResponse(String message) {
+        return new ApiException(HttpStatus.UNPROCESSABLE_CONTENT, "ATTEMPT_RESPONSE_INVALID", message);
     }
 
     public List<LessonStructure> courseStructure(String courseId) {

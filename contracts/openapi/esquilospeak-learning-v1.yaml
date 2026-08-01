@@ -1,7 +1,7 @@
 openapi: 3.1.1
 info:
   title: EsquiloSpeak Learning API
-  version: 0.8.0
+  version: 0.10.0
   description: >-
     Mobile contract for identity/profile onboarding and the first learning
     vertical slice: resolve a guest or account learner, manage profile and
@@ -1613,9 +1613,13 @@ components:
           type: array
           minItems: 1
           items:
-            oneOf:
-              - $ref: '#/components/schemas/MultipleChoiceExerciseDraft'
-              - $ref: '#/components/schemas/TrueFalseExerciseDraft'
+            $ref: '#/components/schemas/ExerciseDraftV2'
+        advancedActivities:
+          type: array
+          uniqueItems: true
+          items:
+            type: object
+            additionalProperties: true
       additionalProperties: false
     ExerciseDraftBase:
       type: object
@@ -1640,6 +1644,51 @@ components:
             $ref: '#/components/schemas/Identifier'
         media:
           $ref: '#/components/schemas/MediaMetadata'
+    ExerciseDraftV2:
+      allOf:
+        - $ref: '#/components/schemas/ExerciseDraftBase'
+        - type: object
+          properties:
+            type:
+              type: string
+              enum: [multiple_choice, true_false, flashcard, matching, listen_select, ordering, fill_blank, dictation, comprehension]
+            instruction: { $ref: '#/components/schemas/LocalizedText' }
+            hint: { $ref: '#/components/schemas/LocalizedText' }
+            transcript: { $ref: '#/components/schemas/LocalizedText' }
+            options:
+              type: array
+              minItems: 2
+              items: { $ref: '#/components/schemas/ExerciseOptionDraft' }
+            items:
+              type: array
+              minItems: 2
+              items: { $ref: '#/components/schemas/ExerciseOptionDraft' }
+            leftItems:
+              type: array
+              minItems: 2
+              items: { $ref: '#/components/schemas/ExerciseOptionDraft' }
+            rightItems:
+              type: array
+              minItems: 2
+              items: { $ref: '#/components/schemas/ExerciseOptionDraft' }
+            correctOptionId: { $ref: '#/components/schemas/Identifier' }
+            correctAnswer: { type: boolean }
+            correctPairs:
+              type: array
+              minItems: 2
+              items: { $ref: '#/components/schemas/ExercisePair' }
+            correctOrder:
+              type: array
+              minItems: 2
+              uniqueItems: true
+              items: { $ref: '#/components/schemas/Identifier' }
+            acceptedAnswers:
+              type: array
+              minItems: 1
+              uniqueItems: true
+              items: { type: string, minLength: 1 }
+            caseSensitive: { type: boolean }
+      unevaluatedProperties: false
     MultipleChoiceExerciseDraft:
       allOf:
         - $ref: '#/components/schemas/ExerciseDraftBase'
@@ -1729,6 +1778,13 @@ components:
           type: integer
           minimum: 1
           maximum: 120
+        unitId:
+          $ref: '#/components/schemas/Identifier'
+        unitTitle:
+          $ref: '#/components/schemas/LocalizedText'
+        position:
+          type: integer
+          minimum: 1
       additionalProperties: false
     AttemptRequest:
       type: object
@@ -1758,6 +1814,8 @@ components:
           description: Legacy option response retained during the Exercise Engine V2 transition.
         response:
           $ref: '#/components/schemas/ExerciseResponse'
+        evidence:
+          $ref: '#/components/schemas/AttemptEvidence'
         occurredAt:
           type: string
           format: date-time
@@ -1818,7 +1876,7 @@ components:
       additionalProperties: false
     Feedback:
       type: object
-      required: [messageCode, correctOptionId, explanation]
+      required: [messageCode, correctResponse, explanation]
       properties:
         messageCode:
           type: string
@@ -1826,6 +1884,11 @@ components:
           description: Stable client-localized feedback message key.
         correctOptionId:
           $ref: '#/components/schemas/Identifier'
+          nullable: true
+          deprecated: true
+          description: Compatibility projection for option-based exercises.
+        correctResponse:
+          $ref: '#/components/schemas/ExerciseResponse'
         explanation:
           $ref: '#/components/schemas/LocalizedText'
       additionalProperties: false
@@ -1868,10 +1931,20 @@ components:
     ExerciseResponse:
       oneOf:
         - $ref: '#/components/schemas/OptionExerciseResponse'
+        - $ref: '#/components/schemas/BooleanExerciseResponse'
+        - $ref: '#/components/schemas/SelfAssessmentExerciseResponse'
+        - $ref: '#/components/schemas/PairExerciseResponse'
+        - $ref: '#/components/schemas/SequenceExerciseResponse'
+        - $ref: '#/components/schemas/TextExerciseResponse'
       discriminator:
         propertyName: kind
         mapping:
           option: '#/components/schemas/OptionExerciseResponse'
+          boolean: '#/components/schemas/BooleanExerciseResponse'
+          self_assessment: '#/components/schemas/SelfAssessmentExerciseResponse'
+          pairs: '#/components/schemas/PairExerciseResponse'
+          sequence: '#/components/schemas/SequenceExerciseResponse'
+          text: '#/components/schemas/TextExerciseResponse'
     OptionExerciseResponse:
       type: object
       required: [kind, optionId]
@@ -1880,6 +1953,67 @@ components:
           const: option
         optionId:
           $ref: '#/components/schemas/Identifier'
+      additionalProperties: false
+    BooleanExerciseResponse:
+      type: object
+      required: [kind, value]
+      properties:
+        kind: { const: boolean }
+        value: { type: boolean }
+      additionalProperties: false
+    SelfAssessmentExerciseResponse:
+      type: object
+      required: [kind, value]
+      properties:
+        kind: { const: self_assessment }
+        value: { type: string, enum: [know, learning] }
+      additionalProperties: false
+    ExercisePair:
+      type: object
+      required: [leftId, rightId]
+      properties:
+        leftId: { $ref: '#/components/schemas/Identifier' }
+        rightId: { $ref: '#/components/schemas/Identifier' }
+      additionalProperties: false
+    PairExerciseResponse:
+      type: object
+      required: [kind, pairs]
+      properties:
+        kind: { const: pairs }
+        pairs:
+          type: array
+          minItems: 1
+          items: { $ref: '#/components/schemas/ExercisePair' }
+      additionalProperties: false
+    SequenceExerciseResponse:
+      type: object
+      required: [kind, itemIds]
+      properties:
+        kind: { const: sequence }
+        itemIds:
+          type: array
+          minItems: 2
+          uniqueItems: true
+          items: { $ref: '#/components/schemas/Identifier' }
+      additionalProperties: false
+    TextExerciseResponse:
+      type: object
+      required: [kind, text]
+      properties:
+        kind: { const: text }
+        text: { type: string, minLength: 1, maxLength: 1000 }
+      additionalProperties: false
+    AttemptEvidence:
+      type: object
+      properties:
+        responseTimeMs: { type: integer, minimum: 0 }
+        hintUsed: { type: boolean }
+        hintLevel: { type: integer, minimum: 0, maximum: 5 }
+        retryIndex: { type: integer, minimum: 0, maximum: 20 }
+        confidence: { type: integer, minimum: 1, maximum: 5 }
+        inputModality:
+          type: string
+          enum: [touch, keyboard, voice, assistive_technology, unknown]
       additionalProperties: false
     LessonProgress:
       type: object

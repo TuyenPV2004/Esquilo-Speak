@@ -82,6 +82,10 @@ class LearningFlowScreen extends StatelessWidget {
       ),
       LearningStep.lessons => _Lessons(
         lessons: viewModel.lessons,
+        progress: viewModel.courseProgress,
+        downloadStatuses: viewModel.unitDownloadStatuses,
+        downloadingUnitId: viewModel.downloadingUnitId,
+        onDownloadUnit: viewModel.downloadUnit,
         onSelected: viewModel.chooseLesson,
         actionLabel: strings.startLesson,
         emptyLabel: strings.empty,
@@ -89,13 +93,21 @@ class LearningFlowScreen extends StatelessWidget {
       ),
       LearningStep.lesson => ExerciseRendererRegistry(
         lesson: viewModel.selectedLesson!,
-        selectedOptionId: viewModel.selectedOptionId,
+        exerciseIndex: viewModel.currentExerciseIndex,
+        response: viewModel.selectedResponse,
         selectionError: viewModel.selectionError == null
             ? null
             : strings.selectAnswer,
-        onSelected: viewModel.selectOption,
+        hintVisible: viewModel.hintVisible,
+        onResponse: viewModel.setResponse,
+        onHint: viewModel.showHint,
         onSubmit: viewModel.submitAnswer,
         submitLabel: strings.submitAnswer,
+        hintLabel: strings.showHint,
+        knowLabel: strings.flashcardKnow,
+        learningLabel: strings.flashcardLearning,
+        moveUpLabel: strings.moveUp,
+        moveDownLabel: strings.moveDown,
         unsupportedLabel: strings.destinationUnavailable,
       ),
       LearningStep.queued => AppMessageState(
@@ -106,8 +118,14 @@ class LearningFlowScreen extends StatelessWidget {
       ),
       LearningStep.feedback => _Feedback(
         feedback: viewModel.feedback!,
-        actionLabel: strings.viewProgress,
-        onContinue: viewModel.showProgress,
+        actionLabel: viewModel.reviewingMistakes
+            ? strings.reviewMistakes
+            : viewModel.currentExerciseIndex ==
+                      viewModel.selectedLesson!.exercises.length - 1 &&
+                  viewModel.mistakeExerciseIndexes.isEmpty
+            ? strings.viewProgress
+            : strings.continueExercise,
+        onContinue: viewModel.continueAfterFeedback,
       ),
       LearningStep.progress => _Progress(
         progress: viewModel.courseProgress!,
@@ -115,6 +133,8 @@ class LearningFlowScreen extends StatelessWidget {
           viewModel.courseProgress!.completedExerciseCount,
           viewModel.courseProgress!.totalExerciseCount,
         ),
+        actionLabel: strings.continueLearning,
+        onContinue: viewModel.continueFromProgress,
       ),
     };
   }
@@ -226,6 +246,10 @@ class _Courses extends StatelessWidget {
 class _Lessons extends StatelessWidget {
   const _Lessons({
     required this.lessons,
+    required this.progress,
+    required this.downloadStatuses,
+    required this.downloadingUnitId,
+    required this.onDownloadUnit,
     required this.onSelected,
     required this.actionLabel,
     required this.emptyLabel,
@@ -233,6 +257,10 @@ class _Lessons extends StatelessWidget {
   });
 
   final List<LessonSummary> lessons;
+  final CourseProgress? progress;
+  final Map<String, UnitDownloadStatus> downloadStatuses;
+  final String? downloadingUnitId;
+  final ValueChanged<String> onDownloadUnit;
   final ValueChanged<LessonSummary> onSelected;
   final String actionLabel;
   final String emptyLabel;
@@ -241,34 +269,143 @@ class _Lessons extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (lessons.isEmpty) return _EmptyState(label: emptyLabel);
+    final groups = <String, List<LessonSummary>>{};
+    for (final lesson in lessons) {
+      (groups[lesson.unitId ?? 'legacy'] ??= []).add(lesson);
+    }
+    final completedIds =
+        progress?.lessonProgress
+            .where((item) => item.status == 'completed')
+            .map((item) => item.lessonId)
+            .toSet() ??
+        const <String>{};
     return ListView.separated(
       key: const ValueKey('lessons'),
       padding: const EdgeInsets.all(16),
-      itemCount: lessons.length,
-      separatorBuilder: (_, _) => const SizedBox(height: 12),
+      itemCount: groups.length,
+      separatorBuilder: (_, _) => const SizedBox(height: 16),
       itemBuilder: (context, index) {
-        final lesson = lessons[index];
+        final entry = groups.entries.elementAt(index);
+        final unitLessons = entry.value;
+        final first = unitLessons.first;
+        final status = downloadStatuses[entry.key];
+        final completedCount = unitLessons
+            .where((lesson) => completedIds.contains(lesson.id))
+            .length;
         return Card(
-          child: ListTile(
-            minTileHeight: 72,
-            title: Text(
-              localized(
-                lesson.title,
-                _locale(context),
-                defaultLocale: lesson.locale,
-              ),
-            ),
-            subtitle: Text(strings.minutesShort(lesson.estimatedMinutes)),
-            trailing: TextButton(
-              key: ValueKey('lesson-${lesson.id}'),
-              onPressed: () => onSelected(lesson),
-              child: Text(actionLabel),
+          child: Padding(
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Text(
+                  first.unitTitle.isEmpty
+                      ? strings.unitFallbackTitle
+                      : localized(
+                          first.unitTitle,
+                          _locale(context),
+                          defaultLocale: first.locale,
+                        ),
+                  style: Theme.of(context).textTheme.titleLarge,
+                ),
+                const SizedBox(height: 4),
+                Text(strings.unitProgress(completedCount, unitLessons.length)),
+                const SizedBox(height: 12),
+                OutlinedButton.icon(
+                  key: ValueKey('download-unit-${entry.key}'),
+                  onPressed:
+                      first.unitId == null || downloadingUnitId == entry.key
+                      ? null
+                      : () => onDownloadUnit(entry.key),
+                  icon: downloadingUnitId == entry.key
+                      ? const SizedBox.square(
+                          dimension: 20,
+                          child: CircularProgressIndicator(strokeWidth: 2),
+                        )
+                      : Icon(
+                          status?.downloaded == true
+                              ? Icons.offline_pin_outlined
+                              : Icons.download_for_offline_outlined,
+                        ),
+                  label: Text(
+                    status?.downloaded == true
+                        ? strings.unitDownloaded
+                        : strings.downloadUnit,
+                  ),
+                ),
+                const SizedBox(height: 8),
+                for (var lessonIndex = 0;
+                    lessonIndex < unitLessons.length;
+                    lessonIndex++) ...[
+                  if (lessonIndex > 0) const Divider(),
+                  _LessonTile(
+                    lesson: unitLessons[lessonIndex],
+                    locked:
+                        lessonIndex > 0 &&
+                        !completedIds.contains(unitLessons[lessonIndex - 1].id),
+                    completed: completedIds.contains(
+                      unitLessons[lessonIndex].id,
+                    ),
+                    onSelected: onSelected,
+                    actionLabel: actionLabel,
+                    strings: strings,
+                  ),
+                ],
+              ],
             ),
           ),
         );
       },
     );
   }
+}
+
+class _LessonTile extends StatelessWidget {
+  const _LessonTile({
+    required this.lesson,
+    required this.locked,
+    required this.completed,
+    required this.onSelected,
+    required this.actionLabel,
+    required this.strings,
+  });
+
+  final LessonSummary lesson;
+  final bool locked;
+  final bool completed;
+  final ValueChanged<LessonSummary> onSelected;
+  final String actionLabel;
+  final AppLocalizations strings;
+
+  @override
+  Widget build(BuildContext context) => ListTile(
+    contentPadding: EdgeInsets.zero,
+    minTileHeight: 72,
+    leading: Icon(
+      completed
+          ? Icons.check_circle_outline
+          : locked
+          ? Icons.lock_outline
+          : Icons.play_circle_outline,
+    ),
+    title: Text(
+      localized(
+        lesson.title,
+        _locale(context),
+        defaultLocale: lesson.locale,
+      ),
+    ),
+    subtitle: Text(
+      completed
+          ? '${strings.minutesShort(lesson.estimatedMinutes)} · ${strings.lessonCompleted}'
+          : strings.minutesShort(lesson.estimatedMinutes),
+    ),
+    trailing: TextButton(
+      key: ValueKey('lesson-${lesson.id}'),
+      onPressed: locked ? null : () => onSelected(lesson),
+      child: Text(locked ? strings.lessonLocked : actionLabel),
+    ),
+  );
 }
 
 class _Feedback extends StatelessWidget {
@@ -328,10 +465,17 @@ class _Feedback extends StatelessWidget {
 }
 
 class _Progress extends StatelessWidget {
-  const _Progress({required this.progress, required this.summary});
+  const _Progress({
+    required this.progress,
+    required this.summary,
+    required this.actionLabel,
+    required this.onContinue,
+  });
 
   final CourseProgress progress;
   final String summary;
+  final String actionLabel;
+  final VoidCallback onContinue;
 
   @override
   Widget build(BuildContext context) {
@@ -352,6 +496,12 @@ class _Progress extends StatelessWidget {
               Text(summary, style: Theme.of(context).textTheme.headlineSmall),
               const SizedBox(height: 20),
               LinearProgressIndicator(value: value, minHeight: 12),
+              const SizedBox(height: 20),
+              FilledButton(
+                key: const ValueKey('continue-from-progress'),
+                onPressed: onContinue,
+                child: Text(actionLabel),
+              ),
             ],
           ),
         ),

@@ -1,0 +1,40 @@
+{
+  "checklistVersion": "content-review-v2",
+  "checks": [
+    {
+      "id": "schema",
+      "passed": true,
+      "evidence": "Exercise Engine V2 JSON Schema and semantic validator pass"
+    },
+    {
+      "id": "references",
+      "passed": true,
+      "evidence": "Stable IDs and course/unit/lesson/concept references pass"
+    },
+    {
+      "id": "pedagogy",
+      "passed": true,
+      "evidence": "Five lessons follow recognition, recall, listening and production progression"
+    },
+    {
+      "id": "language",
+      "passed": true,
+      "evidence": "Vietnamese support text and English targets reviewed"
+    },
+    {
+      "id": "media-accessibility",
+      "passed": true,
+      "evidence": "Every audio task has transcript, provenance and silent path"
+    },
+    {
+      "id": "answer-integrity",
+      "passed": true,
+      "evidence": "Canonical answer references pass and are stripped from learner delivery"
+    },
+    {
+      "id": "preview",
+      "passed": true,
+      "evidence": "Learner-safe preview generated for all five lessons"
+    }
+  ]
+}

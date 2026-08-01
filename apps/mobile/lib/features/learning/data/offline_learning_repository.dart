@@ -4,7 +4,8 @@ import '../../../core/sync/sync_coordinator.dart';
 import 'learning_models.dart';
 import 'learning_repository.dart';
 
-class OfflineLearningRepository implements LearningRepository {
+class OfflineLearningRepository
+    implements LearningRepository, LessonResumeStore, UnitDownloadStore {
   OfflineLearningRepository(this._remote, this._sync, this._database);
 
   final LearningRepository _remote;
@@ -127,6 +128,97 @@ class OfflineLearningRepository implements LearningRepository {
 
   bool _canUseCache(Object error) =>
       error is NetworkUnavailable || (error is ApiProblem && error.retryable);
+
+  String _resumeKey(String lessonId, int version) =>
+      'learning.resume.$lessonId.$version';
+
+  @override
+  Future<LessonResume?> loadLessonResume(String lessonId, int version) async {
+    final value = await _database.cachedJson(_resumeKey(lessonId, version));
+    return value == null ? null : LessonResume.fromJson(value);
+  }
+
+  @override
+  Future<void> saveLessonResume(LessonResume resume) => _database.cacheJson(
+    _resumeKey(resume.lessonId, resume.lessonVersion),
+    resume.toJson(),
+  );
+
+  @override
+  Future<void> clearLessonResume(String lessonId, int version) =>
+      _database.deleteCachedJson(_resumeKey(lessonId, version));
+
+  String _downloadKey(String courseId, String unitId) =>
+      'learning.download.$courseId.$unitId';
+
+  @override
+  Future<UnitDownloadStatus> unitDownloadStatus({
+    required String courseId,
+    required String unitId,
+    required List<LessonSummary> lessons,
+  }) async {
+    final manifest = await _database.cachedJson(_downloadKey(courseId, unitId));
+    final versions = manifest == null
+        ? const <String, dynamic>{}
+        : Map<String, dynamic>.from(
+            manifest['lessonVersions'] as Map? ?? const {},
+          );
+    var downloadedCount = 0;
+    for (final summary in lessons) {
+      if (versions[summary.id] != summary.version) continue;
+      final cached = await _database.cachedJson(
+        'learning.lesson.${summary.id}.${summary.version}',
+      );
+      if (cached != null) downloadedCount += 1;
+    }
+    return UnitDownloadStatus(
+      courseId: courseId,
+      unitId: unitId,
+      downloadedLessonCount: downloadedCount,
+      totalLessonCount: lessons.length,
+      updatedAt: manifest?['updatedAt'] == null
+          ? null
+          : DateTime.tryParse(manifest!['updatedAt'] as String),
+    );
+  }
+
+  @override
+  Future<UnitDownloadStatus> downloadUnit({
+    required String courseId,
+    required String unitId,
+    required List<LessonSummary> lessons,
+  }) async {
+    if (lessons.isEmpty || lessons.any((item) => item.unitId != unitId)) {
+      throw ArgumentError.value(unitId, 'unitId', 'Unit lessons are invalid.');
+    }
+    for (final summary in lessons) {
+      final item = await _remote.lesson(summary.id, version: summary.version);
+      await _database.cacheJson(
+        'learning.lesson.${summary.id}.${summary.version}',
+        item.toJson(),
+      );
+      await _database.cacheJson(
+        'learning.lesson.${summary.id}.current',
+        item.toJson(),
+      );
+    }
+    final updatedAt = DateTime.now().toUtc();
+    await _database.cacheJson(_downloadKey(courseId, unitId), {
+      'courseId': courseId,
+      'unitId': unitId,
+      'lessonVersions': {
+        for (final summary in lessons) summary.id: summary.version,
+      },
+      'updatedAt': updatedAt.toIso8601String(),
+    });
+    return UnitDownloadStatus(
+      courseId: courseId,
+      unitId: unitId,
+      downloadedLessonCount: lessons.length,
+      totalLessonCount: lessons.length,
+      updatedAt: updatedAt,
+    );
+  }
 }
 
 class AttemptQueuedForSync implements Exception {

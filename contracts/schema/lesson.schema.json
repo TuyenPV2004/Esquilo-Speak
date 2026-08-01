@@ -55,16 +55,110 @@
     "exercises": {
       "type": "array",
       "items": {
-        "oneOf": [
-          { "$ref": "#/$defs/multipleChoiceExercise" },
-          { "$ref": "#/$defs/trueFalseExercise" }
-        ]
+        "$ref": "#/$defs/exerciseV2"
       },
       "minItems": 1
+    },
+    "advancedActivities": {
+      "type": "array",
+      "items": { "$ref": "lesson-delivery.schema.json#/$defs/advancedActivity" },
+      "uniqueItems": true
     }
   },
   "additionalProperties": false,
   "$defs": {
+    "exerciseV2": {
+      "type": "object",
+      "required": ["id", "type", "learningItem", "presentation", "answerPolicy", "feedbackRule"],
+      "properties": {
+        "id": { "$ref": "common.schema.json#/$defs/identifier" },
+        "type": {
+          "enum": [
+            "multiple_choice", "true_false", "flashcard", "matching",
+            "listen_select", "ordering", "fill_blank", "dictation", "comprehension"
+          ]
+        },
+        "learningItem": { "$ref": "#/$defs/learningItem" },
+        "presentation": {
+          "type": "object",
+          "required": ["prompt", "hint", "mediaIds", "accessibility"],
+          "properties": {
+            "prompt": { "$ref": "common.schema.json#/$defs/localizedText" },
+            "instruction": { "$ref": "common.schema.json#/$defs/localizedText" },
+            "hint": { "$ref": "common.schema.json#/$defs/localizedText" },
+            "transcript": { "$ref": "common.schema.json#/$defs/localizedText" },
+            "mediaIds": {
+              "type": "array",
+              "items": { "$ref": "common.schema.json#/$defs/identifier" },
+              "uniqueItems": true
+            },
+            "accessibility": { "$ref": "common.schema.json#/$defs/accessibilityMetadata" },
+            "options": {
+              "type": "array",
+              "items": { "$ref": "#/$defs/exerciseOption" },
+              "minItems": 2
+            },
+            "items": {
+              "type": "array",
+              "items": { "$ref": "#/$defs/exerciseOption" },
+              "minItems": 2
+            },
+            "leftItems": {
+              "type": "array",
+              "items": { "$ref": "#/$defs/exerciseOption" },
+              "minItems": 2
+            },
+            "rightItems": {
+              "type": "array",
+              "items": { "$ref": "#/$defs/exerciseOption" },
+              "minItems": 2
+            }
+          },
+          "additionalProperties": false
+        },
+        "answerPolicy": {
+          "type": "object",
+          "required": ["kind", "maxAttempts"],
+          "properties": {
+            "kind": {
+              "enum": ["option_id", "boolean", "self_assessment", "pair_set", "ordered_ids", "normalized_text"]
+            },
+            "correctOptionId": { "$ref": "common.schema.json#/$defs/identifier" },
+            "correctAnswer": { "type": "boolean" },
+            "correctPairs": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "required": ["leftId", "rightId"],
+                "properties": {
+                  "leftId": { "$ref": "common.schema.json#/$defs/identifier" },
+                  "rightId": { "$ref": "common.schema.json#/$defs/identifier" }
+                },
+                "additionalProperties": false
+              },
+              "minItems": 2
+            },
+            "correctOrder": {
+              "type": "array",
+              "items": { "$ref": "common.schema.json#/$defs/identifier" },
+              "minItems": 2,
+              "uniqueItems": true
+            },
+            "acceptedAnswers": {
+              "type": "array",
+              "items": { "type": "string", "minLength": 1 },
+              "minItems": 1,
+              "uniqueItems": true
+            },
+            "caseSensitive": { "type": "boolean" },
+            "maxAttempts": { "type": "integer", "minimum": 1, "maximum": 5 }
+          },
+          "additionalProperties": false
+        },
+        "feedbackRule": { "$ref": "#/$defs/feedbackRule" }
+      },
+      "additionalProperties": false
+    },
     "learningItem": {
       "type": "object",
       "required": ["skill", "conceptIds", "outcomeIds", "prerequisiteConceptIds", "difficulty"],

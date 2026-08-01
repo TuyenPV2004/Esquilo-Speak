@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { createHash } from "node:crypto";
 import { readdir, readFile } from "node:fs/promises";
 import path from "node:path";
 import test from "node:test";
@@ -71,6 +72,40 @@ test("compiler separates authoring answers from learner preview", async () => {
   const html = renderLearnerPreview(pkg, "en");
   assert.match(html, /Complete: My ___ is Ana\./);
   assert.doesNotMatch(html, /correctOptionId|correctAnswer|Use name in the pattern/);
+});
+
+test("Unit 1 vertical slice has five lessons, nine exercise types and no answer leakage", async () => {
+  const unitOne = await loadAuthoringPackage(path.join(
+    repositoryRoot,
+    "content",
+    "courses",
+    "course-en-for-vi",
+    "unit-1-v2",
+    "content-package.json",
+  ));
+  const validation = validateAuthoringPackage(unitOne);
+  assert.equal(validation.valid, true, JSON.stringify(validation.errors, null, 2));
+  assert.equal(unitOne.lessons.length, 5);
+  assert.ok(unitOne.lessons.every((lesson) => lesson.exercises.length >= 8 && lesson.exercises.length <= 12));
+  assert.deepEqual(
+    new Set(unitOne.lessons.flatMap((lesson) => lesson.exercises.map((exercise) => exercise.type))),
+    new Set(["multiple_choice", "true_false", "flashcard", "matching", "listen_select", "ordering", "fill_blank", "dictation", "comprehension"]),
+  );
+  const learnerJson = JSON.stringify(compileLearnerPreview(unitOne));
+  assert.doesNotMatch(learnerJson, /correctOptionId|correctAnswer|correctPairs|correctOrder|acceptedAnswers|caseSensitive|explanation/);
+  assert.match(learnerJson, /transcript/);
+  assert.equal(unitOne.lessons.at(-1).advancedActivities.length, 3);
+  assert.equal(unitOne.mediaManifest.media.length, 10);
+  for (const media of unitOne.mediaManifest.media) {
+    const bytes = await readFile(path.join(unitOne.root, media.assetPath));
+    assert.equal(
+      media.checksum,
+      `sha256:${createHash("sha256").update(bytes).digest("hex")}`,
+    );
+    assert.ok(bytes.length > 44);
+    assert.match(media.generator, /Speech API/);
+    assert.match(media.voice, /English \(United States\)/);
+  }
 });
 
 test("backend integration fixture stays equal to compiler output", async () => {

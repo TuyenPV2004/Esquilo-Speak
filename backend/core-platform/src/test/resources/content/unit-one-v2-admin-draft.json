@@ -1,0 +1,1857 @@
+{
+  "sourceLanguage": "vi",
+  "targetLanguage": "en",
+  "locale": "vi",
+  "compatibilityVersion": 2,
+  "proficiency": {
+    "frameworkCode": "cefr",
+    "frameworkVersion": "2020",
+    "entryLevelCode": "PRE_A1",
+    "targetLevelCode": "A1"
+  },
+  "title": {
+    "vi": "Tiếng Anh A1 — Unit 1",
+    "en": "English A1 — Unit 1"
+  },
+  "description": {
+    "vi": "Vertical slice giao tiếp lần đầu theo CEFR A1.",
+    "en": "A CEFR A1 first-contact vertical slice."
+  },
+  "owner": "EsquiloSpeak content team",
+  "license": "Proprietary",
+  "units": [
+    {
+      "id": "unit-first-contact",
+      "title": {
+        "vi": "Lần gặp đầu tiên",
+        "en": "First contact"
+      },
+      "lessons": [
+        {
+          "id": "lesson-greetings",
+          "locale": "vi",
+          "title": {
+            "vi": "Chào hỏi",
+            "en": "Greetings"
+          },
+          "objectives": [
+            {
+              "vi": "Chào và tạm biệt phù hợp trong lần gặp đầu tiên.",
+              "en": "Greet and say goodbye appropriately in a first meeting."
+            }
+          ],
+          "estimatedMinutes": 7,
+          "exercises": [
+            {
+              "id": "exercise-greetings-flashcard",
+              "type": "flashcard",
+              "prompt": {
+                "vi": "Nhớ từ “Hello”.",
+                "en": "Recall the word “Hello”."
+              },
+              "hint": {
+                "vi": "Gợi ý cho Nhớ từ “Hello”.",
+                "en": "Hint for: Recall the word “Hello”."
+              },
+              "explanation": {
+                "vi": "Đáp án theo mẫu mục tiêu của bài Chào hỏi.",
+                "en": "The answer follows the target pattern for Greetings."
+              },
+              "skill": "vocabulary",
+              "conceptIds": [
+                "concept-greetings"
+              ]
+            },
+            {
+              "id": "exercise-greetings-choice",
+              "type": "multiple_choice",
+              "prompt": {
+                "vi": "Chọn nghĩa đúng của “Hello”.",
+                "en": "Choose the meaning of “Hello”."
+              },
+              "hint": {
+                "vi": "Gợi ý cho Chọn nghĩa đúng của “Hello”.",
+                "en": "Hint for: Choose the meaning of “Hello”."
+              },
+              "options": [
+                {
+                  "id": "option-meaning",
+                  "text": {
+                    "vi": "Xin chào",
+                    "en": "Xin chào"
+                  }
+                },
+                {
+                  "id": "option-distractor",
+                  "text": {
+                    "vi": "Tạm biệt",
+                    "en": "Tạm biệt"
+                  }
+                }
+              ],
+              "explanation": {
+                "vi": "Đáp án theo mẫu mục tiêu của bài Chào hỏi.",
+                "en": "The answer follows the target pattern for Greetings."
+              },
+              "skill": "vocabulary",
+              "conceptIds": [
+                "concept-greetings"
+              ],
+              "correctOptionId": "option-meaning"
+            },
+            {
+              "id": "exercise-greetings-listen",
+              "type": "listen_select",
+              "prompt": {
+                "vi": "Nghe và chọn “Hello”.",
+                "en": "Listen and select “Hello”."
+              },
+              "hint": {
+                "vi": "Gợi ý cho Nghe và chọn “Hello”.",
+                "en": "Hint for: Listen and select “Hello”."
+              },
+              "transcript": {
+                "vi": "Hello",
+                "en": "Hello"
+              },
+              "options": [
+                {
+                  "id": "option-first",
+                  "text": {
+                    "vi": "Hello",
+                    "en": "Hello"
+                  }
+                },
+                {
+                  "id": "option-second",
+                  "text": {
+                    "vi": "Goodbye",
+                    "en": "Goodbye"
+                  }
+                }
+              ],
+              "explanation": {
+                "vi": "Đáp án theo mẫu mục tiêu của bài Chào hỏi.",
+                "en": "The answer follows the target pattern for Greetings."
+              },
+              "skill": "listening",
+              "conceptIds": [
+                "concept-greetings"
+              ],
+              "correctOptionId": "option-first",
+              "media": {
+                "id": "media-greetings-listen",
+                "type": "audio",
+                "objectKey": "content/audio/unit-1/media-greetings-listen.wav",
+                "checksum": "sha256:a06903c9cd549418f6975d82ebe57bb24659902d1eab3f19c4514bb7c483e7a4",
+                "locale": "en",
+                "durationMs": 1379
+              }
+            },
+            {
+              "id": "exercise-greetings-matching",
+              "type": "matching",
+              "prompt": {
+                "vi": "Ghép từ của bài Chào hỏi với nghĩa.",
+                "en": "Match the Greetings words with their meanings."
+              },
+              "hint": {
+                "vi": "Gợi ý cho Ghép từ của bài Chào hỏi với nghĩa.",
+                "en": "Hint for: Match the Greetings words with their meanings."
+              },
+              "leftItems": [
+                {
+                  "id": "left-hello",
+                  "text": {
+                    "vi": "Hello",
+                    "en": "Hello"
+                  }
+                },
+                {
+                  "id": "left-goodbye",
+                  "text": {
+                    "vi": "Goodbye",
+                    "en": "Goodbye"
+                  }
+                }
+              ],
+              "rightItems": [
+                {
+                  "id": "right-hello",
+                  "text": {
+                    "vi": "Xin chào",
+                    "en": "Xin chào"
+                  }
+                },
+                {
+                  "id": "right-goodbye",
+                  "text": {
+                    "vi": "Tạm biệt",
+                    "en": "Tạm biệt"
+                  }
+                }
+              ],
+              "explanation": {
+                "vi": "Đáp án theo mẫu mục tiêu của bài Chào hỏi.",
+                "en": "The answer follows the target pattern for Greetings."
+              },
+              "skill": "vocabulary",
+              "conceptIds": [
+                "concept-greetings"
+              ],
+              "correctPairs": [
+                {
+                  "leftId": "left-hello",
+                  "rightId": "right-hello"
+                },
+                {
+                  "leftId": "left-goodbye",
+                  "rightId": "right-goodbye"
+                }
+              ]
+            },
+            {
+              "id": "exercise-greetings-ordering",
+              "type": "ordering",
+              "prompt": {
+                "vi": "Sắp xếp câu của bài Chào hỏi.",
+                "en": "Order the sentence for Greetings."
+              },
+              "hint": {
+                "vi": "Gợi ý cho Sắp xếp câu của bài Chào hỏi.",
+                "en": "Hint for: Order the sentence for Greetings."
+              },
+              "items": [
+                {
+                  "id": "item-good",
+                  "text": {
+                    "vi": "Good",
+                    "en": "Good"
+                  }
+                },
+                {
+                  "id": "item-morning",
+                  "text": {
+                    "vi": "morning",
+                    "en": "morning"
+                  }
+                }
+              ],
+              "explanation": {
+                "vi": "Đáp án theo mẫu mục tiêu của bài Chào hỏi.",
+                "en": "The answer follows the target pattern for Greetings."
+              },
+              "skill": "grammar",
+              "conceptIds": [
+                "concept-greetings"
+              ],
+              "correctOrder": [
+                "item-good",
+                "item-morning"
+              ]
+            },
+            {
+              "id": "exercise-greetings-fill",
+              "type": "fill_blank",
+              "prompt": {
+                "vi": "Hoàn thành lời chào Ana.",
+                "en": "Complete the greeting to Ana."
+              },
+              "hint": {
+                "vi": "Gợi ý cho Hoàn thành lời chào Ana.",
+                "en": "Hint for: Complete the greeting to Ana."
+              },
+              "explanation": {
+                "vi": "Đáp án theo mẫu mục tiêu của bài Chào hỏi.",
+                "en": "The answer follows the target pattern for Greetings."
+              },
+              "skill": "writing",
+              "conceptIds": [
+                "concept-greetings"
+              ],
+              "acceptedAnswers": [
+                "Hello, Ana!",
+                "Hello Ana!"
+              ],
+              "caseSensitive": false
+            },
+            {
+              "id": "exercise-greetings-truth",
+              "type": "true_false",
+              "prompt": {
+                "vi": "‘Goodbye’ dùng khi kết thúc cuộc gặp.",
+                "en": "‘Goodbye’ is used when ending a meeting."
+              },
+              "hint": {
+                "vi": "Gợi ý cho ‘Goodbye’ dùng khi kết thúc cuộc gặp.",
+                "en": "Hint for: ‘Goodbye’ is used when ending a meeting."
+              },
+              "explanation": {
+                "vi": "Đáp án theo mẫu mục tiêu của bài Chào hỏi.",
+                "en": "The answer follows the target pattern for Greetings."
+              },
+              "skill": "reading",
+              "conceptIds": [
+                "concept-greetings"
+              ],
+              "correctAnswer": true
+            },
+            {
+              "id": "exercise-greetings-comprehension",
+              "type": "comprehension",
+              "prompt": {
+                "vi": "Phản hồi phù hợp với Hello là gì?",
+                "en": "What is an appropriate response to Hello?"
+              },
+              "instruction": {
+                "vi": "Hello! — Hi!",
+                "en": "Hello! — Hi!"
+              },
+              "hint": {
+                "vi": "Gợi ý cho Phản hồi phù hợp với Hello là gì?",
+                "en": "Hint for: What is an appropriate response to Hello?"
+              },
+              "options": [
+                {
+                  "id": "option-answer",
+                  "text": {
+                    "vi": "Hi!",
+                    "en": "Hi!"
+                  }
+                },
+                {
+                  "id": "option-other",
+                  "text": {
+                    "vi": "Other",
+                    "en": "Other"
+                  }
+                }
+              ],
+              "explanation": {
+                "vi": "Đáp án theo mẫu mục tiêu của bài Chào hỏi.",
+                "en": "The answer follows the target pattern for Greetings."
+              },
+              "skill": "reading",
+              "conceptIds": [
+                "concept-greetings"
+              ],
+              "correctOptionId": "option-answer"
+            },
+            {
+              "id": "exercise-greetings-dictation",
+              "type": "dictation",
+              "prompt": {
+                "vi": "Gõ lời chào bạn nghe được.",
+                "en": "Type the greeting you hear."
+              },
+              "hint": {
+                "vi": "Gợi ý cho Gõ lời chào bạn nghe được.",
+                "en": "Hint for: Type the greeting you hear."
+              },
+              "transcript": {
+                "vi": "Hello",
+                "en": "Hello"
+              },
+              "explanation": {
+                "vi": "Đáp án theo mẫu mục tiêu của bài Chào hỏi.",
+                "en": "The answer follows the target pattern for Greetings."
+              },
+              "skill": "listening",
+              "conceptIds": [
+                "concept-greetings"
+              ],
+              "acceptedAnswers": [
+                "Hello"
+              ],
+              "caseSensitive": false,
+              "media": {
+                "id": "media-greetings-dictation",
+                "type": "audio",
+                "objectKey": "content/audio/unit-1/media-greetings-dictation.wav",
+                "checksum": "sha256:a06903c9cd549418f6975d82ebe57bb24659902d1eab3f19c4514bb7c483e7a4",
+                "locale": "en",
+                "durationMs": 1379
+              }
+            }
+          ],
+          "advancedActivities": []
+        },
+        {
+          "id": "lesson-name",
+          "locale": "vi",
+          "title": {
+            "vi": "Tên của bạn",
+            "en": "Your name"
+          },
+          "objectives": [
+            {
+              "vi": "Hỏi và giới thiệu tên bằng mẫu câu A1.",
+              "en": "Ask for and give a name with an A1 pattern."
+            }
+          ],
+          "estimatedMinutes": 7,
+          "exercises": [
+            {
+              "id": "exercise-name-flashcard",
+              "type": "flashcard",
+              "prompt": {
+                "vi": "Nhớ từ “name”.",
+                "en": "Recall the word “name”."
+              },
+              "hint": {
+                "vi": "Gợi ý cho Nhớ từ “name”.",
+                "en": "Hint for: Recall the word “name”."
+              },
+              "explanation": {
+                "vi": "Đáp án theo mẫu mục tiêu của bài Tên của bạn.",
+                "en": "The answer follows the target pattern for Your name."
+              },
+              "skill": "vocabulary",
+              "conceptIds": [
+                "concept-name"
+              ]
+            },
+            {
+              "id": "exercise-name-choice",
+              "type": "multiple_choice",
+              "prompt": {
+                "vi": "Chọn nghĩa đúng của “name”.",
+                "en": "Choose the meaning of “name”."
+              },
+              "hint": {
+                "vi": "Gợi ý cho Chọn nghĩa đúng của “name”.",
+                "en": "Hint for: Choose the meaning of “name”."
+              },
+              "options": [
+                {
+                  "id": "option-meaning",
+                  "text": {
+                    "vi": "tên",
+                    "en": "tên"
+                  }
+                },
+                {
+                  "id": "option-distractor",
+                  "text": {
+                    "vi": "gặp",
+                    "en": "gặp"
+                  }
+                }
+              ],
+              "explanation": {
+                "vi": "Đáp án theo mẫu mục tiêu của bài Tên của bạn.",
+                "en": "The answer follows the target pattern for Your name."
+              },
+              "skill": "vocabulary",
+              "conceptIds": [
+                "concept-name"
+              ],
+              "correctOptionId": "option-meaning"
+            },
+            {
+              "id": "exercise-name-listen",
+              "type": "listen_select",
+              "prompt": {
+                "vi": "Nghe và chọn “name”.",
+                "en": "Listen and select “name”."
+              },
+              "hint": {
+                "vi": "Gợi ý cho Nghe và chọn “name”.",
+                "en": "Hint for: Listen and select “name”."
+              },
+              "transcript": {
+                "vi": "name",
+                "en": "name"
+              },
+              "options": [
+                {
+                  "id": "option-first",
+                  "text": {
+                    "vi": "name",
+                    "en": "name"
+                  }
+                },
+                {
+                  "id": "option-second",
+                  "text": {
+                    "vi": "meet",
+                    "en": "meet"
+                  }
+                }
+              ],
+              "explanation": {
+                "vi": "Đáp án theo mẫu mục tiêu của bài Tên của bạn.",
+                "en": "The answer follows the target pattern for Your name."
+              },
+              "skill": "listening",
+              "conceptIds": [
+                "concept-name"
+              ],
+              "correctOptionId": "option-first",
+              "media": {
+                "id": "media-name-listen",
+                "type": "audio",
+                "objectKey": "content/audio/unit-1/media-name-listen.wav",
+                "checksum": "sha256:1a6277751bc74f6d2f3f82cd185c8d3a6f0d2d1197dc2651f9d01a77e7d041ff",
+                "locale": "en",
+                "durationMs": 1439
+              }
+            },
+            {
+              "id": "exercise-name-matching",
+              "type": "matching",
+              "prompt": {
+                "vi": "Ghép từ của bài Tên của bạn với nghĩa.",
+                "en": "Match the Your name words with their meanings."
+              },
+              "hint": {
+                "vi": "Gợi ý cho Ghép từ của bài Tên của bạn với nghĩa.",
+                "en": "Hint for: Match the Your name words with their meanings."
+              },
+              "leftItems": [
+                {
+                  "id": "left-name",
+                  "text": {
+                    "vi": "name",
+                    "en": "name"
+                  }
+                },
+                {
+                  "id": "left-meet",
+                  "text": {
+                    "vi": "meet",
+                    "en": "meet"
+                  }
+                }
+              ],
+              "rightItems": [
+                {
+                  "id": "right-name",
+                  "text": {
+                    "vi": "tên",
+                    "en": "tên"
+                  }
+                },
+                {
+                  "id": "right-meet",
+                  "text": {
+                    "vi": "gặp",
+                    "en": "gặp"
+                  }
+                }
+              ],
+              "explanation": {
+                "vi": "Đáp án theo mẫu mục tiêu của bài Tên của bạn.",
+                "en": "The answer follows the target pattern for Your name."
+              },
+              "skill": "vocabulary",
+              "conceptIds": [
+                "concept-name"
+              ],
+              "correctPairs": [
+                {
+                  "leftId": "left-name",
+                  "rightId": "right-name"
+                },
+                {
+                  "leftId": "left-meet",
+                  "rightId": "right-meet"
+                }
+              ]
+            },
+            {
+              "id": "exercise-name-ordering",
+              "type": "ordering",
+              "prompt": {
+                "vi": "Sắp xếp câu của bài Tên của bạn.",
+                "en": "Order the sentence for Your name."
+              },
+              "hint": {
+                "vi": "Gợi ý cho Sắp xếp câu của bài Tên của bạn.",
+                "en": "Hint for: Order the sentence for Your name."
+              },
+              "items": [
+                {
+                  "id": "item-my",
+                  "text": {
+                    "vi": "My",
+                    "en": "My"
+                  }
+                },
+                {
+                  "id": "item-name",
+                  "text": {
+                    "vi": "name",
+                    "en": "name"
+                  }
+                },
+                {
+                  "id": "item-is",
+                  "text": {
+                    "vi": "is",
+                    "en": "is"
+                  }
+                },
+                {
+                  "id": "item-ana",
+                  "text": {
+                    "vi": "Ana",
+                    "en": "Ana"
+                  }
+                }
+              ],
+              "explanation": {
+                "vi": "Đáp án theo mẫu mục tiêu của bài Tên của bạn.",
+                "en": "The answer follows the target pattern for Your name."
+              },
+              "skill": "grammar",
+              "conceptIds": [
+                "concept-name"
+              ],
+              "correctOrder": [
+                "item-my",
+                "item-name",
+                "item-is",
+                "item-ana"
+              ]
+            },
+            {
+              "id": "exercise-name-fill",
+              "type": "fill_blank",
+              "prompt": {
+                "vi": "Hoàn thành câu giới thiệu tên Ana.",
+                "en": "Complete Ana's name introduction."
+              },
+              "hint": {
+                "vi": "Gợi ý cho Hoàn thành câu giới thiệu tên Ana.",
+                "en": "Hint for: Complete Ana's name introduction."
+              },
+              "explanation": {
+                "vi": "Đáp án theo mẫu mục tiêu của bài Tên của bạn.",
+                "en": "The answer follows the target pattern for Your name."
+              },
+              "skill": "writing",
+              "conceptIds": [
+                "concept-name"
+              ],
+              "acceptedAnswers": [
+                "My name is Ana."
+              ],
+              "caseSensitive": false
+            },
+            {
+              "id": "exercise-name-truth",
+              "type": "true_false",
+              "prompt": {
+                "vi": "‘What is your name?’ là câu hỏi tên.",
+                "en": "‘What is your name?’ asks for a name."
+              },
+              "hint": {
+                "vi": "Gợi ý cho ‘What is your name?’ là câu hỏi tên.",
+                "en": "Hint for: ‘What is your name?’ asks for a name."
+              },
+              "explanation": {
+                "vi": "Đáp án theo mẫu mục tiêu của bài Tên của bạn.",
+                "en": "The answer follows the target pattern for Your name."
+              },
+              "skill": "reading",
+              "conceptIds": [
+                "concept-name"
+              ],
+              "correctAnswer": true
+            },
+            {
+              "id": "exercise-name-comprehension",
+              "type": "comprehension",
+              "prompt": {
+                "vi": "Leo trả lời bằng thông tin nào?",
+                "en": "What information does Leo give?"
+              },
+              "instruction": {
+                "vi": "What is your name? — My name is Leo.",
+                "en": "What is your name? — My name is Leo."
+              },
+              "hint": {
+                "vi": "Gợi ý cho Leo trả lời bằng thông tin nào?",
+                "en": "Hint for: What information does Leo give?"
+              },
+              "options": [
+                {
+                  "id": "option-answer",
+                  "text": {
+                    "vi": "His name",
+                    "en": "His name"
+                  }
+                },
+                {
+                  "id": "option-other",
+                  "text": {
+                    "vi": "Other",
+                    "en": "Other"
+                  }
+                }
+              ],
+              "explanation": {
+                "vi": "Đáp án theo mẫu mục tiêu của bài Tên của bạn.",
+                "en": "The answer follows the target pattern for Your name."
+              },
+              "skill": "reading",
+              "conceptIds": [
+                "concept-name"
+              ],
+              "correctOptionId": "option-answer"
+            },
+            {
+              "id": "exercise-name-dictation",
+              "type": "dictation",
+              "prompt": {
+                "vi": "Gõ câu giới thiệu tên bạn nghe được.",
+                "en": "Type the name introduction you hear."
+              },
+              "hint": {
+                "vi": "Gợi ý cho Gõ câu giới thiệu tên bạn nghe được.",
+                "en": "Hint for: Type the name introduction you hear."
+              },
+              "transcript": {
+                "vi": "My name is Ana",
+                "en": "My name is Ana"
+              },
+              "explanation": {
+                "vi": "Đáp án theo mẫu mục tiêu của bài Tên của bạn.",
+                "en": "The answer follows the target pattern for Your name."
+              },
+              "skill": "listening",
+              "conceptIds": [
+                "concept-name"
+              ],
+              "acceptedAnswers": [
+                "My name is Ana"
+              ],
+              "caseSensitive": false,
+              "media": {
+                "id": "media-name-dictation",
+                "type": "audio",
+                "objectKey": "content/audio/unit-1/media-name-dictation.wav",
+                "checksum": "sha256:f929caad31505346b44488483be22903ffa391fbd1bb79588aa16730eae89abe",
+                "locale": "en",
+                "durationMs": 1964
+              }
+            }
+          ],
+          "advancedActivities": []
+        },
+        {
+          "id": "lesson-how-are-you",
+          "locale": "vi",
+          "title": {
+            "vi": "Bạn khỏe không?",
+            "en": "How are you?"
+          },
+          "objectives": [
+            {
+              "vi": "Hỏi thăm và trả lời về trạng thái đơn giản.",
+              "en": "Ask and answer about a simple state."
+            }
+          ],
+          "estimatedMinutes": 7,
+          "exercises": [
+            {
+              "id": "exercise-how-are-you-flashcard",
+              "type": "flashcard",
+              "prompt": {
+                "vi": "Nhớ từ “fine”.",
+                "en": "Recall the word “fine”."
+              },
+              "hint": {
+                "vi": "Gợi ý cho Nhớ từ “fine”.",
+                "en": "Hint for: Recall the word “fine”."
+              },
+              "explanation": {
+                "vi": "Đáp án theo mẫu mục tiêu của bài Bạn khỏe không?.",
+                "en": "The answer follows the target pattern for How are you?."
+              },
+              "skill": "vocabulary",
+              "conceptIds": [
+                "concept-feelings"
+              ]
+            },
+            {
+              "id": "exercise-how-are-you-choice",
+              "type": "multiple_choice",
+              "prompt": {
+                "vi": "Chọn nghĩa đúng của “fine”.",
+                "en": "Choose the meaning of “fine”."
+              },
+              "hint": {
+                "vi": "Gợi ý cho Chọn nghĩa đúng của “fine”.",
+                "en": "Hint for: Choose the meaning of “fine”."
+              },
+              "options": [
+                {
+                  "id": "option-meaning",
+                  "text": {
+                    "vi": "khỏe",
+                    "en": "khỏe"
+                  }
+                },
+                {
+                  "id": "option-distractor",
+                  "text": {
+                    "vi": "mệt",
+                    "en": "mệt"
+                  }
+                }
+              ],
+              "explanation": {
+                "vi": "Đáp án theo mẫu mục tiêu của bài Bạn khỏe không?.",
+                "en": "The answer follows the target pattern for How are you?."
+              },
+              "skill": "vocabulary",
+              "conceptIds": [
+                "concept-feelings"
+              ],
+              "correctOptionId": "option-meaning"
+            },
+            {
+              "id": "exercise-how-are-you-listen",
+              "type": "listen_select",
+              "prompt": {
+                "vi": "Nghe và chọn “fine”.",
+                "en": "Listen and select “fine”."
+              },
+              "hint": {
+                "vi": "Gợi ý cho Nghe và chọn “fine”.",
+                "en": "Hint for: Listen and select “fine”."
+              },
+              "transcript": {
+                "vi": "fine",
+                "en": "fine"
+              },
+              "options": [
+                {
+                  "id": "option-first",
+                  "text": {
+                    "vi": "fine",
+                    "en": "fine"
+                  }
+                },
+                {
+                  "id": "option-second",
+                  "text": {
+                    "vi": "tired",
+                    "en": "tired"
+                  }
+                }
+              ],
+              "explanation": {
+                "vi": "Đáp án theo mẫu mục tiêu của bài Bạn khỏe không?.",
+                "en": "The answer follows the target pattern for How are you?."
+              },
+              "skill": "listening",
+              "conceptIds": [
+                "concept-feelings"
+              ],
+              "correctOptionId": "option-first",
+              "media": {
+                "id": "media-feelings-listen",
+                "type": "audio",
+                "objectKey": "content/audio/unit-1/media-feelings-listen.wav",
+                "checksum": "sha256:367eb9c650d42edb087b67af711056fc8b163464faffbb0e74723db32d808d40",
+                "locale": "en",
+                "durationMs": 1509
+              }
+            },
+            {
+              "id": "exercise-how-are-you-matching",
+              "type": "matching",
+              "prompt": {
+                "vi": "Ghép từ của bài Bạn khỏe không? với nghĩa.",
+                "en": "Match the How are you? words with their meanings."
+              },
+              "hint": {
+                "vi": "Gợi ý cho Ghép từ của bài Bạn khỏe không? với nghĩa.",
+                "en": "Hint for: Match the How are you? words with their meanings."
+              },
+              "leftItems": [
+                {
+                  "id": "left-fine",
+                  "text": {
+                    "vi": "fine",
+                    "en": "fine"
+                  }
+                },
+                {
+                  "id": "left-tired",
+                  "text": {
+                    "vi": "tired",
+                    "en": "tired"
+                  }
+                }
+              ],
+              "rightItems": [
+                {
+                  "id": "right-fine",
+                  "text": {
+                    "vi": "khỏe",
+                    "en": "khỏe"
+                  }
+                },
+                {
+                  "id": "right-tired",
+                  "text": {
+                    "vi": "mệt",
+                    "en": "mệt"
+                  }
+                }
+              ],
+              "explanation": {
+                "vi": "Đáp án theo mẫu mục tiêu của bài Bạn khỏe không?.",
+                "en": "The answer follows the target pattern for How are you?."
+              },
+              "skill": "vocabulary",
+              "conceptIds": [
+                "concept-feelings"
+              ],
+              "correctPairs": [
+                {
+                  "leftId": "left-fine",
+                  "rightId": "right-fine"
+                },
+                {
+                  "leftId": "left-tired",
+                  "rightId": "right-tired"
+                }
+              ]
+            },
+            {
+              "id": "exercise-how-are-you-ordering",
+              "type": "ordering",
+              "prompt": {
+                "vi": "Sắp xếp câu của bài Bạn khỏe không?.",
+                "en": "Order the sentence for How are you?."
+              },
+              "hint": {
+                "vi": "Gợi ý cho Sắp xếp câu của bài Bạn khỏe không?.",
+                "en": "Hint for: Order the sentence for How are you?."
+              },
+              "items": [
+                {
+                  "id": "item-how",
+                  "text": {
+                    "vi": "How",
+                    "en": "How"
+                  }
+                },
+                {
+                  "id": "item-are",
+                  "text": {
+                    "vi": "are",
+                    "en": "are"
+                  }
+                },
+                {
+                  "id": "item-you",
+                  "text": {
+                    "vi": "you?",
+                    "en": "you?"
+                  }
+                }
+              ],
+              "explanation": {
+                "vi": "Đáp án theo mẫu mục tiêu của bài Bạn khỏe không?.",
+                "en": "The answer follows the target pattern for How are you?."
+              },
+              "skill": "grammar",
+              "conceptIds": [
+                "concept-feelings"
+              ],
+              "correctOrder": [
+                "item-how",
+                "item-are",
+                "item-you"
+              ]
+            },
+            {
+              "id": "exercise-how-are-you-fill",
+              "type": "fill_blank",
+              "prompt": {
+                "vi": "Hoàn thành câu trả lời tích cực.",
+                "en": "Complete the positive response."
+              },
+              "hint": {
+                "vi": "Gợi ý cho Hoàn thành câu trả lời tích cực.",
+                "en": "Hint for: Complete the positive response."
+              },
+              "explanation": {
+                "vi": "Đáp án theo mẫu mục tiêu của bài Bạn khỏe không?.",
+                "en": "The answer follows the target pattern for How are you?."
+              },
+              "skill": "writing",
+              "conceptIds": [
+                "concept-feelings"
+              ],
+              "acceptedAnswers": [
+                "I am fine.",
+                "I'm fine."
+              ],
+              "caseSensitive": false
+            },
+            {
+              "id": "exercise-how-are-you-truth",
+              "type": "true_false",
+              "prompt": {
+                "vi": "‘I am tired’ có nghĩa là tôi đang khỏe.",
+                "en": "‘I am tired’ means I am well."
+              },
+              "hint": {
+                "vi": "Gợi ý cho ‘I am tired’ có nghĩa là tôi đang khỏe.",
+                "en": "Hint for: ‘I am tired’ means I am well."
+              },
+              "explanation": {
+                "vi": "Đáp án theo mẫu mục tiêu của bài Bạn khỏe không?.",
+                "en": "The answer follows the target pattern for How are you?."
+              },
+              "skill": "reading",
+              "conceptIds": [
+                "concept-feelings"
+              ],
+              "correctAnswer": false
+            },
+            {
+              "id": "exercise-how-are-you-comprehension",
+              "type": "comprehension",
+              "prompt": {
+                "vi": "Người nói cảm thấy thế nào?",
+                "en": "How does the speaker feel?"
+              },
+              "instruction": {
+                "vi": "How are you? — I’m fine, thanks.",
+                "en": "How are you? — I’m fine, thanks."
+              },
+              "hint": {
+                "vi": "Gợi ý cho Người nói cảm thấy thế nào?",
+                "en": "Hint for: How does the speaker feel?"
+              },
+              "options": [
+                {
+                  "id": "option-answer",
+                  "text": {
+                    "vi": "Fine",
+                    "en": "Fine"
+                  }
+                },
+                {
+                  "id": "option-other",
+                  "text": {
+                    "vi": "Other",
+                    "en": "Other"
+                  }
+                }
+              ],
+              "explanation": {
+                "vi": "Đáp án theo mẫu mục tiêu của bài Bạn khỏe không?.",
+                "en": "The answer follows the target pattern for How are you?."
+              },
+              "skill": "reading",
+              "conceptIds": [
+                "concept-feelings"
+              ],
+              "correctOptionId": "option-answer"
+            },
+            {
+              "id": "exercise-how-are-you-dictation",
+              "type": "dictation",
+              "prompt": {
+                "vi": "Gõ câu hỏi thăm bạn nghe được.",
+                "en": "Type the wellbeing question you hear."
+              },
+              "hint": {
+                "vi": "Gợi ý cho Gõ câu hỏi thăm bạn nghe được.",
+                "en": "Hint for: Type the wellbeing question you hear."
+              },
+              "transcript": {
+                "vi": "How are you",
+                "en": "How are you"
+              },
+              "explanation": {
+                "vi": "Đáp án theo mẫu mục tiêu của bài Bạn khỏe không?.",
+                "en": "The answer follows the target pattern for How are you?."
+              },
+              "skill": "listening",
+              "conceptIds": [
+                "concept-feelings"
+              ],
+              "acceptedAnswers": [
+                "How are you"
+              ],
+              "caseSensitive": false,
+              "media": {
+                "id": "media-feelings-dictation",
+                "type": "audio",
+                "objectKey": "content/audio/unit-1/media-feelings-dictation.wav",
+                "checksum": "sha256:f775309dd42cde6878e4c1fb748a545f1819d07f7350a16fbb37a0d98e0debcc",
+                "locale": "en",
+                "durationMs": 1654
+              }
+            }
+          ],
+          "advancedActivities": []
+        },
+        {
+          "id": "lesson-numbers-age",
+          "locale": "vi",
+          "title": {
+            "vi": "Số và tuổi",
+            "en": "Numbers and age"
+          },
+          "objectives": [
+            {
+              "vi": "Hiểu số 1–20 và hỏi, nói tuổi.",
+              "en": "Understand 1–20 and ask or state age."
+            }
+          ],
+          "estimatedMinutes": 7,
+          "exercises": [
+            {
+              "id": "exercise-numbers-age-flashcard",
+              "type": "flashcard",
+              "prompt": {
+                "vi": "Nhớ từ “twelve”.",
+                "en": "Recall the word “twelve”."
+              },
+              "hint": {
+                "vi": "Gợi ý cho Nhớ từ “twelve”.",
+                "en": "Hint for: Recall the word “twelve”."
+              },
+              "explanation": {
+                "vi": "Đáp án theo mẫu mục tiêu của bài Số và tuổi.",
+                "en": "The answer follows the target pattern for Numbers and age."
+              },
+              "skill": "vocabulary",
+              "conceptIds": [
+                "concept-age"
+              ]
+            },
+            {
+              "id": "exercise-numbers-age-choice",
+              "type": "multiple_choice",
+              "prompt": {
+                "vi": "Chọn nghĩa đúng của “twelve”.",
+                "en": "Choose the meaning of “twelve”."
+              },
+              "hint": {
+                "vi": "Gợi ý cho Chọn nghĩa đúng của “twelve”.",
+                "en": "Hint for: Choose the meaning of “twelve”."
+              },
+              "options": [
+                {
+                  "id": "option-meaning",
+                  "text": {
+                    "vi": "mười hai",
+                    "en": "mười hai"
+                  }
+                },
+                {
+                  "id": "option-distractor",
+                  "text": {
+                    "vi": "tuổi",
+                    "en": "tuổi"
+                  }
+                }
+              ],
+              "explanation": {
+                "vi": "Đáp án theo mẫu mục tiêu của bài Số và tuổi.",
+                "en": "The answer follows the target pattern for Numbers and age."
+              },
+              "skill": "vocabulary",
+              "conceptIds": [
+                "concept-age"
+              ],
+              "correctOptionId": "option-meaning"
+            },
+            {
+              "id": "exercise-numbers-age-listen",
+              "type": "listen_select",
+              "prompt": {
+                "vi": "Nghe và chọn “twelve”.",
+                "en": "Listen and select “twelve”."
+              },
+              "hint": {
+                "vi": "Gợi ý cho Nghe và chọn “twelve”.",
+                "en": "Hint for: Listen and select “twelve”."
+              },
+              "transcript": {
+                "vi": "twelve",
+                "en": "twelve"
+              },
+              "options": [
+                {
+                  "id": "option-first",
+                  "text": {
+                    "vi": "twelve",
+                    "en": "twelve"
+                  }
+                },
+                {
+                  "id": "option-second",
+                  "text": {
+                    "vi": "age",
+                    "en": "age"
+                  }
+                }
+              ],
+              "explanation": {
+                "vi": "Đáp án theo mẫu mục tiêu của bài Số và tuổi.",
+                "en": "The answer follows the target pattern for Numbers and age."
+              },
+              "skill": "listening",
+              "conceptIds": [
+                "concept-age"
+              ],
+              "correctOptionId": "option-first",
+              "media": {
+                "id": "media-age-listen",
+                "type": "audio",
+                "objectKey": "content/audio/unit-1/media-age-listen.wav",
+                "checksum": "sha256:32fde2512b26005d3db2161f56735109370a998b7ac5978a90c3f656ccdf744b",
+                "locale": "en",
+                "durationMs": 1544
+              }
+            },
+            {
+              "id": "exercise-numbers-age-matching",
+              "type": "matching",
+              "prompt": {
+                "vi": "Ghép từ của bài Số và tuổi với nghĩa.",
+                "en": "Match the Numbers and age words with their meanings."
+              },
+              "hint": {
+                "vi": "Gợi ý cho Ghép từ của bài Số và tuổi với nghĩa.",
+                "en": "Hint for: Match the Numbers and age words with their meanings."
+              },
+              "leftItems": [
+                {
+                  "id": "left-twelve",
+                  "text": {
+                    "vi": "twelve",
+                    "en": "twelve"
+                  }
+                },
+                {
+                  "id": "left-age",
+                  "text": {
+                    "vi": "age",
+                    "en": "age"
+                  }
+                }
+              ],
+              "rightItems": [
+                {
+                  "id": "right-twelve",
+                  "text": {
+                    "vi": "mười hai",
+                    "en": "mười hai"
+                  }
+                },
+                {
+                  "id": "right-age",
+                  "text": {
+                    "vi": "tuổi",
+                    "en": "tuổi"
+                  }
+                }
+              ],
+              "explanation": {
+                "vi": "Đáp án theo mẫu mục tiêu của bài Số và tuổi.",
+                "en": "The answer follows the target pattern for Numbers and age."
+              },
+              "skill": "vocabulary",
+              "conceptIds": [
+                "concept-age"
+              ],
+              "correctPairs": [
+                {
+                  "leftId": "left-twelve",
+                  "rightId": "right-twelve"
+                },
+                {
+                  "leftId": "left-age",
+                  "rightId": "right-age"
+                }
+              ]
+            },
+            {
+              "id": "exercise-numbers-age-ordering",
+              "type": "ordering",
+              "prompt": {
+                "vi": "Sắp xếp câu của bài Số và tuổi.",
+                "en": "Order the sentence for Numbers and age."
+              },
+              "hint": {
+                "vi": "Gợi ý cho Sắp xếp câu của bài Số và tuổi.",
+                "en": "Hint for: Order the sentence for Numbers and age."
+              },
+              "items": [
+                {
+                  "id": "item-i",
+                  "text": {
+                    "vi": "I",
+                    "en": "I"
+                  }
+                },
+                {
+                  "id": "item-am",
+                  "text": {
+                    "vi": "am",
+                    "en": "am"
+                  }
+                },
+                {
+                  "id": "item-twelve",
+                  "text": {
+                    "vi": "twelve",
+                    "en": "twelve"
+                  }
+                }
+              ],
+              "explanation": {
+                "vi": "Đáp án theo mẫu mục tiêu của bài Số và tuổi.",
+                "en": "The answer follows the target pattern for Numbers and age."
+              },
+              "skill": "grammar",
+              "conceptIds": [
+                "concept-age"
+              ],
+              "correctOrder": [
+                "item-i",
+                "item-am",
+                "item-twelve"
+              ]
+            },
+            {
+              "id": "exercise-numbers-age-fill",
+              "type": "fill_blank",
+              "prompt": {
+                "vi": "Hoàn thành câu nói tuổi mười hai.",
+                "en": "Complete the sentence stating age twelve."
+              },
+              "hint": {
+                "vi": "Gợi ý cho Hoàn thành câu nói tuổi mười hai.",
+                "en": "Hint for: Complete the sentence stating age twelve."
+              },
+              "explanation": {
+                "vi": "Đáp án theo mẫu mục tiêu của bài Số và tuổi.",
+                "en": "The answer follows the target pattern for Numbers and age."
+              },
+              "skill": "writing",
+              "conceptIds": [
+                "concept-age"
+              ],
+              "acceptedAnswers": [
+                "I am twelve.",
+                "I'm twelve."
+              ],
+              "caseSensitive": false
+            },
+            {
+              "id": "exercise-numbers-age-truth",
+              "type": "true_false",
+              "prompt": {
+                "vi": "‘How old are you?’ hỏi về tuổi.",
+                "en": "‘How old are you?’ asks about age."
+              },
+              "hint": {
+                "vi": "Gợi ý cho ‘How old are you?’ hỏi về tuổi.",
+                "en": "Hint for: ‘How old are you?’ asks about age."
+              },
+              "explanation": {
+                "vi": "Đáp án theo mẫu mục tiêu của bài Số và tuổi.",
+                "en": "The answer follows the target pattern for Numbers and age."
+              },
+              "skill": "reading",
+              "conceptIds": [
+                "concept-age"
+              ],
+              "correctAnswer": true
+            },
+            {
+              "id": "exercise-numbers-age-comprehension",
+              "type": "comprehension",
+              "prompt": {
+                "vi": "Người trả lời bao nhiêu tuổi?",
+                "en": "How old is the speaker?"
+              },
+              "instruction": {
+                "vi": "How old are you? — I’m ten.",
+                "en": "How old are you? — I’m ten."
+              },
+              "hint": {
+                "vi": "Gợi ý cho Người trả lời bao nhiêu tuổi?",
+                "en": "Hint for: How old is the speaker?"
+              },
+              "options": [
+                {
+                  "id": "option-answer",
+                  "text": {
+                    "vi": "Ten",
+                    "en": "Ten"
+                  }
+                },
+                {
+                  "id": "option-other",
+                  "text": {
+                    "vi": "Other",
+                    "en": "Other"
+                  }
+                }
+              ],
+              "explanation": {
+                "vi": "Đáp án theo mẫu mục tiêu của bài Số và tuổi.",
+                "en": "The answer follows the target pattern for Numbers and age."
+              },
+              "skill": "reading",
+              "conceptIds": [
+                "concept-age"
+              ],
+              "correctOptionId": "option-answer"
+            },
+            {
+              "id": "exercise-numbers-age-dictation",
+              "type": "dictation",
+              "prompt": {
+                "vi": "Gõ câu nói tuổi bạn nghe được.",
+                "en": "Type the age statement you hear."
+              },
+              "hint": {
+                "vi": "Gợi ý cho Gõ câu nói tuổi bạn nghe được.",
+                "en": "Hint for: Type the age statement you hear."
+              },
+              "transcript": {
+                "vi": "I am ten",
+                "en": "I am ten"
+              },
+              "explanation": {
+                "vi": "Đáp án theo mẫu mục tiêu của bài Số và tuổi.",
+                "en": "The answer follows the target pattern for Numbers and age."
+              },
+              "skill": "listening",
+              "conceptIds": [
+                "concept-age"
+              ],
+              "acceptedAnswers": [
+                "I am ten"
+              ],
+              "caseSensitive": false,
+              "media": {
+                "id": "media-age-dictation",
+                "type": "audio",
+                "objectKey": "content/audio/unit-1/media-age-dictation.wav",
+                "checksum": "sha256:0e669cfa5a027f5a10ae7d70c352c88e0ec92b6001c1ef15689ea172d8324e2b",
+                "locale": "en",
+                "durationMs": 1639
+              }
+            }
+          ],
+          "advancedActivities": []
+        },
+        {
+          "id": "lesson-checkpoint-first-contact",
+          "locale": "vi",
+          "title": {
+            "vi": "Checkpoint: Lần gặp đầu",
+            "en": "Checkpoint: First contact"
+          },
+          "objectives": [
+            {
+              "vi": "Kết hợp chào hỏi, tên, trạng thái và tuổi trong hội thoại ngắn.",
+              "en": "Combine greetings, name, state and age in a short exchange."
+            }
+          ],
+          "estimatedMinutes": 10,
+          "exercises": [
+            {
+              "id": "exercise-checkpoint-first-contact-flashcard",
+              "type": "flashcard",
+              "prompt": {
+                "vi": "Nhớ từ “introduce”.",
+                "en": "Recall the word “introduce”."
+              },
+              "hint": {
+                "vi": "Gợi ý cho Nhớ từ “introduce”.",
+                "en": "Hint for: Recall the word “introduce”."
+              },
+              "explanation": {
+                "vi": "Đáp án theo mẫu mục tiêu của bài Checkpoint: Lần gặp đầu.",
+                "en": "The answer follows the target pattern for Checkpoint: First contact."
+              },
+              "skill": "vocabulary",
+              "conceptIds": [
+                "concept-first-contact"
+              ]
+            },
+            {
+              "id": "exercise-checkpoint-first-contact-choice",
+              "type": "multiple_choice",
+              "prompt": {
+                "vi": "Chọn nghĩa đúng của “introduce”.",
+                "en": "Choose the meaning of “introduce”."
+              },
+              "hint": {
+                "vi": "Gợi ý cho Chọn nghĩa đúng của “introduce”.",
+                "en": "Hint for: Choose the meaning of “introduce”."
+              },
+              "options": [
+                {
+                  "id": "option-meaning",
+                  "text": {
+                    "vi": "giới thiệu",
+                    "en": "giới thiệu"
+                  }
+                },
+                {
+                  "id": "option-distractor",
+                  "text": {
+                    "vi": "cảm ơn",
+                    "en": "cảm ơn"
+                  }
+                }
+              ],
+              "explanation": {
+                "vi": "Đáp án theo mẫu mục tiêu của bài Checkpoint: Lần gặp đầu.",
+                "en": "The answer follows the target pattern for Checkpoint: First contact."
+              },
+              "skill": "vocabulary",
+              "conceptIds": [
+                "concept-first-contact"
+              ],
+              "correctOptionId": "option-meaning"
+            },
+            {
+              "id": "exercise-checkpoint-first-contact-listen",
+              "type": "listen_select",
+              "prompt": {
+                "vi": "Nghe và chọn “introduce”.",
+                "en": "Listen and select “introduce”."
+              },
+              "hint": {
+                "vi": "Gợi ý cho Nghe và chọn “introduce”.",
+                "en": "Hint for: Listen and select “introduce”."
+              },
+              "transcript": {
+                "vi": "introduce",
+                "en": "introduce"
+              },
+              "options": [
+                {
+                  "id": "option-first",
+                  "text": {
+                    "vi": "introduce",
+                    "en": "introduce"
+                  }
+                },
+                {
+                  "id": "option-second",
+                  "text": {
+                    "vi": "thanks",
+                    "en": "thanks"
+                  }
+                }
+              ],
+              "explanation": {
+                "vi": "Đáp án theo mẫu mục tiêu của bài Checkpoint: Lần gặp đầu.",
+                "en": "The answer follows the target pattern for Checkpoint: First contact."
+              },
+              "skill": "listening",
+              "conceptIds": [
+                "concept-first-contact"
+              ],
+              "correctOptionId": "option-first",
+              "media": {
+                "id": "media-checkpoint-listen",
+                "type": "audio",
+                "objectKey": "content/audio/unit-1/media-checkpoint-listen.wav",
+                "checksum": "sha256:79f24c227de54788ff2b1d30952c6008ff5000928f3ffe2d72fd9680adf065e0",
+                "locale": "en",
+                "durationMs": 1634
+              }
+            },
+            {
+              "id": "exercise-checkpoint-first-contact-matching",
+              "type": "matching",
+              "prompt": {
+                "vi": "Ghép từ của bài Checkpoint: Lần gặp đầu với nghĩa.",
+                "en": "Match the Checkpoint: First contact words with their meanings."
+              },
+              "hint": {
+                "vi": "Gợi ý cho Ghép từ của bài Checkpoint: Lần gặp đầu với nghĩa.",
+                "en": "Hint for: Match the Checkpoint: First contact words with their meanings."
+              },
+              "leftItems": [
+                {
+                  "id": "left-introduce",
+                  "text": {
+                    "vi": "introduce",
+                    "en": "introduce"
+                  }
+                },
+                {
+                  "id": "left-thanks",
+                  "text": {
+                    "vi": "thanks",
+                    "en": "thanks"
+                  }
+                }
+              ],
+              "rightItems": [
+                {
+                  "id": "right-introduce",
+                  "text": {
+                    "vi": "giới thiệu",
+                    "en": "giới thiệu"
+                  }
+                },
+                {
+                  "id": "right-thanks",
+                  "text": {
+                    "vi": "cảm ơn",
+                    "en": "cảm ơn"
+                  }
+                }
+              ],
+              "explanation": {
+                "vi": "Đáp án theo mẫu mục tiêu của bài Checkpoint: Lần gặp đầu.",
+                "en": "The answer follows the target pattern for Checkpoint: First contact."
+              },
+              "skill": "vocabulary",
+              "conceptIds": [
+                "concept-first-contact"
+              ],
+              "correctPairs": [
+                {
+                  "leftId": "left-introduce",
+                  "rightId": "right-introduce"
+                },
+                {
+                  "leftId": "left-thanks",
+                  "rightId": "right-thanks"
+                }
+              ]
+            },
+            {
+              "id": "exercise-checkpoint-first-contact-ordering",
+              "type": "ordering",
+              "prompt": {
+                "vi": "Sắp xếp câu của bài Checkpoint: Lần gặp đầu.",
+                "en": "Order the sentence for Checkpoint: First contact."
+              },
+              "hint": {
+                "vi": "Gợi ý cho Sắp xếp câu của bài Checkpoint: Lần gặp đầu.",
+                "en": "Hint for: Order the sentence for Checkpoint: First contact."
+              },
+              "items": [
+                {
+                  "id": "item-hello",
+                  "text": {
+                    "vi": "Hello",
+                    "en": "Hello"
+                  }
+                },
+                {
+                  "id": "item-my",
+                  "text": {
+                    "vi": "my",
+                    "en": "my"
+                  }
+                },
+                {
+                  "id": "item-name",
+                  "text": {
+                    "vi": "name",
+                    "en": "name"
+                  }
+                },
+                {
+                  "id": "item-is",
+                  "text": {
+                    "vi": "is",
+                    "en": "is"
+                  }
+                },
+                {
+                  "id": "item-mai",
+                  "text": {
+                    "vi": "Mai",
+                    "en": "Mai"
+                  }
+                }
+              ],
+              "explanation": {
+                "vi": "Đáp án theo mẫu mục tiêu của bài Checkpoint: Lần gặp đầu.",
+                "en": "The answer follows the target pattern for Checkpoint: First contact."
+              },
+              "skill": "grammar",
+              "conceptIds": [
+                "concept-first-contact"
+              ],
+              "correctOrder": [
+                "item-hello",
+                "item-my",
+                "item-name",
+                "item-is",
+                "item-mai"
+              ]
+            },
+            {
+              "id": "exercise-checkpoint-first-contact-fill",
+              "type": "fill_blank",
+              "prompt": {
+                "vi": "Hoàn thành lời chào và giới thiệu.",
+                "en": "Complete the greeting and introduction."
+              },
+              "hint": {
+                "vi": "Gợi ý cho Hoàn thành lời chào và giới thiệu.",
+                "en": "Hint for: Complete the greeting and introduction."
+              },
+              "explanation": {
+                "vi": "Đáp án theo mẫu mục tiêu của bài Checkpoint: Lần gặp đầu.",
+                "en": "The answer follows the target pattern for Checkpoint: First contact."
+              },
+              "skill": "writing",
+              "conceptIds": [
+                "concept-first-contact"
+              ],
+              "acceptedAnswers": [
+                "Hello, my name is Mai."
+              ],
+              "caseSensitive": false
+            },
+            {
+              "id": "exercise-checkpoint-first-contact-truth",
+              "type": "true_false",
+              "prompt": {
+                "vi": "‘I’m fine, thanks’ trả lời câu How are you?",
+                "en": "‘I’m fine, thanks’ answers How are you?"
+              },
+              "hint": {
+                "vi": "Gợi ý cho ‘I’m fine, thanks’ trả lời câu How are you?",
+                "en": "Hint for: ‘I’m fine, thanks’ answers How are you?"
+              },
+              "explanation": {
+                "vi": "Đáp án theo mẫu mục tiêu của bài Checkpoint: Lần gặp đầu.",
+                "en": "The answer follows the target pattern for Checkpoint: First contact."
+              },
+              "skill": "reading",
+              "conceptIds": [
+                "concept-first-contact"
+              ],
+              "correctAnswer": true
+            },
+            {
+              "id": "exercise-checkpoint-first-contact-comprehension",
+              "type": "comprehension",
+              "prompt": {
+                "vi": "Sam đã cho biết hai thông tin nào?",
+                "en": "Which two details did Sam give?"
+              },
+              "instruction": {
+                "vi": "Hello, I’m Sam. I’m eleven. — Hi Sam!",
+                "en": "Hello, I’m Sam. I’m eleven. — Hi Sam!"
+              },
+              "hint": {
+                "vi": "Gợi ý cho Sam đã cho biết hai thông tin nào?",
+                "en": "Hint for: Which two details did Sam give?"
+              },
+              "options": [
+                {
+                  "id": "option-answer",
+                  "text": {
+                    "vi": "Name and age",
+                    "en": "Name and age"
+                  }
+                },
+                {
+                  "id": "option-other",
+                  "text": {
+                    "vi": "Other",
+                    "en": "Other"
+                  }
+                }
+              ],
+              "explanation": {
+                "vi": "Đáp án theo mẫu mục tiêu của bài Checkpoint: Lần gặp đầu.",
+                "en": "The answer follows the target pattern for Checkpoint: First contact."
+              },
+              "skill": "reading",
+              "conceptIds": [
+                "concept-first-contact"
+              ],
+              "correctOptionId": "option-answer"
+            },
+            {
+              "id": "exercise-checkpoint-first-contact-dictation",
+              "type": "dictation",
+              "prompt": {
+                "vi": "Gõ lời giới thiệu bạn nghe được.",
+                "en": "Type the introduction you hear."
+              },
+              "hint": {
+                "vi": "Gợi ý cho Gõ lời giới thiệu bạn nghe được.",
+                "en": "Hint for: Type the introduction you hear."
+              },
+              "transcript": {
+                "vi": "Hello, my name is Sam",
+                "en": "Hello, my name is Sam"
+              },
+              "explanation": {
+                "vi": "Đáp án theo mẫu mục tiêu của bài Checkpoint: Lần gặp đầu.",
+                "en": "The answer follows the target pattern for Checkpoint: First contact."
+              },
+              "skill": "listening",
+              "conceptIds": [
+                "concept-first-contact"
+              ],
+              "acceptedAnswers": [
+                "Hello, my name is Sam"
+              ],
+              "caseSensitive": false,
+              "media": {
+                "id": "media-checkpoint-dictation",
+                "type": "audio",
+                "objectKey": "content/audio/unit-1/media-checkpoint-dictation.wav",
+                "checksum": "sha256:5765b52fa52dc281e6a4ba29725cc753e7c7c0504198d942b3f54194cc07344a",
+                "locale": "en",
+                "durationMs": 2929
+              }
+            }
+          ],
+          "advancedActivities": [
+            {
+              "id": "activity-unit-one-writing",
+              "contentRef": "unit-1/checkpoint/writing",
+              "mediaId": "media-checkpoint-dictation",
+              "expectedText": "Hello. My name is Sam. I am eleven.",
+              "targetLocale": "en",
+              "feedbackLocale": "vi"
+            },
+            {
+              "id": "activity-unit-one-pronunciation",
+              "contentRef": "unit-1/checkpoint/pronunciation",
+              "mediaId": "media-checkpoint-dictation",
+              "expectedText": "Hello, my name is Sam",
+              "targetLocale": "en",
+              "feedbackLocale": "vi"
+            },
+            {
+              "id": "activity-unit-one-conversation",
+              "contentRef": "unit-1/checkpoint/conversation",
+              "mediaId": "media-checkpoint-dictation",
+              "expectedText": "Hello. My name is Sam. I am fine.",
+              "targetLocale": "en",
+              "feedbackLocale": "vi"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

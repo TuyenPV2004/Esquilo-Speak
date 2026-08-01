@@ -24,3 +24,10 @@ Production traffic must use HTTPS.
 When emulator-to-host routing through `10.0.2.2` is blocked, use
 `adb reverse tcp:8080 tcp:8080` and set
 `ESQUILO_API_URL=http://127.0.0.1:8080` for that local run.
+
+The deterministic full-unit Android instrumentation test lives at
+`apps/mobile/integration_test/unit_one_android_integration_test.dart`. It covers
+the Unit 1 path, unit download, five lessons and 45 exercises on Android without
+depending on a live server. Backend scoring/progress/mastery/review is validated
+separately by `CurriculumContentPublishingIntegrationTest`; do not describe these
+two tests as one live onboarding-to-completion journey.

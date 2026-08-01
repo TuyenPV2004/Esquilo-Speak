@@ -1,0 +1,692 @@
+{
+  "id": "lesson-numbers-age",
+  "courseId": "course-en-for-vi",
+  "courseVersion": 2,
+  "unitId": "unit-first-contact",
+  "position": 4,
+  "locale": "vi",
+  "requiredLocales": [
+    "vi",
+    "en"
+  ],
+  "title": {
+    "vi": "Số và tuổi",
+    "en": "Numbers and age"
+  },
+  "objectives": [
+    {
+      "vi": "Hiểu số 1–20 và hỏi, nói tuổi.",
+      "en": "Understand 1–20 and ask or state age."
+    }
+  ],
+  "outcomeIds": [
+    "outcome-age"
+  ],
+  "prerequisiteLessonIds": [
+    "lesson-how-are-you"
+  ],
+  "difficulty": "guided",
+  "estimatedMinutes": 7,
+  "exercises": [
+    {
+      "id": "exercise-numbers-age-flashcard",
+      "type": "flashcard",
+      "learningItem": {
+        "skill": "vocabulary",
+        "conceptIds": [
+          "concept-age"
+        ],
+        "outcomeIds": [
+          "outcome-age"
+        ],
+        "prerequisiteConceptIds": [],
+        "difficulty": "introductory"
+      },
+      "presentation": {
+        "prompt": {
+          "vi": "Nhớ từ “twelve”.",
+          "en": "Recall the word “twelve”."
+        },
+        "hint": {
+          "vi": "Gợi ý cho Nhớ từ “twelve”.",
+          "en": "Hint for: Recall the word “twelve”."
+        },
+        "mediaIds": [],
+        "accessibility": {
+          "screenReaderLabel": {
+            "vi": "Nhớ từ “twelve”.",
+            "en": "Recall the word “twelve”."
+          },
+          "requiresAudio": false,
+          "supportsSilentMode": true
+        }
+      },
+      "answerPolicy": {
+        "kind": "self_assessment",
+        "maxAttempts": 2
+      },
+      "feedbackRule": {
+        "correct": {
+          "vi": "Chính xác.",
+          "en": "Correct."
+        },
+        "incorrect": {
+          "vi": "Hãy thử lại.",
+          "en": "Try again."
+        },
+        "explanation": {
+          "vi": "Đáp án theo mẫu mục tiêu của bài Số và tuổi.",
+          "en": "The answer follows the target pattern for Numbers and age."
+        },
+        "hintPolicy": {
+          "revealAfterAttempts": 1,
+          "countsAsAssisted": true
+        }
+      }
+    },
+    {
+      "id": "exercise-numbers-age-choice",
+      "type": "multiple_choice",
+      "learningItem": {
+        "skill": "vocabulary",
+        "conceptIds": [
+          "concept-age"
+        ],
+        "outcomeIds": [
+          "outcome-age"
+        ],
+        "prerequisiteConceptIds": [],
+        "difficulty": "guided"
+      },
+      "presentation": {
+        "prompt": {
+          "vi": "Chọn nghĩa đúng của “twelve”.",
+          "en": "Choose the meaning of “twelve”."
+        },
+        "hint": {
+          "vi": "Gợi ý cho Chọn nghĩa đúng của “twelve”.",
+          "en": "Hint for: Choose the meaning of “twelve”."
+        },
+        "mediaIds": [],
+        "accessibility": {
+          "screenReaderLabel": {
+            "vi": "Chọn nghĩa đúng của “twelve”.",
+            "en": "Choose the meaning of “twelve”."
+          },
+          "requiresAudio": false,
+          "supportsSilentMode": true
+        },
+        "options": [
+          {
+            "id": "option-meaning",
+            "text": {
+              "vi": "mười hai",
+              "en": "mười hai"
+            }
+          },
+          {
+            "id": "option-distractor",
+            "text": {
+              "vi": "tuổi",
+              "en": "tuổi"
+            }
+          }
+        ]
+      },
+      "answerPolicy": {
+        "kind": "option_id",
+        "correctOptionId": "option-meaning",
+        "maxAttempts": 2
+      },
+      "feedbackRule": {
+        "correct": {
+          "vi": "Chính xác.",
+          "en": "Correct."
+        },
+        "incorrect": {
+          "vi": "Hãy thử lại.",
+          "en": "Try again."
+        },
+        "explanation": {
+          "vi": "Đáp án theo mẫu mục tiêu của bài Số và tuổi.",
+          "en": "The answer follows the target pattern for Numbers and age."
+        },
+        "hintPolicy": {
+          "revealAfterAttempts": 1,
+          "countsAsAssisted": true
+        }
+      }
+    },
+    {
+      "id": "exercise-numbers-age-listen",
+      "type": "listen_select",
+      "learningItem": {
+        "skill": "listening",
+        "conceptIds": [
+          "concept-age"
+        ],
+        "outcomeIds": [
+          "outcome-age"
+        ],
+        "prerequisiteConceptIds": [],
+        "difficulty": "guided"
+      },
+      "presentation": {
+        "prompt": {
+          "vi": "Nghe và chọn “twelve”.",
+          "en": "Listen and select “twelve”."
+        },
+        "hint": {
+          "vi": "Gợi ý cho Nghe và chọn “twelve”.",
+          "en": "Hint for: Listen and select “twelve”."
+        },
+        "mediaIds": [
+          "media-age-listen"
+        ],
+        "accessibility": {
+          "screenReaderLabel": {
+            "vi": "Chọn từ twelve qua audio hoặc transcript.",
+            "en": "Select twelve using audio or transcript."
+          },
+          "requiresAudio": false,
+          "supportsSilentMode": true,
+          "interactionHint": {
+            "vi": "Có transcript thay audio.",
+            "en": "A transcript replaces audio in silent mode."
+          }
+        },
+        "options": [
+          {
+            "id": "option-first",
+            "text": {
+              "vi": "twelve",
+              "en": "twelve"
+            }
+          },
+          {
+            "id": "option-second",
+            "text": {
+              "vi": "age",
+              "en": "age"
+            }
+          }
+        ],
+        "transcript": {
+          "vi": "twelve",
+          "en": "twelve"
+        }
+      },
+      "answerPolicy": {
+        "kind": "option_id",
+        "correctOptionId": "option-first",
+        "maxAttempts": 2
+      },
+      "feedbackRule": {
+        "correct": {
+          "vi": "Chính xác.",
+          "en": "Correct."
+        },
+        "incorrect": {
+          "vi": "Hãy thử lại.",
+          "en": "Try again."
+        },
+        "explanation": {
+          "vi": "Đáp án theo mẫu mục tiêu của bài Số và tuổi.",
+          "en": "The answer follows the target pattern for Numbers and age."
+        },
+        "hintPolicy": {
+          "revealAfterAttempts": 1,
+          "countsAsAssisted": true
+        }
+      }
+    },
+    {
+      "id": "exercise-numbers-age-matching",
+      "type": "matching",
+      "learningItem": {
+        "skill": "vocabulary",
+        "conceptIds": [
+          "concept-age"
+        ],
+        "outcomeIds": [
+          "outcome-age"
+        ],
+        "prerequisiteConceptIds": [],
+        "difficulty": "guided"
+      },
+      "presentation": {
+        "prompt": {
+          "vi": "Ghép từ của bài Số và tuổi với nghĩa.",
+          "en": "Match the Numbers and age words with their meanings."
+        },
+        "hint": {
+          "vi": "Gợi ý cho Ghép từ của bài Số và tuổi với nghĩa.",
+          "en": "Hint for: Match the Numbers and age words with their meanings."
+        },
+        "mediaIds": [],
+        "accessibility": {
+          "screenReaderLabel": {
+            "vi": "Ghép từ của bài Số và tuổi với nghĩa.",
+            "en": "Match the Numbers and age words with their meanings."
+          },
+          "requiresAudio": false,
+          "supportsSilentMode": true
+        },
+        "leftItems": [
+          {
+            "id": "left-twelve",
+            "text": {
+              "vi": "twelve",
+              "en": "twelve"
+            }
+          },
+          {
+            "id": "left-age",
+            "text": {
+              "vi": "age",
+              "en": "age"
+            }
+          }
+        ],
+        "rightItems": [
+          {
+            "id": "right-twelve",
+            "text": {
+              "vi": "mười hai",
+              "en": "mười hai"
+            }
+          },
+          {
+            "id": "right-age",
+            "text": {
+              "vi": "tuổi",
+              "en": "tuổi"
+            }
+          }
+        ]
+      },
+      "answerPolicy": {
+        "kind": "pair_set",
+        "correctPairs": [
+          {
+            "leftId": "left-twelve",
+            "rightId": "right-twelve"
+          },
+          {
+            "leftId": "left-age",
+            "rightId": "right-age"
+          }
+        ],
+        "maxAttempts": 2
+      },
+      "feedbackRule": {
+        "correct": {
+          "vi": "Chính xác.",
+          "en": "Correct."
+        },
+        "incorrect": {
+          "vi": "Hãy thử lại.",
+          "en": "Try again."
+        },
+        "explanation": {
+          "vi": "Đáp án theo mẫu mục tiêu của bài Số và tuổi.",
+          "en": "The answer follows the target pattern for Numbers and age."
+        },
+        "hintPolicy": {
+          "revealAfterAttempts": 1,
+          "countsAsAssisted": true
+        }
+      }
+    },
+    {
+      "id": "exercise-numbers-age-ordering",
+      "type": "ordering",
+      "learningItem": {
+        "skill": "grammar",
+        "conceptIds": [
+          "concept-age"
+        ],
+        "outcomeIds": [
+          "outcome-age"
+        ],
+        "prerequisiteConceptIds": [],
+        "difficulty": "guided"
+      },
+      "presentation": {
+        "prompt": {
+          "vi": "Sắp xếp câu của bài Số và tuổi.",
+          "en": "Order the sentence for Numbers and age."
+        },
+        "hint": {
+          "vi": "Gợi ý cho Sắp xếp câu của bài Số và tuổi.",
+          "en": "Hint for: Order the sentence for Numbers and age."
+        },
+        "mediaIds": [],
+        "accessibility": {
+          "screenReaderLabel": {
+            "vi": "Sắp xếp câu của bài Số và tuổi.",
+            "en": "Order the sentence for Numbers and age."
+          },
+          "requiresAudio": false,
+          "supportsSilentMode": true
+        },
+        "items": [
+          {
+            "id": "item-i",
+            "text": {
+              "vi": "I",
+              "en": "I"
+            }
+          },
+          {
+            "id": "item-am",
+            "text": {
+              "vi": "am",
+              "en": "am"
+            }
+          },
+          {
+            "id": "item-twelve",
+            "text": {
+              "vi": "twelve",
+              "en": "twelve"
+            }
+          }
+        ]
+      },
+      "answerPolicy": {
+        "kind": "ordered_ids",
+        "correctOrder": [
+          "item-i",
+          "item-am",
+          "item-twelve"
+        ],
+        "maxAttempts": 2
+      },
+      "feedbackRule": {
+        "correct": {
+          "vi": "Chính xác.",
+          "en": "Correct."
+        },
+        "incorrect": {
+          "vi": "Hãy thử lại.",
+          "en": "Try again."
+        },
+        "explanation": {
+          "vi": "Đáp án theo mẫu mục tiêu của bài Số và tuổi.",
+          "en": "The answer follows the target pattern for Numbers and age."
+        },
+        "hintPolicy": {
+          "revealAfterAttempts": 1,
+          "countsAsAssisted": true
+        }
+      }
+    },
+    {
+      "id": "exercise-numbers-age-fill",
+      "type": "fill_blank",
+      "learningItem": {
+        "skill": "writing",
+        "conceptIds": [
+          "concept-age"
+        ],
+        "outcomeIds": [
+          "outcome-age"
+        ],
+        "prerequisiteConceptIds": [],
+        "difficulty": "independent"
+      },
+      "presentation": {
+        "prompt": {
+          "vi": "Hoàn thành câu nói tuổi mười hai.",
+          "en": "Complete the sentence stating age twelve."
+        },
+        "hint": {
+          "vi": "Gợi ý cho Hoàn thành câu nói tuổi mười hai.",
+          "en": "Hint for: Complete the sentence stating age twelve."
+        },
+        "mediaIds": [],
+        "accessibility": {
+          "screenReaderLabel": {
+            "vi": "Hoàn thành câu nói tuổi mười hai.",
+            "en": "Complete the sentence stating age twelve."
+          },
+          "requiresAudio": false,
+          "supportsSilentMode": true
+        }
+      },
+      "answerPolicy": {
+        "kind": "normalized_text",
+        "acceptedAnswers": [
+          "I am twelve.",
+          "I'm twelve."
+        ],
+        "caseSensitive": false,
+        "maxAttempts": 2
+      },
+      "feedbackRule": {
+        "correct": {
+          "vi": "Chính xác.",
+          "en": "Correct."
+        },
+        "incorrect": {
+          "vi": "Hãy thử lại.",
+          "en": "Try again."
+        },
+        "explanation": {
+          "vi": "Đáp án theo mẫu mục tiêu của bài Số và tuổi.",
+          "en": "The answer follows the target pattern for Numbers and age."
+        },
+        "hintPolicy": {
+          "revealAfterAttempts": 1,
+          "countsAsAssisted": true
+        }
+      }
+    },
+    {
+      "id": "exercise-numbers-age-truth",
+      "type": "true_false",
+      "learningItem": {
+        "skill": "reading",
+        "conceptIds": [
+          "concept-age"
+        ],
+        "outcomeIds": [
+          "outcome-age"
+        ],
+        "prerequisiteConceptIds": [],
+        "difficulty": "guided"
+      },
+      "presentation": {
+        "prompt": {
+          "vi": "‘How old are you?’ hỏi về tuổi.",
+          "en": "‘How old are you?’ asks about age."
+        },
+        "hint": {
+          "vi": "Gợi ý cho ‘How old are you?’ hỏi về tuổi.",
+          "en": "Hint for: ‘How old are you?’ asks about age."
+        },
+        "mediaIds": [],
+        "accessibility": {
+          "screenReaderLabel": {
+            "vi": "‘How old are you?’ hỏi về tuổi.",
+            "en": "‘How old are you?’ asks about age."
+          },
+          "requiresAudio": false,
+          "supportsSilentMode": true
+        }
+      },
+      "answerPolicy": {
+        "kind": "boolean",
+        "correctAnswer": true,
+        "maxAttempts": 2
+      },
+      "feedbackRule": {
+        "correct": {
+          "vi": "Chính xác.",
+          "en": "Correct."
+        },
+        "incorrect": {
+          "vi": "Hãy thử lại.",
+          "en": "Try again."
+        },
+        "explanation": {
+          "vi": "Đáp án theo mẫu mục tiêu của bài Số và tuổi.",
+          "en": "The answer follows the target pattern for Numbers and age."
+        },
+        "hintPolicy": {
+          "revealAfterAttempts": 1,
+          "countsAsAssisted": true
+        }
+      }
+    },
+    {
+      "id": "exercise-numbers-age-comprehension",
+      "type": "comprehension",
+      "learningItem": {
+        "skill": "reading",
+        "conceptIds": [
+          "concept-age"
+        ],
+        "outcomeIds": [
+          "outcome-age"
+        ],
+        "prerequisiteConceptIds": [],
+        "difficulty": "independent"
+      },
+      "presentation": {
+        "prompt": {
+          "vi": "Người trả lời bao nhiêu tuổi?",
+          "en": "How old is the speaker?"
+        },
+        "hint": {
+          "vi": "Gợi ý cho Người trả lời bao nhiêu tuổi?",
+          "en": "Hint for: How old is the speaker?"
+        },
+        "mediaIds": [],
+        "accessibility": {
+          "screenReaderLabel": {
+            "vi": "Người trả lời bao nhiêu tuổi?",
+            "en": "How old is the speaker?"
+          },
+          "requiresAudio": false,
+          "supportsSilentMode": true
+        },
+        "instruction": {
+          "vi": "How old are you? — I’m ten.",
+          "en": "How old are you? — I’m ten."
+        },
+        "options": [
+          {
+            "id": "option-answer",
+            "text": {
+              "vi": "Ten",
+              "en": "Ten"
+            }
+          },
+          {
+            "id": "option-other",
+            "text": {
+              "vi": "Other",
+              "en": "Other"
+            }
+          }
+        ]
+      },
+      "answerPolicy": {
+        "kind": "option_id",
+        "correctOptionId": "option-answer",
+        "maxAttempts": 2
+      },
+      "feedbackRule": {
+        "correct": {
+          "vi": "Chính xác.",
+          "en": "Correct."
+        },
+        "incorrect": {
+          "vi": "Hãy thử lại.",
+          "en": "Try again."
+        },
+        "explanation": {
+          "vi": "Đáp án theo mẫu mục tiêu của bài Số và tuổi.",
+          "en": "The answer follows the target pattern for Numbers and age."
+        },
+        "hintPolicy": {
+          "revealAfterAttempts": 1,
+          "countsAsAssisted": true
+        }
+      }
+    },
+    {
+      "id": "exercise-numbers-age-dictation",
+      "type": "dictation",
+      "learningItem": {
+        "skill": "listening",
+        "conceptIds": [
+          "concept-age"
+        ],
+        "outcomeIds": [
+          "outcome-age"
+        ],
+        "prerequisiteConceptIds": [],
+        "difficulty": "independent"
+      },
+      "presentation": {
+        "prompt": {
+          "vi": "Gõ câu nói tuổi bạn nghe được.",
+          "en": "Type the age statement you hear."
+        },
+        "hint": {
+          "vi": "Gợi ý cho Gõ câu nói tuổi bạn nghe được.",
+          "en": "Hint for: Type the age statement you hear."
+        },
+        "mediaIds": [
+          "media-age-dictation"
+        ],
+        "accessibility": {
+          "screenReaderLabel": {
+            "vi": "Gõ câu nói tuổi bạn nghe được.",
+            "en": "Type the age statement you hear."
+          },
+          "requiresAudio": false,
+          "supportsSilentMode": true,
+          "interactionHint": {
+            "vi": "Cho phép transcript ở silent mode.",
+            "en": "Transcript is available in silent mode."
+          }
+        },
+        "transcript": {
+          "vi": "I am ten",
+          "en": "I am ten"
+        }
+      },
+      "answerPolicy": {
+        "kind": "normalized_text",
+        "acceptedAnswers": [
+          "I am ten"
+        ],
+        "caseSensitive": false,
+        "maxAttempts": 2
+      },
+      "feedbackRule": {
+        "correct": {
+          "vi": "Chính xác.",
+          "en": "Correct."
+        },
+        "incorrect": {
+          "vi": "Hãy thử lại.",
+          "en": "Try again."
+        },
+        "explanation": {
+          "vi": "Đáp án theo mẫu mục tiêu của bài Số và tuổi.",
+          "en": "The answer follows the target pattern for Numbers and age."
+        },
+        "hintPolicy": {
+          "revealAfterAttempts": 1,
+          "countsAsAssisted": true
+        }
+      }
+    }
+  ],
+  "advancedActivities": []
+}

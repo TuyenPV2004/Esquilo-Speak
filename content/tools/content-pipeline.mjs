@@ -10,6 +10,10 @@ const LOCALE = /^[A-Za-z]{2,3}(?:-[A-Za-z0-9]{2,8})*$/;
 const SHA256 = /^sha256:[a-fA-F0-9]{64}$/;
 const SKILLS = new Set(["reading", "listening", "writing", "speaking", "vocabulary", "grammar"]);
 const DIFFICULTIES = new Set(["introductory", "guided", "independent", "checkpoint"]);
+const EXERCISE_TYPES = new Set([
+  "multiple_choice", "true_false", "flashcard", "matching", "listen_select",
+  "ordering", "fill_blank", "dictation", "comprehension",
+]);
 export const REQUIRED_REVIEW_CHECKS = Object.freeze([
   "schema",
   "references",
@@ -63,7 +67,40 @@ export async function loadAuthoringPackage(manifestPath) {
   const reviewEvidence = await readJson(
     resolvePackageFile(root, manifest.reviewEvidence, "reviewEvidence"),
   );
-  return { root, manifestPath: absoluteManifest, manifest, course, units, lessons, mediaManifest, reviewEvidence };
+  const mediaAssets = new Map();
+  for (const media of mediaManifest.media ?? []) {
+    if (typeof media.assetPath !== "string") continue;
+    try {
+      const assetPath = path.resolve(root, media.assetPath);
+      const relative = path.relative(root, assetPath);
+      if (relative.startsWith("..") || path.isAbsolute(relative)) {
+        throw new Error("assetPath points outside the content package");
+      }
+      const bytes = await readFile(assetPath);
+      mediaAssets.set(media.id, {
+        checksum: `sha256:${createHash("sha256").update(bytes).digest("hex")}`,
+        durationMs: wavDurationMs(bytes),
+      });
+    } catch (error) {
+      mediaAssets.set(media.id, { error: error.message });
+    }
+  }
+  return { root, manifestPath: absoluteManifest, manifest, course, units, lessons, mediaManifest, mediaAssets, reviewEvidence };
+}
+
+function wavDurationMs(bytes) {
+  if (bytes.length < 44 || bytes.toString("ascii", 0, 4) !== "RIFF" || bytes.toString("ascii", 8, 12) !== "WAVE") return undefined;
+  let offset = 12;
+  let byteRate;
+  let dataSize;
+  while (offset + 8 <= bytes.length) {
+    const id = bytes.toString("ascii", offset, offset + 4);
+    const size = bytes.readUInt32LE(offset + 4);
+    if (id === "fmt " && size >= 12) byteRate = bytes.readUInt32LE(offset + 16);
+    if (id === "data") dataSize = size;
+    offset += 8 + size + (size % 2);
+  }
+  return byteRate && dataSize ? Math.round((dataSize / byteRate) * 1000) : undefined;
 }
 
 function requireObject(value, location, errors) {
@@ -164,7 +201,7 @@ function validateCourse(course, errors) {
   return requiredLocales;
 }
 
-function validateMedia(mediaManifest, requiredLocales, errors) {
+function validateMedia(mediaManifest, mediaAssets, requiredLocales, errors) {
   const media = Array.isArray(mediaManifest?.media) ? mediaManifest.media : [];
   if (!isObject(mediaManifest) || !Array.isArray(mediaManifest.media)) {
     errors.push(issue("SCHEMA_REQUIRED", "mediaManifest.media", "Media manifest phải chứa mảng media."));
@@ -184,6 +221,15 @@ function validateMedia(mediaManifest, requiredLocales, errors) {
     }
     if (typeof item?.checksum !== "string" || !SHA256.test(item.checksum)) {
       errors.push(issue("MEDIA_CHECKSUM", `${location}.checksum`, "Checksum phải có dạng sha256:<64 hex>."));
+    }
+    if (item?.assetPath !== undefined) {
+      const asset = mediaAssets?.get(item.id);
+      if (!asset || asset.error) {
+        errors.push(issue("MEDIA_ASSET_MISSING", `${location}.assetPath`, `Không thể đọc media asset: ${asset?.error ?? "missing"}.`));
+      } else {
+        if (asset.checksum !== item.checksum) errors.push(issue("MEDIA_ASSET_CHECKSUM", `${location}.checksum`, "Checksum không khớp media asset."));
+        if (item.type === "audio" && asset.durationMs !== item.durationMs) errors.push(issue("MEDIA_ASSET_DURATION", `${location}.durationMs`, "durationMs không khớp WAV asset."));
+      }
     }
     if (typeof item?.license !== "string" || item.license.trim() === "" || typeof item?.source !== "string" || item.source.trim() === "") {
       errors.push(issue("MEDIA_PROVENANCE", location, "Media phải có license và source."));
@@ -238,7 +284,7 @@ export function validateAuthoringPackage(pkg) {
   const courseConceptIds = new Set((pkg.course?.concepts ?? []).map((concept) => concept.id));
   const coveredOutcomes = new Set();
   const usedConcepts = new Set();
-  const mediaById = validateMedia(pkg.mediaManifest, requiredLocales, errors);
+  const mediaById = validateMedia(pkg.mediaManifest, pkg.mediaAssets, requiredLocales, errors);
 
   const declaredUnitIds = pkg.course?.unitIds ?? [];
   declaredUnitIds.forEach((id, index) => {
@@ -300,7 +346,7 @@ export function validateAuthoringPackage(pkg) {
       requireIdentifier(exercise?.id, `${exerciseLocation}.id`, errors);
       if (exerciseIds.has(exercise?.id)) errors.push(issue("DUPLICATE_ID", `${exerciseLocation}.id`, `Exercise ID ${exercise.id} bị trùng trong course version.`));
       exerciseIds.add(exercise?.id);
-      if (!new Set(["multiple_choice", "true_false"]).has(exercise?.type)) errors.push(issue("EXERCISE_TYPE", `${exerciseLocation}.type`, "Giai đoạn 2 chỉ import type runtime multiple_choice và true_false."));
+      if (!EXERCISE_TYPES.has(exercise?.type)) errors.push(issue("EXERCISE_TYPE", `${exerciseLocation}.type`, "Exercise type chưa được Exercise Engine V2 hỗ trợ."));
       const learningItem = exercise?.learningItem;
       if (!isObject(learningItem) || !SKILLS.has(learningItem.skill) || !DIFFICULTIES.has(learningItem.difficulty)) {
         errors.push(issue("LEARNING_ITEM", `${exerciseLocation}.learningItem`, "Learning item phải có skill và difficulty hợp lệ."));
@@ -334,15 +380,47 @@ export function validateAuthoringPackage(pkg) {
       requireLocalized(feedback?.incorrect, requiredLocales, `${exerciseLocation}.feedbackRule.incorrect`, errors);
       requireLocalized(feedback?.explanation, requiredLocales, `${exerciseLocation}.feedbackRule.explanation`, errors);
       if (!Number.isInteger(feedback?.hintPolicy?.revealAfterAttempts) || feedback.hintPolicy.revealAfterAttempts < 1) errors.push(issue("HINT_POLICY", `${exerciseLocation}.feedbackRule.hintPolicy`, "Hint policy phải khai báo revealAfterAttempts dương."));
-      if (exercise?.type === "multiple_choice") {
+      if (["multiple_choice", "listen_select", "comprehension"].includes(exercise?.type)) {
         const options = Array.isArray(presentation?.options) ? presentation.options : [];
-        if (options.length < 2) errors.push(issue("ANSWER_INTEGRITY", `${exerciseLocation}.presentation.options`, "Multiple choice cần ít nhất hai option."));
+        if (options.length < 2) errors.push(issue("ANSWER_INTEGRITY", `${exerciseLocation}.presentation.options`, "Dạng chọn đáp án cần ít nhất hai option."));
         const optionIds = validateUnique(options, (option) => option?.id, `${exerciseLocation}.presentation.options`, errors);
         options.forEach((option, optionIndex) => requireLocalized(option?.text, requiredLocales, `${exerciseLocation}.presentation.options[${optionIndex}].text`, errors));
         if (exercise?.answerPolicy?.kind !== "option_id" || !optionIds.has(exercise?.answerPolicy?.correctOptionId)) errors.push(issue("ANSWER_INTEGRITY", `${exerciseLocation}.answerPolicy`, "correctOptionId phải tham chiếu đúng một option."));
       }
       if (exercise?.type === "true_false" && (exercise?.answerPolicy?.kind !== "boolean" || typeof exercise?.answerPolicy?.correctAnswer !== "boolean")) errors.push(issue("ANSWER_INTEGRITY", `${exerciseLocation}.answerPolicy`, "True/false cần boolean correctAnswer."));
+      if (exercise?.type === "flashcard" && exercise?.answerPolicy?.kind !== "self_assessment") errors.push(issue("ANSWER_INTEGRITY", `${exerciseLocation}.answerPolicy`, "Flashcard cần self_assessment policy."));
+      if (exercise?.type === "matching") {
+        const left = Array.isArray(presentation?.leftItems) ? presentation.leftItems : [];
+        const right = Array.isArray(presentation?.rightItems) ? presentation.rightItems : [];
+        const leftIds = validateUnique(left, (item) => item?.id, `${exerciseLocation}.presentation.leftItems`, errors);
+        const rightIds = validateUnique(right, (item) => item?.id, `${exerciseLocation}.presentation.rightItems`, errors);
+        [...left, ...right].forEach((item, itemIndex) => requireLocalized(item?.text, requiredLocales, `${exerciseLocation}.presentation.matchItems[${itemIndex}].text`, errors));
+        const pairs = exercise?.answerPolicy?.correctPairs ?? [];
+        if (left.length < 2 || right.length < 2 || exercise?.answerPolicy?.kind !== "pair_set" || pairs.length !== left.length || pairs.some((pair) => !leftIds.has(pair?.leftId) || !rightIds.has(pair?.rightId))) errors.push(issue("ANSWER_INTEGRITY", `${exerciseLocation}.answerPolicy`, "Matching cần hai tập item và một cặp hợp lệ cho mỗi item bên trái."));
+      }
+      if (exercise?.type === "ordering") {
+        const items = Array.isArray(presentation?.items) ? presentation.items : [];
+        const itemIds = validateUnique(items, (item) => item?.id, `${exerciseLocation}.presentation.items`, errors);
+        items.forEach((item, itemIndex) => requireLocalized(item?.text, requiredLocales, `${exerciseLocation}.presentation.items[${itemIndex}].text`, errors));
+        const order = exercise?.answerPolicy?.correctOrder ?? [];
+        if (items.length < 2 || exercise?.answerPolicy?.kind !== "ordered_ids" || order.length !== items.length || order.some((id) => !itemIds.has(id))) errors.push(issue("ANSWER_INTEGRITY", `${exerciseLocation}.answerPolicy`, "Ordering cần correctOrder chứa đúng toàn bộ item."));
+      }
+      if (["fill_blank", "dictation"].includes(exercise?.type)) {
+        const accepted = exercise?.answerPolicy?.acceptedAnswers ?? [];
+        if (exercise?.answerPolicy?.kind !== "normalized_text" || accepted.length === 0 || accepted.some((value) => typeof value !== "string" || value.trim() === "")) errors.push(issue("ANSWER_INTEGRITY", `${exerciseLocation}.answerPolicy`, "Dạng text cần ít nhất một accepted answer."));
+      }
+      if (["listen_select", "dictation"].includes(exercise?.type)) requireLocalized(presentation?.transcript, requiredLocales, `${exerciseLocation}.presentation.transcript`, errors);
     });
+    const activityIds = new Set();
+    for (const [activityIndex, activity] of (lesson.advancedActivities ?? []).entries()) {
+      const activityLocation = `${location}.advancedActivities[${activityIndex}]`;
+      requireIdentifier(activity?.id, `${activityLocation}.id`, errors);
+      if (activityIds.has(activity?.id)) errors.push(issue("DUPLICATE_ID", `${activityLocation}.id`, "Advanced activity ID bị trùng trong lesson."));
+      activityIds.add(activity?.id);
+      if (typeof activity?.contentRef !== "string" || activity.contentRef.trim() === "" || typeof activity?.expectedText !== "string" || activity.expectedText.trim() === "") errors.push(issue("ADVANCED_ACTIVITY", activityLocation, "Advanced activity cần contentRef và expectedText."));
+      if (!mediaById.has(activity?.mediaId)) errors.push(issue("REFERENCE_MISSING", `${activityLocation}.mediaId`, `Không tìm thấy media ${activity?.mediaId}.`));
+      if (!LOCALE.test(activity?.targetLocale ?? "") || !LOCALE.test(activity?.feedbackLocale ?? "")) errors.push(issue("LOCALE_FORMAT", activityLocation, "Advanced activity locale không hợp lệ."));
+    }
   });
   for (const outcomeId of courseOutcomeIds) if (!coveredOutcomes.has(outcomeId)) errors.push(issue("CONCEPT_COVERAGE", "course.outcomes", `Outcome ${outcomeId} chưa có lesson/exercise evidence.`));
   for (const conceptId of courseConceptIds) if (!usedConcepts.has(conceptId)) warnings.push(issue("CONCEPT_COVERAGE", "course.concepts", `Concept ${conceptId} chưa được exercise sử dụng.`));
@@ -367,13 +445,22 @@ function compileExercise(exercise, mediaById) {
     skill: exercise.learningItem.skill,
     conceptIds: exercise.learningItem.conceptIds,
   };
+  for (const key of ["instruction", "hint", "transcript", "options", "items", "leftItems", "rightItems"]) {
+    if (exercise.presentation[key] !== undefined) result[key] = exercise.presentation[key];
+  }
   const mediaId = exercise.presentation.mediaIds?.[0];
   if (mediaId) result.media = compactMedia(mediaById.get(mediaId));
-  if (exercise.type === "multiple_choice") {
-    result.options = exercise.presentation.options;
+  if (["multiple_choice", "listen_select", "comprehension"].includes(exercise.type)) {
     result.correctOptionId = exercise.answerPolicy.correctOptionId;
   } else if (exercise.type === "true_false") {
     result.correctAnswer = exercise.answerPolicy.correctAnswer;
+  } else if (exercise.type === "matching") {
+    result.correctPairs = exercise.answerPolicy.correctPairs;
+  } else if (exercise.type === "ordering") {
+    result.correctOrder = exercise.answerPolicy.correctOrder;
+  } else if (["fill_blank", "dictation"].includes(exercise.type)) {
+    result.acceptedAnswers = exercise.answerPolicy.acceptedAnswers;
+    result.caseSensitive = exercise.answerPolicy.caseSensitive ?? false;
   }
   return result;
 }
@@ -395,6 +482,7 @@ export function compileAdminDraft(pkg) {
       objectives: lesson.objectives,
       estimatedMinutes: lesson.estimatedMinutes,
       exercises: lesson.exercises.map((exercise) => compileExercise(exercise, mediaById)),
+      advancedActivities: lesson.advancedActivities ?? [],
     })),
   }));
   const course = pkg.course;
@@ -417,6 +505,10 @@ export function compileLearnerPreview(pkg) {
   for (const unit of draft.units) for (const lesson of unit.lessons) for (const exercise of lesson.exercises) {
     delete exercise.correctOptionId;
     delete exercise.correctAnswer;
+    delete exercise.correctPairs;
+    delete exercise.correctOrder;
+    delete exercise.acceptedAnswers;
+    delete exercise.caseSensitive;
     delete exercise.explanation;
     if (exercise.type === "true_false") {
       exercise.options = [

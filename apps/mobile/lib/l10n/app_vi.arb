@@ -260,5 +260,19 @@
   "supportTicketStatus": "Trạng thái: {status}",
   "@supportTicketStatus": {
     "placeholders": { "status": { "type": "String" } }
-  }
+  },
+  "showHint": "Xem gợi ý",
+  "flashcardKnow": "Tôi đã nhớ",
+  "flashcardLearning": "Đang học",
+  "moveUp": "Di chuyển lên",
+  "moveDown": "Di chuyển xuống",
+  "continueExercise": "Tiếp tục",
+  "reviewMistakes": "Ôn lại câu sai",
+  "lessonLocked": "Đang khóa",
+  "lessonCompleted": "Đã hoàn thành",
+  "unitFallbackTitle": "Unit học tập",
+  "downloadUnit": "Tải unit để học offline",
+  "unitDownloaded": "Đã sẵn sàng offline",
+  "unitProgress": "Đã hoàn thành {completed}/{total} bài học",
+  "@unitProgress": { "placeholders": { "completed": { "type": "int" }, "total": { "type": "int" } } }
 }

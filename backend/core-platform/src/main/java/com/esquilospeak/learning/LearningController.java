@@ -69,6 +69,7 @@ class LearningController {
             @NotBlank @Pattern(regexp = IDENTIFIER) String exerciseId,
             @Pattern(regexp = IDENTIFIER) String selectedOptionId,
             Map<String, Object> response,
+            Map<String, Object> evidence,
             @NotNull Instant occurredAt,
             @PositiveOrZero Integer responseTimeMs,
             UUID sessionId) {
@@ -92,6 +93,7 @@ class LearningController {
                     exerciseId,
                     selectedOptionId,
                     Map.copyOf(normalizedResponse),
+                    evidence == null ? Map.of() : Map.copyOf(evidence),
                     occurredAt,
                     responseTimeMs,
                     sessionId);

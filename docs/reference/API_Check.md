@@ -68,7 +68,8 @@ phục vụ phát triển, không được xem là API production.
 ### 3.2. Học một bài và đồng bộ tiến độ
 
 1. `GET /courses` lấy khóa học theo cặp ngôn ngữ.
-2. `GET /courses/{courseId}/lessons` lấy danh sách bài.
+2. `GET /courses/{courseId}/lessons` lấy danh sách bài cùng `unitId`, `unitTitle` và
+   `position` để client dựng learning path và manifest tải offline theo unit.
 3. `GET /lessons/{lessonId}` lấy nội dung phiên bản bài học đã xuất bản.
 4. Khi người dùng trả lời, app hiện tại ưu tiên lưu mutation local để vẫn hoạt động khi
    offline.
@@ -216,6 +217,10 @@ Ma trận thao tác kiểm thử A01–O04 và API mong đợi nằm trong
 
 - `GET /api/mobile/v1/courses/{courseId}/advanced-activities` trả activity definition đã publish, gồm media ID, content reference, expected input, target locale và feedback locale. UI không fallback sang nội dung A1 cố định.
 - Attempt mới gửi `response` có discriminator; `selectedOptionId` chỉ còn là adapter tương thích cho outbox cũ.
+- Exercise Engine V2 dùng các response kind `option`, `boolean`, `self_assessment`,
+  `pairs`, `sequence` và `text`. Attempt gửi thêm `evidence` độc lập renderer gồm
+  response time, hint, retry, confidence và input modality; server lưu evidence và
+  quyết định correctness theo content version canonical.
 - `POST /api/mobile/v1/engagement/activities` nhận `eventType` và `evidenceRef`; server chọn XP theo policy version thay vì tin điểm do client gửi.
 - `PUT /api/mobile/v1/engagement/notification-preference` nhận giờ, locale và IANA timezone; streak được tính theo ngày học tại timezone đó.
 - Profile trước onboarding có thể chưa có locale/cặp ngôn ngữ/course. `PUT /me/profile` bắt buộc active course đã publish và khớp source/target.

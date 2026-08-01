@@ -33,10 +33,7 @@
     "exercises": {
       "type": "array",
       "items": {
-        "oneOf": [
-          { "$ref": "#/$defs/multipleChoiceExercise" },
-          { "$ref": "#/$defs/trueFalseExercise" }
-        ]
+        "$ref": "#/$defs/exerciseV2"
       },
       "minItems": 1
     },
@@ -48,6 +45,36 @@
   },
   "additionalProperties": false,
   "$defs": {
+    "exerciseV2": {
+      "type": "object",
+      "required": ["id", "type", "prompt", "skill", "conceptIds"],
+      "properties": {
+        "id": { "$ref": "common.schema.json#/$defs/identifier" },
+        "type": {
+          "enum": [
+            "multiple_choice", "true_false", "flashcard", "matching",
+            "listen_select", "ordering", "fill_blank", "dictation", "comprehension"
+          ]
+        },
+        "prompt": { "$ref": "common.schema.json#/$defs/localizedText" },
+        "instruction": { "$ref": "common.schema.json#/$defs/localizedText" },
+        "hint": { "$ref": "common.schema.json#/$defs/localizedText" },
+        "transcript": { "$ref": "common.schema.json#/$defs/localizedText" },
+        "skill": { "type": "string", "enum": ["reading", "listening", "writing", "speaking", "vocabulary", "grammar"] },
+        "conceptIds": {
+          "type": "array",
+          "items": { "$ref": "common.schema.json#/$defs/identifier" },
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "media": { "$ref": "common.schema.json#/$defs/mediaMetadata" },
+        "options": { "type": "array", "items": { "$ref": "#/$defs/exerciseOption" }, "minItems": 2 },
+        "items": { "type": "array", "items": { "$ref": "#/$defs/exerciseOption" }, "minItems": 2 },
+        "leftItems": { "type": "array", "items": { "$ref": "#/$defs/exerciseOption" }, "minItems": 2 },
+        "rightItems": { "type": "array", "items": { "$ref": "#/$defs/exerciseOption" }, "minItems": 2 }
+      },
+      "additionalProperties": false
+    },
     "exerciseBase": {
       "type": "object",
       "required": ["id", "type", "prompt", "skill", "conceptIds"],

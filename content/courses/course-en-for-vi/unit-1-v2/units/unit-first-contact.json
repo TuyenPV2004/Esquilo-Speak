@@ -1,0 +1,25 @@
+{
+  "id": "unit-first-contact",
+  "courseId": "course-en-for-vi",
+  "courseVersion": 2,
+  "position": 1,
+  "title": {
+    "vi": "Lần gặp đầu tiên",
+    "en": "First contact"
+  },
+  "outcomeIds": [
+    "outcome-greetings",
+    "outcome-name",
+    "outcome-feelings",
+    "outcome-age",
+    "outcome-first-contact"
+  ],
+  "prerequisiteUnitIds": [],
+  "lessonIds": [
+    "lesson-greetings",
+    "lesson-name",
+    "lesson-how-are-you",
+    "lesson-numbers-age",
+    "lesson-checkpoint-first-contact"
+  ]
+}

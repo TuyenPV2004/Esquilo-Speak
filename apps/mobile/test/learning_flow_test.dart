@@ -49,6 +49,9 @@ void main() {
     await tester.tap(find.text('Xem tiến độ'));
     await tester.pump();
     expect(find.text('Đã hoàn thành 1/1 bài tập'), findsOneWidget);
+    await tester.tap(find.byKey(const ValueKey('continue-from-progress')));
+    await tester.pump();
+    expect(find.text('Lời chào cơ bản'), findsOneWidget);
   });
 
   testWidgets('announces selection validation before submitting', (
@@ -133,6 +136,69 @@ void main() {
       );
     },
   );
+
+  test('reviews mistakes before the lesson summary', () async {
+    final repository = MistakeReviewLearningRepository();
+    final viewModel = _viewModel(repository);
+    await viewModel.loadCatalog();
+    await viewModel.chooseLanguage(viewModel.languages.last);
+    await viewModel.chooseCourse(viewModel.courses.first);
+    await viewModel.chooseLesson(viewModel.lessons.first);
+
+    viewModel.selectOption('option-hello');
+    await viewModel.submitAnswer();
+    expect(viewModel.feedback?.correct, false);
+    await viewModel.continueAfterFeedback();
+    expect(viewModel.currentExerciseIndex, 1);
+
+    viewModel.setResponse(const TextExerciseResponse('Hello'));
+    await viewModel.submitAnswer();
+    await viewModel.continueAfterFeedback();
+    expect(viewModel.reviewingMistakes, true);
+    expect(viewModel.currentExerciseIndex, 0);
+
+    viewModel.selectOption('option-hello');
+    await viewModel.submitAnswer();
+    await viewModel.continueAfterFeedback();
+    expect(viewModel.step, LearningStep.progress);
+    expect(repository.submissions, 3);
+  });
+
+  testWidgets('shows the unit path and durable download state', (tester) async {
+    final repository = DownloadLearningRepository();
+    final viewModel = _viewModel(repository);
+    await viewModel.loadCatalog();
+    await viewModel.chooseLanguage(viewModel.languages.last);
+    await viewModel.chooseCourse(viewModel.courses.first);
+    await tester.pumpWidget(
+      MaterialApp(
+        locale: const Locale('en'),
+        builder: (context, child) => MediaQuery(
+          data: MediaQuery.of(
+            context,
+          ).copyWith(textScaler: const TextScaler.linear(2)),
+          child: child!,
+        ),
+        localizationsDelegates: const [
+          AppLocalizations.delegate,
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+        ],
+        supportedLocales: AppLocalizations.supportedLocales,
+        home: LearningFlowScreen(viewModel: viewModel),
+      ),
+    );
+
+    expect(find.text('First contact'), findsOneWidget);
+    expect(find.text('0 of 1 lessons completed'), findsOneWidget);
+    await tester.tap(
+      find.byKey(const ValueKey('download-unit-unit-first-contact')),
+    );
+    await tester.pump();
+    expect(find.text('Available offline'), findsOneWidget);
+    expect(repository.downloads, 1);
+  });
 }
 
 LearningViewModel _viewModel(LearningRepository repository) =>
@@ -260,6 +326,94 @@ class RetryOnceLearningRepository extends FakeLearningRepository {
       throw const LearningTestException();
     }
     return super.submitAttempt(attempt);
+  }
+}
+
+class DownloadLearningRepository extends FakeLearningRepository
+    implements UnitDownloadStore {
+  int downloads = 0;
+
+  static const unitSummary = LessonSummary(
+    id: 'lesson-basic-greetings',
+    version: 1,
+    title: {'vi': 'Lời chào cơ bản', 'en': 'Basic greetings'},
+    estimatedMinutes: 5,
+    locale: 'vi',
+    unitId: 'unit-first-contact',
+    unitTitle: {'vi': 'Lần gặp đầu tiên', 'en': 'First contact'},
+    position: 1,
+  );
+
+  @override
+  Future<List<LessonSummary>> lessons(String courseId) async => [unitSummary];
+
+  @override
+  Future<UnitDownloadStatus> unitDownloadStatus({
+    required String courseId,
+    required String unitId,
+    required List<LessonSummary> lessons,
+  }) async => UnitDownloadStatus(
+    courseId: courseId,
+    unitId: unitId,
+    downloadedLessonCount: downloads == 0 ? 0 : lessons.length,
+    totalLessonCount: lessons.length,
+  );
+
+  @override
+  Future<UnitDownloadStatus> downloadUnit({
+    required String courseId,
+    required String unitId,
+    required List<LessonSummary> lessons,
+  }) async {
+    downloads += 1;
+    return UnitDownloadStatus(
+      courseId: courseId,
+      unitId: unitId,
+      downloadedLessonCount: lessons.length,
+      totalLessonCount: lessons.length,
+    );
+  }
+}
+
+class MistakeReviewLearningRepository extends FakeLearningRepository {
+  int submissions = 0;
+
+  static const lessonWithTwoExercises = Lesson(
+    id: 'lesson-basic-greetings',
+    courseId: 'course-en-for-vi',
+    version: 1,
+    title: {'vi': 'Lời chào cơ bản', 'en': 'Basic greetings'},
+    objectives: [
+      {'vi': 'Nhận biết lời chào.', 'en': 'Recognize greetings.'},
+    ],
+    exercises: [
+      FakeLearningRepository.exercise,
+      Exercise(
+        id: 'exercise-type-hello',
+        type: 'fill_blank',
+        prompt: {'vi': 'Gõ Hello', 'en': 'Type Hello'},
+      ),
+    ],
+  );
+
+  @override
+  Future<Lesson> lesson(String lessonId, {int? version}) async =>
+      lessonWithTwoExercises;
+
+  @override
+  Future<AttemptFeedback> submitAttempt(PendingAttempt attempt) async {
+    submissions += 1;
+    return AttemptFeedback(
+      correct: submissions != 1,
+      messageCode: submissions == 1 ? 'answer.incorrect' : 'answer.correct',
+      correctOptionId: 'option-hello',
+      explanation: const {'vi': 'Giải thích.', 'en': 'Explanation.'},
+      progress: const CourseProgress(
+        courseId: 'course-en-for-vi',
+        completedExerciseCount: 2,
+        totalExerciseCount: 2,
+      ),
+    );
   }
 }
 

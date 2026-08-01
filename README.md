@@ -202,9 +202,10 @@ object storage và production profile không dùng media giả.
 Chi tiết completion, conflict, mastery và review rule nằm trong
 [`ADR-005`](docs/decisions/ADR-005-learning-mastery-review-offline-sync.md).
 
-## Advanced learning P1 cho closed testing
+## Exercise Engine V2 và advanced learning P1
 
-- OpenAPI `0.8.0` giữ proficiency framework có phiên bản, placement theo
+- OpenAPI `0.9.0` bổ sung sáu response kind, attempt evidence độc lập renderer,
+  chín scorer/renderer P0 và vẫn giữ proficiency framework có phiên bản, placement theo
   course và presentation metadata đa locale, bên cạnh media, pronunciation,
   writing/conversation, engagement, commerce/entitlement và support; admin
   content transition bổ sung review evidence có version trước publish.
