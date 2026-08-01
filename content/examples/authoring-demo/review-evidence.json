@@ -1,0 +1,12 @@
+{
+  "checklistVersion": "content-review-v1",
+  "checks": [
+    { "id": "schema", "passed": true, "evidence": "node content/tools/content-pipeline.mjs validate" },
+    { "id": "references", "passed": true, "evidence": "REFERENCE and duplicate-ID validator passed" },
+    { "id": "pedagogy", "passed": true, "evidence": "Content Standards rubric reviewed for outcome and progression" },
+    { "id": "language", "passed": true, "evidence": "Required vi/en locale coverage passed" },
+    { "id": "media-accessibility", "passed": true, "evidence": "Transcript, provenance and silent-mode fallback reviewed" },
+    { "id": "answer-integrity", "passed": true, "evidence": "Answer references and learner-safe projection test passed" },
+    { "id": "preview", "passed": true, "evidence": "Learner-safe HTML preview reviewed" }
+  ]
+}

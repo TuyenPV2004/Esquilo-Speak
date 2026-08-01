@@ -1,21 +1,25 @@
 # Versioned curriculum and learner-delivery schemas
 
-These JSON Schema Draft 2020-12 documents define authoring content and
-learner-safe delivery payloads used by the first vertical slice.
+These JSON Schema Draft 2020-12 documents define content-as-code authoring
+packages and learner-safe delivery payloads.
 
 ## Files
 
 - `common.schema.json`: shared identifiers, locale, localized text, lifecycle and ownership metadata.
 - `language.schema.json`: one enabled learning language in the catalog.
-- `course.schema.json`: one immutable language-pair course version and its ordered unit IDs.
-- `unit.schema.json`: one ordered curriculum unit.
-- `lesson.schema.json`: authoring model for multiple-choice and true/false exercises.
+- `authoring-package.schema.json`: safe relative references composing one package.
+- `course.schema.json`: immutable language-pair course version, outcomes, concepts and ordered unit IDs.
+- `unit.schema.json`: ordered unit with outcome, prerequisite and lesson references.
+- `lesson.schema.json`: source authoring model separating learning item,
+  presentation, answer policy and feedback rule for discriminated exercise types.
+- `media-manifest.schema.json`: media provenance, checksum and accessibility metadata.
+- `review-evidence.schema.json`: versioned publish-review checklist evidence.
 - `lesson-delivery.schema.json`: the public lesson response without scoring data.
 - `lesson.example.json`: minimal valid lesson example.
 
-The authoring schema contains `correctOptionId` or `correctAnswer` plus
-`explanation`. The delivery schema excludes all scoring answers and explanations
-so a client cannot read them before submitting an attempt.
+`answerPolicy` and `feedbackRule.explanation` are authoring-only. The pipeline
+compiles them to the current admin API DTO while learner preview/delivery excludes
+all scoring answers and explanations.
 
 ## Semantic rules outside JSON Schema
 
@@ -28,6 +32,8 @@ so a client cannot read them before submitting an attempt.
 - Owner, license and source information must be reviewed before publishing.
 - Media fields are metadata references only. Binary storage is introduced behind
   an object-storage boundary when production audio or images are added.
+- Exact prompt repetition, outcome/concept coverage, review evidence and media
+  accessibility are semantic checks performed by `content/tools/content-pipeline.mjs`.
 
 The API contract is `../openapi/esquilospeak-learning-v1.yaml`.
 

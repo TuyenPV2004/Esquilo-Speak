@@ -1,17 +1,22 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://schemas.esquilospeak.com/content/lesson.schema.json",
-  "title": "Lesson authoring version",
-  "description": "Authoring-only lesson content. Scoring answers never appear in learner delivery.",
+  "title": "Lesson authoring source",
+  "description": "Content-as-code lesson. Answer policy and feedback are authoring-only and are removed from learner preview/delivery.",
   "type": "object",
   "required": [
     "id",
     "courseId",
     "courseVersion",
     "unitId",
+    "position",
     "locale",
+    "requiredLocales",
     "title",
     "objectives",
+    "outcomeIds",
+    "prerequisiteLessonIds",
+    "difficulty",
     "estimatedMinutes",
     "exercises"
   ],
@@ -20,13 +25,32 @@
     "courseId": { "$ref": "common.schema.json#/$defs/identifier" },
     "courseVersion": { "type": "integer", "minimum": 1 },
     "unitId": { "$ref": "common.schema.json#/$defs/identifier" },
+    "position": { "type": "integer", "minimum": 1 },
     "locale": { "$ref": "common.schema.json#/$defs/locale" },
+    "requiredLocales": {
+      "type": "array",
+      "items": { "$ref": "common.schema.json#/$defs/locale" },
+      "minItems": 1,
+      "uniqueItems": true
+    },
     "title": { "$ref": "common.schema.json#/$defs/localizedText" },
     "objectives": {
       "type": "array",
       "items": { "$ref": "common.schema.json#/$defs/localizedText" },
       "minItems": 1
     },
+    "outcomeIds": {
+      "type": "array",
+      "items": { "$ref": "common.schema.json#/$defs/identifier" },
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "prerequisiteLessonIds": {
+      "type": "array",
+      "items": { "$ref": "common.schema.json#/$defs/identifier" },
+      "uniqueItems": true
+    },
+    "difficulty": { "$ref": "common.schema.json#/$defs/difficulty" },
     "estimatedMinutes": { "type": "integer", "minimum": 1, "maximum": 120 },
     "exercises": {
       "type": "array",
@@ -37,89 +61,144 @@
         ]
       },
       "minItems": 1
-    },
-    "advancedActivities": {
-      "type": "array",
-      "items": { "$ref": "#/$defs/advancedActivity" },
-      "uniqueItems": true
     }
   },
   "additionalProperties": false,
   "$defs": {
-    "exerciseBase": {
+    "learningItem": {
       "type": "object",
-      "required": ["id", "type", "prompt", "explanation", "skill", "conceptIds"],
+      "required": ["skill", "conceptIds", "outcomeIds", "prerequisiteConceptIds", "difficulty"],
       "properties": {
-        "id": { "$ref": "common.schema.json#/$defs/identifier" },
-        "type": { "type": "string" },
-        "prompt": { "$ref": "common.schema.json#/$defs/localizedText" },
-        "explanation": { "$ref": "common.schema.json#/$defs/localizedText" },
-        "skill": {
-          "type": "string",
-          "enum": ["reading", "listening", "writing", "speaking", "vocabulary", "grammar"]
-        },
+        "skill": { "$ref": "common.schema.json#/$defs/skill" },
         "conceptIds": {
           "type": "array",
           "items": { "$ref": "common.schema.json#/$defs/identifier" },
           "minItems": 1,
           "uniqueItems": true
         },
-        "media": { "$ref": "common.schema.json#/$defs/mediaMetadata" }
+        "outcomeIds": {
+          "type": "array",
+          "items": { "$ref": "common.schema.json#/$defs/identifier" },
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "prerequisiteConceptIds": {
+          "type": "array",
+          "items": { "$ref": "common.schema.json#/$defs/identifier" },
+          "uniqueItems": true
+        },
+        "difficulty": { "$ref": "common.schema.json#/$defs/difficulty" }
+      },
+      "additionalProperties": false
+    },
+    "presentationBase": {
+      "type": "object",
+      "required": ["prompt", "hint", "mediaIds", "accessibility"],
+      "properties": {
+        "prompt": { "$ref": "common.schema.json#/$defs/localizedText" },
+        "instruction": { "$ref": "common.schema.json#/$defs/localizedText" },
+        "hint": { "$ref": "common.schema.json#/$defs/localizedText" },
+        "mediaIds": {
+          "type": "array",
+          "items": { "$ref": "common.schema.json#/$defs/identifier" },
+          "uniqueItems": true
+        },
+        "accessibility": { "$ref": "common.schema.json#/$defs/accessibilityMetadata" }
       }
     },
-    "multipleChoiceExercise": {
-      "allOf": [
-        { "$ref": "#/$defs/exerciseBase" },
-        {
+    "feedbackRule": {
+      "type": "object",
+      "required": ["correct", "incorrect", "explanation", "hintPolicy"],
+      "properties": {
+        "correct": { "$ref": "common.schema.json#/$defs/localizedText" },
+        "incorrect": { "$ref": "common.schema.json#/$defs/localizedText" },
+        "explanation": { "$ref": "common.schema.json#/$defs/localizedText" },
+        "hintPolicy": {
           "type": "object",
-          "required": ["options", "correctOptionId"],
+          "required": ["revealAfterAttempts", "countsAsAssisted"],
           "properties": {
-            "type": { "const": "multiple_choice" },
-            "options": {
-              "type": "array",
-              "items": { "$ref": "#/$defs/exerciseOption" },
-              "minItems": 2,
-              "uniqueItems": true
-            },
-            "correctOptionId": { "$ref": "common.schema.json#/$defs/identifier" }
-          }
+            "revealAfterAttempts": { "type": "integer", "minimum": 1, "maximum": 5 },
+            "countsAsAssisted": { "type": "boolean" }
+          },
+          "additionalProperties": false
         }
-      ],
-      "unevaluatedProperties": false
-    },
-    "trueFalseExercise": {
-      "allOf": [
-        { "$ref": "#/$defs/exerciseBase" },
-        {
-          "type": "object",
-          "required": ["correctAnswer"],
-          "properties": {
-            "type": { "const": "true_false" },
-            "correctAnswer": { "type": "boolean" }
-          }
-        }
-      ],
-      "unevaluatedProperties": false
+      },
+      "additionalProperties": false
     },
     "exerciseOption": {
       "type": "object",
       "required": ["id", "text"],
       "properties": {
         "id": { "$ref": "common.schema.json#/$defs/identifier" },
-        "text": { "$ref": "common.schema.json#/$defs/localizedText" }
+        "text": { "$ref": "common.schema.json#/$defs/localizedText" },
+        "mediaId": { "$ref": "common.schema.json#/$defs/identifier" }
       },
       "additionalProperties": false
     },
-    "advancedActivity": {
+    "multipleChoiceExercise": {
       "type": "object",
-      "required": ["id", "contentRef", "mediaId", "expectedText", "targetLocale", "feedbackLocale"],
+      "required": ["id", "type", "learningItem", "presentation", "answerPolicy", "feedbackRule"],
       "properties": {
         "id": { "$ref": "common.schema.json#/$defs/identifier" },
-        "contentRef": { "type": "string", "minLength": 1, "maxLength": 160 },
-        "mediaId": { "$ref": "common.schema.json#/$defs/identifier" },
-        "expectedText": { "type": "string", "minLength": 1, "maxLength": 500 },
-        "targetLocale": { "$ref": "common.schema.json#/$defs/locale" },
-        "feedbackLocale": { "$ref": "common.schema.json#/$defs/locale" }
+        "type": { "const": "multiple_choice" },
+        "learningItem": { "$ref": "#/$defs/learningItem" },
+        "presentation": {
+          "type": "object",
+          "allOf": [
+            { "$ref": "#/$defs/presentationBase" },
+            {
+              "type": "object",
+              "required": ["options"],
+              "properties": {
+                "options": {
+                  "type": "array",
+                  "items": { "$ref": "#/$defs/exerciseOption" },
+                  "minItems": 2
+                }
+              }
+            }
+          ],
+          "unevaluatedProperties": false
+        },
+        "answerPolicy": {
+          "type": "object",
+          "required": ["kind", "correctOptionId", "maxAttempts"],
+          "properties": {
+            "kind": { "const": "option_id" },
+            "correctOptionId": { "$ref": "common.schema.json#/$defs/identifier" },
+            "maxAttempts": { "type": "integer", "minimum": 1, "maximum": 5 }
+          },
+          "additionalProperties": false
+        },
+        "feedbackRule": { "$ref": "#/$defs/feedbackRule" }
+      },
+      "additionalProperties": false
+    },
+    "trueFalseExercise": {
+      "type": "object",
+      "required": ["id", "type", "learningItem", "presentation", "answerPolicy", "feedbackRule"],
+      "properties": {
+        "id": { "$ref": "common.schema.json#/$defs/identifier" },
+        "type": { "const": "true_false" },
+        "learningItem": { "$ref": "#/$defs/learningItem" },
+        "presentation": {
+          "type": "object",
+          "allOf": [
+            { "$ref": "#/$defs/presentationBase" }
+          ],
+          "unevaluatedProperties": false
+        },
+        "answerPolicy": {
+          "type": "object",
+          "required": ["kind", "correctAnswer", "maxAttempts"],
+          "properties": {
+            "kind": { "const": "boolean" },
+            "correctAnswer": { "type": "boolean" },
+            "maxAttempts": { "type": "integer", "minimum": 1, "maximum": 5 }
+          },
+          "additionalProperties": false
+        },
+        "feedbackRule": { "$ref": "#/$defs/feedbackRule" }
       },
       "additionalProperties": false
     }

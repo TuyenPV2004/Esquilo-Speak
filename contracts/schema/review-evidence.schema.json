@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.esquilospeak.com/content/review-evidence.schema.json",
+  "title": "Content review evidence",
+  "type": "object",
+  "required": ["checklistVersion", "checks"],
+  "properties": {
+    "checklistVersion": { "type": "string", "minLength": 1, "maxLength": 40 },
+    "checks": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "passed", "evidence"],
+        "properties": {
+          "id": { "$ref": "common.schema.json#/$defs/identifier" },
+          "passed": { "type": "boolean" },
+          "evidence": { "type": "string", "minLength": 1, "maxLength": 500 }
+        },
+        "additionalProperties": false
+      },
+      "minItems": 6
+    }
+  },
+  "additionalProperties": false
+}

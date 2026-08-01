@@ -156,7 +156,7 @@ yếu dùng hàng đợi offline và `sync/push` để tránh mất bài khi m�
 |---|---|---|---|
 | `PUT /api/admin/v1/content/courses/{courseId}/versions/{version}` | `saveCourseVersionDraft` | Tạo hoặc thay thế bản nháp khóa học | Payload bắt buộc có proficiency framework/version và entry/target level hợp lệ; chỉ draft được thay; cần content scope và content staff/admin |
 | `GET /api/admin/v1/content/courses/{courseId}/versions/{version}` | `getCourseVersionAuthoring` | Xem trước dữ liệu authoring của một version | Có thể chứa scoring answers, không trả qua learner API; cần quyền content |
-| `POST /api/admin/v1/content/courses/{courseId}/versions/{version}/transitions` | `transitionCourseVersion` | Chuyển trạng thái draft → review → approved → scheduled/published → retired | Luồng duyệt/xuất bản; cần quyền content |
+| `POST /api/admin/v1/content/courses/{courseId}/versions/{version}/transitions` | `transitionCourseVersion` | Chuyển trạng thái draft → review → approved → scheduled/published → retired | Khi vào review bắt buộc gửi đủ `reviewEvidence` có version; backend lưu evidence vào audit trail; cần quyền content |
 | `POST /api/admin/v1/content/courses/{courseId}/rollbacks` | `rollbackCourseVersion` | Khôi phục một version từng published rồi retired | Luồng rollback nội dung; cần quyền content |
 
 ### 4.6. Media và học nâng cao

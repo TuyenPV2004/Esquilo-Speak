@@ -1,0 +1,8 @@
+{
+  "schemaVersion": 1,
+  "course": "course.json",
+  "units": ["units/unit-template.json"],
+  "lessons": ["lessons/lesson-template.json"],
+  "mediaManifest": "media-manifest.json",
+  "reviewEvidence": "review-evidence.json"
+}

@@ -1,0 +1,10 @@
+{
+  "id": "unit-authoring-demo",
+  "courseId": "course-authoring-demo",
+  "courseVersion": 1,
+  "position": 1,
+  "title": { "vi": "Gặp gỡ lần đầu", "en": "Meeting for the first time" },
+  "outcomeIds": ["outcome-introduce-name"],
+  "prerequisiteUnitIds": [],
+  "lessonIds": ["lesson-authoring-demo"]
+}

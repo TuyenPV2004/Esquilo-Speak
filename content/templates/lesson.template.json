@@ -1,0 +1,16 @@
+{
+  "id": "lesson-template",
+  "courseId": "course-template",
+  "courseVersion": 1,
+  "unitId": "unit-template",
+  "position": 1,
+  "locale": "vi",
+  "requiredLocales": ["vi", "en"],
+  "title": { "vi": "Tên bài học", "en": "Lesson title" },
+  "objectives": [{ "vi": "Mục tiêu", "en": "Objective" }],
+  "outcomeIds": ["outcome-template"],
+  "prerequisiteLessonIds": [],
+  "difficulty": "guided",
+  "estimatedMinutes": 5,
+  "exercises": []
+}

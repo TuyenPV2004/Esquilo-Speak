@@ -1,0 +1,50 @@
+{
+  "id": "course-authoring-demo",
+  "version": 1,
+  "sourceLanguage": "vi",
+  "targetLanguage": "en",
+  "proficiency": {
+    "frameworkCode": "cefr",
+    "frameworkVersion": "2020",
+    "entryLevelCode": "PRE_A1",
+    "targetLevelCode": "A1"
+  },
+  "locale": "vi",
+  "requiredLocales": ["vi", "en"],
+  "title": { "vi": "English A1 — Authoring demo", "en": "English A1 — Authoring demo" },
+  "description": {
+    "vi": "Package kiểm chứng content pipeline không phụ thuộc application code.",
+    "en": "A package proving that the content pipeline is independent of application code."
+  },
+  "outcomes": [
+    {
+      "id": "outcome-introduce-name",
+      "description": {
+        "vi": "Người học có thể giới thiệu tên bằng mẫu câu cơ bản.",
+        "en": "The learner can introduce their name with a basic pattern."
+      }
+    }
+  ],
+  "concepts": [
+    {
+      "id": "concept-name-pattern",
+      "description": {
+        "vi": "Mẫu câu My name is …",
+        "en": "The pattern My name is …"
+      },
+      "prerequisiteConceptIds": []
+    },
+    {
+      "id": "concept-basic-greeting",
+      "description": {
+        "vi": "Hello là lời chào tiếng Anh cơ bản.",
+        "en": "Hello is a basic English greeting."
+      },
+      "prerequisiteConceptIds": []
+    }
+  ],
+  "unitIds": ["unit-authoring-demo"],
+  "compatibilityVersion": 1,
+  "owner": "EsquiloSpeak content team",
+  "license": "Proprietary"
+}

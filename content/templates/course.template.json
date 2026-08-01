@@ -1,0 +1,17 @@
+{
+  "id": "course-template",
+  "version": 1,
+  "sourceLanguage": "vi",
+  "targetLanguage": "en",
+  "proficiency": { "frameworkCode": "cefr", "frameworkVersion": "2020", "entryLevelCode": "PRE_A1", "targetLevelCode": "A1" },
+  "locale": "vi",
+  "requiredLocales": ["vi", "en"],
+  "title": { "vi": "Tên khóa học", "en": "Course title" },
+  "description": { "vi": "Mô tả khóa học", "en": "Course description" },
+  "outcomes": [{ "id": "outcome-template", "description": { "vi": "Kết quả", "en": "Outcome" } }],
+  "concepts": [{ "id": "concept-template", "description": { "vi": "Khái niệm", "en": "Concept" }, "prerequisiteConceptIds": [] }],
+  "unitIds": ["unit-template"],
+  "compatibilityVersion": 1,
+  "owner": "EsquiloSpeak content team",
+  "license": "Proprietary"
+}

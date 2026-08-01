@@ -1,0 +1,12 @@
+{
+  "checklistVersion": "content-review-v1",
+  "checks": [
+    { "id": "schema", "passed": false, "evidence": "TODO" },
+    { "id": "references", "passed": false, "evidence": "TODO" },
+    { "id": "pedagogy", "passed": false, "evidence": "TODO" },
+    { "id": "language", "passed": false, "evidence": "TODO" },
+    { "id": "media-accessibility", "passed": false, "evidence": "TODO" },
+    { "id": "answer-integrity", "passed": false, "evidence": "TODO" },
+    { "id": "preview", "passed": false, "evidence": "TODO" }
+  ]
+}

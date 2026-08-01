@@ -1,0 +1,16 @@
+{
+  "media": [
+    {
+      "id": "media-hello-audio",
+      "type": "audio",
+      "objectKey": "content/audio/authoring-demo-hello.mp3",
+      "checksum": "sha256:0000000000000000000000000000000000000000000000000000000000000000",
+      "locale": "en",
+      "license": "Proprietary",
+      "source": "https://content.esquilospeak.example/authoring-demo",
+      "durationMs": 900,
+      "transcript": { "vi": "Hello", "en": "Hello" },
+      "captions": { "vi": "Hello", "en": "Hello" }
+    }
+  ]
+}

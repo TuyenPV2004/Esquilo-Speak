@@ -1,0 +1,84 @@
+{
+  "id": "lesson-authoring-demo",
+  "courseId": "course-authoring-demo",
+  "courseVersion": 1,
+  "unitId": "unit-authoring-demo",
+  "position": 1,
+  "locale": "vi",
+  "requiredLocales": ["vi", "en"],
+  "title": { "vi": "Tên của bạn là gì?", "en": "What is your name?" },
+  "objectives": [
+    {
+      "vi": "Hoàn thành mẫu câu giới thiệu tên và nhận biết lời chào cơ bản.",
+      "en": "Complete a name introduction and recognize a basic greeting."
+    }
+  ],
+  "outcomeIds": ["outcome-introduce-name"],
+  "prerequisiteLessonIds": [],
+  "difficulty": "guided",
+  "estimatedMinutes": 5,
+  "exercises": [
+    {
+      "id": "exercise-name-gap",
+      "type": "multiple_choice",
+      "learningItem": {
+        "skill": "vocabulary",
+        "conceptIds": ["concept-name-pattern"],
+        "outcomeIds": ["outcome-introduce-name"],
+        "prerequisiteConceptIds": [],
+        "difficulty": "guided"
+      },
+      "presentation": {
+        "prompt": { "vi": "Hoàn thành câu tiếng Anh: My ___ is Ana.", "en": "Complete: My ___ is Ana." },
+        "hint": { "vi": "Chọn từ dùng trước tên một người.", "en": "Choose the word used before a person's name." },
+        "mediaIds": [],
+        "accessibility": {
+          "screenReaderLabel": { "vi": "Hoàn thành câu My chỗ trống is Ana.", "en": "Complete the sentence My blank is Ana." },
+          "requiresAudio": false,
+          "supportsSilentMode": true
+        },
+        "options": [
+          { "id": "option-name", "text": { "vi": "tên", "en": "name" } },
+          { "id": "option-day", "text": { "vi": "ngày", "en": "day" } },
+          { "id": "option-food", "text": { "vi": "đồ ăn", "en": "food" } }
+        ]
+      },
+      "answerPolicy": { "kind": "option_id", "correctOptionId": "option-name", "maxAttempts": 2 },
+      "feedbackRule": {
+        "correct": { "vi": "Chính xác.", "en": "Correct." },
+        "incorrect": { "vi": "Hãy thử mẫu câu về tên.", "en": "Try the name pattern." },
+        "explanation": { "vi": "Dùng name trong mẫu câu My name is …", "en": "Use name in the pattern My name is …" },
+        "hintPolicy": { "revealAfterAttempts": 1, "countsAsAssisted": true }
+      }
+    },
+    {
+      "id": "exercise-hello-true-false",
+      "type": "true_false",
+      "learningItem": {
+        "skill": "listening",
+        "conceptIds": ["concept-basic-greeting"],
+        "outcomeIds": ["outcome-introduce-name"],
+        "prerequisiteConceptIds": [],
+        "difficulty": "introductory"
+      },
+      "presentation": {
+        "prompt": { "vi": "Hello là một lời chào.", "en": "Hello is a greeting." },
+        "hint": { "vi": "Nghe từ trong audio.", "en": "Listen to the word in the audio." },
+        "mediaIds": ["media-hello-audio"],
+        "accessibility": {
+          "screenReaderLabel": { "vi": "Xác định Hello có phải lời chào hay không.", "en": "Decide whether Hello is a greeting." },
+          "requiresAudio": false,
+          "supportsSilentMode": true,
+          "interactionHint": { "vi": "Có transcript thay thế audio.", "en": "A transcript is available instead of audio." }
+        }
+      },
+      "answerPolicy": { "kind": "boolean", "correctAnswer": true, "maxAttempts": 2 },
+      "feedbackRule": {
+        "correct": { "vi": "Đúng, Hello là lời chào.", "en": "Correct, Hello is a greeting." },
+        "incorrect": { "vi": "Hãy đọc transcript và thử lại.", "en": "Read the transcript and try again." },
+        "explanation": { "vi": "Hello là lời chào tiếng Anh thông dụng.", "en": "Hello is a common English greeting." },
+        "hintPolicy": { "revealAfterAttempts": 1, "countsAsAssisted": true }
+      }
+    }
+  ]
+}

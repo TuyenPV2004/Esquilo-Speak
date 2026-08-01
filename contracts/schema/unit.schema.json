@@ -3,10 +3,39 @@
   "$id": "https://schemas.esquilospeak.com/content/unit.schema.json",
   "title": "Course unit",
   "type": "object",
-  "required": ["id", "title"],
+  "required": [
+    "id",
+    "courseId",
+    "courseVersion",
+    "position",
+    "title",
+    "outcomeIds",
+    "prerequisiteUnitIds",
+    "lessonIds"
+  ],
   "properties": {
     "id": { "$ref": "common.schema.json#/$defs/identifier" },
-    "title": { "$ref": "common.schema.json#/$defs/localizedText" }
+    "courseId": { "$ref": "common.schema.json#/$defs/identifier" },
+    "courseVersion": { "type": "integer", "minimum": 1 },
+    "position": { "type": "integer", "minimum": 1 },
+    "title": { "$ref": "common.schema.json#/$defs/localizedText" },
+    "outcomeIds": {
+      "type": "array",
+      "items": { "$ref": "common.schema.json#/$defs/identifier" },
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "prerequisiteUnitIds": {
+      "type": "array",
+      "items": { "$ref": "common.schema.json#/$defs/identifier" },
+      "uniqueItems": true
+    },
+    "lessonIds": {
+      "type": "array",
+      "items": { "$ref": "common.schema.json#/$defs/identifier" },
+      "minItems": 1,
+      "uniqueItems": true
+    }
   },
   "additionalProperties": false
 }

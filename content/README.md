@@ -12,7 +12,17 @@ dung được nhập vào lifecycle `draft → review → approved → scheduled
 - [`course-en-for-vi/Content_Standards.md`](courses/course-en-for-vi/Content_Standards.md):
   quy tắc biên soạn, feedback, media, safety, accessibility và acceptance rubric.
 
-Các tài liệu này mô tả curriculum đã chốt ở Giai đoạn 1. JSON/YAML template,
-validator, import và preview thuộc Giai đoạn 2; lesson learner-ready thuộc Giai
-đoạn 4. Không sao chép nội dung từ các tài liệu này vào Dart hoặc Java.
+## Authoring pipeline
 
+- [`AUTHORING.md`](AUTHORING.md): quy trình package, validate, preview, review,
+  import/publish, compatibility và tiêu chí chỉ xây CMS khi có bottleneck đo được.
+- [`templates/`](templates/): template JSON cho package, course, unit, lesson,
+  exercise, media manifest và review evidence.
+- [`examples/authoring-demo/`](examples/authoring-demo/): package learner-ready nhỏ
+  dùng làm contract/tooling fixture.
+- [`tools/content-pipeline.mjs`](tools/content-pipeline.mjs): validator, compiler,
+  learner-safe preview và HTTP lifecycle CLI.
+
+Các tài liệu course mô tả curriculum đã chốt ở Giai đoạn 1. Pipeline Giai đoạn 2
+biến package JSON thành draft backend và preview; lesson learner-ready đầy đủ của
+Unit 1 thuộc Giai đoạn 4. Không sao chép nội dung course vào Dart hoặc Java.

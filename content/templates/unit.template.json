@@ -1,0 +1,10 @@
+{
+  "id": "unit-template",
+  "courseId": "course-template",
+  "courseVersion": 1,
+  "position": 1,
+  "title": { "vi": "Tên unit", "en": "Unit title" },
+  "outcomeIds": ["outcome-template"],
+  "prerequisiteUnitIds": [],
+  "lessonIds": ["lesson-template"]
+}

@@ -1,7 +1,7 @@
 openapi: 3.1.1
 info:
   title: EsquiloSpeak Learning API
-  version: 0.7.0
+  version: 0.8.0
   description: >-
     Mobile contract for identity/profile onboarding and the first learning
     vertical slice: resolve a guest or account learner, manage profile and
@@ -720,6 +720,8 @@ paths:
       description: >-
         Supported lifecycle is draft → review → approved →
         scheduled/published → retired. A future effectiveAt requires scheduled.
+        Moving a draft to review requires a complete versioned reviewEvidence
+        checklist; the backend stores it in the content audit trail.
       security:
         - bearerAuth: []
       parameters:
@@ -1479,6 +1481,35 @@ components:
         effectiveAt:
           type: string
           format: date-time
+        reviewEvidence:
+          $ref: '#/components/schemas/ReviewEvidence'
+      additionalProperties: false
+    ReviewEvidence:
+      type: object
+      required: [checklistVersion, checks]
+      properties:
+        checklistVersion:
+          type: string
+          minLength: 1
+          maxLength: 40
+        checks:
+          type: array
+          minItems: 7
+          items:
+            $ref: '#/components/schemas/ReviewCheck'
+      additionalProperties: false
+    ReviewCheck:
+      type: object
+      required: [id, passed, evidence]
+      properties:
+        id:
+          $ref: '#/components/schemas/Identifier'
+        passed:
+          type: boolean
+        evidence:
+          type: string
+          minLength: 1
+          maxLength: 500
       additionalProperties: false
     CourseVersionDraft:
       type: object

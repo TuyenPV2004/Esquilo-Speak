@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.esquilospeak.com/content/authoring-package.schema.json",
+  "title": "Content authoring package manifest",
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "course",
+    "units",
+    "lessons",
+    "mediaManifest",
+    "reviewEvidence"
+  ],
+  "properties": {
+    "schemaVersion": { "const": 1 },
+    "course": { "$ref": "#/$defs/jsonPath" },
+    "units": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/jsonPath" },
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "lessons": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/jsonPath" },
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "mediaManifest": { "$ref": "#/$defs/jsonPath" },
+    "reviewEvidence": { "$ref": "#/$defs/jsonPath" }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "jsonPath": {
+      "type": "string",
+      "pattern": "^(?![/\\\\])(?!.*(?:^|[/\\\\])\\.\\.(?:[/\\\\]|$)).+\\.json$",
+      "minLength": 6,
+      "maxLength": 300
+    }
+  }
+}

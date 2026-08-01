@@ -29,6 +29,14 @@ public class CurriculumContentAdminService {
     private static final TypeReference<Map<String, Object>> MAP_TYPE = new TypeReference<>() {};
     private static final Set<String> SKILLS =
             Set.of("reading", "listening", "writing", "speaking", "vocabulary", "grammar");
+    private static final Set<String> REQUIRED_REVIEW_CHECKS = Set.of(
+            "schema",
+            "references",
+            "pedagogy",
+            "language",
+            "media-accessibility",
+            "answer-integrity",
+            "preview");
 
     private final JdbcClient jdbc;
     private final ObjectMapper objectMapper;
@@ -245,6 +253,7 @@ public class CurriculumContentAdminService {
         ensureTransition(current.state(), target, transition.effectiveAt(), now);
         if (target == ContentState.REVIEW) {
             validateStoredDraft(courseId, version);
+            validateReviewEvidence(transition.reviewEvidence());
         }
         if (target == ContentState.PUBLISHED) {
             publishVersion(courseId, version, transition.effectiveAt(), now);
@@ -283,9 +292,13 @@ public class CurriculumContentAdminService {
                 refreshCoursePublishedFlag(courseId);
             }
         }
-        audit(actor, courseId, version, "STATE_CHANGED", Map.of(
-                "from", current.state().value,
-                "to", target.value));
+        Map<String, Object> auditDetails = new LinkedHashMap<>();
+        auditDetails.put("from", current.state().value);
+        auditDetails.put("to", target.value);
+        if (target == ContentState.REVIEW) {
+            auditDetails.put("reviewEvidence", transition.reviewEvidence());
+        }
+        audit(actor, courseId, version, "STATE_CHANGED", auditDetails);
         return requireVersion(courseId, version);
     }
 
@@ -541,6 +554,29 @@ public class CurriculumContentAdminService {
                 .single();
         if (unitCount == 0 || lessonCount == 0) {
             invalid("A publishable version requires units and lessons.");
+        }
+    }
+
+    private void validateReviewEvidence(ReviewEvidence reviewEvidence) {
+        if (reviewEvidence == null
+                || blank(reviewEvidence.checklistVersion())
+                || reviewEvidence.checklistVersion().length() > 40
+                || reviewEvidence.checks() == null) {
+            invalid("Review requires a versioned checklist with audit evidence.");
+        }
+        Set<String> checkIds = new HashSet<>();
+        for (ReviewCheck check : reviewEvidence.checks()) {
+            if (check == null
+                    || !identifier(check.id())
+                    || !checkIds.add(check.id())
+                    || !check.passed()
+                    || blank(check.evidence())
+                    || check.evidence().length() > 500) {
+                invalid("Every review check must be unique, passed, and include actionable evidence.");
+            }
+        }
+        if (!checkIds.containsAll(REQUIRED_REVIEW_CHECKS)) {
+            invalid("Review evidence is missing one or more required content checks.");
         }
     }
 
@@ -912,7 +948,12 @@ public class CurriculumContentAdminService {
             Integer durationMs,
             Map<String, String> altText) {}
 
-    public record ContentTransition(String targetState, Instant effectiveAt) {}
+    public record ContentTransition(
+            String targetState, Instant effectiveAt, ReviewEvidence reviewEvidence) {}
+
+    public record ReviewEvidence(String checklistVersion, List<ReviewCheck> checks) {}
+
+    public record ReviewCheck(String id, boolean passed, String evidence) {}
 
     public record ContentVersion(
             String courseId,

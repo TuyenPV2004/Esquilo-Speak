@@ -77,6 +77,48 @@
       },
       "additionalProperties": false
     },
+    "difficulty": {
+      "type": "string",
+      "enum": ["introductory", "guided", "independent", "checkpoint"]
+    },
+    "skill": {
+      "type": "string",
+      "enum": ["reading", "listening", "writing", "speaking", "vocabulary", "grammar"]
+    },
+    "outcomeDefinition": {
+      "type": "object",
+      "required": ["id", "description"],
+      "properties": {
+        "id": { "$ref": "#/$defs/identifier" },
+        "description": { "$ref": "#/$defs/localizedText" }
+      },
+      "additionalProperties": false
+    },
+    "conceptDefinition": {
+      "type": "object",
+      "required": ["id", "description"],
+      "properties": {
+        "id": { "$ref": "#/$defs/identifier" },
+        "description": { "$ref": "#/$defs/localizedText" },
+        "prerequisiteConceptIds": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/identifier" },
+          "uniqueItems": true
+        }
+      },
+      "additionalProperties": false
+    },
+    "accessibilityMetadata": {
+      "type": "object",
+      "required": ["screenReaderLabel", "requiresAudio", "supportsSilentMode"],
+      "properties": {
+        "screenReaderLabel": { "$ref": "#/$defs/localizedText" },
+        "requiresAudio": { "type": "boolean" },
+        "supportsSilentMode": { "type": "boolean" },
+        "interactionHint": { "$ref": "#/$defs/localizedText" }
+      },
+      "additionalProperties": false
+    },
     "contentStatus": {
       "type": "string",
       "enum": ["draft", "review", "approved", "scheduled", "published", "retired"]

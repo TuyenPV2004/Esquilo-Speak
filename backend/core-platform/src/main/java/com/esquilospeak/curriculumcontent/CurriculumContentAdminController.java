@@ -3,6 +3,7 @@ package com.esquilospeak.curriculumcontent;
 import com.esquilospeak.curriculumcontent.CurriculumContentAdminService.ContentTransition;
 import com.esquilospeak.curriculumcontent.CurriculumContentAdminService.ContentVersion;
 import com.esquilospeak.curriculumcontent.CurriculumContentAdminService.CourseVersionDraft;
+import com.esquilospeak.curriculumcontent.CurriculumContentAdminService.ReviewEvidence;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
@@ -59,7 +60,10 @@ class CurriculumContentAdminController {
             @PathVariable @Min(1) int version,
             @Valid @RequestBody TransitionBody body) {
         return contentAdminService.transition(
-                jwt, courseId, version, new ContentTransition(body.targetState(), body.effectiveAt()));
+                jwt,
+                courseId,
+                version,
+                new ContentTransition(body.targetState(), body.effectiveAt(), body.reviewEvidence()));
     }
 
     @PostMapping("/{courseId}/rollbacks")
@@ -74,7 +78,8 @@ class CurriculumContentAdminController {
             @NotBlank
                     @Pattern(regexp = "^(draft|review|approved|scheduled|published|retired)$")
                     String targetState,
-            Instant effectiveAt) {}
+            Instant effectiveAt,
+            ReviewEvidence reviewEvidence) {}
 
     record RollbackBody(@Min(1) int targetVersion) {}
 }

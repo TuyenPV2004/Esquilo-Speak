@@ -1,0 +1,32 @@
+{
+  "id": "exercise-template",
+  "type": "multiple_choice",
+  "learningItem": {
+    "skill": "vocabulary",
+    "conceptIds": ["concept-template"],
+    "outcomeIds": ["outcome-template"],
+    "prerequisiteConceptIds": [],
+    "difficulty": "guided"
+  },
+  "presentation": {
+    "prompt": { "vi": "Câu hỏi", "en": "Prompt" },
+    "hint": { "vi": "Gợi ý", "en": "Hint" },
+    "mediaIds": [],
+    "accessibility": {
+      "screenReaderLabel": { "vi": "Nhãn đọc màn hình", "en": "Screen reader label" },
+      "requiresAudio": false,
+      "supportsSilentMode": true
+    },
+    "options": [
+      { "id": "option-correct", "text": { "vi": "Đúng", "en": "Correct" } },
+      { "id": "option-distractor", "text": { "vi": "Nhiễu", "en": "Distractor" } }
+    ]
+  },
+  "answerPolicy": { "kind": "option_id", "correctOptionId": "option-correct", "maxAttempts": 2 },
+  "feedbackRule": {
+    "correct": { "vi": "Chính xác", "en": "Correct" },
+    "incorrect": { "vi": "Thử lại", "en": "Try again" },
+    "explanation": { "vi": "Giải thích", "en": "Explanation" },
+    "hintPolicy": { "revealAfterAttempts": 1, "countsAsAssisted": true }
+  }
+}

@@ -1,0 +1,72 @@
+{
+  "sourceLanguage": "vi",
+  "targetLanguage": "en",
+  "locale": "vi",
+  "compatibilityVersion": 1,
+  "proficiency": {
+    "frameworkCode": "cefr",
+    "frameworkVersion": "2020",
+    "entryLevelCode": "PRE_A1",
+    "targetLevelCode": "A1"
+  },
+  "title": { "vi": "English A1 — Authoring demo", "en": "English A1 — Authoring demo" },
+  "description": {
+    "vi": "Package kiểm chứng content pipeline không phụ thuộc application code.",
+    "en": "A package proving that the content pipeline is independent of application code."
+  },
+  "owner": "EsquiloSpeak content team",
+  "license": "Proprietary",
+  "units": [
+    {
+      "id": "unit-authoring-demo",
+      "title": { "vi": "Gặp gỡ lần đầu", "en": "Meeting for the first time" },
+      "lessons": [
+        {
+          "id": "lesson-authoring-demo",
+          "locale": "vi",
+          "title": { "vi": "Tên của bạn là gì?", "en": "What is your name?" },
+          "objectives": [
+            {
+              "vi": "Hoàn thành mẫu câu giới thiệu tên và nhận biết lời chào cơ bản.",
+              "en": "Complete a name introduction and recognize a basic greeting."
+            }
+          ],
+          "estimatedMinutes": 5,
+          "exercises": [
+            {
+              "id": "exercise-name-gap",
+              "type": "multiple_choice",
+              "prompt": { "vi": "Hoàn thành câu tiếng Anh: My ___ is Ana.", "en": "Complete: My ___ is Ana." },
+              "explanation": { "vi": "Dùng name trong mẫu câu My name is …", "en": "Use name in the pattern My name is …" },
+              "skill": "vocabulary",
+              "conceptIds": ["concept-name-pattern"],
+              "options": [
+                { "id": "option-name", "text": { "vi": "tên", "en": "name" } },
+                { "id": "option-day", "text": { "vi": "ngày", "en": "day" } },
+                { "id": "option-food", "text": { "vi": "đồ ăn", "en": "food" } }
+              ],
+              "correctOptionId": "option-name"
+            },
+            {
+              "id": "exercise-hello-true-false",
+              "type": "true_false",
+              "prompt": { "vi": "Hello là một lời chào.", "en": "Hello is a greeting." },
+              "explanation": { "vi": "Hello là lời chào tiếng Anh thông dụng.", "en": "Hello is a common English greeting." },
+              "skill": "listening",
+              "conceptIds": ["concept-basic-greeting"],
+              "correctAnswer": true,
+              "media": {
+                "id": "media-hello-audio",
+                "type": "audio",
+                "objectKey": "content/audio/authoring-demo-hello.mp3",
+                "checksum": "sha256:0000000000000000000000000000000000000000000000000000000000000000",
+                "locale": "en",
+                "durationMs": 900
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

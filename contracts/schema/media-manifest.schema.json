@@ -1,0 +1,53 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.esquilospeak.com/content/media-manifest.schema.json",
+  "title": "Authoring media manifest",
+  "type": "object",
+  "required": ["media"],
+  "properties": {
+    "media": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/media" }
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "media": {
+      "type": "object",
+      "required": ["id", "type", "objectKey", "checksum", "locale", "license", "source"],
+      "properties": {
+        "id": { "$ref": "common.schema.json#/$defs/identifier" },
+        "type": { "type": "string", "enum": ["audio", "image"] },
+        "objectKey": { "type": "string", "minLength": 1, "maxLength": 500 },
+        "checksum": { "type": "string", "pattern": "^sha256:[a-fA-F0-9]{64}$" },
+        "locale": { "$ref": "common.schema.json#/$defs/locale" },
+        "license": { "type": "string", "minLength": 1, "maxLength": 200 },
+        "source": { "type": "string", "pattern": "^https?://[^\\s]+$" },
+        "durationMs": { "type": "integer", "minimum": 1 },
+        "width": { "type": "integer", "minimum": 1 },
+        "height": { "type": "integer", "minimum": 1 },
+        "transcript": { "$ref": "common.schema.json#/$defs/localizedText" },
+        "captions": { "$ref": "common.schema.json#/$defs/localizedText" },
+        "altText": { "$ref": "common.schema.json#/$defs/localizedText" },
+        "decorative": { "type": "boolean" }
+      },
+      "allOf": [
+        {
+          "if": { "properties": { "type": { "const": "audio" } }, "required": ["type"] },
+          "then": { "required": ["durationMs", "transcript"] }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": { "const": "image" },
+              "decorative": { "const": false }
+            },
+            "required": ["type"]
+          },
+          "then": { "required": ["width", "height", "altText"] }
+        }
+      ],
+      "additionalProperties": false
+    }
+  }
+}

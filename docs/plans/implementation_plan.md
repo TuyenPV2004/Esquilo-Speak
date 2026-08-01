@@ -141,3 +141,72 @@ Developer đã phê duyệt thực hiện bản sửa ngày 2026-08-01 bằng y�
   3.44.0/Dart 3.12.0; repo vẫn giữ constraint Flutter 3.44.3/Dart 3.12.2.
 - 42 test khác pass trong full-suite run; P0 fixture test pass khi chạy lại với
   layout thư mục tạm đúng repository.
+
+## 9. Giai đoạn 2 — Content contract và authoring pipeline
+
+### Mục tiêu
+
+Cho phép content author tạo một content package có version, validate schema và
+ngữ nghĩa, tạo learner-safe preview, nhập/cập nhật draft và điều khiển lifecycle
+backend mà không sửa Dart hoặc Java cho từng lesson.
+
+### Phạm vi triển khai
+
+1. Mở rộng JSON Schema authoring bằng các phần tách biệt: learning item,
+   presentation, answer policy và feedback rule; bổ sung outcome, prerequisite,
+   difficulty, hint, media và accessibility metadata.
+2. Tạo content package mẫu gồm course, unit, lesson, exercise snippet, media
+   manifest và review evidence.
+3. Tạo CLI Node.js không thêm dependency để validate cấu trúc/ngữ nghĩa, compile
+   package sang admin API payload, sinh learner-safe preview, import/update draft,
+   transition lifecycle và rollback.
+4. Bổ sung review evidence bắt buộc khi chuyển draft sang review; lưu evidence
+   trong content audit hiện có và bảo toàn lifecycle/versioning hiện hành.
+5. Dùng một package demo làm contract fixture và backend integration evidence cho
+   luồng tạo → review → approve → publish → version mới → rollback/retire.
+6. Ghi rõ ngưỡng chỉ xây admin web/CMS khi content-as-code trở thành bottleneck
+   vận hành đã đo được.
+
+### Khu vực dự kiến thay đổi
+
+- `contracts/schema/` và contract OpenAPI content transition.
+- `content/templates/`, `content/examples/`, `content/tools/` và hướng dẫn content.
+- Backend `curriculumcontent` cùng integration test; không thêm migration nếu audit
+  evidence có thể lưu an toàn trong `content_audit_events.details` hiện có.
+- `tests/content/` cho validator/compiler/preview/HTTP adapter.
+- Roadmap, README/API guide, change log và tài liệu authoring/review.
+
+### Validation
+
+1. Parse toàn bộ JSON Schema và validate package demo/fixture lỗi bằng content CLI.
+2. Chạy Node content pipeline tests và kiểm tra preview không chứa answer/explanation.
+3. Chạy OpenAPI lint và P0 release-freeze validator.
+4. Chạy backend compile, curriculum-content integration test, full test, Modulith
+   verification và `bootJar` với PostgreSQL/Testcontainers.
+5. Kiểm tra Markdown link, UTF-8 và `git diff --check`.
+
+### Giả định và rủi ro
+
+- Giai đoạn 3 mới triển khai renderer/scoring cho các exercise type mới; Giai đoạn
+  2 chỉ khóa authoring contract và pipeline cho các type runtime đang hỗ trợ, đồng
+  thời giữ extension boundary rõ ràng.
+- CLI không lưu token; token content admin chỉ được đọc từ biến môi trường khi gọi
+  backend và không được ghi vào artifact/log.
+- Preview là adapter learner-safe tối thiểu dùng cùng compiled delivery shape; chưa
+  thay thế visual QA trên thiết bị ở Giai đoạn 4.
+- Yêu cầu “Thực hiện Giai đoạn 2” ngày 2026-08-01 được xem là phê duyệt mở công việc
+  sau Giai đoạn 1. Curriculum owner sign-off riêng vẫn được ghi nhận trung thực nếu
+  chưa có evidence.
+
+### Kết quả
+
+- Contract Draft 2020-12, package/template/example, validator structural/semantic,
+  compiler, learner-safe preview và CLI HTTP lifecycle đã hoàn tất.
+- Package demo compile đúng bằng backend integration fixture; Node pipeline test
+  bảo vệ invalid content, answer leakage, HTTP adapter và review evidence.
+- Backend bắt buộc bảy review check trước trạng thái review, lưu evidence vào audit
+  hiện có và không cần migration mới.
+- Integration test phát hành lesson từ compiled fixture, xác nhận learner payload
+  không lộ answer/explanation và published version không thể bị ghi đè.
+- OpenAPI nâng lên `0.8.0`; Redocly lint, P0 release-freeze, targeted/full backend
+  test, Modulith verification và `bootJar` đã pass trên JDK 21/PostgreSQL 18.

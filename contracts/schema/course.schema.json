@@ -12,6 +12,9 @@
     "locale",
     "title",
     "description",
+    "requiredLocales",
+    "outcomes",
+    "concepts",
     "unitIds",
     "compatibilityVersion",
     "owner",
@@ -26,6 +29,22 @@
     "locale": { "$ref": "common.schema.json#/$defs/locale" },
     "title": { "$ref": "common.schema.json#/$defs/localizedText" },
     "description": { "$ref": "common.schema.json#/$defs/localizedText" },
+    "requiredLocales": {
+      "type": "array",
+      "items": { "$ref": "common.schema.json#/$defs/locale" },
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "outcomes": {
+      "type": "array",
+      "items": { "$ref": "common.schema.json#/$defs/outcomeDefinition" },
+      "minItems": 1
+    },
+    "concepts": {
+      "type": "array",
+      "items": { "$ref": "common.schema.json#/$defs/conceptDefinition" },
+      "minItems": 1
+    },
     "unitIds": {
       "type": "array",
       "items": { "$ref": "common.schema.json#/$defs/identifier" },

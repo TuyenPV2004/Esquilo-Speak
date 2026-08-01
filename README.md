@@ -173,6 +173,11 @@ Authoring payload chứa scoring data; learner API chỉ đọc `learner_content
 loại `correctOptionId`, `correctAnswer` và `explanation`. P0 hỗ trợ
 `multiple_choice` và `true_false`.
 
+Content-as-code workflow, template, validator, learner-safe preview và CLI
+import/lifecycle nằm tại [`content/AUTHORING.md`](content/AUTHORING.md). Chuyển
+draft sang review bắt buộc có checklist evidence có version; evidence được lưu
+trong content audit trail.
+
 Media production vẫn chỉ có metadata (`objectKey`, checksum, locale,
 duration/alt text). Profile local của backend P1 có endpoint WAV deterministic
 để Android closed testing kiểm tra playback/download; repository chưa thêm
@@ -199,9 +204,10 @@ Chi tiết completion, conflict, mastery và review rule nằm trong
 
 ## Advanced learning P1 cho closed testing
 
-- OpenAPI `0.7.0` bổ sung proficiency framework có phiên bản, placement theo
+- OpenAPI `0.8.0` giữ proficiency framework có phiên bản, placement theo
   course và presentation metadata đa locale, bên cạnh media, pronunciation,
-  writing/conversation, engagement, commerce/entitlement và support.
+  writing/conversation, engagement, commerce/entitlement và support; admin
+  content transition bổ sung review evidence có version trước publish.
 - Local profile dùng adapter deterministic. Production profile trả `503` cho
   provider-dependent operation cho đến khi media/STT/AI/Play verifier thật được
   cấu hình.

@@ -8,8 +8,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.esquilospeak.curriculumcontent.CurriculumContentAdminService;
+import java.nio.charset.StandardCharsets;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
+import java.util.Objects;
 import java.util.UUID;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -69,6 +71,45 @@ class CurriculumContentPublishingIntegrationTest {
     }
 
     @Test
+    void publishesPipelineCompiledFixtureWithoutApplicationCodeChanges() throws Exception {
+        String courseId = "course-authoring-demo";
+        int version = 1;
+        String draft;
+        try (var stream = Objects.requireNonNull(getClass()
+                .getResourceAsStream("/content/authoring-demo-admin-draft.json"))) {
+            draft = new String(stream.readAllBytes(), StandardCharsets.UTF_8);
+        }
+
+        mockMvc.perform(put("/api/admin/v1/content/courses/{courseId}/versions/{version}",
+                                courseId, version)
+                        .with(contentStaffJwt())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(draft))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.state").value("draft"));
+
+        transition(courseId, version, "review", null);
+        transition(courseId, version, "approved", null);
+        transition(courseId, version, "published", null);
+
+        mockMvc.perform(get("/api/mobile/v1/lessons/{lessonId}", "lesson-authoring-demo")
+                        .param("version", String.valueOf(version)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.exercises[0].prompt.en")
+                        .value("Complete: My ___ is Ana."))
+                .andExpect(jsonPath("$.exercises[0].correctOptionId").doesNotExist())
+                .andExpect(jsonPath("$.exercises[0].explanation").doesNotExist());
+
+        mockMvc.perform(put("/api/admin/v1/content/courses/{courseId}/versions/{version}",
+                                courseId, version)
+                        .with(contentStaffJwt())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(draft))
+                .andExpect(status().isConflict())
+                .andExpect(jsonPath("$.code").value("CONTENT_VERSION_IMMUTABLE"));
+    }
+
+    @Test
     void rejectsLearnerRoleAndBrokenAuthoringReferences() throws Exception {
         mockMvc.perform(put("/api/admin/v1/content/courses/{courseId}/versions/{version}",
                                 "course-p0-validation", 1)
@@ -107,7 +148,32 @@ class CurriculumContentPublishingIntegrationTest {
                 .andExpect(jsonPath("$.content.lessons[0].exercises[0].explanation.vi")
                         .exists());
 
+        mockMvc.perform(post(
+                                "/api/admin/v1/content/courses/{courseId}/versions/{version}/transitions",
+                                courseId,
+                                version)
+                        .with(contentStaffJwt())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"targetState\":\"review\"}"))
+                .andExpect(status().isUnprocessableContent())
+                .andExpect(jsonPath("$.code").value("CONTENT_INVALID"));
+
         transition(courseId, version, "review", null);
+        String reviewAudit = jdbc.sql("""
+                        select details::text
+                        from content_audit_events
+                        where course_id = :courseId
+                          and course_version = :version
+                          and action = 'STATE_CHANGED'
+                          and details ->> 'to' = 'review'
+                        order by occurred_at desc
+                        limit 1
+                        """)
+                .param("courseId", courseId)
+                .param("version", version)
+                .query(String.class)
+                .single();
+        org.junit.jupiter.api.Assertions.assertTrue(reviewAudit.contains("content-review-v1"));
         transition(courseId, version, "approved", null);
         transition(
                 courseId,
@@ -238,14 +304,15 @@ class CurriculumContentPublishingIntegrationTest {
     private void transition(
             String courseId, int version, String targetState, Instant effectiveAt)
             throws Exception {
-        String body = objectMapper.writeValueAsString(java.util.Map.of(
-                "targetState",
-                targetState,
-                "effectiveAt",
-                effectiveAt == null ? "" : effectiveAt.toString()));
-        if (effectiveAt == null) {
-            body = "{\"targetState\":\"" + targetState + "\"}";
+        java.util.Map<String, Object> transition = new java.util.LinkedHashMap<>();
+        transition.put("targetState", targetState);
+        if (effectiveAt != null) {
+            transition.put("effectiveAt", effectiveAt.toString());
         }
+        if ("review".equals(targetState)) {
+            transition.put("reviewEvidence", reviewEvidence());
+        }
+        String body = objectMapper.writeValueAsString(transition);
         mockMvc.perform(post(
                                 "/api/admin/v1/content/courses/{courseId}/versions/{version}/transitions",
                                 courseId,
@@ -254,6 +321,28 @@ class CurriculumContentPublishingIntegrationTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(body))
                 .andExpect(status().isOk());
+    }
+
+    private java.util.Map<String, Object> reviewEvidence() {
+        return java.util.Map.of(
+                "checklistVersion",
+                "content-review-v1",
+                "checks",
+                java.util.List.of(
+                        reviewCheck("schema"),
+                        reviewCheck("references"),
+                        reviewCheck("pedagogy"),
+                        reviewCheck("language"),
+                        reviewCheck("media-accessibility"),
+                        reviewCheck("answer-integrity"),
+                        reviewCheck("preview")));
+    }
+
+    private java.util.Map<String, Object> reviewCheck(String id) {
+        return java.util.Map.of(
+                "id", id,
+                "passed", true,
+                "evidence", "integration-test:" + id);
     }
 
     private RequestPostProcessor contentStaffJwt() {

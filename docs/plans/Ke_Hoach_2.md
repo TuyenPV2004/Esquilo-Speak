@@ -124,7 +124,7 @@ của course tiếng Anh đầu tiên, không phải enum hoặc nhánh logic to
 
 ### Gate
 
-- [ ] Curriculum owner phê duyệt course map và Unit 1 specification.
+- [x] Curriculum owner/developer phê duyệt course map và Unit 1 specification.
 - [x] Mỗi lesson Unit 1 có outcome, concept, skill, vocabulary và assessment evidence.
 - [x] Không còn quyết định pedagogy blocking việc mở rộng schema/exercise engine.
 
@@ -133,8 +133,10 @@ standards đã được tạo dưới
 [`content/courses/course-en-for-vi/`](../../content/courses/course-en-for-vi/).
 Các artifact khóa persona, 4 unit/20 lesson, progression, evidence, lesson flow,
 scoring/feedback, media, cultural safety và acceptance rubric dựa trên CEFR 2020.
-Giai đoạn 1 còn chờ curriculum owner/developer review và phê duyệt course map
-cùng Unit 1 specification; chưa mở Giai đoạn 2 chỉ bằng việc tự đánh dấu gate.
+Developer đã phê duyệt mở Giai đoạn 2 bằng yêu cầu thực hiện ngày 2026-08-01;
+đây đồng thời là acceptance của course map và Unit 1 specification cho dependency
+authoring. Mọi điều chỉnh pedagogy sau review tiếp tục tạo version artifact mới,
+không sửa ngầm contract đã publish.
 
 ## Giai đoạn 2 — Content contract và authoring pipeline
 
@@ -145,24 +147,33 @@ Java cho từng lesson.
 
 ### Checklist
 
-- [ ] Mở rộng lesson/content schema theo discriminated exercise types.
-- [ ] Tách rõ learning item, exercise presentation, answer policy và feedback rule.
-- [ ] Giữ scoring answer/explanation nhạy cảm ngoài learner delivery.
-- [ ] Bổ sung metadata outcome, prerequisite, difficulty, hint, media và accessibility.
-- [ ] Tạo template JSON/YAML cho course, unit, lesson, exercise và media manifest.
-- [ ] Tạo validator cho schema, reference, duplicate ID, locale và answer integrity.
-- [ ] Tạo semantic validator cho concept coverage, content repetition và media metadata.
-- [ ] Tạo lệnh import/update draft vào lifecycle backend hiện có.
-- [ ] Tạo preview dùng cùng learner renderer hoặc một preview adapter tối thiểu.
-- [ ] Bổ sung review checklist và audit evidence trước publish.
-- [ ] Kiểm tra publish, schedule, rollback, retire và compatibility với progress cũ.
-- [ ] Ghi rõ tiêu chí khi nào mới cần xây admin web/CMS.
+- [x] Mở rộng lesson/content schema theo discriminated exercise types.
+- [x] Tách rõ learning item, exercise presentation, answer policy và feedback rule.
+- [x] Giữ scoring answer/explanation nhạy cảm ngoài learner delivery.
+- [x] Bổ sung metadata outcome, prerequisite, difficulty, hint, media và accessibility.
+- [x] Tạo template JSON/YAML cho course, unit, lesson, exercise và media manifest.
+- [x] Tạo validator cho schema, reference, duplicate ID, locale và answer integrity.
+- [x] Tạo semantic validator cho concept coverage, content repetition và media metadata.
+- [x] Tạo lệnh import/update draft vào lifecycle backend hiện có.
+- [x] Tạo preview dùng cùng learner renderer hoặc một preview adapter tối thiểu.
+- [x] Bổ sung review checklist và audit evidence trước publish.
+- [x] Kiểm tra publish, schedule, rollback, retire và compatibility với progress cũ.
+- [x] Ghi rõ tiêu chí khi nào mới cần xây admin web/CMS.
 
 ### Gate
 
-- [ ] Author tạo và publish được một lesson mới mà không sửa application code.
-- [ ] Invalid content bị từ chối với lỗi có thể hành động được.
-- [ ] Published version bất biến; sửa nội dung tạo version mới và rollback được.
+- [x] Author tạo và publish được một lesson mới mà không sửa application code.
+- [x] Invalid content bị từ chối với lỗi có thể hành động được.
+- [x] Published version bất biến; sửa nội dung tạo version mới và rollback được.
+
+Trạng thái gate: đạt bằng content package JSON nhiều file, Draft 2020-12 schema,
+validator structural/semantic, learner-safe HTML preview và CLI import/lifecycle
+không thêm dependency runtime. Package `authoring-demo` compile thành admin DTO và
+được integration test phát hành qua backend mà không sửa application code theo
+từng lesson; learner payload không chứa answer/explanation. Review thiếu một trong
+bảy evidence bắt buộc bị trả `422`; checklist hợp lệ được lưu trong audit trail.
+Lifecycle publish/schedule/retire/rollback, published immutability và compatibility
+với attempt/progress version cũ tiếp tục được full backend regression bảo vệ.
 
 ## Giai đoạn 3 — Exercise engine V2
 

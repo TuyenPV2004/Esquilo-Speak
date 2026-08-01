@@ -1,51 +1,77 @@
 {
-  "id": "lesson-basic-greetings",
-  "courseId": "course-en-for-vi",
+  "id": "lesson-authoring-demo",
+  "courseId": "course-authoring-demo",
   "courseVersion": 1,
-  "unitId": "unit-foundation",
-  "locale": "vi",
+  "unitId": "unit-authoring-demo",
+  "position": 1,
+  "locale": "en",
+  "requiredLocales": ["en", "vi"],
   "title": {
-    "vi": "Lời chào cơ bản",
-    "en": "Basic greetings"
+    "en": "Introduce yourself",
+    "vi": "Tự giới thiệu"
   },
   "objectives": [
     {
-      "vi": "Nhận biết và sử dụng lời chào thông dụng.",
-      "en": "Recognize and use common greetings."
+      "en": "Complete a basic name introduction.",
+      "vi": "Hoàn thành mẫu câu giới thiệu tên cơ bản."
     }
   ],
+  "outcomeIds": ["outcome-introduce-name"],
+  "prerequisiteLessonIds": [],
+  "difficulty": "guided",
   "estimatedMinutes": 5,
   "exercises": [
     {
-      "id": "exercise-choose-hello",
+      "id": "exercise-name-gap",
       "type": "multiple_choice",
-      "prompt": {
-        "vi": "Từ nào có nghĩa là xin chào?",
-        "en": "Which word is a greeting?"
+      "learningItem": {
+        "skill": "vocabulary",
+        "conceptIds": ["concept-name-pattern"],
+        "outcomeIds": ["outcome-introduce-name"],
+        "prerequisiteConceptIds": [],
+        "difficulty": "guided"
       },
-      "options": [
-        {
-          "id": "option-hello",
-          "text": {
-            "vi": "Hello",
-            "en": "Hello"
-          }
+      "presentation": {
+        "prompt": {
+          "en": "Complete: My ___ is Ana.",
+          "vi": "Hoàn thành câu tiếng Anh: My ___ is Ana."
         },
-        {
-          "id": "option-goodbye",
-          "text": {
-            "vi": "Goodbye",
-            "en": "Goodbye"
-          }
-        }
-      ],
-      "correctOptionId": "option-hello",
-      "explanation": {
-        "vi": "Hello là lời chào thông dụng trong tiếng Anh.",
-        "en": "Hello is a common English greeting."
+        "hint": {
+          "en": "Choose the word used before a person's name.",
+          "vi": "Chọn từ đứng trước tên của một người."
+        },
+        "mediaIds": [],
+        "accessibility": {
+          "screenReaderLabel": {
+            "en": "Complete the sentence My blank is Ana.",
+            "vi": "Hoàn thành câu My chỗ trống is Ana."
+          },
+          "requiresAudio": false,
+          "supportsSilentMode": true
+        },
+        "options": [
+          { "id": "option-name", "text": { "en": "name", "vi": "tên" } },
+          { "id": "option-day", "text": { "en": "day", "vi": "ngày" } },
+          { "id": "option-food", "text": { "en": "food", "vi": "đồ ăn" } }
+        ]
       },
-      "skill": "vocabulary",
-      "conceptIds": ["concept-basic-greetings"]
+      "answerPolicy": {
+        "kind": "option_id",
+        "correctOptionId": "option-name",
+        "maxAttempts": 2
+      },
+      "feedbackRule": {
+        "correct": { "en": "Correct.", "vi": "Chính xác." },
+        "incorrect": { "en": "Try the name pattern.", "vi": "Hãy thử mẫu câu về tên." },
+        "explanation": {
+          "en": "Use name in the pattern My name is …",
+          "vi": "Dùng name trong mẫu câu My name is …"
+        },
+        "hintPolicy": {
+          "revealAfterAttempts": 1,
+          "countsAsAssisted": true
+        }
+      }
     }
   ]
 }
