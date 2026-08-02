@@ -4,6 +4,7 @@ import 'package:flutter/widgets.dart';
 import 'package:uuid/uuid.dart';
 
 import '../../../core/network/user_facing_failure.dart';
+import '../../../core/telemetry/app_telemetry.dart';
 import '../../advanced_learning/presentation/p1_view_model.dart';
 import '../../learning/presentation/learning_view_model.dart';
 import '../../review/presentation/learning_insights_view_model.dart';
@@ -14,6 +15,7 @@ class DailySessionViewModel extends ChangeNotifier with WidgetsBindingObserver {
     required this.learning,
     required this.insights,
     required this.engagement,
+    this.telemetry,
     this._composer = const DailySessionComposer(),
     this._uuid = const Uuid(),
   }) {
@@ -27,6 +29,7 @@ class DailySessionViewModel extends ChangeNotifier with WidgetsBindingObserver {
   final LearningViewModel learning;
   final LearningInsightsViewModel insights;
   final P1ViewModel engagement;
+  final ConsentAwareTelemetry? telemetry;
   final DailySessionComposer _composer;
   final Uuid _uuid;
 
@@ -74,6 +77,10 @@ class DailySessionViewModel extends ChangeNotifier with WidgetsBindingObserver {
     activePlan = selectedPlan;
     notifyListeners();
     await _record('daily_session_started', selectedPlan);
+    await _track('learning_session_started', selectedPlan);
+    if (selectedPlan.source == DailySessionSource.dueReview) {
+      await _track('review_started', selectedPlan);
+    }
     if (selectedPlan.kind == DailySessionKind.quickPractice) {
       final exerciseCount =
           engagement.engagement!.dailyLearningPolicy.quickPracticeExerciseCount;
@@ -93,6 +100,10 @@ class DailySessionViewModel extends ChangeNotifier with WidgetsBindingObserver {
     final selectedPlan = activePlan;
     if (activePlanId == null || selectedPlan == null) return;
     await _record('daily_session_abandoned', selectedPlan);
+    await _track('learning_session_abandoned', selectedPlan);
+    if (selectedPlan.source == DailySessionSource.dueReview) {
+      await _track('review_abandoned', selectedPlan);
+    }
     activePlanId = null;
     activePlan = null;
     notifyListeners();
@@ -108,6 +119,10 @@ class DailySessionViewModel extends ChangeNotifier with WidgetsBindingObserver {
     final selectedPlan = activePlan;
     if (activePlanId != null && selectedPlan != null) {
       await _record('daily_session_completed', selectedPlan);
+      await _track('learning_session_completed', selectedPlan);
+      if (selectedPlan.source == DailySessionSource.dueReview) {
+        await _track('review_completed', selectedPlan);
+      }
       activePlanId = null;
       activePlan = null;
     }
@@ -120,6 +135,19 @@ class DailySessionViewModel extends ChangeNotifier with WidgetsBindingObserver {
         eventType: eventType,
         evidenceRef: '$activePlanId:${selectedPlan.source.name}',
       );
+
+  Future<void> _track(String eventType, DailySessionPlan selectedPlan) async {
+    final target = telemetry;
+    if (target == null) return;
+    await target.event(eventType, {
+      'courseId': learning.selectedCourse?.id,
+      'unitId': selectedPlan.lesson?.unitId,
+      'lessonId': selectedPlan.lesson?.id,
+      'lessonVersion': selectedPlan.lesson?.version,
+      'sessionKind': selectedPlan.kind.name,
+      'reasonCode': selectedPlan.source.name,
+    });
+  }
 
   void _sourceChanged() => notifyListeners();
 

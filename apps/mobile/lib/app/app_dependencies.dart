@@ -71,14 +71,11 @@ class AppDependencies {
     );
     await session.restore();
 
-    final telemetry = ConsentAwareTelemetry(
-      database,
-      const NoOpTelemetrySink(),
-    );
+    final api = ApiClient(httpClient, environment.apiBaseUrl, session);
+    final telemetry = ConsentAwareTelemetry(database, ApiTelemetrySink(api));
     await telemetry.initialize();
     telemetry.installGlobalErrorHandlers();
 
-    final api = ApiClient(httpClient, environment.apiBaseUrl, session);
     final sync = SyncCoordinator(database, api);
     final remoteRepository = RemoteLearningRepository(LearningApiService(api));
     final profileViewModel = LearnerProfileViewModel(
@@ -101,9 +98,11 @@ class AppDependencies {
         );
       },
       onCourseSelected: profileViewModel.setActiveCourse,
+      telemetry: telemetry,
     )..loadCatalog();
     final insightsViewModel = LearningInsightsViewModel(
       LearningInsightsService(api, database),
+      telemetry: telemetry,
     )..load();
     final p1ViewModel = P1ViewModel(
       P1ApiService(api),
@@ -118,6 +117,7 @@ class AppDependencies {
       learning: learningViewModel,
       insights: insightsViewModel,
       engagement: p1ViewModel,
+      telemetry: telemetry,
     );
 
     return AppDependencies._(

@@ -205,6 +205,16 @@ vậy đổi mode, làm lại cùng item hoặc luyện offline rồi sync khôn
 | `POST /api/mobile/v1/support/tickets` | `createSupportTicket` | Tạo yêu cầu hỗ trợ hoặc báo cáo nội dung | Màn Support; cần learner JWT |
 | `PATCH /api/support/v1/tickets/{ticketId}/status` | `updateSupportTicketStatus` | Phân loại, xử lý hoặc đóng ticket | Chỉ support staff/admin có operations scope |
 
+### 4.10. Product quality và personalization
+
+| Method và path | Operation ID | Tác dụng | Nghiệp vụ và lưu ý |
+|---|---|---|---|
+| `POST /api/mobile/v1/analytics/events` | `recordLearningAnalyticsEvents` | Gửi batch event funnel/product quality allowlisted | Mobile chỉ gọi sau opt-in; backend kiểm tra consent lần hai, dedup theo client event ID và xóa sau 30 ngày; không nhận raw answer/prompt/feedback/voice/token/PII |
+| `GET /api/mobile/v1/recommendations/next` | `getNextLearningRecommendation` | Lấy recommendation có policy version và explanation code | Thứ tự V1 deterministic: review đến hạn → concept yếu → tiếp tục → start fallback; mobile giữ fallback local khi offline |
+| `GET /api/operations/v1/product-quality/dashboard` | `getProductQualityDashboard` | Đọc metric outcome/funnel cùng source và sample size | Cần operations scope + support/admin; funnel/drop-off chỉ là consented sample |
+| `GET /api/operations/v1/content-quality/queue` | `listContentQualityQueue` | Đọc queue report, difficulty anomaly và feedback usefulness | Item giữ lesson/exercise reference, evidence count, rate, priority và trạng thái |
+| `PATCH /api/operations/v1/content-quality/queue/{itemId}/status` | `updateContentQualityItemStatus` | Triage/resolve/dismiss quality item | Không tự động sửa/retire content từ một anomaly |
+
 ## 5. Điểm cần lưu ý khi kiểm thử
 
 1. Nếu thao tác chỉ thay đổi UI, chuyển tab, validate form hoặc lập lịch notification local
@@ -219,6 +229,9 @@ vậy đổi mode, làm lại cùng item hoặc luyện offline rồi sync khôn
    hành trình mobile local chính.
 6. Không đưa Bearer token, purchase token, nội dung giọng nói, thông tin cá nhân hoặc dữ
    liệu consent thật vào ảnh/log báo lỗi.
+7. Analytics là best-effort: request có thể không xuất hiện khi consent tắt và lỗi gửi
+   analytics không được làm hỏng lesson. Khi đọc dashboard phải kiểm tra `source`,
+   `sampleSize`, `samplingNote`; không so consented funnel với toàn cohort như cùng mẫu.
 
 Ma trận thao tác kiểm thử A01–O04 và API mong đợi nằm trong
 [`Guide.md`](../shared/Guide.md#6-danh-sách-nghiệp-vụ-cần-kiểm-thử).
@@ -243,6 +256,11 @@ Ma trận thao tác kiểm thử A01–O04 và API mong đợi nằm trong
   và `locale`, không trả câu tiếng Anh dùng trực tiếp làm UI.
 - Mastery/review/achievement trả title/description đa locale để client không hiện
   raw concept hoặc achievement code trong luồng thông thường.
+- Recommendation chuyển từ heuristic không có contract sang policy backend có
+  `policyVersion`, `explanationCode`, `inputs` và `usedFallback`; fallback local vẫn
+  deterministic và tự khai báo là fallback.
+- Analytics contract tách content reference có cấu trúc khỏi attributes allowlisted;
+  raw response và text tự do không có field để gửi.
 
 ## 7. Checklist khi chỉnh sửa API
 

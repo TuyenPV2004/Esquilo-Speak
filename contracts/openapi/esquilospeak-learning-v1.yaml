@@ -1,7 +1,7 @@
 openapi: 3.1.1
 info:
   title: EsquiloSpeak Learning API
-  version: 0.12.0
+  version: 0.13.0
   description: >-
     Mobile contract for identity/profile onboarding and the first learning
     vertical slice: resolve a guest or account learner, manage profile and
@@ -31,6 +31,7 @@ tags:
   - name: Engagement
   - name: Commerce
   - name: Support
+  - name: Product Quality
 paths:
   /api/mobile/v1/languages:
     get:
@@ -1174,6 +1175,150 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/SupportTicket'
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+  /api/mobile/v1/analytics/events:
+    post:
+      tags: [Product Quality]
+      operationId: recordLearningAnalyticsEvents
+      summary: Record an allowlisted batch after operational-telemetry consent
+      description: >-
+        Accepts only scalar, allowlisted product-quality evidence. Raw answers,
+        prompts, feedback text, voice, tokens and contact identifiers are not part
+        of this contract. Events expire according to the active retention policy.
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [events]
+              properties:
+                events:
+                  type: array
+                  minItems: 1
+                  maxItems: 50
+                  items:
+                    $ref: '#/components/schemas/AnalyticsEvent'
+              additionalProperties: false
+      responses:
+        '200':
+          description: Accepted and deduplicated event counts
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AnalyticsIngestResult'
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+  /api/mobile/v1/recommendations/next:
+    get:
+      tags: [Product Quality]
+      operationId: getNextLearningRecommendation
+      summary: Get a deterministic recommendation with a versioned explanation
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: courseId
+          in: query
+          required: false
+          schema:
+            $ref: '#/components/schemas/Identifier'
+      responses:
+        '200':
+          description: Next learning recommendation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LearningRecommendation'
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+  /api/operations/v1/product-quality/dashboard:
+    get:
+      tags: [Product Quality]
+      operationId: getProductQualityDashboard
+      summary: Read the minimum internal learning/product-quality dashboard
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: courseId
+          in: query
+          required: true
+          schema:
+            $ref: '#/components/schemas/Identifier'
+        - name: from
+          in: query
+          required: true
+          schema: { type: string, format: date }
+        - name: to
+          in: query
+          required: true
+          schema: { type: string, format: date }
+      responses:
+        '200':
+          description: Metric values, sample sizes and traceable drop-off groups
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductQualityDashboard'
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+  /api/operations/v1/content-quality/queue:
+    get:
+      tags: [Product Quality]
+      operationId: listContentQualityQueue
+      summary: List traceable report, difficulty and feedback-usefulness signals
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: courseId
+          in: query
+          required: false
+          schema:
+            $ref: '#/components/schemas/Identifier'
+      responses:
+        '200':
+          description: Open and triaged quality items
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ContentQualityItem'
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+  /api/operations/v1/content-quality/queue/{itemId}/status:
+    patch:
+      tags: [Product Quality]
+      operationId: updateContentQualityItemStatus
+      summary: Triage or close a content-quality item
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: itemId
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [status]
+              properties:
+                status:
+                  type: string
+                  enum: [triaged, resolved, dismissed]
+              additionalProperties: false
+      responses:
+        '200':
+          description: Updated quality item
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContentQualityItem'
         default:
           $ref: '#/components/responses/ErrorResponse'
 components:
@@ -2568,6 +2713,137 @@ components:
         updatedAt:
           type: string
           format: date-time
+      additionalProperties: false
+    AnalyticsEvent:
+      type: object
+      required: [clientEventId, name, eventVersion, occurredAt, attributes]
+      properties:
+        clientEventId: { type: string, format: uuid }
+        name:
+          type: string
+          enum:
+            [learning_session_started, learning_session_completed, learning_session_abandoned,
+             lesson_started, lesson_completed, lesson_abandoned,
+             review_started, review_completed, review_abandoned,
+             practice_started, practice_completed, practice_abandoned,
+             exercise_presented, exercise_submitted, recommendation_presented,
+             recommendation_selected, feedback_helpfulness_recorded]
+        eventVersion: { type: integer, const: 1 }
+        occurredAt: { type: string, format: date-time }
+        courseId: { $ref: '#/components/schemas/Identifier' }
+        unitId: { $ref: '#/components/schemas/Identifier' }
+        lessonId: { $ref: '#/components/schemas/Identifier' }
+        lessonVersion: { type: integer, minimum: 1 }
+        exerciseId: { $ref: '#/components/schemas/Identifier' }
+        exerciseType: { type: string, maxLength: 60 }
+        sessionKind: { type: string, maxLength: 40 }
+        attributes:
+          type: object
+          maxProperties: 12
+          properties:
+            result: { type: string, maxLength: 100 }
+            reasonCode: { type: string, maxLength: 100 }
+            practiceMode: { type: string, maxLength: 100 }
+            retryIndex: { type: integer, minimum: 0 }
+            hintUsed: { type: boolean }
+            responseTimeBucket: { type: string, maxLength: 100 }
+            correct: { type: boolean }
+            feedbackHelpful: { type: boolean }
+            recommendationPolicyVersion: { type: integer, minimum: 1 }
+            recommendationKind: { type: string, maxLength: 100 }
+            usedFallback: { type: boolean }
+          additionalProperties: false
+      additionalProperties: false
+    AnalyticsIngestResult:
+      type: object
+      required: [accepted, duplicates, retentionPolicyVersion, retentionDays]
+      properties:
+        accepted: { type: integer, minimum: 0 }
+        duplicates: { type: integer, minimum: 0 }
+        retentionPolicyVersion: { type: integer, minimum: 1 }
+        retentionDays: { type: integer, minimum: 1 }
+      additionalProperties: false
+    LearningRecommendation:
+      type: object
+      required: [policyVersion, kind, explanationCode, usedFallback, inputs]
+      properties:
+        policyVersion: { type: integer, minimum: 1 }
+        kind:
+          type: string
+          enum: [review_due, strengthen_weak_concept, continue_learning, start_learning]
+        explanationCode:
+          type: string
+          enum: [REVIEW_DUE_FIRST, LOWEST_MASTERY_FIRST, NO_DUE_OR_WEAK_CONCEPT, NO_LEARNING_EVIDENCE]
+        conceptId: { $ref: '#/components/schemas/Identifier' }
+        usedFallback: { type: boolean }
+        inputs:
+          type: object
+          required: [weakMasteryThreshold, evaluationDatasetVersion]
+          properties:
+            weakMasteryThreshold: { type: number, minimum: 0, maximum: 1 }
+            evaluationDatasetVersion: { type: string }
+          additionalProperties: false
+        rollbackVersion: { type: integer, minimum: 1 }
+      additionalProperties: false
+    ProductQualityMetric:
+      type: object
+      required: [code, numerator, denominator, source, sampleSize]
+      properties:
+        code: { type: string }
+        numerator: { type: integer, minimum: 0 }
+        denominator: { type: integer, minimum: 0 }
+        value: { type: number }
+        source: { type: string, enum: [canonical, consented_telemetry] }
+        sampleSize: { type: integer, minimum: 0 }
+      additionalProperties: false
+    ProductQualityDashboard:
+      type: object
+      required: [schemaVersion, courseId, from, to, metrics, dropOff, consentedFunnelSampleSize, samplingNote]
+      properties:
+        schemaVersion: { type: string, const: product-quality-dashboard-v1 }
+        courseId: { $ref: '#/components/schemas/Identifier' }
+        from: { type: string, format: date }
+        to: { type: string, format: date }
+        metrics:
+          type: array
+          items: { $ref: '#/components/schemas/ProductQualityMetric' }
+        dropOff:
+          type: array
+          items:
+            type: object
+            required: [lessonId, exerciseType, eventName, eventCount]
+            properties:
+              lessonId: { type: string }
+              exerciseType: { type: string }
+              eventName: { type: string }
+              eventCount: { type: integer, minimum: 0 }
+            additionalProperties: false
+        consentedFunnelSampleSize: { type: integer, minimum: 0 }
+        samplingNote: { type: string }
+      additionalProperties: false
+    ContentQualityItem:
+      type: object
+      required:
+        [id, sourceType, contentRef, signalCode, evidenceCount, priority, status,
+         policyVersion, firstObservedAt, lastObservedAt, updatedAt]
+      properties:
+        id: { type: string, format: uuid }
+        sourceType:
+          type: string
+          enum: [content_report, difficulty_anomaly, feedback_usefulness]
+        contentRef: { type: string, maxLength: 160 }
+        courseId: { type: string }
+        lessonId: { type: string }
+        exerciseId: { type: string }
+        signalCode: { type: string }
+        evidenceCount: { type: integer, minimum: 1 }
+        observedRate: { type: number, minimum: 0, maximum: 1 }
+        priority: { type: string, enum: [low, medium, high, critical] }
+        status: { type: string, enum: [open, triaged, resolved, dismissed] }
+        policyVersion: { type: integer, minimum: 1 }
+        firstObservedAt: { type: string, format: date-time }
+        lastObservedAt: { type: string, format: date-time }
+        updatedAt: { type: string, format: date-time }
       additionalProperties: false
     ApiError:
       type: object

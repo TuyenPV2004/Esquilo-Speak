@@ -33,3 +33,5 @@ Decision status:
   data-driven proficiency frameworks and course-specific placement evidence.
 - [`ADR-009`](ADR-009-exercise-engine-v2-and-unit-one.md): registry-based
   Exercise Engine V2, canonical scoring/evidence and Unit 1 runtime decisions.
+- [`ADR-010`](ADR-010-product-quality-analytics-personalization.md): consent-aware
+  product-quality analytics, traceable content queue and versioned personalization.

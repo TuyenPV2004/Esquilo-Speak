@@ -567,3 +567,88 @@ theo `docs/plans/Ke_Hoach_2.md`.
   analyzer và full mobile suite cuối 63/63 đều pass; targeted media/placement/offline 22/22 pass.
   Local debug APK build pass; không có Android target nên closed-testing E2E và
   content-owner sign-off vẫn là gate mở.
+
+## 15. Giai đoạn 8 — Product quality, analytics và personalization
+
+### Mục tiêu
+
+Chuẩn hóa evidence cho learning-session, lesson, review và practice; cung cấp một
+dashboard nội bộ cùng content-quality queue có thể truy vết về lesson/exercise; và
+chuyển recommendation phía client sang policy versioned phía backend có explanation,
+offline evaluation và rollback rule. Chất lượng học là mục tiêu chính; thời gian dùng
+app và XP không được dùng làm proxy duy nhất.
+
+### Phạm vi triển khai
+
+1. Thêm contract analytics batch chỉ nhận event/attribute allowlist, không nhận raw
+   answer, prompt, description, token, voice hay định danh liên hệ. Backend kiểm tra
+   consent `operational_telemetry` lần nữa, deduplicate theo client event ID và tự hết
+   hạn sau 30 ngày theo P0 retention policy.
+2. Tạo metrics catalog với numerator, denominator, cohort, nguồn canonical và giới hạn
+   diễn giải cho north-star, first lesson/Unit 1 completion, D1/D7 retention, review
+   completion, drop-off, correctness/retry/hint/response-time và content report rate.
+3. Cung cấp operations dashboard API và content-quality queue hợp nhất content report,
+   difficulty anomaly và negative feedback-usefulness signal. Mọi item giữ content ref,
+   evidence count, policy version và trạng thái triage để content team truy vết.
+4. Tạo recommendation policy versioned phía backend. Thứ tự deterministic là review
+   đến hạn, concept yếu, tiếp tục học và start-learning fallback; response luôn có
+   explanation code, policy version và cờ fallback. Mobile dùng server response khi
+   khả dụng và giữ heuristic deterministic local khi offline/API lỗi retryable.
+5. Thêm offline evaluation dataset cố định, acceptance/guardrail và rollback target
+   trước khi đổi recommendation/scheduler. Experiment policy cấm rollout làm giảm
+   learning outcome, safety, privacy hoặc reliability guardrail.
+6. Instrument mobile tại các transition chính bằng sink gửi batch nhỏ qua API hiện có;
+   consent tắt là no-op và lỗi analytics không được chặn hành trình học.
+
+### Khu vực dự kiến thay đổi
+
+- OpenAPI, Flyway V15 và module backend `productquality`.
+- Mobile telemetry sink, learning/review recommendation model/service và dependency wiring.
+- Integration/unit test backend, mobile telemetry/recommendation test và offline evaluation.
+- ADR, metrics catalog, API check, guide, roadmap và change log.
+
+### Validation
+
+1. Integration test chứng minh consent off bị từ chối, event allowlist/dedup/retention,
+   dashboard/queue truy vết content và recommendation deterministic có explanation.
+2. Offline evaluation chạy trên dataset versioned; policy candidate chỉ được promote khi
+   không vi phạm learning/safety/privacy/reliability guardrail và có rollback target.
+3. OpenAPI lint, P0 freeze/compatibility và đối chiếu enum giữa contract, Java, Dart.
+4. Flutter format/analyzer, telemetry consent/sanitization/sink test, recommendation
+   server/fallback test và full mobile regression.
+5. Full backend regression, Spring Modulith, `bootJar`, `git diff --check` và privacy scan
+   xác nhận không có raw response/PII trong analytics payload.
+
+### Giả định và rủi ro
+
+- Completion/correctness/mastery dùng bảng canonical hiện có, không phụ thuộc event tùy
+  chọn. Funnel/drop-off/review-start cần telemetry opt-in nên dashboard phải hiển thị
+  sample size và không suy diễn learner không consent là drop-off.
+- D1/D7 và baseline completion chỉ có định nghĩa/query kiểm chứng được trong Giai đoạn 8;
+  giá trị đại diện và target mới vẫn chờ cohort closed beta ở Giai đoạn 9.
+- Dashboard tối thiểu là operations API có cấu trúc cho công cụ nội bộ; không thêm một
+  framework admin-web mới khi repo chưa có runtime UI tương ứng.
+- Policy V1 là rule-based, không phải ML. Thay đổi threshold/order/model phải tạo version
+  mới, chạy offline evaluation, có rollout guardrail và rollback target trước promotion.
+
+### Phê duyệt
+
+Developer phê duyệt thực hiện ngày 2026-08-02 bằng yêu cầu triển khai toàn bộ Giai đoạn 8
+theo `docs/plans/Ke_Hoach_2.md`.
+
+### Kết quả
+
+- Analytics first-party chuẩn hóa funnel lesson/practice/review/daily session bằng event
+  và scalar attribute allowlist; mobile + backend cùng kiểm tra consent, event dedup theo
+  client ID và tự hết hạn sau 30 ngày. Raw answer/prompt/feedback text/voice/token/PII
+  không có trong contract; analytics failure không chặn hành trình học.
+- Dashboard operations trả 11 metric có source/sample size, drop-off trace qua reporting
+  view read-only; outcome dùng canonical evidence còn funnel ghi rõ consented sample. Queue hợp nhất content report,
+  low-correctness anomaly và feedback usefulness, giữ course/lesson/exercise + triage state.
+- Recommendation policy V1 được server hóa, scope theo course, có policy version,
+  explanation, inputs và deterministic fallback; mobile giữ local fallback khi retryable
+  outage. Dataset offline 4/4 cùng guardrail/rollback rule khóa việc promote version mới.
+- ProductQuality/migration targeted integration và full backend 40/40, `bootJar`, OpenAPI
+  Redocly + P0 freeze, Flutter analyzer + full suite 65/65 và local debug APK đều pass.
+  Không có Android target trong `flutter devices`; D1/D7/target thực tế vẫn chờ cohort
+  closed beta Giai đoạn 9 thay vì dùng synthetic test data để đóng gate sản phẩm.

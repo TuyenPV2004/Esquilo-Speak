@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 
 import '../../../core/network/user_facing_failure.dart';
+import '../../../core/telemetry/app_telemetry.dart';
 import '../data/learning_models.dart';
 import '../data/offline_learning_repository.dart';
 import '../data/learning_repository.dart';
@@ -41,11 +42,13 @@ class LearningViewModel extends ChangeNotifier {
     this._repository, {
     required this.learningContext,
     required this.onCourseSelected,
+    this.telemetry,
   });
 
   final LearningRepository _repository;
   final LearningContextSnapshot Function() learningContext;
   final Future<void> Function(Course course) onCourseSelected;
+  final ConsentAwareTelemetry? telemetry;
   Future<void> Function(LearningCompletion completion)? onLearningCompleted;
 
   LearningStep step = LearningStep.catalog;
@@ -77,6 +80,7 @@ class LearningViewModel extends ChangeNotifier {
   String? practiceExplanationCode;
   bool practiceUsedFallback = false;
   bool flashcardRevealed = false;
+  bool feedbackHelpfulnessRecorded = false;
   final Set<String> _sessionMistakeExerciseIds = {};
   final Set<String> _sessionCorrectExerciseIds = {};
   final Map<String, Lesson> _practiceSources = {};
@@ -267,6 +271,13 @@ class LearningViewModel extends ChangeNotifier {
     _resetSessionState();
     await _restoreResume();
     step = LearningStep.lesson;
+    await _track('lesson_started', {
+      'courseId': selectedLesson!.courseId,
+      'unitId': summary.unitId,
+      'lessonId': selectedLesson!.id,
+      'lessonVersion': selectedLesson!.version,
+      'sessionKind': 'lesson',
+    });
   });
 
   Future<void> startQuickPractice({
@@ -337,6 +348,13 @@ class LearningViewModel extends ChangeNotifier {
     _practiceMediaIds.clear();
     _resetSessionState();
     step = LearningStep.lesson;
+    await _track('practice_started', {
+      'courseId': source.courseId,
+      'lessonId': source.id,
+      'lessonVersion': source.version,
+      'sessionKind': 'daily_quick_practice',
+      'practiceMode': 'daily_quick_practice',
+    });
   });
 
   Future<void> startPractice({
@@ -422,6 +440,15 @@ class LearningViewModel extends ChangeNotifier {
     practiceUsedFallback = selection.usedFallback;
     _resetSessionState();
     step = LearningStep.lesson;
+    await _track('practice_started', {
+      'courseId': first.courseId,
+      'lessonId': first.id,
+      'lessonVersion': first.version,
+      'sessionKind': 'practice',
+      'practiceMode': configuration.mode.apiValue,
+      'reasonCode': selection.explanationCode,
+      'usedFallback': selection.usedFallback,
+    });
   });
 
   void shufflePractice() {
@@ -520,6 +547,27 @@ class LearningViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  Future<void> recordFeedbackHelpfulness(bool helpful) async {
+    if (feedbackHelpfulnessRecorded) return;
+    final lesson = selectedLesson;
+    if (lesson == null || currentExerciseIndex >= lesson.exercises.length) {
+      return;
+    }
+    final exercise = lesson.exercises[currentExerciseIndex];
+    final sourceLesson = _practiceSources[exercise.id] ?? lesson;
+    await _track('feedback_helpfulness_recorded', {
+      'courseId': sourceLesson.courseId,
+      'lessonId': sourceLesson.id,
+      'lessonVersion': sourceLesson.version,
+      'exerciseId': exercise.id,
+      'exerciseType': exercise.type,
+      'sessionKind': sessionKind.name,
+      'feedbackHelpful': helpful,
+    });
+    feedbackHelpfulnessRecorded = true;
+    notifyListeners();
+  }
+
   Future<void> submitAnswer() async {
     final lesson = selectedLesson;
     final response = _responseForSubmission();
@@ -554,6 +602,21 @@ class LearningViewModel extends ChangeNotifier {
             ),
           );
       feedback = await _repository.submitAttempt(_pendingAttempt!);
+      await _track('exercise_submitted', {
+        'courseId': sourceLesson.courseId,
+        'lessonId': sourceLesson.id,
+        'lessonVersion': sourceLesson.version,
+        'exerciseId': exercise.id,
+        'exerciseType': exercise.type,
+        'sessionKind': sessionKind.name,
+        'practiceMode': activePracticeMode?.apiValue,
+        'retryIndex': retryIndex,
+        'hintUsed': hintVisible,
+        'responseTimeBucket': _responseTimeBucket(
+          DateTime.now().difference(_exerciseStartedAt).inMilliseconds,
+        ),
+        'correct': feedback!.correct,
+      });
       if (!feedback!.correct &&
           !mistakeExerciseIndexes.contains(currentExerciseIndex)) {
         mistakeExerciseIndexes.add(currentExerciseIndex);
@@ -583,6 +646,7 @@ class LearningViewModel extends ChangeNotifier {
   void continueFromProgress() {
     selectedLesson = null;
     feedback = null;
+    feedbackHelpfulnessRecorded = false;
     step = LearningStep.lessons;
     notifyListeners();
   }
@@ -680,6 +744,21 @@ class LearningViewModel extends ChangeNotifier {
     }
     await showProgress();
     if (lesson != null) {
+      await _track(
+        sessionKind == LearningSessionKind.lesson
+            ? 'lesson_completed'
+            : 'practice_completed',
+        {
+          'courseId': lesson.courseId,
+          'lessonId': lesson.id,
+          'lessonVersion': lesson.version,
+          'sessionKind': sessionKind.name,
+          'practiceMode': activePracticeMode?.apiValue,
+          'result': sessionMistakeCount == 0
+              ? 'completed_without_mistake'
+              : 'completed',
+        },
+      );
       await onLearningCompleted?.call(
         LearningCompletion(
           kind: sessionKind,
@@ -694,6 +773,18 @@ class LearningViewModel extends ChangeNotifier {
         ),
       );
     }
+  }
+
+  Future<void> _track(String name, Map<String, Object?> attributes) async {
+    final target = telemetry;
+    if (target != null) await target.event(name, attributes);
+  }
+
+  String _responseTimeBucket(int milliseconds) {
+    if (milliseconds < 3000) return 'under_3s';
+    if (milliseconds < 10000) return '3_to_10s';
+    if (milliseconds < 30000) return '10_to_30s';
+    return 'over_30s';
   }
 
   void _prepareExercise({bool retry = false}) {

@@ -84,6 +84,8 @@ class LearningRecommendation {
   const LearningRecommendation({
     required this.algorithmVersion,
     required this.kind,
+    this.explanationCode = 'LOCAL_LEGACY_FALLBACK',
+    this.usedFallback = true,
     this.conceptId,
     this.defaultLocale,
     this.conceptTitle,
@@ -92,6 +94,8 @@ class LearningRecommendation {
 
   final int algorithmVersion;
   final LearningRecommendationKind kind;
+  final String explanationCode;
+  final bool usedFallback;
   final String? conceptId;
   final String? defaultLocale;
   final LocalizedText? conceptTitle;

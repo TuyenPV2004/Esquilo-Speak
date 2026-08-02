@@ -277,5 +277,11 @@
       <td><strong>Mục đích chung:</strong> Dọn placeholder Git không còn tác dụng sau khi các khu vực mobile integration/core, backend fixture, content course và contract/E2E test đã có nội dung thật.</td>
       <td><strong>Xóa:</strong> 6 file <code>.gitkeep</code> trong các thư mục đã có sibling được Git theo dõi.<br><strong>Giữ:</strong> placeholder trong các thư mục scaffold còn rỗng của admin web, <code>content/locales</code> và <code>tools</code>.<br><strong>Validation:</strong> rà toàn bộ <code>.gitkeep</code> tracked và <code>git diff --check</code>.</td>
     </tr>
+    <tr>
+      <td><strong>2026-08-02</strong></td>
+      <td>21:40:27</td>
+      <td><strong>Mục đích chung:</strong> Hoàn thành Giai đoạn 8 bằng product-quality analytics consent-aware, dashboard/quality queue truy vết được và recommendation policy có version/evaluation/rollback guardrail.<br><strong>Tác dụng của file/thay đổi:</strong> Flyway V15 khóa reporting view read-only, event allowlist, retention 30 ngày, recommendation và experiment policy; backend ingest/dedup/purge, tính metric canonical + consented funnel, hợp nhất content report/difficulty/feedback-usefulness và trả recommendation deterministic theo course; Flutter gửi evidence tối thiểu, hỏi usefulness EN/VI, dùng server recommendation và fallback local; metrics catalog/ADR/dataset làm nguồn kiểm chứng. D1/D7 thực tế và target rebaseline vẫn chờ closed beta.</td>
+      <td><strong>Tạo:</strong> module backend <code>productquality</code>, migration V15, integration test, ADR-010, metrics catalog và recommendation evaluation dataset/test.<br><strong>Sửa:</strong> security, migration/backup release gate, ADR-006 amendment, OpenAPI 0.13.0, mobile telemetry/dependencies/learning/daily/review/localization/test, API Check, Guide, mobile README, implementation plan và roadmap.<br><strong>Validation:</strong> offline evaluation 4/4; targeted product-quality + migration pass; full backend 40/40 và <code>bootJar</code> pass; Redocly lint/P0 freeze pass; Flutter analyzer và full suite 65/65 pass; local debug APK build pass. <code>flutter devices</code> không có Android target nên device E2E không được tuyên bố pass.</td>
+    </tr>
   </tbody>
 </table>

@@ -1,0 +1,53 @@
+{
+  "datasetVersion": "recommendation-evaluation-v1",
+  "policyKey": "daily_next_learning",
+  "candidateVersion": 1,
+  "rollbackVersion": null,
+  "weakMasteryThreshold": 1.0,
+  "guardrails": {
+    "primaryMetric": "evidence_backed_session_completion",
+    "acknowledgedAttemptLossMaximum": 0,
+    "privacyViolationMaximum": 0,
+    "safetyIncidentMaximum": 0
+  },
+  "promotionRule": {
+    "minimumCaseAccuracy": 1.0,
+    "requiresRollbackVersionAfterV1": true,
+    "requiresExplanation": true,
+    "requiresDeterministicReplay": true
+  },
+  "cases": [
+    {
+      "id": "due-review-precedes-weakness",
+      "dueConcepts": ["concept-b", "concept-a"],
+      "mastery": {"concept-c": 0.2},
+      "expectedKind": "review_due",
+      "expectedConceptId": "concept-a",
+      "expectedExplanationCode": "REVIEW_DUE_FIRST"
+    },
+    {
+      "id": "lowest-mastery-and-stable-tie-break",
+      "dueConcepts": [],
+      "mastery": {"concept-b": 0.3, "concept-a": 0.3, "concept-c": 0.8},
+      "expectedKind": "strengthen_weak_concept",
+      "expectedConceptId": "concept-a",
+      "expectedExplanationCode": "LOWEST_MASTERY_FIRST"
+    },
+    {
+      "id": "continue-when-evidence-is-complete",
+      "dueConcepts": [],
+      "mastery": {"concept-a": 1.0},
+      "expectedKind": "continue_learning",
+      "expectedConceptId": null,
+      "expectedExplanationCode": "NO_DUE_OR_WEAK_CONCEPT"
+    },
+    {
+      "id": "deterministic-no-evidence-fallback",
+      "dueConcepts": [],
+      "mastery": {},
+      "expectedKind": "start_learning",
+      "expectedConceptId": null,
+      "expectedExplanationCode": "NO_LEARNING_EVIDENCE"
+    }
+  ]
+}

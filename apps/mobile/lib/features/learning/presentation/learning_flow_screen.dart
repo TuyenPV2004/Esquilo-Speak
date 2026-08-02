@@ -113,6 +113,12 @@ class LearningFlowScreen extends StatelessWidget {
       ),
       LearningStep.feedback => _Feedback(
         feedback: viewModel.feedback!,
+        helpfulnessRecorded: viewModel.feedbackHelpfulnessRecorded,
+        helpfulnessQuestion: strings.feedbackHelpfulQuestion,
+        helpfulLabel: strings.feedbackHelpfulYes,
+        notHelpfulLabel: strings.feedbackHelpfulNo,
+        helpfulnessThanks: strings.feedbackHelpfulThanks,
+        onHelpfulness: viewModel.recordFeedbackHelpfulness,
         actionLabel: viewModel.reviewingMistakes
             ? strings.reviewMistakes
             : viewModel.currentExerciseIndex ==
@@ -581,11 +587,23 @@ class _Feedback extends StatelessWidget {
     required this.feedback,
     required this.actionLabel,
     required this.onContinue,
+    required this.helpfulnessRecorded,
+    required this.helpfulnessQuestion,
+    required this.helpfulLabel,
+    required this.notHelpfulLabel,
+    required this.helpfulnessThanks,
+    required this.onHelpfulness,
   });
 
   final AttemptFeedback feedback;
   final String actionLabel;
   final VoidCallback onContinue;
+  final bool helpfulnessRecorded;
+  final String helpfulnessQuestion;
+  final String helpfulLabel;
+  final String notHelpfulLabel;
+  final String helpfulnessThanks;
+  final ValueChanged<bool> onHelpfulness;
 
   @override
   Widget build(BuildContext context) {
@@ -620,6 +638,34 @@ class _Feedback extends StatelessWidget {
               ),
             ),
           ),
+          const SizedBox(height: 16),
+          if (helpfulnessRecorded)
+            Semantics(liveRegion: true, child: Text(helpfulnessThanks))
+          else ...[
+            Text(
+              helpfulnessQuestion,
+              style: Theme.of(context).textTheme.titleMedium,
+            ),
+            const SizedBox(height: 8),
+            Wrap(
+              spacing: 12,
+              runSpacing: 8,
+              children: [
+                OutlinedButton.icon(
+                  key: const ValueKey('feedback-helpful-yes'),
+                  onPressed: () => onHelpfulness(true),
+                  icon: const Icon(Icons.thumb_up_outlined),
+                  label: Text(helpfulLabel),
+                ),
+                OutlinedButton.icon(
+                  key: const ValueKey('feedback-helpful-no'),
+                  onPressed: () => onHelpfulness(false),
+                  icon: const Icon(Icons.thumb_down_outlined),
+                  label: Text(notHelpfulLabel),
+                ),
+              ],
+            ),
+          ],
           const SizedBox(height: 16),
           FilledButton(
             key: const ValueKey('progress-view'),

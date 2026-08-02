@@ -38,6 +38,19 @@ void main() {
           ],
         });
       }
+      if (request.url.path.endsWith('/recommendations/next')) {
+        return _json({
+          'policyVersion': 2,
+          'kind': 'review_due',
+          'explanationCode': 'REVIEW_DUE_FIRST',
+          'conceptId': 'greeting.hello',
+          'usedFallback': false,
+          'inputs': {
+            'weakMasteryThreshold': 1.0,
+            'evaluationDatasetVersion': 'recommendation-evaluation-v1',
+          },
+        });
+      }
       return _json({
         'generatedAt': '2026-07-30T00:00:00Z',
         'items': [
@@ -71,7 +84,9 @@ void main() {
     expect(online.mastery.single.lastEvidenceAt, DateTime.utc(2026, 7, 30));
     expect(online.mastery.single.calculationMethod, 'weighted-correct-ratio');
     expect(online.recommendation.kind, LearningRecommendationKind.reviewDue);
-    expect(online.recommendation.algorithmVersion, 1);
+    expect(online.recommendation.algorithmVersion, 2);
+    expect(online.recommendation.explanationCode, 'REVIEW_DUE_FIRST');
+    expect(online.recommendation.usedFallback, isFalse);
 
     offline = true;
     final cached = await service.load();
@@ -128,6 +143,20 @@ Future<LearningInsights> _loadInsights({
   final client = MockClient((request) async {
     if (request.url.path.endsWith('/mastery')) {
       return _json({'modelVersion': 1, 'items': mastery});
+    }
+    if (request.url.path.endsWith('/recommendations/next')) {
+      return http.Response(
+        jsonEncode({
+          'type': 'about:blank',
+          'title': 'Unavailable',
+          'status': 503,
+          'code': 'RECOMMENDATION_UNAVAILABLE',
+          'traceId': 'test-trace',
+          'retryable': true,
+        }),
+        503,
+        headers: {'content-type': 'application/problem+json'},
+      );
     }
     return _json({'generatedAt': '2026-07-30T00:00:00Z', 'items': reviews});
   });

@@ -116,6 +116,13 @@ void main() {
     await tester.pump();
     expect(find.text('Chính xác!'), findsOneWidget);
     expect(find.text('Hello là lời chào thông dụng.'), findsOneWidget);
+    expect(find.text('Phản hồi này có hữu ích không?'), findsOneWidget);
+    await tester.tap(find.byKey(const ValueKey('feedback-helpful-no')));
+    await tester.pump();
+    expect(
+      find.text('Cảm ơn anh. Phản hồi này giúp cải thiện bài tập.'),
+      findsOneWidget,
+    );
 
     await tester.tap(find.text('Xem tiến độ'));
     await tester.pump();

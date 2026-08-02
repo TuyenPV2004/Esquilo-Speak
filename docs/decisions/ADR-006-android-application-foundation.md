@@ -4,6 +4,11 @@
 - Date: 2026-07-30
 - Scope: Phase 10 / Android application foundation
 
+Amendment (2026-08-02): ADR-010 approves the first-party product-quality sink
+after defining its consent, allowlist, retention and verification controls. It
+supersedes only the no-op product-analytics part of Decision 11. Third-party
+analytics and crash-report providers remain disabled and separately gated.
+
 ## Context
 
 The existing Flutter vertical slice called the backend directly and stored no

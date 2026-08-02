@@ -50,10 +50,10 @@ class BackendReleaseGateIntegrationTest {
         assertEquals(
                 List.of(
                         "1", "2", "3", "4", "5", "6", "7",
-                        "8", "9", "10", "11", "12", "13", "14"),
+                        "8", "9", "10", "11", "12", "13", "14", "15"),
                 appliedVersions);
         assertEquals(
-                7,
+                8,
                 jdbc.sql("""
                                 select count(*)
                                 from information_schema.tables
@@ -65,7 +65,27 @@ class BackendReleaseGateIntegrationTest {
                                     'mastery_states',
                                     'operational_audit_events',
                                     'advanced_feedback_results',
-                                    'daily_learning_policies'
+                                    'daily_learning_policies',
+                                    'analytics_events'
+                                  )
+                                """)
+                        .query(Integer.class)
+                        .single());
+        assertEquals(
+                8,
+                jdbc.sql("""
+                                select count(*)
+                                from information_schema.views
+                                where table_schema = 'public'
+                                  and table_name in (
+                                    'product_quality_attempt_facts',
+                                    'product_quality_lesson_dimension',
+                                    'product_quality_completion_facts',
+                                    'product_quality_session_facts',
+                                    'product_quality_review_dimension',
+                                    'product_quality_mastery_dimension',
+                                    'product_quality_support_facts',
+                                    'product_quality_engagement_facts'
                                   )
                                 """)
                         .query(Integer.class)

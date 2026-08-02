@@ -117,8 +117,11 @@ flutter test integration_test/learning_flow_integration_test.dart `
 - Practice Hub reuses published exercises for flashcards, adaptive learn,
   practice tests, short matching rounds, recent mistakes, and weak concepts.
   Practice evidence updates mastery/review but never lesson/course completion.
-- Analytics and crash events are disabled until consent is stored. The P0 sink
-  is deliberately no-op until a provider and privacy review are approved.
+- Product-quality analytics is disabled until `operational_telemetry` consent is
+  stored. The first-party sink sends only allowlisted scalar evidence/content IDs;
+  the backend rechecks consent, deduplicates IDs and enforces 30-day expiry. Delivery
+  is best-effort and never blocks learning. Stack traces and exception messages are
+  outside this product-analytics contract.
 
 ## Test strategy
 

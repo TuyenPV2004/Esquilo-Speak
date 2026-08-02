@@ -520,6 +520,33 @@ session mới.
    chứng hoàn tất 20 lesson vào báo cáo closed-testing. Không đóng gate nếu chỉ chạy widget test
    hoặc build APK mà chưa hoàn tất hành trình trên Android target.
 
+### Kiểm tra Giai đoạn 8 — Product quality và personalization
+
+1. Trong Profile, tắt **Phân tích vận hành** rồi học một exercise. Hành trình phải hoàn
+   tất bình thường và không có `POST /api/mobile/v1/analytics/events`. Bật consent, học
+   lại và xác nhận request chỉ có ID content, type, boolean/counter/bucket allowlisted;
+   không có prompt, answer, explanation text, token hay dữ liệu liên hệ.
+2. Gửi lại cùng `clientEventId`: response đầu tăng `accepted`, response sau tăng
+   `duplicates`; database không có hai event. Thu hồi consent trên server và xác nhận
+   request mới trả `ANALYTICS_CONSENT_REQUIRED` nhưng app vẫn tiếp tục học.
+3. Với operations token, gọi dashboard cho một cửa sổ UTC tối đa 366 ngày. Mọi metric
+   phải có `source` và `sampleSize`; denominator 0 trả `value: null`. Không ghi nhận
+   baseline D1/D7 từ cohort chưa đủ 1/7 ngày.
+4. Tạo content report có `contentRef=lessonId:exerciseId`, gọi content-quality queue và
+   xác nhận truy vết đúng hai ID. Chỉ triage/resolve sau khi kiểm tra canonical content;
+   không tự sửa content chỉ vì rate thấp trên mẫu nhỏ.
+5. Gọi recommendation khi có review đến hạn, concept yếu, mastery hoàn tất và không có
+   evidence. Mỗi response phải có policy version + explanation code; lặp lại cùng state
+   cho cùng kết quả. Ngắt mạng và xác nhận mobile dùng fallback local có `usedFallback`.
+6. Trước mọi policy/scheduler version mới, cập nhật dataset và rollback target rồi chạy:
+
+   ```powershell
+   node tests/product-quality/Recommendation_Evaluation_Test.mjs
+   ```
+
+   Không promote hoặc A/B test nếu accuracy/guardrail learning outcome, attempt loss,
+   privacy hay safety không đạt.
+
 ## 10. Dừng môi trường
 
 Nhấn `Ctrl+C` tại cửa sổ Flutter và backend. Sau đó, từ thư mục gốc:
@@ -557,6 +584,7 @@ Log liên quan đã loại bỏ token, password và dữ liệu nhạy cảm:
 ## 12. Tài liệu liên quan
 
 - Danh mục API và luồng nghiệp vụ: [`API_Check.md`](../reference/API_Check.md)
+- Định nghĩa metric: [`Product_Quality_Metrics.md`](../reference/Product_Quality_Metrics.md)
 - Kế hoạch Phần 1: [`Ke_Hoach_1.md`](../plans/Ke_Hoach_1.md)
 - Kế hoạch Phần 2: [`Ke_Hoach_2.md`](../plans/Ke_Hoach_2.md)
 - Hướng dẫn mobile: [`apps/mobile/README.md`](../../apps/mobile/README.md)

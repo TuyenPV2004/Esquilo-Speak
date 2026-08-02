@@ -369,22 +369,30 @@ non-accredited. Content-owner language/pedagogy/cultural/media sign-off và Andr
 
 ### Checklist
 
-- [ ] Chuẩn hóa learning-session, lesson, review và practice funnel.
-- [ ] Đo first-lesson completion, Unit 1 completion, D1/D7 retention và review completion.
-- [ ] Đo drop-off theo lesson/exercise type mà không thu dữ liệu không cần thiết.
-- [ ] Đo correctness, retry, hint usage, response time hợp lý và content report rate.
-- [ ] Xây dashboard nội bộ tối thiểu cho product/content quality.
-- [ ] Tạo content-quality queue từ report, difficulty anomaly và feedback usefulness.
-- [ ] Nâng recommendation từ heuristic sang rule/model versioned có explanation.
-- [ ] Tạo offline evaluation dataset và rollback rule trước khi đổi scheduler/model.
-- [ ] Thiết lập privacy retention và consent enforcement cho analytics.
-- [ ] Định nghĩa experiment guardrail; không A/B test làm giảm learning outcome/safety.
+- [x] Chuẩn hóa learning-session, lesson, review và practice funnel.
+- [x] Đo first-lesson completion, Unit 1 completion, D1/D7 retention và review completion.
+- [x] Đo drop-off theo lesson/exercise type mà không thu dữ liệu không cần thiết.
+- [x] Đo correctness, retry, hint usage, response time hợp lý và content report rate.
+- [x] Xây dashboard nội bộ tối thiểu cho product/content quality.
+- [x] Tạo content-quality queue từ report, difficulty anomaly và feedback usefulness.
+- [x] Nâng recommendation từ heuristic sang rule/model versioned có explanation.
+- [x] Tạo offline evaluation dataset và rollback rule trước khi đổi scheduler/model.
+- [x] Thiết lập privacy retention và consent enforcement cho analytics.
+- [x] Định nghĩa experiment guardrail; không A/B test làm giảm learning outcome/safety.
 
 ### Gate
 
-- [ ] Mọi north-star/supporting metric có định nghĩa và nguồn dữ liệu kiểm chứng được.
-- [ ] Recommendation luôn có fallback deterministic và lý do hiển thị được.
-- [ ] Content team truy vết được lesson/exercise gây drop-off hoặc report bất thường.
+- [x] Mọi north-star/supporting metric có định nghĩa và nguồn dữ liệu kiểm chứng được.
+- [x] Recommendation luôn có fallback deterministic và lý do hiển thị được.
+- [x] Content team truy vết được lesson/exercise gây drop-off hoặc report bất thường.
+
+Evidence Giai đoạn 8: metrics catalog khóa numerator/denominator/source/sample boundary;
+OpenAPI 0.13.0 và Flyway V15 cung cấp analytics opt-in 30 ngày, dashboard/queue operations
+và recommendation policy V1. Integration test xác minh consent/allowlist/dedup/retention,
+course-scoped recommendation cùng ba nguồn queue; offline evaluation 4/4, backend 40/40,
+Flutter 65/65, analyzer, `bootJar`, Redocly/P0 freeze và local debug APK đều pass. D1/D7
+thực tế, target rebaseline và mọi gate cần cohort vẫn thuộc Giai đoạn 9, không được suy diễn
+từ dữ liệu test. Không có Android target trong `flutter devices`, nên device E2E chung vẫn mở.
 
 ## Giai đoạn 9 — Closed beta và Product Completion Gate
 
@@ -449,7 +457,7 @@ course đã đủ sâu.
 
 ## 15. Metrics và ngưỡng quyết định ban đầu
 
-- [ ] North star: weekly learner hoàn thành ít nhất một learning session có
+- [x] North star: weekly learner hoàn thành ít nhất một learning session có
   mastery hoặc completion evidence.
 - [ ] Ít nhất 60% learner bắt đầu lesson đầu tiên hoàn thành lesson đó.
 - [ ] Theo dõi Unit 1 completion và D1/D7 retention; chốt baseline sau closed beta.
