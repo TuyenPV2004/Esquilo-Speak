@@ -69,63 +69,66 @@ void main() {
     );
   });
 
-  test('downloads a complete unit and serves its exact lesson offline', () async {
-    final database = AppDatabase(factory: databaseFactoryFfi);
-    await database.open(path: inMemoryDatabasePath);
-    addTearDown(database.close);
-    final remote = _ToggleRepository();
-    final api = ApiClient(
-      MockClient((request) async => http.Response('{}', 200)),
-      Uri.parse('https://api.example.test'),
-      const _TokenProvider(),
-      maxAttempts: 1,
-    );
-    final repository = OfflineLearningRepository(
-      remote,
-      SyncCoordinator(database, api),
-      database,
-    );
+  test(
+    'downloads a complete unit and serves its exact lesson offline',
+    () async {
+      final database = AppDatabase(factory: databaseFactoryFfi);
+      await database.open(path: inMemoryDatabasePath);
+      addTearDown(database.close);
+      final remote = _ToggleRepository();
+      final api = ApiClient(
+        MockClient((request) async => http.Response('{}', 200)),
+        Uri.parse('https://api.example.test'),
+        const _TokenProvider(),
+        maxAttempts: 1,
+      );
+      final repository = OfflineLearningRepository(
+        remote,
+        SyncCoordinator(database, api),
+        database,
+      );
 
-    const summaries = [
-      LessonSummary(
-        id: 'lesson-basic-greetings',
-        version: 1,
-        title: {'en': 'Greetings'},
-        estimatedMinutes: 5,
-        unitId: 'unit-first-contact',
-        unitTitle: {'en': 'First contact'},
-        position: 1,
-      ),
-    ];
-    final first = await repository.downloadUnit(
-      courseId: 'course-en-for-vi',
-      unitId: 'unit-first-contact',
-      lessons: summaries,
-    );
-    final second = await repository.downloadUnit(
-      courseId: 'course-en-for-vi',
-      unitId: 'unit-first-contact',
-      lessons: summaries,
-    );
-    expect(first.downloaded, true);
-    expect(second.downloadedLessonCount, 1);
-    expect(remote.lessonRequests, 2);
-
-    remote.offline = true;
-    final restored = await repository.lesson(
-      'lesson-basic-greetings',
-      version: 1,
-    );
-    expect(restored.id, 'lesson-basic-greetings');
-    expect(
-      (await repository.unitDownloadStatus(
+      const summaries = [
+        LessonSummary(
+          id: 'lesson-basic-greetings',
+          version: 1,
+          title: {'en': 'Greetings'},
+          estimatedMinutes: 5,
+          unitId: 'unit-first-contact',
+          unitTitle: {'en': 'First contact'},
+          position: 1,
+        ),
+      ];
+      final first = await repository.downloadUnit(
         courseId: 'course-en-for-vi',
         unitId: 'unit-first-contact',
         lessons: summaries,
-      )).downloaded,
-      true,
-    );
-  });
+      );
+      final second = await repository.downloadUnit(
+        courseId: 'course-en-for-vi',
+        unitId: 'unit-first-contact',
+        lessons: summaries,
+      );
+      expect(first.downloaded, true);
+      expect(second.downloadedLessonCount, 1);
+      expect(remote.lessonRequests, 2);
+
+      remote.offline = true;
+      final restored = await repository.lesson(
+        'lesson-basic-greetings',
+        version: 1,
+      );
+      expect(restored.id, 'lesson-basic-greetings');
+      expect(
+        (await repository.unitDownloadStatus(
+          courseId: 'course-en-for-vi',
+          unitId: 'unit-first-contact',
+          lessons: summaries,
+        )).downloaded,
+        true,
+      );
+    },
+  );
 }
 
 class _ToggleRepository implements LearningRepository {

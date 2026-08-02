@@ -2,6 +2,8 @@ enum LearnerActorType { guest, account }
 
 enum LearnerAgeBand { under16, age16To17, adult }
 
+enum DailyGoalType { minutes, lessons, reviews }
+
 extension LearnerAgeBandApi on LearnerAgeBand {
   String get apiValue => switch (this) {
     LearnerAgeBand.under16 => 'under_16',
@@ -13,20 +15,34 @@ extension LearnerAgeBandApi on LearnerAgeBand {
 class LearnerPreferences {
   const LearnerPreferences({
     this.dailyGoalMinutes = 10,
+    this.dailyGoalType = DailyGoalType.minutes,
+    this.dailyGoalTarget = 10,
     this.notificationsEnabled = false,
   });
 
   factory LearnerPreferences.fromJson(Map<String, dynamic> json) =>
       LearnerPreferences(
         dailyGoalMinutes: (json['dailyGoalMinutes'] as num?)?.toInt() ?? 10,
+        dailyGoalType: DailyGoalType.values.firstWhere(
+          (type) => type.name == json['dailyGoalType'],
+          orElse: () => DailyGoalType.minutes,
+        ),
+        dailyGoalTarget:
+            (json['dailyGoalTarget'] as num?)?.toInt() ??
+            (json['dailyGoalMinutes'] as num?)?.toInt() ??
+            10,
         notificationsEnabled: json['notificationsEnabled'] as bool? ?? false,
       );
 
   final int dailyGoalMinutes;
+  final DailyGoalType dailyGoalType;
+  final int dailyGoalTarget;
   final bool notificationsEnabled;
 
   Map<String, dynamic> toJson() => {
     'dailyGoalMinutes': dailyGoalMinutes,
+    'dailyGoalType': dailyGoalType.name,
+    'dailyGoalTarget': dailyGoalTarget,
     'notificationsEnabled': notificationsEnabled,
   };
 }

@@ -20,6 +20,7 @@ import '../features/advanced_learning/presentation/p1_view_model.dart';
 import '../features/learning/data/offline_learning_repository.dart';
 import '../features/learning/data/remote_learning_repository.dart';
 import '../features/learning/presentation/learning_view_model.dart';
+import '../features/home/presentation/daily_session_view_model.dart';
 import '../features/profile/data/learner_profile_service.dart';
 import '../features/profile/presentation/learner_profile_view_model.dart';
 import '../features/review/data/learning_insights_service.dart';
@@ -37,6 +38,7 @@ class AppDependencies {
     required this.profileViewModel,
     required this.insightsViewModel,
     required this.p1ViewModel,
+    required this.dailySessionViewModel,
     required this.localeController,
   });
 
@@ -50,6 +52,7 @@ class AppDependencies {
   final LearnerProfileViewModel profileViewModel;
   final LearningInsightsViewModel insightsViewModel;
   final P1ViewModel p1ViewModel;
+  final DailySessionViewModel dailySessionViewModel;
   final AppLocaleController localeController;
 
   static Future<AppDependencies> create() async {
@@ -111,6 +114,11 @@ class AppDependencies {
           profileViewModel.profile?.activeCourseId ??
           learningViewModel.selectedCourse?.id,
     )..load();
+    final dailySessionViewModel = DailySessionViewModel(
+      learning: learningViewModel,
+      insights: insightsViewModel,
+      engagement: p1ViewModel,
+    );
 
     return AppDependencies._(
       environment: environment,
@@ -123,6 +131,7 @@ class AppDependencies {
       profileViewModel: profileViewModel,
       insightsViewModel: insightsViewModel,
       p1ViewModel: p1ViewModel,
+      dailySessionViewModel: dailySessionViewModel,
       localeController: localeController,
     );
   }
@@ -141,6 +150,7 @@ class AppDependencies {
   }
 
   Future<void> dispose() async {
+    dailySessionViewModel.dispose();
     learningViewModel.dispose();
     profileViewModel.dispose();
     insightsViewModel.dispose();

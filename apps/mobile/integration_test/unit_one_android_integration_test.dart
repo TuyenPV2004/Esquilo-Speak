@@ -11,7 +11,9 @@ import 'package:integration_test/integration_test.dart';
 void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
 
-  testWidgets('downloads and completes all 45 Unit 1 exercises', (tester) async {
+  testWidgets('downloads and completes all 45 Unit 1 exercises', (
+    tester,
+  ) async {
     final repository = _UnitOneRepository();
     final viewModel = LearningViewModel(
       repository,
@@ -41,10 +43,7 @@ void main() {
     await _tap(tester, const ValueKey('language-en'));
     await _tap(tester, const ValueKey('course-course-en-for-vi'));
     expect(find.text('First contact'), findsOneWidget);
-    await _tap(
-      tester,
-      const ValueKey('download-unit-unit-first-contact'),
-    );
+    await _tap(tester, const ValueKey('download-unit-unit-first-contact'));
     expect(find.text('Available offline'), findsOneWidget);
 
     for (var lessonIndex = 0; lessonIndex < 5; lessonIndex++) {
@@ -67,8 +66,9 @@ void main() {
     expect(repository.completedExerciseIds, hasLength(45));
     expect(viewModel.courseProgress?.completedExerciseCount, 45);
     expect(
-      viewModel.courseProgress?.lessonProgress
-          .where((lesson) => lesson.status == 'completed'),
+      viewModel.courseProgress?.lessonProgress.where(
+        (lesson) => lesson.status == 'completed',
+      ),
       hasLength(5),
     );
   });
@@ -84,8 +84,9 @@ Future<void> _tap(WidgetTester tester, Key key) async {
 
 ExerciseResponse _responseFor(Exercise exercise) => switch (exercise.type) {
   'flashcard' => const SelfAssessmentExerciseResponse('know'),
-  'multiple_choice' || 'listen_select' || 'comprehension' =>
-    OptionExerciseResponse(exercise.options.first.id),
+  'multiple_choice' ||
+  'listen_select' ||
+  'comprehension' => OptionExerciseResponse(exercise.options.first.id),
   'true_false' => const BooleanExerciseResponse(true),
   'matching' => PairExerciseResponse([
     for (var index = 0; index < exercise.leftItems.length; index++)
@@ -249,7 +250,10 @@ Lesson _lesson(int lessonNumber) => Lesson(
     'vi': lessonNumber == 5 ? 'Checkpoint' : 'Bài $lessonNumber',
   },
   objectives: const [
-    {'en': 'Complete the Unit 1 activity.', 'vi': 'Hoàn thành hoạt động Unit 1.'},
+    {
+      'en': 'Complete the Unit 1 activity.',
+      'vi': 'Hoàn thành hoạt động Unit 1.',
+    },
   ],
   exercises: [
     _exercise(lessonNumber, 'flashcard'),
@@ -271,7 +275,8 @@ Exercise _exercise(int lesson, String type) => Exercise(
   transcript: type == 'listen_select' || type == 'dictation'
       ? const {'en': 'Hello', 'vi': 'Hello'}
       : const {},
-  options: type == 'multiple_choice' ||
+  options:
+      type == 'multiple_choice' ||
           type == 'listen_select' ||
           type == 'comprehension'
       ? const [
@@ -292,14 +297,23 @@ Exercise _exercise(int lesson, String type) => Exercise(
       : const [],
   leftItems: type == 'matching'
       ? const [
-          ExerciseOption(id: 'left-hello', text: {'en': 'Hello', 'vi': 'Hello'}),
+          ExerciseOption(
+            id: 'left-hello',
+            text: {'en': 'Hello', 'vi': 'Hello'},
+          ),
           ExerciseOption(id: 'left-bye', text: {'en': 'Bye', 'vi': 'Bye'}),
         ]
       : const [],
   rightItems: type == 'matching'
       ? const [
-          ExerciseOption(id: 'right-hello', text: {'en': 'Greeting', 'vi': 'Lời chào'}),
-          ExerciseOption(id: 'right-bye', text: {'en': 'Goodbye', 'vi': 'Tạm biệt'}),
+          ExerciseOption(
+            id: 'right-hello',
+            text: {'en': 'Greeting', 'vi': 'Lời chào'},
+          ),
+          ExerciseOption(
+            id: 'right-bye',
+            text: {'en': 'Goodbye', 'vi': 'Tạm biệt'},
+          ),
         ]
       : const [],
 );

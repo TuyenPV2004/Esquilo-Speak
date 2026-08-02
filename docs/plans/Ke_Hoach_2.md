@@ -260,23 +260,31 @@ Tạo lý do rõ ràng để learner quay lại mỗi ngày và luôn biết bư
 
 ### Checklist
 
-- [ ] Xây daily-session composer từ lesson tiếp theo, review đến hạn và điểm yếu.
-- [ ] Home hiển thị một primary CTA cùng lý do đề xuất.
-- [ ] Có quick practice 3–5 phút khi learner không đủ thời gian học lesson mới.
-- [ ] Kết thúc phiên hiển thị outcome đạt được, lỗi cần ôn và bước tiếp theo.
-- [ ] Tách streak khỏi daily goal về model và UI.
-- [ ] Goal hỗ trợ phút, lesson hoặc review target theo policy.
-- [ ] Streak chỉ tăng từ hoạt động học có evidence hợp lệ.
-- [ ] Reminder tôn trọng consent, timezone, quiet hours và denial state.
-- [ ] Backlog review được giới hạn hợp lý nhưng vẫn minh bạch.
-- [ ] Daily session hoạt động offline trong phạm vi content đã tải.
-- [ ] Thêm event/metric tối thiểu cho start, completion, abandon và recommendation source.
+- [x] Xây daily-session composer từ lesson tiếp theo, review đến hạn và điểm yếu.
+- [x] Home hiển thị một primary CTA cùng lý do đề xuất.
+- [x] Có quick practice 3–5 phút khi learner không đủ thời gian học lesson mới.
+- [x] Kết thúc phiên hiển thị outcome đạt được, lỗi cần ôn và bước tiếp theo.
+- [x] Tách streak khỏi daily goal về model và UI.
+- [x] Goal hỗ trợ phút, lesson hoặc review target theo policy.
+- [x] Streak chỉ tăng từ hoạt động học có evidence hợp lệ.
+- [x] Reminder tôn trọng consent, timezone, quiet hours và denial state.
+- [x] Backlog review được giới hạn hợp lý nhưng vẫn minh bạch.
+- [x] Daily session hoạt động offline trong phạm vi content đã tải.
+- [x] Thêm event/metric tối thiểu cho start, completion, abandon và recommendation source.
 
 ### Gate
 
-- [ ] Learner mở app và bắt đầu daily session trong tối đa hai thao tác.
-- [ ] Daily session hoàn thành được ngay cả khi không có lesson mới.
-- [ ] Không thể spam attempt/XP để tạo streak hoặc thành tích sai.
+- [x] Learner mở app và bắt đầu daily session trong tối đa hai thao tác.
+- [x] Daily session hoàn thành được ngay cả khi không có lesson mới.
+- [x] Không thể spam attempt/XP để tạo streak hoặc thành tích sai.
+
+Bằng chứng đóng gate: `DailySessionComposer` có test deterministic cho thứ tự ưu
+tiên, review cap, offline readiness và fallback sau khi hết lesson; Home V2 chỉ
+có một filled CTA để bắt đầu; quick practice tái sử dụng lesson/exercise canonical
+và ghi `practiceMode`; integration test engagement trên PostgreSQL xác nhận
+evidence ownership, unique rewarded evidence, lifecycle event 0 XP và quiet-hours
+policy. Flutter analyzer cùng full mobile suite và backend regression là quality
+gate bắt buộc của thay đổi này.
 
 ## Giai đoạn 6 — Practice modes dùng lại content
 

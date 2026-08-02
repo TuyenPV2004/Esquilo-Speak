@@ -15,6 +15,26 @@ enum LearningStep {
   progress,
 }
 
+enum LearningSessionKind { lesson, dailyQuickPractice }
+
+class LearningCompletion {
+  const LearningCompletion({
+    required this.kind,
+    required this.courseId,
+    required this.lessonId,
+    required this.exerciseCount,
+    required this.mistakeCount,
+    required this.conceptIds,
+  });
+
+  final LearningSessionKind kind;
+  final String courseId;
+  final String lessonId;
+  final int exerciseCount;
+  final int mistakeCount;
+  final List<String> conceptIds;
+}
+
 class LearningViewModel extends ChangeNotifier {
   LearningViewModel(
     this._repository, {
@@ -25,6 +45,7 @@ class LearningViewModel extends ChangeNotifier {
   final LearningRepository _repository;
   final LearningContextSnapshot Function() learningContext;
   final Future<void> Function(Course course) onCourseSelected;
+  Future<void> Function(LearningCompletion completion)? onLearningCompleted;
 
   LearningStep step = LearningStep.catalog;
   bool loading = false;
@@ -46,6 +67,9 @@ class LearningViewModel extends ChangeNotifier {
   CourseProgress? courseProgress;
   final Map<String, UnitDownloadStatus> unitDownloadStatuses = {};
   String? downloadingUnitId;
+  LearningSessionKind sessionKind = LearningSessionKind.lesson;
+  int sessionMistakeCount = 0;
+  final Set<String> _sessionMistakeExerciseIds = {};
   PendingAttempt? _pendingAttempt;
   String? _requestedSourceLanguage;
   String? _requestedTargetLanguage;
@@ -157,6 +181,80 @@ class LearningViewModel extends ChangeNotifier {
       summary.id,
       version: summary.version,
     );
+    sessionKind = LearningSessionKind.lesson;
+    _resetSessionState();
+    await _restoreResume();
+    step = LearningStep.lesson;
+  });
+
+  Future<void> startQuickPractice({
+    required Iterable<String> conceptIds,
+    required int exerciseCount,
+  }) => _run(() async {
+    final requestedConcepts = conceptIds.toSet();
+    final candidates = [...lessons]
+      ..sort((left, right) {
+        final leftDownloaded =
+            left.unitId != null &&
+            (unitDownloadStatuses[left.unitId]?.downloaded ?? false);
+        final rightDownloaded =
+            right.unitId != null &&
+            (unitDownloadStatuses[right.unitId]?.downloaded ?? false);
+        if (leftDownloaded != rightDownloaded) return leftDownloaded ? -1 : 1;
+        return (left.position ?? 0).compareTo(right.position ?? 0);
+      });
+    Lesson? source;
+    List<Exercise> selectedExercises = const [];
+    for (final summary in candidates) {
+      Lesson candidate;
+      try {
+        candidate = await _repository.lesson(
+          summary.id,
+          version: summary.version,
+        );
+      } on Object {
+        continue;
+      }
+      final matching = candidate.exercises
+          .where(
+            (exercise) =>
+                requestedConcepts.isEmpty ||
+                exercise.conceptIds.any(requestedConcepts.contains),
+          )
+          .toList();
+      if (matching.isEmpty && requestedConcepts.isNotEmpty) continue;
+      final combined = <Exercise>[...matching];
+      for (final exercise in candidate.exercises) {
+        if (combined.length >= exerciseCount) break;
+        if (!combined.any((item) => item.id == exercise.id)) {
+          combined.add(exercise);
+        }
+      }
+      if (combined.isEmpty) continue;
+      source = candidate;
+      selectedExercises = combined.take(exerciseCount).toList(growable: false);
+      break;
+    }
+    if (source == null || selectedExercises.isEmpty) {
+      throw StateError(
+        'No cached or reachable lesson supports quick practice.',
+      );
+    }
+    selectedLesson = Lesson(
+      id: source.id,
+      courseId: source.courseId,
+      version: source.version,
+      locale: source.locale,
+      title: source.title,
+      objectives: source.objectives,
+      exercises: selectedExercises,
+    );
+    sessionKind = LearningSessionKind.dailyQuickPractice;
+    _resetSessionState();
+    step = LearningStep.lesson;
+  });
+
+  void _resetSessionState() {
     selectedOptionId = null;
     selectedResponse = null;
     currentExerciseIndex = 0;
@@ -164,29 +262,32 @@ class LearningViewModel extends ChangeNotifier {
     retryIndex = 0;
     reviewingMistakes = false;
     mistakeExerciseIndexes.clear();
+    _sessionMistakeExerciseIds.clear();
+    sessionMistakeCount = 0;
     _exerciseStartedAt = DateTime.now();
+    selectionError = null;
+    _pendingAttempt = null;
+  }
+
+  Future<void> _restoreResume() async {
+    final lesson = selectedLesson;
+    if (lesson == null || sessionKind != LearningSessionKind.lesson) return;
     final store = _repository is LessonResumeStore
         ? _repository as LessonResumeStore
         : null;
-    final resume = await store?.loadLessonResume(
-      selectedLesson!.id,
-      selectedLesson!.version,
-    );
+    final resume = await store?.loadLessonResume(lesson.id, lesson.version);
     if (resume != null &&
         resume.exerciseIndex >= 0 &&
-        resume.exerciseIndex < selectedLesson!.exercises.length) {
+        resume.exerciseIndex < lesson.exercises.length) {
       currentExerciseIndex = resume.exerciseIndex;
       mistakeExerciseIndexes.addAll(
         resume.mistakeExerciseIndexes.where(
-          (index) => index >= 0 && index < selectedLesson!.exercises.length,
+          (index) => index >= 0 && index < lesson.exercises.length,
         ),
       );
       reviewingMistakes = resume.reviewingMistakes;
     }
-    selectionError = null;
-    _pendingAttempt = null;
-    step = LearningStep.lesson;
-  });
+  }
 
   void selectOption(String optionId) {
     setResponse(OptionExerciseResponse(optionId));
@@ -233,12 +334,22 @@ class LearningViewModel extends ChangeNotifier {
               hintUsed: hintVisible,
               hintLevel: hintVisible ? 1 : 0,
               retryIndex: retryIndex,
+              practiceMode:
+                  sessionKind == LearningSessionKind.dailyQuickPractice
+                  ? 'daily_quick_practice'
+                  : null,
             ),
           );
       feedback = await _repository.submitAttempt(_pendingAttempt!);
       if (!feedback!.correct &&
           !mistakeExerciseIndexes.contains(currentExerciseIndex)) {
         mistakeExerciseIndexes.add(currentExerciseIndex);
+      }
+      if (!feedback!.correct &&
+          _sessionMistakeExerciseIds.add(
+            lesson.exercises[currentExerciseIndex].id,
+          )) {
+        sessionMistakeCount += 1;
       }
       await _persistResume();
       _pendingAttempt = null;
@@ -321,7 +432,11 @@ class LearningViewModel extends ChangeNotifier {
 
   Future<void> _persistResume() async {
     final lesson = selectedLesson;
-    if (lesson == null || _repository is! LessonResumeStore) return;
+    if (lesson == null ||
+        sessionKind != LearningSessionKind.lesson ||
+        _repository is! LessonResumeStore) {
+      return;
+    }
     await (_repository as LessonResumeStore).saveLessonResume(
       LessonResume(
         lessonId: lesson.id,
@@ -335,13 +450,30 @@ class LearningViewModel extends ChangeNotifier {
 
   Future<void> _finishLesson() async {
     final lesson = selectedLesson;
-    if (lesson != null && _repository is LessonResumeStore) {
+    if (lesson != null &&
+        sessionKind == LearningSessionKind.lesson &&
+        _repository is LessonResumeStore) {
       await (_repository as LessonResumeStore).clearLessonResume(
         lesson.id,
         lesson.version,
       );
     }
     await showProgress();
+    if (lesson != null) {
+      await onLearningCompleted?.call(
+        LearningCompletion(
+          kind: sessionKind,
+          courseId: lesson.courseId,
+          lessonId: lesson.id,
+          exerciseCount: lesson.exercises.length,
+          mistakeCount: sessionMistakeCount,
+          conceptIds: lesson.exercises
+              .expand((exercise) => exercise.conceptIds)
+              .toSet()
+              .toList(growable: false),
+        ),
+      );
+    }
   }
 
   void _prepareExercise({bool retry = false}) {

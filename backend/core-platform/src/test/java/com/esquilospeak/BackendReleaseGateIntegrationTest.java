@@ -48,10 +48,12 @@ class BackendReleaseGateIntegrationTest {
                 .list();
 
         assertEquals(
-                List.of("1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13"),
+                List.of(
+                        "1", "2", "3", "4", "5", "6", "7",
+                        "8", "9", "10", "11", "12", "13", "14"),
                 appliedVersions);
         assertEquals(
-                6,
+                7,
                 jdbc.sql("""
                                 select count(*)
                                 from information_schema.tables
@@ -62,7 +64,8 @@ class BackendReleaseGateIntegrationTest {
                                     'attempts',
                                     'mastery_states',
                                     'operational_audit_events',
-                                    'advanced_feedback_results'
+                                    'advanced_feedback_results',
+                                    'daily_learning_policies'
                                   )
                                 """)
                         .query(Integer.class)

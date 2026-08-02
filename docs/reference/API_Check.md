@@ -175,9 +175,9 @@ yếu dùng hàng đợi offline và `sync/push` để tránh mất bài khi m�
 |---|---|---|---|
 | `GET /api/mobile/v1/assessments/placement?courseId={courseId}` | `getPlacementAssessment` | Lấy bài placement của khóa học cùng proficiency reference | Màn Placement sau khi chọn khóa học; cần learner JWT |
 | `POST /api/mobile/v1/assessments/placement/attempts` | `submitPlacementAssessment` | Chấm placement theo `assessmentId` và giữ framework/version/level trong evidence | Không phải chứng chỉ được công nhận; cần learner JWT và `Idempotency-Key` |
-| `GET /api/mobile/v1/engagement` | `getEngagementStatus` | Lấy streak, XP, achievement và reminder preference | Preload/màn Engagement; cần learner JWT |
-| `POST /api/mobile/v1/engagement/activities` | `recordEngagementActivity` | Ghi một hoạt động học idempotent | Cập nhật XP/streak/achievement; cần learner JWT |
-| `PUT /api/mobile/v1/engagement/notification-preference` | `updateNotificationPreference` | Lưu cấu hình nhắc học | Server lưu preference, Android lập lịch local; cần learner JWT |
+| `GET /api/mobile/v1/engagement` | `getEngagementStatus` | Lấy streak, XP, achievement, daily goal, daily-learning policy và reminder preference | Home/Engagement/Profile dùng policy version để giới hạn backlog, quick practice, loại/range goal và quiet hours; cần learner JWT |
+| `POST /api/mobile/v1/engagement/activities` | `recordEngagementActivity` | Ghi activity hoặc lifecycle event idempotent | `lesson_completed`/`advanced_practice_completed` chỉ thưởng khi `evidenceRef` thuộc learner và chưa từng được thưởng; `daily_session_started/completed/abandoned` chỉ đo lifecycle, 0 XP và không tăng streak; cần learner JWT |
+| `PUT /api/mobile/v1/engagement/notification-preference` | `updateNotificationPreference` | Lưu cấu hình nhắc học | Server kiểm tra IANA timezone, thời gian bắt buộc và quiet hours; Android chỉ lập lịch local sau khi learner cấp quyền; cần learner JWT |
 
 ### 4.8. Commerce
 
@@ -223,6 +223,9 @@ Ma trận thao tác kiểm thử A01–O04 và API mong đợi nằm trong
   quyết định correctness theo content version canonical.
 - `POST /api/mobile/v1/engagement/activities` nhận `eventType` và `evidenceRef`; server chọn XP theo policy version thay vì tin điểm do client gửi.
 - `PUT /api/mobile/v1/engagement/notification-preference` nhận giờ, locale và IANA timezone; streak được tính theo ngày học tại timezone đó.
+- `GET /api/mobile/v1/engagement` trả thêm `dailyLearningPolicy` có version và `dailyGoal`. Goal hỗ trợ `minutes`, `lessons` hoặc `reviews`; target luôn được clamp theo range server policy.
+- Event có thưởng phải tham chiếu completion/feedback canonical thuộc đúng learner. Unique evidence guard ngăn đổi `clientEventId` để nhận XP, streak hoặc achievement nhiều lần.
+- Lifecycle event của daily session mang recommendation source trong `evidenceRef` để đo start/completion/abandon nhưng không phải bằng chứng học và không được thưởng.
 - Profile trước onboarding có thể chưa có locale/cặp ngôn ngữ/course. `PUT /me/profile` bắt buộc active course đã publish và khớp source/target.
 - Placement trả `defaultLocale`, prompt/option đa locale và stable option ID.
   Attempt chỉ gửi option ID.

@@ -40,6 +40,13 @@ class EngagementScreen extends StatelessWidget {
                   if (viewModel.permissionIssue ==
                       P1PermissionIssue.notifications)
                     _ErrorBanner(message: strings.notificationPermissionDenied),
+                  if (viewModel.reminderInQuietHours)
+                    _ErrorBanner(
+                      message: strings.reminderQuietHours(
+                        status.dailyLearningPolicy.quietHoursStart,
+                        status.dailyLearningPolicy.quietHoursEnd,
+                      ),
+                    ),
                   if (viewModel.failure != null)
                     _ErrorBanner(
                       message: viewModel.failure!.localized(strings),

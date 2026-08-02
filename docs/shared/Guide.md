@@ -277,6 +277,8 @@ và request thực tế của mobile app.
 | Mã | Thao tác | Kết quả mong đợi | API tương ứng |
 |---|---|---|---|
 | B01 | Tại Home, kiểm tra card đề xuất và lý do đề xuất. | Có hành động học tiếp theo, lý do dễ hiểu và CTA hoạt động. | `GET /api/mobile/v1/mastery`<br>`GET /api/mobile/v1/reviews?limit=20` |
+| B01a | Từ Home bấm CTA daily session một lần. | Vào bài tiếp theo hoặc quick practice trong tổng cộng không quá hai thao tác kể từ khi mở app; Home chỉ có một primary CTA và hiển thị recommendation source. | `GET /api/mobile/v1/engagement`<br>`POST /api/mobile/v1/engagement/activities` với `daily_session_started` |
+| B01b | Hoàn tất daily session rồi quay lại Home. | Summary hiển thị outcome, số lỗi và bước tiếp theo; lifecycle completion được ghi nhưng không tự cộng XP/streak. Khi mọi lesson đã hoàn tất vẫn mở được quick practice 3–5 phút. | `POST /api/mobile/v1/engagement/activities` với `daily_session_completed`; nếu là lesson mới, gửi thêm `lesson_completed` cùng completion evidence canonical |
 | B02 | Vào `Học` từ hồ sơ đã có active course rồi mở bài đầu tiên. | App dùng source/target/active course trong learner profile, tải đúng danh sách bài mà không fallback về Việt–Anh. | `GET /api/mobile/v1/languages`<br>`GET /api/mobile/v1/courses?sourceLanguage=...&targetLanguage=...`<br>`GET /api/mobile/v1/courses/{courseId}/lessons`<br>`GET /api/mobile/v1/lessons/{lessonId}` |
 | B03 | Chọn đáp án `Hello`, gửi câu trả lời. | Có phản hồi đúng/sai rõ ràng; không gửi lặp khi nhấn nhanh. | `POST /api/mobile/v1/sync/push` với mutation `attempt.submit`<br>`GET /api/mobile/v1/sync/pull` |
 | B04 | Mở tiến độ sau bài. | Progress/mastery được cập nhật và có nhãn dễ hiểu. | `GET /api/mobile/v1/progress/courses/{courseId}` |
@@ -351,10 +353,11 @@ và request thực tế của mobile app.
 | Mã | Thao tác | Kết quả mong đợi | API tương ứng |
 |---|---|---|---|
 | K01 | Mở `Chuỗi ngày và thành tích`. | Hiển thị current streak, XP và danh sách/trạng thái thành tích. | `GET /api/mobile/v1/engagement` |
-| K02 | Chọn `Hoàn thành một lượt luyện tập (+15 XP)`. | XP tăng đúng 15; thành tích đầu tiên xuất hiện khi đủ điều kiện. | `POST /api/mobile/v1/engagement/activities` |
+| K02 | Hoàn thành một lesson hoặc lượt advanced practice có feedback canonical, sau đó ghi nhận hoạt động. Thử gửi lại cùng evidence với `clientEventId` khác. | Lần đầu tăng XP/streak theo policy; lần lặp không tăng XP, streak hoặc achievement. Evidence giả/khác learner bị từ chối `422`. | `POST /api/mobile/v1/engagement/activities` |
 | K03 | Bật lời nhắc trên Android 13+. | Android hỏi quyền notification; khi được cấp, trạng thái lời nhắc bật cho 19:30. | Sau khi cấp quyền: `PUT /api/mobile/v1/engagement/notification-preference`<br>`GET /api/mobile/v1/engagement` |
 | K04 | Từ chối quyền notification. | Lời nhắc vẫn tắt và app hướng dẫn cấp quyền trong Android Settings. | **Không gọi API** vì app dừng trước bước cập nhật preference |
 | K05 | Tắt lời nhắc đã bật. | Trạng thái tắt được lưu và lịch native được hủy. | `PUT /api/mobile/v1/engagement/notification-preference`<br>`GET /api/mobile/v1/engagement` |
+| K06 | Chọn thời gian trong quiet hours hiện hành (mặc định policy v1: 21:00–07:00). | App hiển thị denial state, không xin/lập lịch notification; nếu gọi API trực tiếp thì server trả `422 REMINDER_IN_QUIET_HOURS`. | `GET /api/mobile/v1/engagement`<br>`PUT /api/mobile/v1/engagement/notification-preference` |
 
 ### L. Premium closed testing
 
@@ -377,7 +380,7 @@ và request thực tế của mobile app.
 
 | Mã | Thao tác | Kết quả mong đợi | API tương ứng |
 |---|---|---|---|
-| N01 | Mở Profile, thay daily goal/notification preference nếu có. | Giá trị được lưu và đọc lại nhất quán. | `GET /api/mobile/v1/me/profile`<br>`PUT /api/mobile/v1/me/profile` |
+| N01 | Mở Profile, đổi daily goal giữa phút/lesson/review và chọn target trong range policy. | Loại/target được lưu trong profile; Home hiển thị tiến độ goal độc lập với streak và backend clamp target theo policy. | `GET /api/mobile/v1/engagement`<br>`GET /api/mobile/v1/me/profile`<br>`PUT /api/mobile/v1/me/profile` |
 | N02 | Thay telemetry consent tùy chọn. | Lựa chọn được tôn trọng; app vẫn dùng được khi không đồng ý telemetry tùy chọn. | `PUT /api/mobile/v1/me/consents/operational_telemetry`<br>`GET /api/mobile/v1/me/consents` |
 | N03 | Gửi yêu cầu export dữ liệu. | Có trạng thái xác nhận, không hiển thị dữ liệu nhạy cảm trên log/UI. | `POST /api/mobile/v1/me/privacy/exports`<br>Kiểm tra trạng thái nếu có: `GET /api/mobile/v1/me/privacy/requests/{requestId}` |
 | N04 | Chỉ ở cuối phiên test, kiểm tra xóa tài khoản/profile thử nghiệm. | Có cảnh báo hành động phá hủy và kết quả đúng theo contract; không dùng profile cần giữ lại. | `POST /api/mobile/v1/me/privacy/deletions` |

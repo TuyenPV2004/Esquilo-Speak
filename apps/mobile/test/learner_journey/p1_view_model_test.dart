@@ -68,6 +68,11 @@ void main() {
       }
 
       await viewModel.submitPlacement();
+      await viewModel.requestTextFeedback(
+        kind: 'writing',
+        input: 'Hello, my name is Ana.',
+        locale: 'en',
+      );
       await viewModel.recordLearningActivity();
       await viewModel.updateReminder(
         enabled: true,
@@ -118,6 +123,35 @@ void main() {
       expect(viewModel.engagement?.reminderEnabled, isFalse);
       expect(platform.reminderScheduled, isFalse);
       expect(viewModel.permissionIssue, P1PermissionIssue.notifications);
+    },
+  );
+
+  test(
+    'rejects reminder inside policy quiet hours before requesting consent',
+    () async {
+      final gateway = FakeP1Gateway();
+      final platform = FakeAdvancedLearningPlatform();
+      final viewModel = P1ViewModel(
+        gateway,
+        platform,
+        closedTestingCommerceEnabled: true,
+        closedTestingProductId: 'premium-monthly',
+        selectedCourseId: () => 'course-en-for-vi',
+      );
+      await viewModel.load();
+
+      await viewModel.updateReminder(
+        enabled: true,
+        locale: 'en',
+        title: 'Reminder',
+        body: 'Practise',
+        hour: 22,
+        minute: 0,
+      );
+
+      expect(viewModel.reminderInQuietHours, isTrue);
+      expect(viewModel.engagement?.reminderEnabled, isFalse);
+      expect(platform.reminderScheduled, isFalse);
     },
   );
 }

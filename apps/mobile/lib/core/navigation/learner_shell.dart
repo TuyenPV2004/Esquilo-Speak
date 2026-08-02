@@ -4,9 +4,15 @@ import 'package:go_router/go_router.dart';
 import '../../l10n/app_localizations.dart';
 
 class LearnerShell extends StatelessWidget {
-  const LearnerShell({required this.navigationShell, super.key});
+  const LearnerShell({
+    required this.navigationShell,
+    this.onBranchChanged,
+    super.key,
+  });
 
   final StatefulNavigationShell navigationShell;
+  final Future<void> Function(int previousIndex, int nextIndex)?
+  onBranchChanged;
 
   @override
   Widget build(BuildContext context) {
@@ -73,7 +79,8 @@ class LearnerShell extends StatelessWidget {
     );
   }
 
-  void _goToBranch(int index) {
+  Future<void> _goToBranch(int index) async {
+    await onBranchChanged?.call(navigationShell.currentIndex, index);
     navigationShell.goBranch(
       index,
       initialLocation: index == navigationShell.currentIndex,

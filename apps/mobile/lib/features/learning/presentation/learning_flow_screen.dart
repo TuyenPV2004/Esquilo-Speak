@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
 import '../../../core/design_system/app_tokens.dart';
@@ -135,6 +136,9 @@ class LearningFlowScreen extends StatelessWidget {
         ),
         actionLabel: strings.continueLearning,
         onContinue: viewModel.continueFromProgress,
+        sessionExerciseCount: viewModel.selectedLesson?.exercises.length ?? 0,
+        sessionMistakeCount: viewModel.sessionMistakeCount,
+        onReturnHome: () => context.go('/home'),
       ),
     };
   }
@@ -334,9 +338,11 @@ class _Lessons extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 8),
-                for (var lessonIndex = 0;
-                    lessonIndex < unitLessons.length;
-                    lessonIndex++) ...[
+                for (
+                  var lessonIndex = 0;
+                  lessonIndex < unitLessons.length;
+                  lessonIndex++
+                ) ...[
                   if (lessonIndex > 0) const Divider(),
                   _LessonTile(
                     lesson: unitLessons[lessonIndex],
@@ -389,11 +395,7 @@ class _LessonTile extends StatelessWidget {
           : Icons.play_circle_outline,
     ),
     title: Text(
-      localized(
-        lesson.title,
-        _locale(context),
-        defaultLocale: lesson.locale,
-      ),
+      localized(lesson.title, _locale(context), defaultLocale: lesson.locale),
     ),
     subtitle: Text(
       completed
@@ -470,12 +472,18 @@ class _Progress extends StatelessWidget {
     required this.summary,
     required this.actionLabel,
     required this.onContinue,
+    required this.sessionExerciseCount,
+    required this.sessionMistakeCount,
+    required this.onReturnHome,
   });
 
   final CourseProgress progress;
   final String summary;
   final String actionLabel;
   final VoidCallback onContinue;
+  final int sessionExerciseCount;
+  final int sessionMistakeCount;
+  final VoidCallback onReturnHome;
 
   @override
   Widget build(BuildContext context) {
@@ -497,10 +505,47 @@ class _Progress extends StatelessWidget {
               const SizedBox(height: 20),
               LinearProgressIndicator(value: value, minHeight: 12),
               const SizedBox(height: 20),
+              Card(
+                child: Padding(
+                  padding: const EdgeInsets.all(AppSpacing.md),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Text(
+                        AppLocalizations.of(context).sessionOutcomeTitle,
+                        style: Theme.of(context).textTheme.titleMedium,
+                      ),
+                      const SizedBox(height: AppSpacing.xs),
+                      Text(
+                        AppLocalizations.of(
+                          context,
+                        ).sessionOutcome(sessionExerciseCount),
+                      ),
+                      const SizedBox(height: AppSpacing.xs),
+                      Text(
+                        sessionMistakeCount == 0
+                            ? AppLocalizations.of(context).sessionNoMistakes
+                            : AppLocalizations.of(
+                                context,
+                              ).sessionMistakes(sessionMistakeCount),
+                      ),
+                      const SizedBox(height: AppSpacing.xs),
+                      Text(AppLocalizations.of(context).sessionNextStep),
+                    ],
+                  ),
+                ),
+              ),
+              const SizedBox(height: 20),
               FilledButton(
                 key: const ValueKey('continue-from-progress'),
                 onPressed: onContinue,
                 child: Text(actionLabel),
+              ),
+              const SizedBox(height: AppSpacing.sm),
+              TextButton(
+                key: const ValueKey('return-home-from-summary'),
+                onPressed: onReturnHome,
+                child: Text(AppLocalizations.of(context).todayTitle),
               ),
             ],
           ),

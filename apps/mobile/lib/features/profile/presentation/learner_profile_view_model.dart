@@ -139,6 +139,49 @@ class LearnerProfileViewModel extends ChangeNotifier {
     }
   }
 
+  Future<void> setDailyGoal(DailyGoalType type, int target) async {
+    final current = profile;
+    final ageBand = current?.ageBand;
+    final uiLocale = current?.uiLocale;
+    final sourceLanguage = current?.sourceLanguage;
+    final targetLanguage = current?.targetLanguage;
+    final activeCourseId = current?.activeCourseId;
+    if (current == null ||
+        ageBand == null ||
+        uiLocale == null ||
+        sourceLanguage == null ||
+        targetLanguage == null ||
+        activeCourseId == null) {
+      return;
+    }
+    saving = true;
+    failure = null;
+    notifyListeners();
+    try {
+      profile = await _service.updateProfile(
+        uiLocale: uiLocale,
+        sourceLanguage: sourceLanguage,
+        targetLanguage: targetLanguage,
+        activeCourseId: activeCourseId,
+        ageBand: ageBand,
+        learningGoal: current.learningGoal ?? 'daily_communication',
+        preferences: LearnerPreferences(
+          dailyGoalMinutes: type == DailyGoalType.minutes
+              ? target
+              : current.preferences.dailyGoalMinutes,
+          dailyGoalType: type,
+          dailyGoalTarget: target,
+          notificationsEnabled: current.preferences.notificationsEnabled,
+        ),
+      );
+    } on Object catch (error) {
+      failure = mapUserFacingFailure(error);
+    } finally {
+      saving = false;
+      notifyListeners();
+    }
+  }
+
   Future<void> previewUiLocale(String uiLocale) =>
       _localeController?.setLanguageTag(uiLocale) ?? Future.value();
 

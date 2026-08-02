@@ -1,7 +1,7 @@
 openapi: 3.1.1
 info:
   title: EsquiloSpeak Learning API
-  version: 0.10.0
+  version: 0.11.0
   description: >-
     Mobile contract for identity/profile onboarding and the first learning
     vertical slice: resolve a guest or account learner, manage profile and
@@ -990,10 +990,18 @@ paths:
                   format: uuid
                 eventType:
                   type: string
-                  maxLength: 40
+                  enum:
+                    - lesson_completed
+                    - advanced_practice_completed
+                    - daily_session_started
+                    - daily_session_completed
+                    - daily_session_abandoned
                 evidenceRef:
                   type: string
                   maxLength: 160
+                  description: >-
+                    Canonical evidence identifier for rewarded activity, or an opaque
+                    daily-session plan identifier plus recommendation source for metrics.
               additionalProperties: false
       responses:
         '200':
@@ -2014,6 +2022,9 @@ components:
         inputModality:
           type: string
           enum: [touch, keyboard, voice, assistive_technology, unknown]
+        practiceMode:
+          type: string
+          enum: [daily_quick_practice]
       additionalProperties: false
     LessonProgress:
       type: object
@@ -2404,7 +2415,7 @@ components:
       type: object
       required:
         [currentStreak, longestStreak, xp, achievements,
-         notificationPreference]
+         notificationPreference, dailyLearningPolicy, dailyGoal]
       properties:
         currentStreak:
           type: integer
@@ -2436,6 +2447,50 @@ components:
             additionalProperties: false
         notificationPreference:
           $ref: '#/components/schemas/NotificationPreference'
+        dailyLearningPolicy:
+          $ref: '#/components/schemas/DailyLearningPolicy'
+        dailyGoal:
+          $ref: '#/components/schemas/DailyGoalStatus'
+      additionalProperties: false
+    DailyGoalStatus:
+      type: object
+      required: [type, target, completed, achieved]
+      properties:
+        type:
+          type: string
+          enum: [minutes, lessons, reviews]
+        target:
+          type: integer
+          minimum: 1
+        completed:
+          type: integer
+          minimum: 0
+        achieved:
+          type: boolean
+      additionalProperties: false
+    DailyLearningPolicy:
+      type: object
+      required:
+        [version, reviewBacklogLimit, quickPracticeExerciseCount,
+         defaultGoalType, defaultGoalTarget, minutesGoalMin, minutesGoalMax,
+         lessonsGoalMin, lessonsGoalMax, reviewsGoalMin, reviewsGoalMax,
+         quietHoursStart, quietHoursEnd]
+      properties:
+        version: { type: integer, minimum: 1 }
+        reviewBacklogLimit: { type: integer, minimum: 1, maximum: 20 }
+        quickPracticeExerciseCount: { type: integer, minimum: 3, maximum: 5 }
+        defaultGoalType:
+          type: string
+          enum: [minutes, lessons, reviews]
+        defaultGoalTarget: { type: integer, minimum: 1 }
+        minutesGoalMin: { type: integer, minimum: 1 }
+        minutesGoalMax: { type: integer, minimum: 1 }
+        lessonsGoalMin: { type: integer, minimum: 1 }
+        lessonsGoalMax: { type: integer, minimum: 1 }
+        reviewsGoalMin: { type: integer, minimum: 1 }
+        reviewsGoalMax: { type: integer, minimum: 1 }
+        quietHoursStart: { type: string, format: time }
+        quietHoursEnd: { type: string, format: time }
       additionalProperties: false
     Entitlement:
       type: object

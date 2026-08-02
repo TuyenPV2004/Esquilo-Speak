@@ -345,3 +345,65 @@ download và media thật để đóng các checkbox còn mở của Giai đoạ
 - `connectedLocalDebugAndroidTest` pass trên emulator Android API 37 cho learning path,
   unit download và toàn bộ 5 lesson/45 exercise. Test Android dùng repository xác định;
   bằng chứng backend thật được kiểm tra riêng, nên chưa tuyên bố gate onboarding liên thông.
+
+## 12. Giai đoạn 5 — Daily learning loop và Home V2
+
+### Mục tiêu
+
+Biến Home thành điểm bắt đầu học hằng ngày có một hành động chính rõ ràng, tạo phiên
+từ review đến hạn, điểm yếu và lesson tiếp theo; phiên ngắn vẫn dùng được với content
+đã tải khi offline. Daily goal, streak, reminder và metric phải dựa trên policy/evidence
+thay vì literal UI hoặc event do client tự khai báo không kiểm chứng.
+
+### Phạm vi triển khai
+
+1. Bổ sung policy engagement có version cho loại/giới hạn daily goal, quick-practice,
+   review backlog và quiet hours; engagement status trả policy cùng goal progress độc
+   lập với streak.
+2. Chỉ cho streak/XP tăng từ event policy được phép và evidence canonical thuộc đúng
+   learner; chống dùng nhiều client event ID cho cùng một evidence. Event start,
+   completion và abandon của daily session được ghi để đo nhưng không tự tăng streak/XP.
+3. Mở rộng reminder preference với quiet hours; backend kiểm tra timezone và giờ nhắc,
+   mobile chỉ lập lịch sau consent/runtime permission, giữ denial state hiện có.
+4. Thêm daily-session composer offline-first trên Flutter. Thứ tự là review đến hạn,
+   concept yếu, lesson tiếp theo, rồi quick practice từ lesson đã cache/hoàn thành;
+   backlog bị giới hạn theo policy nhưng tổng số vẫn hiển thị.
+5. Home V2 có đúng một primary CTA kèm lý do, goal progress và streak là hai vùng riêng,
+   trạng thái offline/sync minh bạch. Quick practice chọn 3–5 exercise canonical từ
+   cùng lesson để tái sử dụng scorer, attempt, mastery và review hiện có.
+6. Session summary nêu outcome, số lỗi cần ôn và bước tiếp theo; lifecycle start,
+   completion, abandon và recommendation source được gửi bằng event không thưởng.
+
+### Khu vực dự kiến thay đổi
+
+- Backend: migration engagement policy, `EngagementService`/controller và integration test.
+- Contract/tài liệu API: OpenAPI, `docs/reference/API_Check.md` và guide khi hành vi test tay đổi.
+- Mobile: profile/engagement model, API service/view-model, daily-session model/composer,
+  `HomeScreen`, recommendation card, learning view-model/summary, router/dependencies,
+  localization và bộ test learner journey.
+- Roadmap/process: `Ke_Hoach_2.md` và `Development_Change_Log.md` chỉ cập nhật `[x]`
+  sau khi validation tương ứng pass.
+
+### Validation
+
+1. Backend targeted engagement/learning integration, full test, Modulith và `bootJar`.
+2. OpenAPI lint, P0 release-freeze và đối chiếu controller/mobile consumer.
+3. Dart format, `flutter gen-l10n`, analyzer, test composer/model/widget/offline cùng
+   toàn bộ Flutter regression tích lũy.
+4. Accessibility: text 200%, semantic label, touch target, light/dark theme và layout
+   phone/landscape trong widget test; Android local debug APK và instrumentation nếu có target.
+5. `git diff --check`, kiểm tra literal policy, event reward path và roadmap evidence.
+
+### Giả định và rủi ro
+
+- Giai đoạn 5 không xây practice-mode tổng quát của Giai đoạn 6; quick practice chỉ là
+  lát cắt 3–5 exercise từ một lesson canonical để không nhân đôi content/scorer.
+- Offline session chỉ cam kết trong lesson/unit đã cache. Metric có thể xếp hàng và đồng
+  bộ sau; không biến trạng thái offline thành thành công server giả.
+- Content-owner sign-off và onboarding → Unit 1 live gate của Giai đoạn 4 vẫn độc lập,
+  không được đóng gián tiếp bởi Home V2.
+
+### Phê duyệt
+
+Developer phê duyệt thực hiện ngày 2026-08-02 bằng yêu cầu triển khai toàn bộ Giai đoạn 5
+theo `docs/plans/Ke_Hoach_2.md`.

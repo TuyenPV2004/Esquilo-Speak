@@ -27,6 +27,7 @@ class P1ViewModel extends ChangeNotifier {
   bool courseSelectionRequired = false;
   UserFacingFailure? failure;
   P1PermissionIssue? permissionIssue;
+  bool reminderInQuietHours = false;
   AdvancedFeedback? pronunciationFeedback;
   AdvancedFeedback? writingFeedback;
   AdvancedFeedback? conversationFeedback;
@@ -158,14 +159,25 @@ class P1ViewModel extends ChangeNotifier {
   });
 
   Future<void> recordLearningActivity() => _run(() async {
-    final activity = activeActivity;
-    if (activity == null) {
+    final evidence =
+        conversationFeedback ?? writingFeedback ?? pronunciationFeedback;
+    if (evidence == null) {
       failure = UserFacingFailure.unavailable;
       return;
     }
     engagement = await _gateway.recordActivity(
       eventType: 'advanced_practice_completed',
-      evidenceRef: activity.id,
+      evidenceRef: evidence.id,
+    );
+  });
+
+  Future<void> recordEngagementEvent({
+    required String eventType,
+    required String evidenceRef,
+  }) => _run(() async {
+    engagement = await _gateway.recordActivity(
+      eventType: eventType,
+      evidenceRef: evidenceRef,
     );
   });
 
@@ -177,6 +189,11 @@ class P1ViewModel extends ChangeNotifier {
     required int hour,
     required int minute,
   }) => _run(() async {
+    if (enabled &&
+        (engagement?.dailyLearningPolicy.isQuietTime(hour, minute) ?? false)) {
+      reminderInQuietHours = true;
+      return;
+    }
     if (enabled) {
       final allowed = await _platform.requestNotificationPermission();
       if (!allowed) {
@@ -241,6 +258,7 @@ class P1ViewModel extends ChangeNotifier {
   void clearFailure() {
     failure = null;
     permissionIssue = null;
+    reminderInQuietHours = false;
     notifyListeners();
   }
 
@@ -252,6 +270,7 @@ class P1ViewModel extends ChangeNotifier {
     busy = true;
     failure = null;
     permissionIssue = null;
+    reminderInQuietHours = false;
     notifyListeners();
     try {
       await operation();

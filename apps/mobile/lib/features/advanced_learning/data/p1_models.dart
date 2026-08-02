@@ -204,6 +204,8 @@ class EngagementStatus {
     required this.reminderEnabled,
     required this.reminderTime,
     required this.timezone,
+    required this.dailyLearningPolicy,
+    required this.dailyGoal,
     this.lastLearningDate,
   });
 
@@ -227,6 +229,12 @@ class EngagementStatus {
       reminderEnabled: preference['enabled'] as bool? ?? false,
       reminderTime: preference['reminderTime'] as String?,
       timezone: preference['timezone'] as String? ?? 'UTC',
+      dailyLearningPolicy: DailyLearningPolicy.fromJson(
+        Map<String, dynamic>.from(json['dailyLearningPolicy'] as Map),
+      ),
+      dailyGoal: DailyGoalStatus.fromJson(
+        Map<String, dynamic>.from(json['dailyGoal'] as Map),
+      ),
     );
   }
 
@@ -238,6 +246,96 @@ class EngagementStatus {
   final bool reminderEnabled;
   final String? reminderTime;
   final String timezone;
+  final DailyLearningPolicy dailyLearningPolicy;
+  final DailyGoalStatus dailyGoal;
+}
+
+@immutable
+class DailyGoalStatus {
+  const DailyGoalStatus({
+    required this.type,
+    required this.target,
+    required this.completed,
+    required this.achieved,
+  });
+
+  factory DailyGoalStatus.fromJson(Map<String, dynamic> json) =>
+      DailyGoalStatus(
+        type: json['type'] as String,
+        target: json['target'] as int,
+        completed: json['completed'] as int,
+        achieved: json['achieved'] as bool,
+      );
+
+  final String type;
+  final int target;
+  final int completed;
+  final bool achieved;
+}
+
+@immutable
+class DailyLearningPolicy {
+  const DailyLearningPolicy({
+    required this.version,
+    required this.reviewBacklogLimit,
+    required this.quickPracticeExerciseCount,
+    required this.defaultGoalType,
+    required this.defaultGoalTarget,
+    required this.minutesGoalMin,
+    required this.minutesGoalMax,
+    required this.lessonsGoalMin,
+    required this.lessonsGoalMax,
+    required this.reviewsGoalMin,
+    required this.reviewsGoalMax,
+    required this.quietHoursStart,
+    required this.quietHoursEnd,
+  });
+
+  factory DailyLearningPolicy.fromJson(Map<String, dynamic> json) =>
+      DailyLearningPolicy(
+        version: json['version'] as int,
+        reviewBacklogLimit: json['reviewBacklogLimit'] as int,
+        quickPracticeExerciseCount: json['quickPracticeExerciseCount'] as int,
+        defaultGoalType: json['defaultGoalType'] as String,
+        defaultGoalTarget: json['defaultGoalTarget'] as int,
+        minutesGoalMin: json['minutesGoalMin'] as int,
+        minutesGoalMax: json['minutesGoalMax'] as int,
+        lessonsGoalMin: json['lessonsGoalMin'] as int,
+        lessonsGoalMax: json['lessonsGoalMax'] as int,
+        reviewsGoalMin: json['reviewsGoalMin'] as int,
+        reviewsGoalMax: json['reviewsGoalMax'] as int,
+        quietHoursStart: json['quietHoursStart'] as String,
+        quietHoursEnd: json['quietHoursEnd'] as String,
+      );
+
+  final int version;
+  final int reviewBacklogLimit;
+  final int quickPracticeExerciseCount;
+  final String defaultGoalType;
+  final int defaultGoalTarget;
+  final int minutesGoalMin;
+  final int minutesGoalMax;
+  final int lessonsGoalMin;
+  final int lessonsGoalMax;
+  final int reviewsGoalMin;
+  final int reviewsGoalMax;
+  final String quietHoursStart;
+  final String quietHoursEnd;
+
+  bool isQuietTime(int hour, int minute) {
+    final value = hour * 60 + minute;
+    final start = _minutes(quietHoursStart);
+    final end = _minutes(quietHoursEnd);
+    if (start == end) return false;
+    return start < end
+        ? value >= start && value < end
+        : value >= start || value < end;
+  }
+
+  int _minutes(String value) {
+    final parts = value.split(':');
+    return int.parse(parts[0]) * 60 + int.parse(parts[1]);
+  }
 }
 
 @immutable

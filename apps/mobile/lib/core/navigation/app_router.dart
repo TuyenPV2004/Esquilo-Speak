@@ -51,8 +51,14 @@ GoRouter createAppRouter(AppDependencies dependencies) => GoRouter(
       ),
     ),
     StatefulShellRoute.indexedStack(
-      builder: (context, state, navigationShell) =>
-          LearnerShell(navigationShell: navigationShell),
+      builder: (context, state, navigationShell) => LearnerShell(
+        navigationShell: navigationShell,
+        onBranchChanged: (previousIndex, nextIndex) async {
+          if (previousIndex == 1 && nextIndex != 1) {
+            await dependencies.dailySessionViewModel.abandonActiveSession();
+          }
+        },
+      ),
       branches: [
         StatefulShellBranch(
           routes: [
@@ -60,8 +66,7 @@ GoRouter createAppRouter(AppDependencies dependencies) => GoRouter(
               path: '/home',
               name: 'home',
               builder: (context, state) => HomeScreen(
-                profileViewModel: dependencies.profileViewModel,
-                insightsViewModel: dependencies.insightsViewModel,
+                dailySessionViewModel: dependencies.dailySessionViewModel,
               ),
               routes: [
                 GoRoute(
@@ -128,6 +133,7 @@ GoRouter createAppRouter(AppDependencies dependencies) => GoRouter(
               name: 'profile',
               builder: (context, state) => ProfileScreen(
                 viewModel: dependencies.profileViewModel,
+                engagementViewModel: dependencies.p1ViewModel,
                 languages: dependencies.learningViewModel.languages,
               ),
             ),

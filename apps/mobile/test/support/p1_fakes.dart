@@ -78,6 +78,27 @@ class FakeP1Gateway implements P1Gateway {
     reminderEnabled: reminderEnabled,
     reminderTime: reminderEnabled ? '19:30:00' : null,
     timezone: 'Asia/Ho_Chi_Minh',
+    dailyLearningPolicy: const DailyLearningPolicy(
+      version: 1,
+      reviewBacklogLimit: 5,
+      quickPracticeExerciseCount: 3,
+      defaultGoalType: 'minutes',
+      defaultGoalTarget: 10,
+      minutesGoalMin: 5,
+      minutesGoalMax: 60,
+      lessonsGoalMin: 1,
+      lessonsGoalMax: 5,
+      reviewsGoalMin: 3,
+      reviewsGoalMax: 30,
+      quietHoursStart: '21:00:00',
+      quietHoursEnd: '07:00:00',
+    ),
+    dailyGoal: const DailyGoalStatus(
+      type: 'minutes',
+      target: 10,
+      completed: 0,
+      achieved: false,
+    ),
   );
 
   @override
@@ -140,7 +161,10 @@ class FakeP1Gateway implements P1Gateway {
     required String eventType,
     required String evidenceRef,
   }) async {
-    activities++;
+    if (eventType == 'advanced_practice_completed' ||
+        eventType == 'lesson_completed') {
+      activities++;
+    }
     return getEngagement();
   }
 

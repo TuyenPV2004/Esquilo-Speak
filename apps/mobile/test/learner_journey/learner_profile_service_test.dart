@@ -43,10 +43,10 @@ void main() {
           expect(body['targetLanguage'], 'en');
           expect(body['activeCourseId'], 'course-en-for-vi');
           expect(body['ageBand'], 'adult');
-          expect(
-            (body['preferences'] as Map<String, dynamic>)['dailyGoalMinutes'],
-            10,
-          );
+          final preferences = body['preferences'] as Map<String, dynamic>;
+          expect(preferences['dailyGoalMinutes'], 10);
+          expect(preferences['dailyGoalType'], 'minutes');
+          expect(preferences['dailyGoalTarget'], 10);
           return _json(_profile(ageBand: 'adult'));
         }
         if (request.method == 'PUT' &&

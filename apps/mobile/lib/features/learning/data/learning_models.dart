@@ -190,6 +190,7 @@ class Exercise {
     required this.id,
     required this.type,
     required this.prompt,
+    this.conceptIds = const [],
     this.options = const [],
     this.items = const [],
     this.leftItems = const [],
@@ -203,6 +204,8 @@ class Exercise {
     id: json['id'] as String,
     type: json['type'] as String,
     prompt: localizedText(json['prompt']),
+    conceptIds: (json['conceptIds'] as List<dynamic>? ?? const [])
+        .cast<String>(),
     options: (json['options'] as List<dynamic>? ?? const [])
         .map((item) => ExerciseOption.fromJson(item as Map<String, dynamic>))
         .toList(),
@@ -217,6 +220,7 @@ class Exercise {
   final String id;
   final String type;
   final LocalizedText prompt;
+  final List<String> conceptIds;
   final List<ExerciseOption> options;
   final List<ExerciseOption> items;
   final List<ExerciseOption> leftItems;
@@ -229,6 +233,7 @@ class Exercise {
     'id': id,
     'type': type,
     'prompt': prompt,
+    if (conceptIds.isNotEmpty) 'conceptIds': conceptIds,
     'options': options.map((item) => item.toJson()).toList(),
     if (items.isNotEmpty) 'items': items.map((item) => item.toJson()).toList(),
     if (leftItems.isNotEmpty)
@@ -335,6 +340,7 @@ class AttemptEvidence {
     this.retryIndex = 0,
     this.confidence,
     this.inputModality = 'touch',
+    this.practiceMode,
   });
 
   final int responseTimeMs;
@@ -343,6 +349,7 @@ class AttemptEvidence {
   final int retryIndex;
   final int? confidence;
   final String inputModality;
+  final String? practiceMode;
 
   Map<String, dynamic> toJson() => {
     'responseTimeMs': responseTimeMs,
@@ -351,6 +358,7 @@ class AttemptEvidence {
     'retryIndex': retryIndex,
     if (confidence != null) 'confidence': confidence,
     'inputModality': inputModality,
+    if (practiceMode != null) 'practiceMode': practiceMode,
   };
 }
 

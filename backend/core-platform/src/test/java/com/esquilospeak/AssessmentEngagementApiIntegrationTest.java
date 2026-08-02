@@ -7,6 +7,12 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.sql.Timestamp;
+import java.time.Instant;
+import java.util.HexFormat;
 import java.util.UUID;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -88,11 +94,46 @@ class AssessmentEngagementApiIntegrationTest {
 
     @Test
     void recordsActivityIdempotentlyAndUpdatesReminderPreference() throws Exception {
-        RequestPostProcessor learner = learner("engagement-" + UUID.randomUUID());
+        String subject = "engagement-" + UUID.randomUUID();
+        RequestPostProcessor learner = learner(subject);
+        mockMvc.perform(get("/api/mobile/v1/engagement").with(learner))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.dailyLearningPolicy.version").value(1))
+                .andExpect(jsonPath("$.dailyLearningPolicy.reviewBacklogLimit").value(5))
+                .andExpect(jsonPath("$.dailyGoal.type").value("minutes"))
+                .andExpect(jsonPath("$.dailyGoal.target").value(10))
+                .andExpect(jsonPath("$.currentStreak").value(0));
+        UUID learnerId = jdbc.sql("""
+                        select learner_id from identity_subjects
+                        where subject_hash = :subjectHash
+                        """)
+                .param("subjectHash", hash("https://identity.test\0" + subject))
+                .query(UUID.class)
+                .single();
+        String courseId = jdbc.sql("select id from courses where published = true order by id limit 1")
+                .query(String.class)
+                .single();
+        String lessonId = "lesson-engagement-evidence";
+        Instant now = Instant.now();
+        jdbc.sql("""
+                        insert into learning_completions (
+                          learner_id, course_id, lesson_id, lesson_version,
+                          active, completed_at, updated_at
+                        ) values (
+                          :learnerId, :courseId, :lessonId, 1,
+                          true, :completedAt, :updatedAt
+                        )
+                        """)
+                .param("learnerId", learnerId.toString())
+                .param("courseId", courseId)
+                .param("lessonId", lessonId)
+                .param("completedAt", Timestamp.from(now))
+                .param("updatedAt", Timestamp.from(now))
+                .update();
         UUID eventId = UUID.randomUUID();
         String event = """
-                {"clientEventId":"%s","eventType":"lesson_completed","evidenceRef":"lesson-test@1"}
-                """.formatted(eventId);
+                {"clientEventId":"%s","eventType":"lesson_completed","evidenceRef":"%s:%s"}
+                """.formatted(eventId, courseId, lessonId);
         mockMvc.perform(post("/api/mobile/v1/engagement/activities")
                         .with(learner)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -107,6 +148,40 @@ class AssessmentEngagementApiIntegrationTest {
                         .content(event))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.xp").value(25));
+        mockMvc.perform(post("/api/mobile/v1/engagement/activities")
+                        .with(learner)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("""
+                                {"clientEventId":"%s","eventType":"lesson_completed","evidenceRef":"%s:%s"}
+                                """.formatted(UUID.randomUUID(), courseId, lessonId)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.xp").value(25))
+                .andExpect(jsonPath("$.currentStreak").value(1));
+        mockMvc.perform(post("/api/mobile/v1/engagement/activities")
+                        .with(learner)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("""
+                                {"clientEventId":"%s","eventType":"lesson_completed","evidenceRef":"%s:missing"}
+                                """.formatted(UUID.randomUUID(), courseId)))
+                .andExpect(status().isUnprocessableContent())
+                .andExpect(jsonPath("$.code").value("ENGAGEMENT_EVIDENCE_INVALID"));
+        mockMvc.perform(post("/api/mobile/v1/engagement/activities")
+                        .with(learner)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("""
+                                {"clientEventId":"%s","eventType":"daily_session_started","evidenceRef":"plan-1:due_review"}
+                                """.formatted(UUID.randomUUID())))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.xp").value(25))
+                .andExpect(jsonPath("$.currentStreak").value(1));
+        mockMvc.perform(put("/api/mobile/v1/engagement/notification-preference")
+                        .with(learner)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("""
+                                {"enabled":true,"reminderTime":"22:00:00","locale":"vi","timezone":"Asia/Ho_Chi_Minh"}
+                                """))
+                .andExpect(status().isUnprocessableContent())
+                .andExpect(jsonPath("$.code").value("REMINDER_IN_QUIET_HOURS"));
         mockMvc.perform(put("/api/mobile/v1/engagement/notification-preference")
                         .with(learner)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -115,6 +190,15 @@ class AssessmentEngagementApiIntegrationTest {
                                 """))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.enabled").value(true));
+    }
+
+    private String hash(String value) {
+        try {
+            return HexFormat.of().formatHex(MessageDigest.getInstance("SHA-256")
+                    .digest(value.getBytes(StandardCharsets.UTF_8)));
+        } catch (NoSuchAlgorithmException exception) {
+            throw new IllegalStateException(exception);
+        }
     }
 
     private RequestPostProcessor learner(String subject) {

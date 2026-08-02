@@ -97,6 +97,11 @@ void main() {
   ) async {
     final viewModel = _viewModel();
     await viewModel.load();
+    await viewModel.requestTextFeedback(
+      kind: 'writing',
+      input: 'Hello, my name is Ana.',
+      locale: 'en',
+    );
     await tester.pumpWidget(
       _TestApp(child: EngagementScreen(viewModel: viewModel)),
     );

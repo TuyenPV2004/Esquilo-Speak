@@ -16,6 +16,13 @@ Closed testing deliberately uses deterministic backend providers and a local
 purchase verifier. Production media/STT/AI providers and Google Play Billing are
 release integrations, not silent fallbacks.
 
+Home V2 composes one daily session from due reviews, the weakest concept, or the
+next incomplete lesson. It exposes one primary CTA, caps the visible review
+backlog using the server policy, reuses downloaded lesson content for 3–5 minute
+quick practice, and keeps daily goal progress separate from streak. Rewarded
+engagement events require canonical evidence; daily-session lifecycle events are
+measurement-only and never award XP or streak credit.
+
 ## Local development
 
 The Android emulator resolves the local backend through
