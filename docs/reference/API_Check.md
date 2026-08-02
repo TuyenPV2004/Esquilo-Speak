@@ -68,8 +68,10 @@ phục vụ phát triển, không được xem là API production.
 ### 3.2. Học một bài và đồng bộ tiến độ
 
 1. `GET /courses` lấy khóa học theo cặp ngôn ngữ.
-2. `GET /courses/{courseId}/lessons` lấy danh sách bài cùng `unitId`, `unitTitle` và
-   `position` để client dựng learning path và manifest tải offline theo unit.
+2. `GET /courses/{courseId}/lessons` lấy danh sách bài cùng `unitId`, `unitTitle`,
+   `unitGuidebook` và `position` để client dựng learning path, tóm tắt kiến thức và
+   manifest tải offline theo unit/toàn course. Course catalog có thêm completion,
+   placement, version-migration và offline-package policy của version đang publish.
 3. `GET /lessons/{lessonId}` lấy nội dung phiên bản bài học đã xuất bản.
 4. Khi người dùng trả lời, app hiện tại ưu tiên lưu mutation local để vẫn hoạt động khi
    offline.
@@ -97,7 +99,9 @@ vậy đổi mode, làm lại cùng item hoặc luyện offline rồi sync khôn
 ### 3.4. Placement và engagement
 
 1. `GET /assessments/placement?courseId={courseId}` tải bài xếp trình độ nội bộ
-   gắn với framework/version/level của khóa học.
+   gắn với framework/version/level của khóa học. Sau khi chấm, mobile đối chiếu score
+   với `placementPolicy.startPoints`, đề xuất điểm cao nhất đủ điều kiện và vẫn hiển thị
+   mọi điểm thấp hơn để learner tự chọn.
 2. `POST /assessments/placement/attempts` gửi `assessmentId`, chấm bài và tạo completion record không phải
    chứng chỉ được công nhận.
 3. `GET /engagement` tải streak, XP, achievement và cấu hình nhắc học.
@@ -126,8 +130,8 @@ vậy đổi mode, làm lại cùng item hoặc luyện offline rồi sync khôn
 | Method và path | Operation ID | Tác dụng | Nghiệp vụ và lưu ý |
 |---|---|---|---|
 | `GET /api/mobile/v1/languages` | `listLearningLanguages` | Lấy ngôn ngữ học đang bật | Mở app/onboarding; công khai |
-| `GET /api/mobile/v1/courses` | `listCourses` | Lấy khóa học đã xuất bản theo `sourceLanguage` và `targetLanguage`, gồm proficiency framework cùng entry/target level | Chọn khóa học; công khai |
-| `GET /api/mobile/v1/courses/{courseId}/lessons` | `listCourseLessons` | Lấy các bài đã xuất bản theo thứ tự khóa học | Mở danh sách bài; công khai |
+| `GET /api/mobile/v1/courses` | `listCourses` | Lấy khóa học đã xuất bản theo cặp ngôn ngữ, gồm proficiency, completion, placement, migration và offline-package policy | Chọn khóa học/tải toàn course/xác định điểm bắt đầu; công khai |
+| `GET /api/mobile/v1/courses/{courseId}/lessons` | `listCourseLessons` | Lấy các bài đã xuất bản theo thứ tự, kèm unit guidebook | Mở danh sách bài/tóm tắt unit; công khai |
 | `GET /api/mobile/v1/lessons/{lessonId}` | `getLesson` | Lấy nội dung bất biến của một phiên bản bài | Vào màn hình học; công khai |
 | `POST /api/mobile/v1/attempts` | `submitAttempt` | Gửi một câu trả lời dạng append-only | Cần learner JWT và `Idempotency-Key`; server còn khử trùng theo `clientAttemptId` |
 | `GET /api/mobile/v1/progress/courses/{courseId}` | `getCourseProgress` | Lấy tiến độ chuẩn của learner trong khóa học | Làm mới tiến độ sau học/đồng bộ; cần learner JWT |
@@ -161,7 +165,7 @@ vậy đổi mode, làm lại cùng item hoặc luyện offline rồi sync khôn
 
 | Method và path | Operation ID | Tác dụng | Nghiệp vụ và lưu ý |
 |---|---|---|---|
-| `PUT /api/admin/v1/content/courses/{courseId}/versions/{version}` | `saveCourseVersionDraft` | Tạo hoặc thay thế bản nháp khóa học | Payload bắt buộc có proficiency framework/version và entry/target level hợp lệ; chỉ draft được thay; cần content scope và content staff/admin |
+| `PUT /api/admin/v1/content/courses/{courseId}/versions/{version}` | `saveCourseVersionDraft` | Tạo hoặc thay thế bản nháp khóa học | Payload course đầy đủ có thể mang guidebook, completion, placement, migration và offline-package policy; chỉ draft được thay; cần content scope và content staff/admin |
 | `GET /api/admin/v1/content/courses/{courseId}/versions/{version}` | `getCourseVersionAuthoring` | Xem trước dữ liệu authoring của một version | Có thể chứa scoring answers, không trả qua learner API; cần quyền content |
 | `POST /api/admin/v1/content/courses/{courseId}/versions/{version}/transitions` | `transitionCourseVersion` | Chuyển trạng thái draft → review → approved → scheduled/published → retired | Khi vào review bắt buộc gửi đủ `reviewEvidence` có version; backend lưu evidence vào audit trail; cần quyền content |
 | `POST /api/admin/v1/content/courses/{courseId}/rollbacks` | `rollbackCourseVersion` | Khôi phục một version từng published rồi retired | Luồng rollback nội dung; cần quyền content |

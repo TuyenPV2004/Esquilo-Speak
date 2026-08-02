@@ -1,0 +1,707 @@
+{
+  "id": "lesson-daily-actions",
+  "courseId": "course-en-for-vi",
+  "courseVersion": 3,
+  "unitId": "unit-everyday-life",
+  "position": 11,
+  "locale": "vi",
+  "requiredLocales": [
+    "vi",
+    "en"
+  ],
+  "title": {
+    "vi": "Hoạt động thường ngày",
+    "en": "Daily actions"
+  },
+  "objectives": [
+    {
+      "vi": "Dùng từ vựng và mẫu câu của Hoạt động thường ngày.",
+      "en": "Use the vocabulary and patterns for Daily actions."
+    }
+  ],
+  "outcomeIds": [
+    "outcome-daily-actions"
+  ],
+  "prerequisiteLessonIds": [
+    "lesson-checkpoint-personal-profile"
+  ],
+  "revisitsConceptIds": [
+    "concept-jobs-roles",
+    "concept-checkpoint-personal-profile"
+  ],
+  "difficulty": "guided",
+  "estimatedMinutes": 8,
+  "exercises": [
+    {
+      "id": "exercise-daily-actions-flashcard",
+      "type": "flashcard",
+      "learningItem": {
+        "skill": "vocabulary",
+        "conceptIds": [
+          "concept-daily-actions"
+        ],
+        "outcomeIds": [
+          "outcome-daily-actions"
+        ],
+        "prerequisiteConceptIds": [],
+        "difficulty": "introductory"
+      },
+      "presentation": {
+        "prompt": {
+          "vi": "Hoạt động thường ngày: flashcard.",
+          "en": "Daily actions: flashcard."
+        },
+        "hint": {
+          "vi": "Gợi ý: I study every day.",
+          "en": "Hint: I study every day."
+        },
+        "mediaIds": [],
+        "accessibility": {
+          "screenReaderLabel": {
+            "vi": "Hoạt động thường ngày: flashcard.",
+            "en": "Daily actions: flashcard."
+          },
+          "requiresAudio": false,
+          "supportsSilentMode": true
+        }
+      },
+      "answerPolicy": {
+        "kind": "self_assessment",
+        "maxAttempts": 2
+      },
+      "feedbackRule": {
+        "correct": {
+          "vi": "Chính xác.",
+          "en": "Correct."
+        },
+        "incorrect": {
+          "vi": "Hãy thử lại.",
+          "en": "Try again."
+        },
+        "explanation": {
+          "vi": "Đáp án theo mẫu mục tiêu của bài Hoạt động thường ngày.",
+          "en": "The answer follows the target pattern for Daily actions."
+        },
+        "hintPolicy": {
+          "revealAfterAttempts": 1,
+          "countsAsAssisted": true
+        }
+      }
+    },
+    {
+      "id": "exercise-daily-actions-choice",
+      "type": "multiple_choice",
+      "learningItem": {
+        "skill": "vocabulary",
+        "conceptIds": [
+          "concept-daily-actions"
+        ],
+        "outcomeIds": [
+          "outcome-daily-actions"
+        ],
+        "prerequisiteConceptIds": [],
+        "difficulty": "guided"
+      },
+      "presentation": {
+        "prompt": {
+          "vi": "Hoạt động thường ngày: choice.",
+          "en": "Daily actions: choice."
+        },
+        "hint": {
+          "vi": "Gợi ý: I study every day.",
+          "en": "Hint: I study every day."
+        },
+        "mediaIds": [],
+        "accessibility": {
+          "screenReaderLabel": {
+            "vi": "Hoạt động thường ngày: choice.",
+            "en": "Daily actions: choice."
+          },
+          "requiresAudio": false,
+          "supportsSilentMode": true
+        },
+        "options": [
+          {
+            "id": "option-meaning",
+            "text": {
+              "vi": "học",
+              "en": "học"
+            }
+          },
+          {
+            "id": "option-distractor",
+            "text": {
+              "vi": "làm việc",
+              "en": "làm việc"
+            }
+          }
+        ]
+      },
+      "answerPolicy": {
+        "kind": "option_id",
+        "correctOptionId": "option-meaning",
+        "maxAttempts": 2
+      },
+      "feedbackRule": {
+        "correct": {
+          "vi": "Chính xác.",
+          "en": "Correct."
+        },
+        "incorrect": {
+          "vi": "Hãy thử lại.",
+          "en": "Try again."
+        },
+        "explanation": {
+          "vi": "Đáp án theo mẫu mục tiêu của bài Hoạt động thường ngày.",
+          "en": "The answer follows the target pattern for Daily actions."
+        },
+        "hintPolicy": {
+          "revealAfterAttempts": 1,
+          "countsAsAssisted": true
+        }
+      }
+    },
+    {
+      "id": "exercise-daily-actions-listen-select",
+      "type": "listen_select",
+      "learningItem": {
+        "skill": "listening",
+        "conceptIds": [
+          "concept-daily-actions"
+        ],
+        "outcomeIds": [
+          "outcome-daily-actions"
+        ],
+        "prerequisiteConceptIds": [],
+        "difficulty": "guided"
+      },
+      "presentation": {
+        "prompt": {
+          "vi": "Hoạt động thường ngày: listen select.",
+          "en": "Daily actions: listen select."
+        },
+        "hint": {
+          "vi": "Gợi ý: I study every day.",
+          "en": "Hint: I study every day."
+        },
+        "mediaIds": [
+          "media-daily-actions-listen"
+        ],
+        "accessibility": {
+          "screenReaderLabel": {
+            "vi": "Hoạt động thường ngày: listen select.",
+            "en": "Daily actions: listen select."
+          },
+          "requiresAudio": false,
+          "supportsSilentMode": true
+        },
+        "options": [
+          {
+            "id": "option-first",
+            "text": {
+              "vi": "study",
+              "en": "study"
+            }
+          },
+          {
+            "id": "option-second",
+            "text": {
+              "vi": "work",
+              "en": "work"
+            }
+          }
+        ],
+        "transcript": {
+          "vi": "study",
+          "en": "study"
+        }
+      },
+      "answerPolicy": {
+        "kind": "option_id",
+        "correctOptionId": "option-first",
+        "maxAttempts": 2
+      },
+      "feedbackRule": {
+        "correct": {
+          "vi": "Chính xác.",
+          "en": "Correct."
+        },
+        "incorrect": {
+          "vi": "Hãy thử lại.",
+          "en": "Try again."
+        },
+        "explanation": {
+          "vi": "Đáp án theo mẫu mục tiêu của bài Hoạt động thường ngày.",
+          "en": "The answer follows the target pattern for Daily actions."
+        },
+        "hintPolicy": {
+          "revealAfterAttempts": 1,
+          "countsAsAssisted": true
+        }
+      }
+    },
+    {
+      "id": "exercise-daily-actions-matching",
+      "type": "matching",
+      "learningItem": {
+        "skill": "vocabulary",
+        "conceptIds": [
+          "concept-daily-actions"
+        ],
+        "outcomeIds": [
+          "outcome-daily-actions"
+        ],
+        "prerequisiteConceptIds": [],
+        "difficulty": "guided"
+      },
+      "presentation": {
+        "prompt": {
+          "vi": "Hoạt động thường ngày: matching.",
+          "en": "Daily actions: matching."
+        },
+        "hint": {
+          "vi": "Gợi ý: I study every day.",
+          "en": "Hint: I study every day."
+        },
+        "mediaIds": [],
+        "accessibility": {
+          "screenReaderLabel": {
+            "vi": "Hoạt động thường ngày: matching.",
+            "en": "Daily actions: matching."
+          },
+          "requiresAudio": false,
+          "supportsSilentMode": true
+        },
+        "leftItems": [
+          {
+            "id": "left-one",
+            "text": {
+              "vi": "study",
+              "en": "study"
+            }
+          },
+          {
+            "id": "left-two",
+            "text": {
+              "vi": "work",
+              "en": "work"
+            }
+          }
+        ],
+        "rightItems": [
+          {
+            "id": "right-one",
+            "text": {
+              "vi": "học",
+              "en": "học"
+            }
+          },
+          {
+            "id": "right-two",
+            "text": {
+              "vi": "làm việc",
+              "en": "làm việc"
+            }
+          }
+        ]
+      },
+      "answerPolicy": {
+        "kind": "pair_set",
+        "correctPairs": [
+          {
+            "leftId": "left-one",
+            "rightId": "right-one"
+          },
+          {
+            "leftId": "left-two",
+            "rightId": "right-two"
+          }
+        ],
+        "maxAttempts": 2
+      },
+      "feedbackRule": {
+        "correct": {
+          "vi": "Chính xác.",
+          "en": "Correct."
+        },
+        "incorrect": {
+          "vi": "Hãy thử lại.",
+          "en": "Try again."
+        },
+        "explanation": {
+          "vi": "Đáp án theo mẫu mục tiêu của bài Hoạt động thường ngày.",
+          "en": "The answer follows the target pattern for Daily actions."
+        },
+        "hintPolicy": {
+          "revealAfterAttempts": 1,
+          "countsAsAssisted": true
+        }
+      }
+    },
+    {
+      "id": "exercise-daily-actions-ordering",
+      "type": "ordering",
+      "learningItem": {
+        "skill": "grammar",
+        "conceptIds": [
+          "concept-daily-actions"
+        ],
+        "outcomeIds": [
+          "outcome-daily-actions"
+        ],
+        "prerequisiteConceptIds": [],
+        "difficulty": "guided"
+      },
+      "presentation": {
+        "prompt": {
+          "vi": "Hoạt động thường ngày: ordering.",
+          "en": "Daily actions: ordering."
+        },
+        "hint": {
+          "vi": "Gợi ý: I study every day.",
+          "en": "Hint: I study every day."
+        },
+        "mediaIds": [],
+        "accessibility": {
+          "screenReaderLabel": {
+            "vi": "Hoạt động thường ngày: ordering.",
+            "en": "Daily actions: ordering."
+          },
+          "requiresAudio": false,
+          "supportsSilentMode": true
+        },
+        "items": [
+          {
+            "id": "item-1",
+            "text": {
+              "vi": "I",
+              "en": "I"
+            }
+          },
+          {
+            "id": "item-2",
+            "text": {
+              "vi": "study",
+              "en": "study"
+            }
+          },
+          {
+            "id": "item-3",
+            "text": {
+              "vi": "every",
+              "en": "every"
+            }
+          },
+          {
+            "id": "item-4",
+            "text": {
+              "vi": "day",
+              "en": "day"
+            }
+          }
+        ]
+      },
+      "answerPolicy": {
+        "kind": "ordered_ids",
+        "correctOrder": [
+          "item-1",
+          "item-2",
+          "item-3",
+          "item-4"
+        ],
+        "maxAttempts": 2
+      },
+      "feedbackRule": {
+        "correct": {
+          "vi": "Chính xác.",
+          "en": "Correct."
+        },
+        "incorrect": {
+          "vi": "Hãy thử lại.",
+          "en": "Try again."
+        },
+        "explanation": {
+          "vi": "Đáp án theo mẫu mục tiêu của bài Hoạt động thường ngày.",
+          "en": "The answer follows the target pattern for Daily actions."
+        },
+        "hintPolicy": {
+          "revealAfterAttempts": 1,
+          "countsAsAssisted": true
+        }
+      }
+    },
+    {
+      "id": "exercise-daily-actions-fill-blank",
+      "type": "fill_blank",
+      "learningItem": {
+        "skill": "writing",
+        "conceptIds": [
+          "concept-daily-actions"
+        ],
+        "outcomeIds": [
+          "outcome-daily-actions"
+        ],
+        "prerequisiteConceptIds": [],
+        "difficulty": "independent"
+      },
+      "presentation": {
+        "prompt": {
+          "vi": "Hoạt động thường ngày: fill blank.",
+          "en": "Daily actions: fill blank."
+        },
+        "hint": {
+          "vi": "Gợi ý: I study every day.",
+          "en": "Hint: I study every day."
+        },
+        "mediaIds": [],
+        "accessibility": {
+          "screenReaderLabel": {
+            "vi": "Hoạt động thường ngày: fill blank.",
+            "en": "Daily actions: fill blank."
+          },
+          "requiresAudio": false,
+          "supportsSilentMode": true
+        }
+      },
+      "answerPolicy": {
+        "kind": "normalized_text",
+        "acceptedAnswers": [
+          "I study every day."
+        ],
+        "caseSensitive": false,
+        "maxAttempts": 2
+      },
+      "feedbackRule": {
+        "correct": {
+          "vi": "Chính xác.",
+          "en": "Correct."
+        },
+        "incorrect": {
+          "vi": "Hãy thử lại.",
+          "en": "Try again."
+        },
+        "explanation": {
+          "vi": "Đáp án theo mẫu mục tiêu của bài Hoạt động thường ngày.",
+          "en": "The answer follows the target pattern for Daily actions."
+        },
+        "hintPolicy": {
+          "revealAfterAttempts": 1,
+          "countsAsAssisted": true
+        }
+      }
+    },
+    {
+      "id": "exercise-daily-actions-true-false",
+      "type": "true_false",
+      "learningItem": {
+        "skill": "reading",
+        "conceptIds": [
+          "concept-daily-actions"
+        ],
+        "outcomeIds": [
+          "outcome-daily-actions"
+        ],
+        "prerequisiteConceptIds": [],
+        "difficulty": "guided"
+      },
+      "presentation": {
+        "prompt": {
+          "vi": "Hoạt động thường ngày: true false.",
+          "en": "Daily actions: true false."
+        },
+        "hint": {
+          "vi": "Gợi ý: I study every day.",
+          "en": "Hint: I study every day."
+        },
+        "mediaIds": [],
+        "accessibility": {
+          "screenReaderLabel": {
+            "vi": "Hoạt động thường ngày: true false.",
+            "en": "Daily actions: true false."
+          },
+          "requiresAudio": false,
+          "supportsSilentMode": true
+        }
+      },
+      "answerPolicy": {
+        "kind": "boolean",
+        "correctAnswer": true,
+        "maxAttempts": 2
+      },
+      "feedbackRule": {
+        "correct": {
+          "vi": "Chính xác.",
+          "en": "Correct."
+        },
+        "incorrect": {
+          "vi": "Hãy thử lại.",
+          "en": "Try again."
+        },
+        "explanation": {
+          "vi": "Đáp án theo mẫu mục tiêu của bài Hoạt động thường ngày.",
+          "en": "The answer follows the target pattern for Daily actions."
+        },
+        "hintPolicy": {
+          "revealAfterAttempts": 1,
+          "countsAsAssisted": true
+        }
+      }
+    },
+    {
+      "id": "exercise-daily-actions-comprehension",
+      "type": "comprehension",
+      "learningItem": {
+        "skill": "reading",
+        "conceptIds": [
+          "concept-daily-actions",
+          "concept-jobs-roles",
+          "concept-checkpoint-personal-profile"
+        ],
+        "outcomeIds": [
+          "outcome-daily-actions"
+        ],
+        "prerequisiteConceptIds": [],
+        "difficulty": "independent"
+      },
+      "presentation": {
+        "prompt": {
+          "vi": "Hoạt động thường ngày: comprehension.",
+          "en": "Daily actions: comprehension."
+        },
+        "hint": {
+          "vi": "Gợi ý: I study every day.",
+          "en": "Hint: I study every day."
+        },
+        "mediaIds": [],
+        "accessibility": {
+          "screenReaderLabel": {
+            "vi": "Hoạt động thường ngày: comprehension.",
+            "en": "Daily actions: comprehension."
+          },
+          "requiresAudio": false,
+          "supportsSilentMode": true
+        },
+        "instruction": {
+          "vi": "He is a teacher. I am Mai from Hanoi. I study every day.",
+          "en": "He is a teacher. I am Mai from Hanoi. I study every day."
+        },
+        "options": [
+          {
+            "id": "option-answer",
+            "text": {
+              "vi": "study",
+              "en": "study"
+            }
+          },
+          {
+            "id": "option-other",
+            "text": {
+              "vi": "work",
+              "en": "work"
+            }
+          }
+        ]
+      },
+      "answerPolicy": {
+        "kind": "option_id",
+        "correctOptionId": "option-answer",
+        "maxAttempts": 2
+      },
+      "feedbackRule": {
+        "correct": {
+          "vi": "Chính xác.",
+          "en": "Correct."
+        },
+        "incorrect": {
+          "vi": "Hãy thử lại.",
+          "en": "Try again."
+        },
+        "explanation": {
+          "vi": "Đáp án theo mẫu mục tiêu của bài Hoạt động thường ngày.",
+          "en": "The answer follows the target pattern for Daily actions."
+        },
+        "hintPolicy": {
+          "revealAfterAttempts": 1,
+          "countsAsAssisted": true
+        }
+      }
+    },
+    {
+      "id": "exercise-daily-actions-dictation",
+      "type": "dictation",
+      "learningItem": {
+        "skill": "listening",
+        "conceptIds": [
+          "concept-daily-actions"
+        ],
+        "outcomeIds": [
+          "outcome-daily-actions"
+        ],
+        "prerequisiteConceptIds": [],
+        "difficulty": "independent"
+      },
+      "presentation": {
+        "prompt": {
+          "vi": "Hoạt động thường ngày: dictation.",
+          "en": "Daily actions: dictation."
+        },
+        "hint": {
+          "vi": "Gợi ý: I study every day.",
+          "en": "Hint: I study every day."
+        },
+        "mediaIds": [
+          "media-daily-actions-dictation"
+        ],
+        "accessibility": {
+          "screenReaderLabel": {
+            "vi": "Hoạt động thường ngày: dictation.",
+            "en": "Daily actions: dictation."
+          },
+          "requiresAudio": false,
+          "supportsSilentMode": true
+        },
+        "transcript": {
+          "vi": "I work every day",
+          "en": "I work every day"
+        }
+      },
+      "answerPolicy": {
+        "kind": "normalized_text",
+        "acceptedAnswers": [
+          "I work every day"
+        ],
+        "caseSensitive": false,
+        "maxAttempts": 2
+      },
+      "feedbackRule": {
+        "correct": {
+          "vi": "Chính xác.",
+          "en": "Correct."
+        },
+        "incorrect": {
+          "vi": "Hãy thử lại.",
+          "en": "Try again."
+        },
+        "explanation": {
+          "vi": "Đáp án theo mẫu mục tiêu của bài Hoạt động thường ngày.",
+          "en": "The answer follows the target pattern for Daily actions."
+        },
+        "hintPolicy": {
+          "revealAfterAttempts": 1,
+          "countsAsAssisted": true
+        }
+      }
+    }
+  ],
+  "advancedActivities": [
+    {
+      "id": "activity-daily-actions-pronunciation",
+      "activityType": "pronunciation",
+      "contentRef": "3/lesson-daily-actions/pronunciation",
+      "mediaId": "media-daily-actions-dictation",
+      "expectedText": "I work every day",
+      "targetLocale": "en",
+      "feedbackLocale": "vi"
+    }
+  ]
+}

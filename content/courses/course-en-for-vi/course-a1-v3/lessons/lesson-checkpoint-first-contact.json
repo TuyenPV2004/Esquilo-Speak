@@ -1,0 +1,735 @@
+{
+  "id": "lesson-checkpoint-first-contact",
+  "courseId": "course-en-for-vi",
+  "courseVersion": 3,
+  "unitId": "unit-first-contact",
+  "position": 5,
+  "locale": "vi",
+  "requiredLocales": [
+    "vi",
+    "en"
+  ],
+  "title": {
+    "vi": "Checkpoint: Lần gặp đầu",
+    "en": "Checkpoint: First contact"
+  },
+  "objectives": [
+    {
+      "vi": "Dùng từ vựng và mẫu câu của Checkpoint: Lần gặp đầu.",
+      "en": "Use the vocabulary and patterns for Checkpoint: First contact."
+    }
+  ],
+  "outcomeIds": [
+    "outcome-checkpoint-first-contact"
+  ],
+  "prerequisiteLessonIds": [
+    "lesson-numbers-age"
+  ],
+  "revisitsConceptIds": [
+    "concept-how-are-you",
+    "concept-numbers-age"
+  ],
+  "difficulty": "checkpoint",
+  "estimatedMinutes": 12,
+  "exercises": [
+    {
+      "id": "exercise-checkpoint-first-contact-flashcard",
+      "type": "flashcard",
+      "learningItem": {
+        "skill": "vocabulary",
+        "conceptIds": [
+          "concept-checkpoint-first-contact"
+        ],
+        "outcomeIds": [
+          "outcome-checkpoint-first-contact"
+        ],
+        "prerequisiteConceptIds": [],
+        "difficulty": "introductory"
+      },
+      "presentation": {
+        "prompt": {
+          "vi": "Checkpoint: Lần gặp đầu: flashcard.",
+          "en": "Checkpoint: First contact: flashcard."
+        },
+        "hint": {
+          "vi": "Gợi ý: Hello, my name is Mai.",
+          "en": "Hint: Hello, my name is Mai."
+        },
+        "mediaIds": [],
+        "accessibility": {
+          "screenReaderLabel": {
+            "vi": "Checkpoint: Lần gặp đầu: flashcard.",
+            "en": "Checkpoint: First contact: flashcard."
+          },
+          "requiresAudio": false,
+          "supportsSilentMode": true
+        }
+      },
+      "answerPolicy": {
+        "kind": "self_assessment",
+        "maxAttempts": 2
+      },
+      "feedbackRule": {
+        "correct": {
+          "vi": "Chính xác.",
+          "en": "Correct."
+        },
+        "incorrect": {
+          "vi": "Hãy thử lại.",
+          "en": "Try again."
+        },
+        "explanation": {
+          "vi": "Đáp án theo mẫu mục tiêu của bài Checkpoint: Lần gặp đầu.",
+          "en": "The answer follows the target pattern for Checkpoint: First contact."
+        },
+        "hintPolicy": {
+          "revealAfterAttempts": 1,
+          "countsAsAssisted": true
+        }
+      }
+    },
+    {
+      "id": "exercise-checkpoint-first-contact-choice",
+      "type": "multiple_choice",
+      "learningItem": {
+        "skill": "vocabulary",
+        "conceptIds": [
+          "concept-checkpoint-first-contact"
+        ],
+        "outcomeIds": [
+          "outcome-checkpoint-first-contact"
+        ],
+        "prerequisiteConceptIds": [],
+        "difficulty": "guided"
+      },
+      "presentation": {
+        "prompt": {
+          "vi": "Checkpoint: Lần gặp đầu: choice.",
+          "en": "Checkpoint: First contact: choice."
+        },
+        "hint": {
+          "vi": "Gợi ý: Hello, my name is Mai.",
+          "en": "Hint: Hello, my name is Mai."
+        },
+        "mediaIds": [],
+        "accessibility": {
+          "screenReaderLabel": {
+            "vi": "Checkpoint: Lần gặp đầu: choice.",
+            "en": "Checkpoint: First contact: choice."
+          },
+          "requiresAudio": false,
+          "supportsSilentMode": true
+        },
+        "options": [
+          {
+            "id": "option-meaning",
+            "text": {
+              "vi": "giới thiệu",
+              "en": "giới thiệu"
+            }
+          },
+          {
+            "id": "option-distractor",
+            "text": {
+              "vi": "cảm ơn",
+              "en": "cảm ơn"
+            }
+          }
+        ]
+      },
+      "answerPolicy": {
+        "kind": "option_id",
+        "correctOptionId": "option-meaning",
+        "maxAttempts": 2
+      },
+      "feedbackRule": {
+        "correct": {
+          "vi": "Chính xác.",
+          "en": "Correct."
+        },
+        "incorrect": {
+          "vi": "Hãy thử lại.",
+          "en": "Try again."
+        },
+        "explanation": {
+          "vi": "Đáp án theo mẫu mục tiêu của bài Checkpoint: Lần gặp đầu.",
+          "en": "The answer follows the target pattern for Checkpoint: First contact."
+        },
+        "hintPolicy": {
+          "revealAfterAttempts": 1,
+          "countsAsAssisted": true
+        }
+      }
+    },
+    {
+      "id": "exercise-checkpoint-first-contact-listen-select",
+      "type": "listen_select",
+      "learningItem": {
+        "skill": "listening",
+        "conceptIds": [
+          "concept-checkpoint-first-contact"
+        ],
+        "outcomeIds": [
+          "outcome-checkpoint-first-contact"
+        ],
+        "prerequisiteConceptIds": [],
+        "difficulty": "guided"
+      },
+      "presentation": {
+        "prompt": {
+          "vi": "Checkpoint: Lần gặp đầu: listen select.",
+          "en": "Checkpoint: First contact: listen select."
+        },
+        "hint": {
+          "vi": "Gợi ý: Hello, my name is Mai.",
+          "en": "Hint: Hello, my name is Mai."
+        },
+        "mediaIds": [
+          "media-checkpoint-first-contact-listen"
+        ],
+        "accessibility": {
+          "screenReaderLabel": {
+            "vi": "Checkpoint: Lần gặp đầu: listen select.",
+            "en": "Checkpoint: First contact: listen select."
+          },
+          "requiresAudio": false,
+          "supportsSilentMode": true
+        },
+        "options": [
+          {
+            "id": "option-first",
+            "text": {
+              "vi": "introduce",
+              "en": "introduce"
+            }
+          },
+          {
+            "id": "option-second",
+            "text": {
+              "vi": "thanks",
+              "en": "thanks"
+            }
+          }
+        ],
+        "transcript": {
+          "vi": "introduce",
+          "en": "introduce"
+        }
+      },
+      "answerPolicy": {
+        "kind": "option_id",
+        "correctOptionId": "option-first",
+        "maxAttempts": 2
+      },
+      "feedbackRule": {
+        "correct": {
+          "vi": "Chính xác.",
+          "en": "Correct."
+        },
+        "incorrect": {
+          "vi": "Hãy thử lại.",
+          "en": "Try again."
+        },
+        "explanation": {
+          "vi": "Đáp án theo mẫu mục tiêu của bài Checkpoint: Lần gặp đầu.",
+          "en": "The answer follows the target pattern for Checkpoint: First contact."
+        },
+        "hintPolicy": {
+          "revealAfterAttempts": 1,
+          "countsAsAssisted": true
+        }
+      }
+    },
+    {
+      "id": "exercise-checkpoint-first-contact-matching",
+      "type": "matching",
+      "learningItem": {
+        "skill": "vocabulary",
+        "conceptIds": [
+          "concept-checkpoint-first-contact"
+        ],
+        "outcomeIds": [
+          "outcome-checkpoint-first-contact"
+        ],
+        "prerequisiteConceptIds": [],
+        "difficulty": "guided"
+      },
+      "presentation": {
+        "prompt": {
+          "vi": "Checkpoint: Lần gặp đầu: matching.",
+          "en": "Checkpoint: First contact: matching."
+        },
+        "hint": {
+          "vi": "Gợi ý: Hello, my name is Mai.",
+          "en": "Hint: Hello, my name is Mai."
+        },
+        "mediaIds": [],
+        "accessibility": {
+          "screenReaderLabel": {
+            "vi": "Checkpoint: Lần gặp đầu: matching.",
+            "en": "Checkpoint: First contact: matching."
+          },
+          "requiresAudio": false,
+          "supportsSilentMode": true
+        },
+        "leftItems": [
+          {
+            "id": "left-one",
+            "text": {
+              "vi": "introduce",
+              "en": "introduce"
+            }
+          },
+          {
+            "id": "left-two",
+            "text": {
+              "vi": "thanks",
+              "en": "thanks"
+            }
+          }
+        ],
+        "rightItems": [
+          {
+            "id": "right-one",
+            "text": {
+              "vi": "giới thiệu",
+              "en": "giới thiệu"
+            }
+          },
+          {
+            "id": "right-two",
+            "text": {
+              "vi": "cảm ơn",
+              "en": "cảm ơn"
+            }
+          }
+        ]
+      },
+      "answerPolicy": {
+        "kind": "pair_set",
+        "correctPairs": [
+          {
+            "leftId": "left-one",
+            "rightId": "right-one"
+          },
+          {
+            "leftId": "left-two",
+            "rightId": "right-two"
+          }
+        ],
+        "maxAttempts": 2
+      },
+      "feedbackRule": {
+        "correct": {
+          "vi": "Chính xác.",
+          "en": "Correct."
+        },
+        "incorrect": {
+          "vi": "Hãy thử lại.",
+          "en": "Try again."
+        },
+        "explanation": {
+          "vi": "Đáp án theo mẫu mục tiêu của bài Checkpoint: Lần gặp đầu.",
+          "en": "The answer follows the target pattern for Checkpoint: First contact."
+        },
+        "hintPolicy": {
+          "revealAfterAttempts": 1,
+          "countsAsAssisted": true
+        }
+      }
+    },
+    {
+      "id": "exercise-checkpoint-first-contact-ordering",
+      "type": "ordering",
+      "learningItem": {
+        "skill": "grammar",
+        "conceptIds": [
+          "concept-checkpoint-first-contact"
+        ],
+        "outcomeIds": [
+          "outcome-checkpoint-first-contact"
+        ],
+        "prerequisiteConceptIds": [],
+        "difficulty": "guided"
+      },
+      "presentation": {
+        "prompt": {
+          "vi": "Checkpoint: Lần gặp đầu: ordering.",
+          "en": "Checkpoint: First contact: ordering."
+        },
+        "hint": {
+          "vi": "Gợi ý: Hello, my name is Mai.",
+          "en": "Hint: Hello, my name is Mai."
+        },
+        "mediaIds": [],
+        "accessibility": {
+          "screenReaderLabel": {
+            "vi": "Checkpoint: Lần gặp đầu: ordering.",
+            "en": "Checkpoint: First contact: ordering."
+          },
+          "requiresAudio": false,
+          "supportsSilentMode": true
+        },
+        "items": [
+          {
+            "id": "item-1",
+            "text": {
+              "vi": "Hello,",
+              "en": "Hello,"
+            }
+          },
+          {
+            "id": "item-2",
+            "text": {
+              "vi": "my",
+              "en": "my"
+            }
+          },
+          {
+            "id": "item-3",
+            "text": {
+              "vi": "name",
+              "en": "name"
+            }
+          },
+          {
+            "id": "item-4",
+            "text": {
+              "vi": "is",
+              "en": "is"
+            }
+          },
+          {
+            "id": "item-5",
+            "text": {
+              "vi": "Mai",
+              "en": "Mai"
+            }
+          }
+        ]
+      },
+      "answerPolicy": {
+        "kind": "ordered_ids",
+        "correctOrder": [
+          "item-1",
+          "item-2",
+          "item-3",
+          "item-4",
+          "item-5"
+        ],
+        "maxAttempts": 2
+      },
+      "feedbackRule": {
+        "correct": {
+          "vi": "Chính xác.",
+          "en": "Correct."
+        },
+        "incorrect": {
+          "vi": "Hãy thử lại.",
+          "en": "Try again."
+        },
+        "explanation": {
+          "vi": "Đáp án theo mẫu mục tiêu của bài Checkpoint: Lần gặp đầu.",
+          "en": "The answer follows the target pattern for Checkpoint: First contact."
+        },
+        "hintPolicy": {
+          "revealAfterAttempts": 1,
+          "countsAsAssisted": true
+        }
+      }
+    },
+    {
+      "id": "exercise-checkpoint-first-contact-fill-blank",
+      "type": "fill_blank",
+      "learningItem": {
+        "skill": "writing",
+        "conceptIds": [
+          "concept-checkpoint-first-contact"
+        ],
+        "outcomeIds": [
+          "outcome-checkpoint-first-contact"
+        ],
+        "prerequisiteConceptIds": [],
+        "difficulty": "independent"
+      },
+      "presentation": {
+        "prompt": {
+          "vi": "Checkpoint: Lần gặp đầu: fill blank.",
+          "en": "Checkpoint: First contact: fill blank."
+        },
+        "hint": {
+          "vi": "Gợi ý: Hello, my name is Mai.",
+          "en": "Hint: Hello, my name is Mai."
+        },
+        "mediaIds": [],
+        "accessibility": {
+          "screenReaderLabel": {
+            "vi": "Checkpoint: Lần gặp đầu: fill blank.",
+            "en": "Checkpoint: First contact: fill blank."
+          },
+          "requiresAudio": false,
+          "supportsSilentMode": true
+        }
+      },
+      "answerPolicy": {
+        "kind": "normalized_text",
+        "acceptedAnswers": [
+          "Hello, my name is Mai."
+        ],
+        "caseSensitive": false,
+        "maxAttempts": 2
+      },
+      "feedbackRule": {
+        "correct": {
+          "vi": "Chính xác.",
+          "en": "Correct."
+        },
+        "incorrect": {
+          "vi": "Hãy thử lại.",
+          "en": "Try again."
+        },
+        "explanation": {
+          "vi": "Đáp án theo mẫu mục tiêu của bài Checkpoint: Lần gặp đầu.",
+          "en": "The answer follows the target pattern for Checkpoint: First contact."
+        },
+        "hintPolicy": {
+          "revealAfterAttempts": 1,
+          "countsAsAssisted": true
+        }
+      }
+    },
+    {
+      "id": "exercise-checkpoint-first-contact-true-false",
+      "type": "true_false",
+      "learningItem": {
+        "skill": "reading",
+        "conceptIds": [
+          "concept-checkpoint-first-contact"
+        ],
+        "outcomeIds": [
+          "outcome-checkpoint-first-contact"
+        ],
+        "prerequisiteConceptIds": [],
+        "difficulty": "guided"
+      },
+      "presentation": {
+        "prompt": {
+          "vi": "Checkpoint: Lần gặp đầu: true false.",
+          "en": "Checkpoint: First contact: true false."
+        },
+        "hint": {
+          "vi": "Gợi ý: Hello, my name is Mai.",
+          "en": "Hint: Hello, my name is Mai."
+        },
+        "mediaIds": [],
+        "accessibility": {
+          "screenReaderLabel": {
+            "vi": "Checkpoint: Lần gặp đầu: true false.",
+            "en": "Checkpoint: First contact: true false."
+          },
+          "requiresAudio": false,
+          "supportsSilentMode": true
+        }
+      },
+      "answerPolicy": {
+        "kind": "boolean",
+        "correctAnswer": true,
+        "maxAttempts": 2
+      },
+      "feedbackRule": {
+        "correct": {
+          "vi": "Chính xác.",
+          "en": "Correct."
+        },
+        "incorrect": {
+          "vi": "Hãy thử lại.",
+          "en": "Try again."
+        },
+        "explanation": {
+          "vi": "Đáp án theo mẫu mục tiêu của bài Checkpoint: Lần gặp đầu.",
+          "en": "The answer follows the target pattern for Checkpoint: First contact."
+        },
+        "hintPolicy": {
+          "revealAfterAttempts": 1,
+          "countsAsAssisted": true
+        }
+      }
+    },
+    {
+      "id": "exercise-checkpoint-first-contact-comprehension",
+      "type": "comprehension",
+      "learningItem": {
+        "skill": "reading",
+        "conceptIds": [
+          "concept-checkpoint-first-contact",
+          "concept-greetings",
+          "concept-name",
+          "concept-how-are-you",
+          "concept-numbers-age"
+        ],
+        "outcomeIds": [
+          "outcome-checkpoint-first-contact"
+        ],
+        "prerequisiteConceptIds": [],
+        "difficulty": "independent"
+      },
+      "presentation": {
+        "prompt": {
+          "vi": "Checkpoint: Lần gặp đầu: comprehension.",
+          "en": "Checkpoint: First contact: comprehension."
+        },
+        "hint": {
+          "vi": "Gợi ý: Hello, my name is Mai.",
+          "en": "Hint: Hello, my name is Mai."
+        },
+        "mediaIds": [],
+        "accessibility": {
+          "screenReaderLabel": {
+            "vi": "Checkpoint: Lần gặp đầu: comprehension.",
+            "en": "Checkpoint: First contact: comprehension."
+          },
+          "requiresAudio": false,
+          "supportsSilentMode": true
+        },
+        "instruction": {
+          "vi": "Hello, Ana. My name is Ana. I am fine. I am twelve. Hello, my name is Mai.",
+          "en": "Hello, Ana. My name is Ana. I am fine. I am twelve. Hello, my name is Mai."
+        },
+        "options": [
+          {
+            "id": "option-answer",
+            "text": {
+              "vi": "introduce",
+              "en": "introduce"
+            }
+          },
+          {
+            "id": "option-other",
+            "text": {
+              "vi": "thanks",
+              "en": "thanks"
+            }
+          }
+        ]
+      },
+      "answerPolicy": {
+        "kind": "option_id",
+        "correctOptionId": "option-answer",
+        "maxAttempts": 2
+      },
+      "feedbackRule": {
+        "correct": {
+          "vi": "Chính xác.",
+          "en": "Correct."
+        },
+        "incorrect": {
+          "vi": "Hãy thử lại.",
+          "en": "Try again."
+        },
+        "explanation": {
+          "vi": "Đáp án theo mẫu mục tiêu của bài Checkpoint: Lần gặp đầu.",
+          "en": "The answer follows the target pattern for Checkpoint: First contact."
+        },
+        "hintPolicy": {
+          "revealAfterAttempts": 1,
+          "countsAsAssisted": true
+        }
+      }
+    },
+    {
+      "id": "exercise-checkpoint-first-contact-dictation",
+      "type": "dictation",
+      "learningItem": {
+        "skill": "listening",
+        "conceptIds": [
+          "concept-checkpoint-first-contact"
+        ],
+        "outcomeIds": [
+          "outcome-checkpoint-first-contact"
+        ],
+        "prerequisiteConceptIds": [],
+        "difficulty": "checkpoint"
+      },
+      "presentation": {
+        "prompt": {
+          "vi": "Checkpoint: Lần gặp đầu: dictation.",
+          "en": "Checkpoint: First contact: dictation."
+        },
+        "hint": {
+          "vi": "Gợi ý: Hello, my name is Mai.",
+          "en": "Hint: Hello, my name is Mai."
+        },
+        "mediaIds": [
+          "media-checkpoint-first-contact-dictation"
+        ],
+        "accessibility": {
+          "screenReaderLabel": {
+            "vi": "Checkpoint: Lần gặp đầu: dictation.",
+            "en": "Checkpoint: First contact: dictation."
+          },
+          "requiresAudio": false,
+          "supportsSilentMode": true
+        },
+        "transcript": {
+          "vi": "Hello, my name is Sam",
+          "en": "Hello, my name is Sam"
+        }
+      },
+      "answerPolicy": {
+        "kind": "normalized_text",
+        "acceptedAnswers": [
+          "Hello, my name is Sam"
+        ],
+        "caseSensitive": false,
+        "maxAttempts": 2
+      },
+      "feedbackRule": {
+        "correct": {
+          "vi": "Chính xác.",
+          "en": "Correct."
+        },
+        "incorrect": {
+          "vi": "Hãy thử lại.",
+          "en": "Try again."
+        },
+        "explanation": {
+          "vi": "Đáp án theo mẫu mục tiêu của bài Checkpoint: Lần gặp đầu.",
+          "en": "The answer follows the target pattern for Checkpoint: First contact."
+        },
+        "hintPolicy": {
+          "revealAfterAttempts": 1,
+          "countsAsAssisted": true
+        }
+      }
+    }
+  ],
+  "advancedActivities": [
+    {
+      "id": "activity-checkpoint-first-contact-pronunciation",
+      "activityType": "pronunciation",
+      "contentRef": "1/lesson-checkpoint-first-contact/pronunciation",
+      "mediaId": "media-checkpoint-first-contact-dictation",
+      "expectedText": "Hello, my name is Sam",
+      "targetLocale": "en",
+      "feedbackLocale": "vi"
+    },
+    {
+      "id": "activity-checkpoint-first-contact-writing",
+      "activityType": "writing",
+      "contentRef": "1/lesson-checkpoint-first-contact/writing",
+      "mediaId": "media-checkpoint-first-contact-dictation",
+      "expectedText": "Hello, my name is Mai.",
+      "targetLocale": "en",
+      "feedbackLocale": "vi"
+    },
+    {
+      "id": "activity-checkpoint-first-contact-conversation",
+      "activityType": "conversation",
+      "contentRef": "1/lesson-checkpoint-first-contact/conversation",
+      "mediaId": "media-checkpoint-first-contact-dictation",
+      "expectedText": "Hello, my name is Sam",
+      "targetLocale": "en",
+      "feedbackLocale": "vi"
+    }
+  ]
+}

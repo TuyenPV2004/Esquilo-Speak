@@ -1,0 +1,707 @@
+{
+  "id": "lesson-family-people",
+  "courseId": "course-en-for-vi",
+  "courseVersion": 3,
+  "unitId": "unit-personal-information",
+  "position": 8,
+  "locale": "vi",
+  "requiredLocales": [
+    "vi",
+    "en"
+  ],
+  "title": {
+    "vi": "Gia đình và mọi người",
+    "en": "Family and people"
+  },
+  "objectives": [
+    {
+      "vi": "Dùng từ vựng và mẫu câu của Gia đình và mọi người.",
+      "en": "Use the vocabulary and patterns for Family and people."
+    }
+  ],
+  "outcomeIds": [
+    "outcome-family-people"
+  ],
+  "prerequisiteLessonIds": [
+    "lesson-contact-details"
+  ],
+  "revisitsConceptIds": [
+    "concept-country-city",
+    "concept-contact-details"
+  ],
+  "difficulty": "guided",
+  "estimatedMinutes": 8,
+  "exercises": [
+    {
+      "id": "exercise-family-people-flashcard",
+      "type": "flashcard",
+      "learningItem": {
+        "skill": "vocabulary",
+        "conceptIds": [
+          "concept-family-people"
+        ],
+        "outcomeIds": [
+          "outcome-family-people"
+        ],
+        "prerequisiteConceptIds": [],
+        "difficulty": "introductory"
+      },
+      "presentation": {
+        "prompt": {
+          "vi": "Gia đình và mọi người: flashcard.",
+          "en": "Family and people: flashcard."
+        },
+        "hint": {
+          "vi": "Gợi ý: She is my sister.",
+          "en": "Hint: She is my sister."
+        },
+        "mediaIds": [],
+        "accessibility": {
+          "screenReaderLabel": {
+            "vi": "Gia đình và mọi người: flashcard.",
+            "en": "Family and people: flashcard."
+          },
+          "requiresAudio": false,
+          "supportsSilentMode": true
+        }
+      },
+      "answerPolicy": {
+        "kind": "self_assessment",
+        "maxAttempts": 2
+      },
+      "feedbackRule": {
+        "correct": {
+          "vi": "Chính xác.",
+          "en": "Correct."
+        },
+        "incorrect": {
+          "vi": "Hãy thử lại.",
+          "en": "Try again."
+        },
+        "explanation": {
+          "vi": "Đáp án theo mẫu mục tiêu của bài Gia đình và mọi người.",
+          "en": "The answer follows the target pattern for Family and people."
+        },
+        "hintPolicy": {
+          "revealAfterAttempts": 1,
+          "countsAsAssisted": true
+        }
+      }
+    },
+    {
+      "id": "exercise-family-people-choice",
+      "type": "multiple_choice",
+      "learningItem": {
+        "skill": "vocabulary",
+        "conceptIds": [
+          "concept-family-people"
+        ],
+        "outcomeIds": [
+          "outcome-family-people"
+        ],
+        "prerequisiteConceptIds": [],
+        "difficulty": "guided"
+      },
+      "presentation": {
+        "prompt": {
+          "vi": "Gia đình và mọi người: choice.",
+          "en": "Family and people: choice."
+        },
+        "hint": {
+          "vi": "Gợi ý: She is my sister.",
+          "en": "Hint: She is my sister."
+        },
+        "mediaIds": [],
+        "accessibility": {
+          "screenReaderLabel": {
+            "vi": "Gia đình và mọi người: choice.",
+            "en": "Family and people: choice."
+          },
+          "requiresAudio": false,
+          "supportsSilentMode": true
+        },
+        "options": [
+          {
+            "id": "option-meaning",
+            "text": {
+              "vi": "chị hoặc em gái",
+              "en": "chị hoặc em gái"
+            }
+          },
+          {
+            "id": "option-distractor",
+            "text": {
+              "vi": "bạn",
+              "en": "bạn"
+            }
+          }
+        ]
+      },
+      "answerPolicy": {
+        "kind": "option_id",
+        "correctOptionId": "option-meaning",
+        "maxAttempts": 2
+      },
+      "feedbackRule": {
+        "correct": {
+          "vi": "Chính xác.",
+          "en": "Correct."
+        },
+        "incorrect": {
+          "vi": "Hãy thử lại.",
+          "en": "Try again."
+        },
+        "explanation": {
+          "vi": "Đáp án theo mẫu mục tiêu của bài Gia đình và mọi người.",
+          "en": "The answer follows the target pattern for Family and people."
+        },
+        "hintPolicy": {
+          "revealAfterAttempts": 1,
+          "countsAsAssisted": true
+        }
+      }
+    },
+    {
+      "id": "exercise-family-people-listen-select",
+      "type": "listen_select",
+      "learningItem": {
+        "skill": "listening",
+        "conceptIds": [
+          "concept-family-people"
+        ],
+        "outcomeIds": [
+          "outcome-family-people"
+        ],
+        "prerequisiteConceptIds": [],
+        "difficulty": "guided"
+      },
+      "presentation": {
+        "prompt": {
+          "vi": "Gia đình và mọi người: listen select.",
+          "en": "Family and people: listen select."
+        },
+        "hint": {
+          "vi": "Gợi ý: She is my sister.",
+          "en": "Hint: She is my sister."
+        },
+        "mediaIds": [
+          "media-family-people-listen"
+        ],
+        "accessibility": {
+          "screenReaderLabel": {
+            "vi": "Gia đình và mọi người: listen select.",
+            "en": "Family and people: listen select."
+          },
+          "requiresAudio": false,
+          "supportsSilentMode": true
+        },
+        "options": [
+          {
+            "id": "option-first",
+            "text": {
+              "vi": "sister",
+              "en": "sister"
+            }
+          },
+          {
+            "id": "option-second",
+            "text": {
+              "vi": "friend",
+              "en": "friend"
+            }
+          }
+        ],
+        "transcript": {
+          "vi": "sister",
+          "en": "sister"
+        }
+      },
+      "answerPolicy": {
+        "kind": "option_id",
+        "correctOptionId": "option-first",
+        "maxAttempts": 2
+      },
+      "feedbackRule": {
+        "correct": {
+          "vi": "Chính xác.",
+          "en": "Correct."
+        },
+        "incorrect": {
+          "vi": "Hãy thử lại.",
+          "en": "Try again."
+        },
+        "explanation": {
+          "vi": "Đáp án theo mẫu mục tiêu của bài Gia đình và mọi người.",
+          "en": "The answer follows the target pattern for Family and people."
+        },
+        "hintPolicy": {
+          "revealAfterAttempts": 1,
+          "countsAsAssisted": true
+        }
+      }
+    },
+    {
+      "id": "exercise-family-people-matching",
+      "type": "matching",
+      "learningItem": {
+        "skill": "vocabulary",
+        "conceptIds": [
+          "concept-family-people"
+        ],
+        "outcomeIds": [
+          "outcome-family-people"
+        ],
+        "prerequisiteConceptIds": [],
+        "difficulty": "guided"
+      },
+      "presentation": {
+        "prompt": {
+          "vi": "Gia đình và mọi người: matching.",
+          "en": "Family and people: matching."
+        },
+        "hint": {
+          "vi": "Gợi ý: She is my sister.",
+          "en": "Hint: She is my sister."
+        },
+        "mediaIds": [],
+        "accessibility": {
+          "screenReaderLabel": {
+            "vi": "Gia đình và mọi người: matching.",
+            "en": "Family and people: matching."
+          },
+          "requiresAudio": false,
+          "supportsSilentMode": true
+        },
+        "leftItems": [
+          {
+            "id": "left-one",
+            "text": {
+              "vi": "sister",
+              "en": "sister"
+            }
+          },
+          {
+            "id": "left-two",
+            "text": {
+              "vi": "friend",
+              "en": "friend"
+            }
+          }
+        ],
+        "rightItems": [
+          {
+            "id": "right-one",
+            "text": {
+              "vi": "chị hoặc em gái",
+              "en": "chị hoặc em gái"
+            }
+          },
+          {
+            "id": "right-two",
+            "text": {
+              "vi": "bạn",
+              "en": "bạn"
+            }
+          }
+        ]
+      },
+      "answerPolicy": {
+        "kind": "pair_set",
+        "correctPairs": [
+          {
+            "leftId": "left-one",
+            "rightId": "right-one"
+          },
+          {
+            "leftId": "left-two",
+            "rightId": "right-two"
+          }
+        ],
+        "maxAttempts": 2
+      },
+      "feedbackRule": {
+        "correct": {
+          "vi": "Chính xác.",
+          "en": "Correct."
+        },
+        "incorrect": {
+          "vi": "Hãy thử lại.",
+          "en": "Try again."
+        },
+        "explanation": {
+          "vi": "Đáp án theo mẫu mục tiêu của bài Gia đình và mọi người.",
+          "en": "The answer follows the target pattern for Family and people."
+        },
+        "hintPolicy": {
+          "revealAfterAttempts": 1,
+          "countsAsAssisted": true
+        }
+      }
+    },
+    {
+      "id": "exercise-family-people-ordering",
+      "type": "ordering",
+      "learningItem": {
+        "skill": "grammar",
+        "conceptIds": [
+          "concept-family-people"
+        ],
+        "outcomeIds": [
+          "outcome-family-people"
+        ],
+        "prerequisiteConceptIds": [],
+        "difficulty": "guided"
+      },
+      "presentation": {
+        "prompt": {
+          "vi": "Gia đình và mọi người: ordering.",
+          "en": "Family and people: ordering."
+        },
+        "hint": {
+          "vi": "Gợi ý: She is my sister.",
+          "en": "Hint: She is my sister."
+        },
+        "mediaIds": [],
+        "accessibility": {
+          "screenReaderLabel": {
+            "vi": "Gia đình và mọi người: ordering.",
+            "en": "Family and people: ordering."
+          },
+          "requiresAudio": false,
+          "supportsSilentMode": true
+        },
+        "items": [
+          {
+            "id": "item-1",
+            "text": {
+              "vi": "She",
+              "en": "She"
+            }
+          },
+          {
+            "id": "item-2",
+            "text": {
+              "vi": "is",
+              "en": "is"
+            }
+          },
+          {
+            "id": "item-3",
+            "text": {
+              "vi": "my",
+              "en": "my"
+            }
+          },
+          {
+            "id": "item-4",
+            "text": {
+              "vi": "sister",
+              "en": "sister"
+            }
+          }
+        ]
+      },
+      "answerPolicy": {
+        "kind": "ordered_ids",
+        "correctOrder": [
+          "item-1",
+          "item-2",
+          "item-3",
+          "item-4"
+        ],
+        "maxAttempts": 2
+      },
+      "feedbackRule": {
+        "correct": {
+          "vi": "Chính xác.",
+          "en": "Correct."
+        },
+        "incorrect": {
+          "vi": "Hãy thử lại.",
+          "en": "Try again."
+        },
+        "explanation": {
+          "vi": "Đáp án theo mẫu mục tiêu của bài Gia đình và mọi người.",
+          "en": "The answer follows the target pattern for Family and people."
+        },
+        "hintPolicy": {
+          "revealAfterAttempts": 1,
+          "countsAsAssisted": true
+        }
+      }
+    },
+    {
+      "id": "exercise-family-people-fill-blank",
+      "type": "fill_blank",
+      "learningItem": {
+        "skill": "writing",
+        "conceptIds": [
+          "concept-family-people"
+        ],
+        "outcomeIds": [
+          "outcome-family-people"
+        ],
+        "prerequisiteConceptIds": [],
+        "difficulty": "independent"
+      },
+      "presentation": {
+        "prompt": {
+          "vi": "Gia đình và mọi người: fill blank.",
+          "en": "Family and people: fill blank."
+        },
+        "hint": {
+          "vi": "Gợi ý: She is my sister.",
+          "en": "Hint: She is my sister."
+        },
+        "mediaIds": [],
+        "accessibility": {
+          "screenReaderLabel": {
+            "vi": "Gia đình và mọi người: fill blank.",
+            "en": "Family and people: fill blank."
+          },
+          "requiresAudio": false,
+          "supportsSilentMode": true
+        }
+      },
+      "answerPolicy": {
+        "kind": "normalized_text",
+        "acceptedAnswers": [
+          "She is my sister."
+        ],
+        "caseSensitive": false,
+        "maxAttempts": 2
+      },
+      "feedbackRule": {
+        "correct": {
+          "vi": "Chính xác.",
+          "en": "Correct."
+        },
+        "incorrect": {
+          "vi": "Hãy thử lại.",
+          "en": "Try again."
+        },
+        "explanation": {
+          "vi": "Đáp án theo mẫu mục tiêu của bài Gia đình và mọi người.",
+          "en": "The answer follows the target pattern for Family and people."
+        },
+        "hintPolicy": {
+          "revealAfterAttempts": 1,
+          "countsAsAssisted": true
+        }
+      }
+    },
+    {
+      "id": "exercise-family-people-true-false",
+      "type": "true_false",
+      "learningItem": {
+        "skill": "reading",
+        "conceptIds": [
+          "concept-family-people"
+        ],
+        "outcomeIds": [
+          "outcome-family-people"
+        ],
+        "prerequisiteConceptIds": [],
+        "difficulty": "guided"
+      },
+      "presentation": {
+        "prompt": {
+          "vi": "Gia đình và mọi người: true false.",
+          "en": "Family and people: true false."
+        },
+        "hint": {
+          "vi": "Gợi ý: She is my sister.",
+          "en": "Hint: She is my sister."
+        },
+        "mediaIds": [],
+        "accessibility": {
+          "screenReaderLabel": {
+            "vi": "Gia đình và mọi người: true false.",
+            "en": "Family and people: true false."
+          },
+          "requiresAudio": false,
+          "supportsSilentMode": true
+        }
+      },
+      "answerPolicy": {
+        "kind": "boolean",
+        "correctAnswer": true,
+        "maxAttempts": 2
+      },
+      "feedbackRule": {
+        "correct": {
+          "vi": "Chính xác.",
+          "en": "Correct."
+        },
+        "incorrect": {
+          "vi": "Hãy thử lại.",
+          "en": "Try again."
+        },
+        "explanation": {
+          "vi": "Đáp án theo mẫu mục tiêu của bài Gia đình và mọi người.",
+          "en": "The answer follows the target pattern for Family and people."
+        },
+        "hintPolicy": {
+          "revealAfterAttempts": 1,
+          "countsAsAssisted": true
+        }
+      }
+    },
+    {
+      "id": "exercise-family-people-comprehension",
+      "type": "comprehension",
+      "learningItem": {
+        "skill": "reading",
+        "conceptIds": [
+          "concept-family-people",
+          "concept-country-city",
+          "concept-contact-details"
+        ],
+        "outcomeIds": [
+          "outcome-family-people"
+        ],
+        "prerequisiteConceptIds": [],
+        "difficulty": "independent"
+      },
+      "presentation": {
+        "prompt": {
+          "vi": "Gia đình và mọi người: comprehension.",
+          "en": "Family and people: comprehension."
+        },
+        "hint": {
+          "vi": "Gợi ý: She is my sister.",
+          "en": "Hint: She is my sister."
+        },
+        "mediaIds": [],
+        "accessibility": {
+          "screenReaderLabel": {
+            "vi": "Gia đình và mọi người: comprehension.",
+            "en": "Family and people: comprehension."
+          },
+          "requiresAudio": false,
+          "supportsSilentMode": true
+        },
+        "instruction": {
+          "vi": "I am from Hanoi. My email is ana@example.com. She is my sister.",
+          "en": "I am from Hanoi. My email is ana@example.com. She is my sister."
+        },
+        "options": [
+          {
+            "id": "option-answer",
+            "text": {
+              "vi": "sister",
+              "en": "sister"
+            }
+          },
+          {
+            "id": "option-other",
+            "text": {
+              "vi": "friend",
+              "en": "friend"
+            }
+          }
+        ]
+      },
+      "answerPolicy": {
+        "kind": "option_id",
+        "correctOptionId": "option-answer",
+        "maxAttempts": 2
+      },
+      "feedbackRule": {
+        "correct": {
+          "vi": "Chính xác.",
+          "en": "Correct."
+        },
+        "incorrect": {
+          "vi": "Hãy thử lại.",
+          "en": "Try again."
+        },
+        "explanation": {
+          "vi": "Đáp án theo mẫu mục tiêu của bài Gia đình và mọi người.",
+          "en": "The answer follows the target pattern for Family and people."
+        },
+        "hintPolicy": {
+          "revealAfterAttempts": 1,
+          "countsAsAssisted": true
+        }
+      }
+    },
+    {
+      "id": "exercise-family-people-dictation",
+      "type": "dictation",
+      "learningItem": {
+        "skill": "listening",
+        "conceptIds": [
+          "concept-family-people"
+        ],
+        "outcomeIds": [
+          "outcome-family-people"
+        ],
+        "prerequisiteConceptIds": [],
+        "difficulty": "independent"
+      },
+      "presentation": {
+        "prompt": {
+          "vi": "Gia đình và mọi người: dictation.",
+          "en": "Family and people: dictation."
+        },
+        "hint": {
+          "vi": "Gợi ý: She is my sister.",
+          "en": "Hint: She is my sister."
+        },
+        "mediaIds": [
+          "media-family-people-dictation"
+        ],
+        "accessibility": {
+          "screenReaderLabel": {
+            "vi": "Gia đình và mọi người: dictation.",
+            "en": "Family and people: dictation."
+          },
+          "requiresAudio": false,
+          "supportsSilentMode": true
+        },
+        "transcript": {
+          "vi": "This is my friend",
+          "en": "This is my friend"
+        }
+      },
+      "answerPolicy": {
+        "kind": "normalized_text",
+        "acceptedAnswers": [
+          "This is my friend"
+        ],
+        "caseSensitive": false,
+        "maxAttempts": 2
+      },
+      "feedbackRule": {
+        "correct": {
+          "vi": "Chính xác.",
+          "en": "Correct."
+        },
+        "incorrect": {
+          "vi": "Hãy thử lại.",
+          "en": "Try again."
+        },
+        "explanation": {
+          "vi": "Đáp án theo mẫu mục tiêu của bài Gia đình và mọi người.",
+          "en": "The answer follows the target pattern for Family and people."
+        },
+        "hintPolicy": {
+          "revealAfterAttempts": 1,
+          "countsAsAssisted": true
+        }
+      }
+    }
+  ],
+  "advancedActivities": [
+    {
+      "id": "activity-family-people-pronunciation",
+      "activityType": "pronunciation",
+      "contentRef": "2/lesson-family-people/pronunciation",
+      "mediaId": "media-family-people-dictation",
+      "expectedText": "This is my friend",
+      "targetLocale": "en",
+      "feedbackLocale": "vi"
+    }
+  ]
+}

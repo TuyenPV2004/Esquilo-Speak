@@ -1,0 +1,699 @@
+{
+  "id": "lesson-food-drink",
+  "courseId": "course-en-for-vi",
+  "courseVersion": 3,
+  "unitId": "unit-simple-transactions",
+  "position": 16,
+  "locale": "vi",
+  "requiredLocales": [
+    "vi",
+    "en"
+  ],
+  "title": {
+    "vi": "Đồ ăn và thức uống",
+    "en": "Food and drink"
+  },
+  "objectives": [
+    {
+      "vi": "Dùng từ vựng và mẫu câu của Đồ ăn và thức uống.",
+      "en": "Use the vocabulary and patterns for Food and drink."
+    }
+  ],
+  "outcomeIds": [
+    "outcome-food-drink"
+  ],
+  "prerequisiteLessonIds": [
+    "lesson-checkpoint-daily-life"
+  ],
+  "revisitsConceptIds": [
+    "concept-likes-abilities",
+    "concept-checkpoint-daily-life"
+  ],
+  "difficulty": "guided",
+  "estimatedMinutes": 8,
+  "exercises": [
+    {
+      "id": "exercise-food-drink-flashcard",
+      "type": "flashcard",
+      "learningItem": {
+        "skill": "vocabulary",
+        "conceptIds": [
+          "concept-food-drink"
+        ],
+        "outcomeIds": [
+          "outcome-food-drink"
+        ],
+        "prerequisiteConceptIds": [],
+        "difficulty": "introductory"
+      },
+      "presentation": {
+        "prompt": {
+          "vi": "Đồ ăn và thức uống: flashcard.",
+          "en": "Food and drink: flashcard."
+        },
+        "hint": {
+          "vi": "Gợi ý: I want water.",
+          "en": "Hint: I want water."
+        },
+        "mediaIds": [],
+        "accessibility": {
+          "screenReaderLabel": {
+            "vi": "Đồ ăn và thức uống: flashcard.",
+            "en": "Food and drink: flashcard."
+          },
+          "requiresAudio": false,
+          "supportsSilentMode": true
+        }
+      },
+      "answerPolicy": {
+        "kind": "self_assessment",
+        "maxAttempts": 2
+      },
+      "feedbackRule": {
+        "correct": {
+          "vi": "Chính xác.",
+          "en": "Correct."
+        },
+        "incorrect": {
+          "vi": "Hãy thử lại.",
+          "en": "Try again."
+        },
+        "explanation": {
+          "vi": "Đáp án theo mẫu mục tiêu của bài Đồ ăn và thức uống.",
+          "en": "The answer follows the target pattern for Food and drink."
+        },
+        "hintPolicy": {
+          "revealAfterAttempts": 1,
+          "countsAsAssisted": true
+        }
+      }
+    },
+    {
+      "id": "exercise-food-drink-choice",
+      "type": "multiple_choice",
+      "learningItem": {
+        "skill": "vocabulary",
+        "conceptIds": [
+          "concept-food-drink"
+        ],
+        "outcomeIds": [
+          "outcome-food-drink"
+        ],
+        "prerequisiteConceptIds": [],
+        "difficulty": "guided"
+      },
+      "presentation": {
+        "prompt": {
+          "vi": "Đồ ăn và thức uống: choice.",
+          "en": "Food and drink: choice."
+        },
+        "hint": {
+          "vi": "Gợi ý: I want water.",
+          "en": "Hint: I want water."
+        },
+        "mediaIds": [],
+        "accessibility": {
+          "screenReaderLabel": {
+            "vi": "Đồ ăn và thức uống: choice.",
+            "en": "Food and drink: choice."
+          },
+          "requiresAudio": false,
+          "supportsSilentMode": true
+        },
+        "options": [
+          {
+            "id": "option-meaning",
+            "text": {
+              "vi": "nước",
+              "en": "nước"
+            }
+          },
+          {
+            "id": "option-distractor",
+            "text": {
+              "vi": "bánh mì",
+              "en": "bánh mì"
+            }
+          }
+        ]
+      },
+      "answerPolicy": {
+        "kind": "option_id",
+        "correctOptionId": "option-meaning",
+        "maxAttempts": 2
+      },
+      "feedbackRule": {
+        "correct": {
+          "vi": "Chính xác.",
+          "en": "Correct."
+        },
+        "incorrect": {
+          "vi": "Hãy thử lại.",
+          "en": "Try again."
+        },
+        "explanation": {
+          "vi": "Đáp án theo mẫu mục tiêu của bài Đồ ăn và thức uống.",
+          "en": "The answer follows the target pattern for Food and drink."
+        },
+        "hintPolicy": {
+          "revealAfterAttempts": 1,
+          "countsAsAssisted": true
+        }
+      }
+    },
+    {
+      "id": "exercise-food-drink-listen-select",
+      "type": "listen_select",
+      "learningItem": {
+        "skill": "listening",
+        "conceptIds": [
+          "concept-food-drink"
+        ],
+        "outcomeIds": [
+          "outcome-food-drink"
+        ],
+        "prerequisiteConceptIds": [],
+        "difficulty": "guided"
+      },
+      "presentation": {
+        "prompt": {
+          "vi": "Đồ ăn và thức uống: listen select.",
+          "en": "Food and drink: listen select."
+        },
+        "hint": {
+          "vi": "Gợi ý: I want water.",
+          "en": "Hint: I want water."
+        },
+        "mediaIds": [
+          "media-food-drink-listen"
+        ],
+        "accessibility": {
+          "screenReaderLabel": {
+            "vi": "Đồ ăn và thức uống: listen select.",
+            "en": "Food and drink: listen select."
+          },
+          "requiresAudio": false,
+          "supportsSilentMode": true
+        },
+        "options": [
+          {
+            "id": "option-first",
+            "text": {
+              "vi": "water",
+              "en": "water"
+            }
+          },
+          {
+            "id": "option-second",
+            "text": {
+              "vi": "bread",
+              "en": "bread"
+            }
+          }
+        ],
+        "transcript": {
+          "vi": "water",
+          "en": "water"
+        }
+      },
+      "answerPolicy": {
+        "kind": "option_id",
+        "correctOptionId": "option-first",
+        "maxAttempts": 2
+      },
+      "feedbackRule": {
+        "correct": {
+          "vi": "Chính xác.",
+          "en": "Correct."
+        },
+        "incorrect": {
+          "vi": "Hãy thử lại.",
+          "en": "Try again."
+        },
+        "explanation": {
+          "vi": "Đáp án theo mẫu mục tiêu của bài Đồ ăn và thức uống.",
+          "en": "The answer follows the target pattern for Food and drink."
+        },
+        "hintPolicy": {
+          "revealAfterAttempts": 1,
+          "countsAsAssisted": true
+        }
+      }
+    },
+    {
+      "id": "exercise-food-drink-matching",
+      "type": "matching",
+      "learningItem": {
+        "skill": "vocabulary",
+        "conceptIds": [
+          "concept-food-drink"
+        ],
+        "outcomeIds": [
+          "outcome-food-drink"
+        ],
+        "prerequisiteConceptIds": [],
+        "difficulty": "guided"
+      },
+      "presentation": {
+        "prompt": {
+          "vi": "Đồ ăn và thức uống: matching.",
+          "en": "Food and drink: matching."
+        },
+        "hint": {
+          "vi": "Gợi ý: I want water.",
+          "en": "Hint: I want water."
+        },
+        "mediaIds": [],
+        "accessibility": {
+          "screenReaderLabel": {
+            "vi": "Đồ ăn và thức uống: matching.",
+            "en": "Food and drink: matching."
+          },
+          "requiresAudio": false,
+          "supportsSilentMode": true
+        },
+        "leftItems": [
+          {
+            "id": "left-one",
+            "text": {
+              "vi": "water",
+              "en": "water"
+            }
+          },
+          {
+            "id": "left-two",
+            "text": {
+              "vi": "bread",
+              "en": "bread"
+            }
+          }
+        ],
+        "rightItems": [
+          {
+            "id": "right-one",
+            "text": {
+              "vi": "nước",
+              "en": "nước"
+            }
+          },
+          {
+            "id": "right-two",
+            "text": {
+              "vi": "bánh mì",
+              "en": "bánh mì"
+            }
+          }
+        ]
+      },
+      "answerPolicy": {
+        "kind": "pair_set",
+        "correctPairs": [
+          {
+            "leftId": "left-one",
+            "rightId": "right-one"
+          },
+          {
+            "leftId": "left-two",
+            "rightId": "right-two"
+          }
+        ],
+        "maxAttempts": 2
+      },
+      "feedbackRule": {
+        "correct": {
+          "vi": "Chính xác.",
+          "en": "Correct."
+        },
+        "incorrect": {
+          "vi": "Hãy thử lại.",
+          "en": "Try again."
+        },
+        "explanation": {
+          "vi": "Đáp án theo mẫu mục tiêu của bài Đồ ăn và thức uống.",
+          "en": "The answer follows the target pattern for Food and drink."
+        },
+        "hintPolicy": {
+          "revealAfterAttempts": 1,
+          "countsAsAssisted": true
+        }
+      }
+    },
+    {
+      "id": "exercise-food-drink-ordering",
+      "type": "ordering",
+      "learningItem": {
+        "skill": "grammar",
+        "conceptIds": [
+          "concept-food-drink"
+        ],
+        "outcomeIds": [
+          "outcome-food-drink"
+        ],
+        "prerequisiteConceptIds": [],
+        "difficulty": "guided"
+      },
+      "presentation": {
+        "prompt": {
+          "vi": "Đồ ăn và thức uống: ordering.",
+          "en": "Food and drink: ordering."
+        },
+        "hint": {
+          "vi": "Gợi ý: I want water.",
+          "en": "Hint: I want water."
+        },
+        "mediaIds": [],
+        "accessibility": {
+          "screenReaderLabel": {
+            "vi": "Đồ ăn và thức uống: ordering.",
+            "en": "Food and drink: ordering."
+          },
+          "requiresAudio": false,
+          "supportsSilentMode": true
+        },
+        "items": [
+          {
+            "id": "item-1",
+            "text": {
+              "vi": "I",
+              "en": "I"
+            }
+          },
+          {
+            "id": "item-2",
+            "text": {
+              "vi": "want",
+              "en": "want"
+            }
+          },
+          {
+            "id": "item-3",
+            "text": {
+              "vi": "water",
+              "en": "water"
+            }
+          }
+        ]
+      },
+      "answerPolicy": {
+        "kind": "ordered_ids",
+        "correctOrder": [
+          "item-1",
+          "item-2",
+          "item-3"
+        ],
+        "maxAttempts": 2
+      },
+      "feedbackRule": {
+        "correct": {
+          "vi": "Chính xác.",
+          "en": "Correct."
+        },
+        "incorrect": {
+          "vi": "Hãy thử lại.",
+          "en": "Try again."
+        },
+        "explanation": {
+          "vi": "Đáp án theo mẫu mục tiêu của bài Đồ ăn và thức uống.",
+          "en": "The answer follows the target pattern for Food and drink."
+        },
+        "hintPolicy": {
+          "revealAfterAttempts": 1,
+          "countsAsAssisted": true
+        }
+      }
+    },
+    {
+      "id": "exercise-food-drink-fill-blank",
+      "type": "fill_blank",
+      "learningItem": {
+        "skill": "writing",
+        "conceptIds": [
+          "concept-food-drink"
+        ],
+        "outcomeIds": [
+          "outcome-food-drink"
+        ],
+        "prerequisiteConceptIds": [],
+        "difficulty": "independent"
+      },
+      "presentation": {
+        "prompt": {
+          "vi": "Đồ ăn và thức uống: fill blank.",
+          "en": "Food and drink: fill blank."
+        },
+        "hint": {
+          "vi": "Gợi ý: I want water.",
+          "en": "Hint: I want water."
+        },
+        "mediaIds": [],
+        "accessibility": {
+          "screenReaderLabel": {
+            "vi": "Đồ ăn và thức uống: fill blank.",
+            "en": "Food and drink: fill blank."
+          },
+          "requiresAudio": false,
+          "supportsSilentMode": true
+        }
+      },
+      "answerPolicy": {
+        "kind": "normalized_text",
+        "acceptedAnswers": [
+          "I want water."
+        ],
+        "caseSensitive": false,
+        "maxAttempts": 2
+      },
+      "feedbackRule": {
+        "correct": {
+          "vi": "Chính xác.",
+          "en": "Correct."
+        },
+        "incorrect": {
+          "vi": "Hãy thử lại.",
+          "en": "Try again."
+        },
+        "explanation": {
+          "vi": "Đáp án theo mẫu mục tiêu của bài Đồ ăn và thức uống.",
+          "en": "The answer follows the target pattern for Food and drink."
+        },
+        "hintPolicy": {
+          "revealAfterAttempts": 1,
+          "countsAsAssisted": true
+        }
+      }
+    },
+    {
+      "id": "exercise-food-drink-true-false",
+      "type": "true_false",
+      "learningItem": {
+        "skill": "reading",
+        "conceptIds": [
+          "concept-food-drink"
+        ],
+        "outcomeIds": [
+          "outcome-food-drink"
+        ],
+        "prerequisiteConceptIds": [],
+        "difficulty": "guided"
+      },
+      "presentation": {
+        "prompt": {
+          "vi": "Đồ ăn và thức uống: true false.",
+          "en": "Food and drink: true false."
+        },
+        "hint": {
+          "vi": "Gợi ý: I want water.",
+          "en": "Hint: I want water."
+        },
+        "mediaIds": [],
+        "accessibility": {
+          "screenReaderLabel": {
+            "vi": "Đồ ăn và thức uống: true false.",
+            "en": "Food and drink: true false."
+          },
+          "requiresAudio": false,
+          "supportsSilentMode": true
+        }
+      },
+      "answerPolicy": {
+        "kind": "boolean",
+        "correctAnswer": true,
+        "maxAttempts": 2
+      },
+      "feedbackRule": {
+        "correct": {
+          "vi": "Chính xác.",
+          "en": "Correct."
+        },
+        "incorrect": {
+          "vi": "Hãy thử lại.",
+          "en": "Try again."
+        },
+        "explanation": {
+          "vi": "Đáp án theo mẫu mục tiêu của bài Đồ ăn và thức uống.",
+          "en": "The answer follows the target pattern for Food and drink."
+        },
+        "hintPolicy": {
+          "revealAfterAttempts": 1,
+          "countsAsAssisted": true
+        }
+      }
+    },
+    {
+      "id": "exercise-food-drink-comprehension",
+      "type": "comprehension",
+      "learningItem": {
+        "skill": "reading",
+        "conceptIds": [
+          "concept-food-drink",
+          "concept-likes-abilities",
+          "concept-checkpoint-daily-life"
+        ],
+        "outcomeIds": [
+          "outcome-food-drink"
+        ],
+        "prerequisiteConceptIds": [],
+        "difficulty": "independent"
+      },
+      "presentation": {
+        "prompt": {
+          "vi": "Đồ ăn và thức uống: comprehension.",
+          "en": "Food and drink: comprehension."
+        },
+        "hint": {
+          "vi": "Gợi ý: I want water.",
+          "en": "Hint: I want water."
+        },
+        "mediaIds": [],
+        "accessibility": {
+          "screenReaderLabel": {
+            "vi": "Đồ ăn và thức uống: comprehension.",
+            "en": "Food and drink: comprehension."
+          },
+          "requiresAudio": false,
+          "supportsSilentMode": true
+        },
+        "instruction": {
+          "vi": "I like music. I study at eight every day. I want water.",
+          "en": "I like music. I study at eight every day. I want water."
+        },
+        "options": [
+          {
+            "id": "option-answer",
+            "text": {
+              "vi": "water",
+              "en": "water"
+            }
+          },
+          {
+            "id": "option-other",
+            "text": {
+              "vi": "bread",
+              "en": "bread"
+            }
+          }
+        ]
+      },
+      "answerPolicy": {
+        "kind": "option_id",
+        "correctOptionId": "option-answer",
+        "maxAttempts": 2
+      },
+      "feedbackRule": {
+        "correct": {
+          "vi": "Chính xác.",
+          "en": "Correct."
+        },
+        "incorrect": {
+          "vi": "Hãy thử lại.",
+          "en": "Try again."
+        },
+        "explanation": {
+          "vi": "Đáp án theo mẫu mục tiêu của bài Đồ ăn và thức uống.",
+          "en": "The answer follows the target pattern for Food and drink."
+        },
+        "hintPolicy": {
+          "revealAfterAttempts": 1,
+          "countsAsAssisted": true
+        }
+      }
+    },
+    {
+      "id": "exercise-food-drink-dictation",
+      "type": "dictation",
+      "learningItem": {
+        "skill": "listening",
+        "conceptIds": [
+          "concept-food-drink"
+        ],
+        "outcomeIds": [
+          "outcome-food-drink"
+        ],
+        "prerequisiteConceptIds": [],
+        "difficulty": "independent"
+      },
+      "presentation": {
+        "prompt": {
+          "vi": "Đồ ăn và thức uống: dictation.",
+          "en": "Food and drink: dictation."
+        },
+        "hint": {
+          "vi": "Gợi ý: I want water.",
+          "en": "Hint: I want water."
+        },
+        "mediaIds": [
+          "media-food-drink-dictation"
+        ],
+        "accessibility": {
+          "screenReaderLabel": {
+            "vi": "Đồ ăn và thức uống: dictation.",
+            "en": "Food and drink: dictation."
+          },
+          "requiresAudio": false,
+          "supportsSilentMode": true
+        },
+        "transcript": {
+          "vi": "I would like water",
+          "en": "I would like water"
+        }
+      },
+      "answerPolicy": {
+        "kind": "normalized_text",
+        "acceptedAnswers": [
+          "I would like water"
+        ],
+        "caseSensitive": false,
+        "maxAttempts": 2
+      },
+      "feedbackRule": {
+        "correct": {
+          "vi": "Chính xác.",
+          "en": "Correct."
+        },
+        "incorrect": {
+          "vi": "Hãy thử lại.",
+          "en": "Try again."
+        },
+        "explanation": {
+          "vi": "Đáp án theo mẫu mục tiêu của bài Đồ ăn và thức uống.",
+          "en": "The answer follows the target pattern for Food and drink."
+        },
+        "hintPolicy": {
+          "revealAfterAttempts": 1,
+          "countsAsAssisted": true
+        }
+      }
+    }
+  ],
+  "advancedActivities": [
+    {
+      "id": "activity-food-drink-pronunciation",
+      "activityType": "pronunciation",
+      "contentRef": "4/lesson-food-drink/pronunciation",
+      "mediaId": "media-food-drink-dictation",
+      "expectedText": "I would like water",
+      "targetLocale": "en",
+      "feedbackLocale": "vi"
+    }
+  ]
+}

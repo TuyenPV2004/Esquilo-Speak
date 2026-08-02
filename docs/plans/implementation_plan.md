@@ -483,3 +483,87 @@ theo `docs/plans/Ke_Hoach_2.md`.
 - Learning API targeted 9/9, full backend regression và `bootJar`, OpenAPI lint/P0 freeze,
   Flutter analyzer, 61/61 mobile test và local debug APK đều pass. Không có Android target
   trong `flutter devices`, vì vậy device E2E không được ghi nhận trong lượt này.
+
+## 14. Giai đoạn 7 — Hoàn thiện course A1
+
+### Mục tiêu
+
+Mở rộng vertical slice Unit 1 thành course English A1 version 3 gồm 4 unit/20 lesson
+learner-safe, có guidebook/checkpoint, progression và evidence đa kỹ năng đủ cho closed beta;
+đồng thời khóa chính sách placement start point, version migration, completion assessment và
+full-course offline package bằng contract có version thay vì literal phía client.
+
+### Phạm vi triển khai
+
+1. Mở rộng content schema/pipeline cho unit guidebook, completion assessment đa kỹ năng,
+   placement start points, version migration và offline package policy. Validator kiểm tra đủ
+   4 unit/20 lesson, checkpoint cuối mỗi unit, recurrence/prerequisite, skill coverage,
+   media/accessibility và `non_accredited_completion`.
+2. Tạo generator course A1 version 3 từ curriculum map: 20 lesson × 9 exercise canonical,
+   4 checkpoint, guidebook EN/VI, advanced speaking/writing/conversation activities và media
+   WAV có transcript/checksum/provenance/silent path. Sinh learner preview và admin fixture.
+3. Mở rộng backend content DTO/persistence/delivery để giữ policy/guidebook learner-safe;
+   integration test publish full course, chấm 180/180 exercise, xác nhận 20 lesson, mastery,
+   review, completion progress và policy migration.
+4. Mở rộng placement assessment bằng start-point policy theo score. Response trả recommended
+   point cùng các điểm thấp hơn được phép; mobile cho learner chọn trực tiếp nhưng không tự
+   đánh dấu lesson cũ hoàn thành hay cấp chứng chỉ được công nhận.
+5. Mobile hiển thị guidebook theo unit, policy offline/version/size và hành động tải toàn course
+   qua cache lesson/version hiện có. Summary course hoàn tất nhắc rõ A1 completion nội bộ,
+   `non-accredited`.
+6. Bổ sung content/backend/mobile/Android test surface cho full course và cập nhật tài liệu vận
+   hành, API, roadmap, change log theo bằng chứng thực tế.
+
+### Khu vực dự kiến thay đổi
+
+- `contracts/schema/`, OpenAPI và content pipeline/test.
+- `content/courses/course-en-for-vi/course-a1-v3/`, generator/media tooling và tài liệu content.
+- Backend curriculum/assessment, Flyway V15, admin fixture và integration test.
+- Mobile learning/placement model, repository, view-model, path UI, localization và test.
+- `API_Check.md`, `Guide.md`, mobile/content README, roadmap và change log.
+
+### Validation
+
+1. JSON Schema + semantic content validator, generated preview answer-leak audit, media binary
+   checksum/duration/provenance và deterministic regeneration.
+2. Backend targeted curriculum/assessment integration trên PostgreSQL, full regression,
+   Spring Modulith và `bootJar`.
+3. OpenAPI Redocly lint, P0 freeze và compatibility review cho field bổ sung.
+4. Flutter gen-l10n/format/analyzer, targeted content-model/offline/placement/path tests và full
+   mobile regression; build debug APK.
+5. Android full-course integration khi có target; nếu không có target thì giữ gate closed và
+   ghi chính xác blocker. Cuối cùng chạy `git diff --check` và rà soát learner-safe output.
+
+### Giả định và rủi ro
+
+- Course version 3 giữ `compatibilityVersion = 2` với Unit 1 V2. Learner ở version 2 giữ
+  mastery/progress tương thích; version 1 được xử lý theo policy `require_restart` vì semantics
+  đã thay đổi.
+- TTS local tạo binary kỹ thuật có provenance nhưng không thay thế language/pedagogy/cultural
+  review của content owner; checkbox review con người chỉ đóng khi có sign-off thật.
+- Placement start point là recommendation điều hướng, không tự hoàn thành lesson trước đó.
+  Learner luôn có thể chọn điểm thấp hơn; completion course vẫn yêu cầu evidence của curriculum.
+- Android closed-testing completion là gate môi trường/người dùng thật và không được suy diễn
+  từ backend, widget test hoặc APK build.
+
+### Phê duyệt
+
+Developer phê duyệt thực hiện ngày 2026-08-02 bằng yêu cầu triển khai toàn bộ Giai đoạn 7
+theo `docs/plans/Ke_Hoach_2.md`.
+
+### Kết quả
+
+- Course A1 v3 được sinh xác định từ curriculum map: 4 unit/20 lesson/180 exercise, 4
+  guidebook/checkpoint, 40 WAV và learner-safe preview. Recurrence xuất hiện trong nội dung
+  comprehension/checkpoint; evidence gồm listening 40, reading 40, writing 20 và 20 activity
+  pronunciation cùng writing/conversation ở checkpoint.
+- Backend giữ/deliver guidebook và bốn policy course, integration publish full fixture và kiểm
+  tra 20 lesson/180 exercise cùng answer stripping. Compatibility version 2 tiếp tục dùng cơ
+  chế versioned curriculum hiện có; policy mô tả version không tương thích là restart.
+- Mobile hiển thị guidebook, tải toàn course theo package v3/64 MB/TTL 30 ngày và gọi media
+  downloader thật, placement xếp điểm đề xuất trước nhưng giữ mọi mức thấp hơn, completion ghi
+  rõ non-accredited.
+- Content pipeline 10/10, backend full regression và `bootJar`, Redocly/P0 freeze, Flutter
+  analyzer và full mobile suite cuối 63/63 đều pass; targeted media/placement/offline 22/22 pass.
+  Local debug APK build pass; không có Android target nên closed-testing E2E và
+  content-owner sign-off vẫn là gate mở.

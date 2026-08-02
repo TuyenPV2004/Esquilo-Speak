@@ -127,6 +127,35 @@ void main() {
         )).downloaded,
         true,
       );
+
+      const course = Course(
+        id: 'course-en-for-vi',
+        sourceLanguage: 'vi',
+        targetLanguage: 'en',
+        title: {'en': 'English A1'},
+        description: {'en': 'Complete course'},
+        offlinePackagePolicy: OfflinePackagePolicy(
+          packageVersion: 3,
+          maxBytes: 67108864,
+          cacheTtlDays: 30,
+          retainPreviousCompatibleVersions: 1,
+          includesMedia: true,
+        ),
+      );
+      remote.offline = false;
+      final courseStatus = await repository.downloadCourse(
+        course: course,
+        lessons: summaries,
+      );
+      expect(courseStatus.downloaded, true);
+      expect(courseStatus.packageVersion, 3);
+      expect(
+        (await repository.courseDownloadStatus(
+          course: course,
+          lessons: summaries,
+        )).downloaded,
+        true,
+      );
     },
   );
 }

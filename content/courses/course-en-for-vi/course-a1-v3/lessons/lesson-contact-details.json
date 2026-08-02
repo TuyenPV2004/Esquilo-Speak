@@ -1,0 +1,707 @@
+{
+  "id": "lesson-contact-details",
+  "courseId": "course-en-for-vi",
+  "courseVersion": 3,
+  "unitId": "unit-personal-information",
+  "position": 7,
+  "locale": "vi",
+  "requiredLocales": [
+    "vi",
+    "en"
+  ],
+  "title": {
+    "vi": "Thông tin liên hệ",
+    "en": "Contact details"
+  },
+  "objectives": [
+    {
+      "vi": "Dùng từ vựng và mẫu câu của Thông tin liên hệ.",
+      "en": "Use the vocabulary and patterns for Contact details."
+    }
+  ],
+  "outcomeIds": [
+    "outcome-contact-details"
+  ],
+  "prerequisiteLessonIds": [
+    "lesson-country-city"
+  ],
+  "revisitsConceptIds": [
+    "concept-checkpoint-first-contact",
+    "concept-country-city"
+  ],
+  "difficulty": "guided",
+  "estimatedMinutes": 8,
+  "exercises": [
+    {
+      "id": "exercise-contact-details-flashcard",
+      "type": "flashcard",
+      "learningItem": {
+        "skill": "vocabulary",
+        "conceptIds": [
+          "concept-contact-details"
+        ],
+        "outcomeIds": [
+          "outcome-contact-details"
+        ],
+        "prerequisiteConceptIds": [],
+        "difficulty": "introductory"
+      },
+      "presentation": {
+        "prompt": {
+          "vi": "Thông tin liên hệ: flashcard.",
+          "en": "Contact details: flashcard."
+        },
+        "hint": {
+          "vi": "Gợi ý: My email is ana@example.com.",
+          "en": "Hint: My email is ana@example.com."
+        },
+        "mediaIds": [],
+        "accessibility": {
+          "screenReaderLabel": {
+            "vi": "Thông tin liên hệ: flashcard.",
+            "en": "Contact details: flashcard."
+          },
+          "requiresAudio": false,
+          "supportsSilentMode": true
+        }
+      },
+      "answerPolicy": {
+        "kind": "self_assessment",
+        "maxAttempts": 2
+      },
+      "feedbackRule": {
+        "correct": {
+          "vi": "Chính xác.",
+          "en": "Correct."
+        },
+        "incorrect": {
+          "vi": "Hãy thử lại.",
+          "en": "Try again."
+        },
+        "explanation": {
+          "vi": "Đáp án theo mẫu mục tiêu của bài Thông tin liên hệ.",
+          "en": "The answer follows the target pattern for Contact details."
+        },
+        "hintPolicy": {
+          "revealAfterAttempts": 1,
+          "countsAsAssisted": true
+        }
+      }
+    },
+    {
+      "id": "exercise-contact-details-choice",
+      "type": "multiple_choice",
+      "learningItem": {
+        "skill": "vocabulary",
+        "conceptIds": [
+          "concept-contact-details"
+        ],
+        "outcomeIds": [
+          "outcome-contact-details"
+        ],
+        "prerequisiteConceptIds": [],
+        "difficulty": "guided"
+      },
+      "presentation": {
+        "prompt": {
+          "vi": "Thông tin liên hệ: choice.",
+          "en": "Contact details: choice."
+        },
+        "hint": {
+          "vi": "Gợi ý: My email is ana@example.com.",
+          "en": "Hint: My email is ana@example.com."
+        },
+        "mediaIds": [],
+        "accessibility": {
+          "screenReaderLabel": {
+            "vi": "Thông tin liên hệ: choice.",
+            "en": "Contact details: choice."
+          },
+          "requiresAudio": false,
+          "supportsSilentMode": true
+        },
+        "options": [
+          {
+            "id": "option-meaning",
+            "text": {
+              "vi": "email",
+              "en": "email"
+            }
+          },
+          {
+            "id": "option-distractor",
+            "text": {
+              "vi": "điện thoại",
+              "en": "điện thoại"
+            }
+          }
+        ]
+      },
+      "answerPolicy": {
+        "kind": "option_id",
+        "correctOptionId": "option-meaning",
+        "maxAttempts": 2
+      },
+      "feedbackRule": {
+        "correct": {
+          "vi": "Chính xác.",
+          "en": "Correct."
+        },
+        "incorrect": {
+          "vi": "Hãy thử lại.",
+          "en": "Try again."
+        },
+        "explanation": {
+          "vi": "Đáp án theo mẫu mục tiêu của bài Thông tin liên hệ.",
+          "en": "The answer follows the target pattern for Contact details."
+        },
+        "hintPolicy": {
+          "revealAfterAttempts": 1,
+          "countsAsAssisted": true
+        }
+      }
+    },
+    {
+      "id": "exercise-contact-details-listen-select",
+      "type": "listen_select",
+      "learningItem": {
+        "skill": "listening",
+        "conceptIds": [
+          "concept-contact-details"
+        ],
+        "outcomeIds": [
+          "outcome-contact-details"
+        ],
+        "prerequisiteConceptIds": [],
+        "difficulty": "guided"
+      },
+      "presentation": {
+        "prompt": {
+          "vi": "Thông tin liên hệ: listen select.",
+          "en": "Contact details: listen select."
+        },
+        "hint": {
+          "vi": "Gợi ý: My email is ana@example.com.",
+          "en": "Hint: My email is ana@example.com."
+        },
+        "mediaIds": [
+          "media-contact-details-listen"
+        ],
+        "accessibility": {
+          "screenReaderLabel": {
+            "vi": "Thông tin liên hệ: listen select.",
+            "en": "Contact details: listen select."
+          },
+          "requiresAudio": false,
+          "supportsSilentMode": true
+        },
+        "options": [
+          {
+            "id": "option-first",
+            "text": {
+              "vi": "email",
+              "en": "email"
+            }
+          },
+          {
+            "id": "option-second",
+            "text": {
+              "vi": "phone",
+              "en": "phone"
+            }
+          }
+        ],
+        "transcript": {
+          "vi": "email",
+          "en": "email"
+        }
+      },
+      "answerPolicy": {
+        "kind": "option_id",
+        "correctOptionId": "option-first",
+        "maxAttempts": 2
+      },
+      "feedbackRule": {
+        "correct": {
+          "vi": "Chính xác.",
+          "en": "Correct."
+        },
+        "incorrect": {
+          "vi": "Hãy thử lại.",
+          "en": "Try again."
+        },
+        "explanation": {
+          "vi": "Đáp án theo mẫu mục tiêu của bài Thông tin liên hệ.",
+          "en": "The answer follows the target pattern for Contact details."
+        },
+        "hintPolicy": {
+          "revealAfterAttempts": 1,
+          "countsAsAssisted": true
+        }
+      }
+    },
+    {
+      "id": "exercise-contact-details-matching",
+      "type": "matching",
+      "learningItem": {
+        "skill": "vocabulary",
+        "conceptIds": [
+          "concept-contact-details"
+        ],
+        "outcomeIds": [
+          "outcome-contact-details"
+        ],
+        "prerequisiteConceptIds": [],
+        "difficulty": "guided"
+      },
+      "presentation": {
+        "prompt": {
+          "vi": "Thông tin liên hệ: matching.",
+          "en": "Contact details: matching."
+        },
+        "hint": {
+          "vi": "Gợi ý: My email is ana@example.com.",
+          "en": "Hint: My email is ana@example.com."
+        },
+        "mediaIds": [],
+        "accessibility": {
+          "screenReaderLabel": {
+            "vi": "Thông tin liên hệ: matching.",
+            "en": "Contact details: matching."
+          },
+          "requiresAudio": false,
+          "supportsSilentMode": true
+        },
+        "leftItems": [
+          {
+            "id": "left-one",
+            "text": {
+              "vi": "email",
+              "en": "email"
+            }
+          },
+          {
+            "id": "left-two",
+            "text": {
+              "vi": "phone",
+              "en": "phone"
+            }
+          }
+        ],
+        "rightItems": [
+          {
+            "id": "right-one",
+            "text": {
+              "vi": "email",
+              "en": "email"
+            }
+          },
+          {
+            "id": "right-two",
+            "text": {
+              "vi": "điện thoại",
+              "en": "điện thoại"
+            }
+          }
+        ]
+      },
+      "answerPolicy": {
+        "kind": "pair_set",
+        "correctPairs": [
+          {
+            "leftId": "left-one",
+            "rightId": "right-one"
+          },
+          {
+            "leftId": "left-two",
+            "rightId": "right-two"
+          }
+        ],
+        "maxAttempts": 2
+      },
+      "feedbackRule": {
+        "correct": {
+          "vi": "Chính xác.",
+          "en": "Correct."
+        },
+        "incorrect": {
+          "vi": "Hãy thử lại.",
+          "en": "Try again."
+        },
+        "explanation": {
+          "vi": "Đáp án theo mẫu mục tiêu của bài Thông tin liên hệ.",
+          "en": "The answer follows the target pattern for Contact details."
+        },
+        "hintPolicy": {
+          "revealAfterAttempts": 1,
+          "countsAsAssisted": true
+        }
+      }
+    },
+    {
+      "id": "exercise-contact-details-ordering",
+      "type": "ordering",
+      "learningItem": {
+        "skill": "grammar",
+        "conceptIds": [
+          "concept-contact-details"
+        ],
+        "outcomeIds": [
+          "outcome-contact-details"
+        ],
+        "prerequisiteConceptIds": [],
+        "difficulty": "guided"
+      },
+      "presentation": {
+        "prompt": {
+          "vi": "Thông tin liên hệ: ordering.",
+          "en": "Contact details: ordering."
+        },
+        "hint": {
+          "vi": "Gợi ý: My email is ana@example.com.",
+          "en": "Hint: My email is ana@example.com."
+        },
+        "mediaIds": [],
+        "accessibility": {
+          "screenReaderLabel": {
+            "vi": "Thông tin liên hệ: ordering.",
+            "en": "Contact details: ordering."
+          },
+          "requiresAudio": false,
+          "supportsSilentMode": true
+        },
+        "items": [
+          {
+            "id": "item-1",
+            "text": {
+              "vi": "My",
+              "en": "My"
+            }
+          },
+          {
+            "id": "item-2",
+            "text": {
+              "vi": "email",
+              "en": "email"
+            }
+          },
+          {
+            "id": "item-3",
+            "text": {
+              "vi": "is",
+              "en": "is"
+            }
+          },
+          {
+            "id": "item-4",
+            "text": {
+              "vi": "ana@examplecom",
+              "en": "ana@examplecom"
+            }
+          }
+        ]
+      },
+      "answerPolicy": {
+        "kind": "ordered_ids",
+        "correctOrder": [
+          "item-1",
+          "item-2",
+          "item-3",
+          "item-4"
+        ],
+        "maxAttempts": 2
+      },
+      "feedbackRule": {
+        "correct": {
+          "vi": "Chính xác.",
+          "en": "Correct."
+        },
+        "incorrect": {
+          "vi": "Hãy thử lại.",
+          "en": "Try again."
+        },
+        "explanation": {
+          "vi": "Đáp án theo mẫu mục tiêu của bài Thông tin liên hệ.",
+          "en": "The answer follows the target pattern for Contact details."
+        },
+        "hintPolicy": {
+          "revealAfterAttempts": 1,
+          "countsAsAssisted": true
+        }
+      }
+    },
+    {
+      "id": "exercise-contact-details-fill-blank",
+      "type": "fill_blank",
+      "learningItem": {
+        "skill": "writing",
+        "conceptIds": [
+          "concept-contact-details"
+        ],
+        "outcomeIds": [
+          "outcome-contact-details"
+        ],
+        "prerequisiteConceptIds": [],
+        "difficulty": "independent"
+      },
+      "presentation": {
+        "prompt": {
+          "vi": "Thông tin liên hệ: fill blank.",
+          "en": "Contact details: fill blank."
+        },
+        "hint": {
+          "vi": "Gợi ý: My email is ana@example.com.",
+          "en": "Hint: My email is ana@example.com."
+        },
+        "mediaIds": [],
+        "accessibility": {
+          "screenReaderLabel": {
+            "vi": "Thông tin liên hệ: fill blank.",
+            "en": "Contact details: fill blank."
+          },
+          "requiresAudio": false,
+          "supportsSilentMode": true
+        }
+      },
+      "answerPolicy": {
+        "kind": "normalized_text",
+        "acceptedAnswers": [
+          "My email is ana@example.com."
+        ],
+        "caseSensitive": false,
+        "maxAttempts": 2
+      },
+      "feedbackRule": {
+        "correct": {
+          "vi": "Chính xác.",
+          "en": "Correct."
+        },
+        "incorrect": {
+          "vi": "Hãy thử lại.",
+          "en": "Try again."
+        },
+        "explanation": {
+          "vi": "Đáp án theo mẫu mục tiêu của bài Thông tin liên hệ.",
+          "en": "The answer follows the target pattern for Contact details."
+        },
+        "hintPolicy": {
+          "revealAfterAttempts": 1,
+          "countsAsAssisted": true
+        }
+      }
+    },
+    {
+      "id": "exercise-contact-details-true-false",
+      "type": "true_false",
+      "learningItem": {
+        "skill": "reading",
+        "conceptIds": [
+          "concept-contact-details"
+        ],
+        "outcomeIds": [
+          "outcome-contact-details"
+        ],
+        "prerequisiteConceptIds": [],
+        "difficulty": "guided"
+      },
+      "presentation": {
+        "prompt": {
+          "vi": "Thông tin liên hệ: true false.",
+          "en": "Contact details: true false."
+        },
+        "hint": {
+          "vi": "Gợi ý: My email is ana@example.com.",
+          "en": "Hint: My email is ana@example.com."
+        },
+        "mediaIds": [],
+        "accessibility": {
+          "screenReaderLabel": {
+            "vi": "Thông tin liên hệ: true false.",
+            "en": "Contact details: true false."
+          },
+          "requiresAudio": false,
+          "supportsSilentMode": true
+        }
+      },
+      "answerPolicy": {
+        "kind": "boolean",
+        "correctAnswer": true,
+        "maxAttempts": 2
+      },
+      "feedbackRule": {
+        "correct": {
+          "vi": "Chính xác.",
+          "en": "Correct."
+        },
+        "incorrect": {
+          "vi": "Hãy thử lại.",
+          "en": "Try again."
+        },
+        "explanation": {
+          "vi": "Đáp án theo mẫu mục tiêu của bài Thông tin liên hệ.",
+          "en": "The answer follows the target pattern for Contact details."
+        },
+        "hintPolicy": {
+          "revealAfterAttempts": 1,
+          "countsAsAssisted": true
+        }
+      }
+    },
+    {
+      "id": "exercise-contact-details-comprehension",
+      "type": "comprehension",
+      "learningItem": {
+        "skill": "reading",
+        "conceptIds": [
+          "concept-contact-details",
+          "concept-checkpoint-first-contact",
+          "concept-country-city"
+        ],
+        "outcomeIds": [
+          "outcome-contact-details"
+        ],
+        "prerequisiteConceptIds": [],
+        "difficulty": "independent"
+      },
+      "presentation": {
+        "prompt": {
+          "vi": "Thông tin liên hệ: comprehension.",
+          "en": "Contact details: comprehension."
+        },
+        "hint": {
+          "vi": "Gợi ý: My email is ana@example.com.",
+          "en": "Hint: My email is ana@example.com."
+        },
+        "mediaIds": [],
+        "accessibility": {
+          "screenReaderLabel": {
+            "vi": "Thông tin liên hệ: comprehension.",
+            "en": "Contact details: comprehension."
+          },
+          "requiresAudio": false,
+          "supportsSilentMode": true
+        },
+        "instruction": {
+          "vi": "Hello, my name is Mai. I am from Hanoi. My email is ana@example.com.",
+          "en": "Hello, my name is Mai. I am from Hanoi. My email is ana@example.com."
+        },
+        "options": [
+          {
+            "id": "option-answer",
+            "text": {
+              "vi": "email",
+              "en": "email"
+            }
+          },
+          {
+            "id": "option-other",
+            "text": {
+              "vi": "phone",
+              "en": "phone"
+            }
+          }
+        ]
+      },
+      "answerPolicy": {
+        "kind": "option_id",
+        "correctOptionId": "option-answer",
+        "maxAttempts": 2
+      },
+      "feedbackRule": {
+        "correct": {
+          "vi": "Chính xác.",
+          "en": "Correct."
+        },
+        "incorrect": {
+          "vi": "Hãy thử lại.",
+          "en": "Try again."
+        },
+        "explanation": {
+          "vi": "Đáp án theo mẫu mục tiêu của bài Thông tin liên hệ.",
+          "en": "The answer follows the target pattern for Contact details."
+        },
+        "hintPolicy": {
+          "revealAfterAttempts": 1,
+          "countsAsAssisted": true
+        }
+      }
+    },
+    {
+      "id": "exercise-contact-details-dictation",
+      "type": "dictation",
+      "learningItem": {
+        "skill": "listening",
+        "conceptIds": [
+          "concept-contact-details"
+        ],
+        "outcomeIds": [
+          "outcome-contact-details"
+        ],
+        "prerequisiteConceptIds": [],
+        "difficulty": "independent"
+      },
+      "presentation": {
+        "prompt": {
+          "vi": "Thông tin liên hệ: dictation.",
+          "en": "Contact details: dictation."
+        },
+        "hint": {
+          "vi": "Gợi ý: My email is ana@example.com.",
+          "en": "Hint: My email is ana@example.com."
+        },
+        "mediaIds": [
+          "media-contact-details-dictation"
+        ],
+        "accessibility": {
+          "screenReaderLabel": {
+            "vi": "Thông tin liên hệ: dictation.",
+            "en": "Contact details: dictation."
+          },
+          "requiresAudio": false,
+          "supportsSilentMode": true
+        },
+        "transcript": {
+          "vi": "How do you spell Ana",
+          "en": "How do you spell Ana"
+        }
+      },
+      "answerPolicy": {
+        "kind": "normalized_text",
+        "acceptedAnswers": [
+          "How do you spell Ana"
+        ],
+        "caseSensitive": false,
+        "maxAttempts": 2
+      },
+      "feedbackRule": {
+        "correct": {
+          "vi": "Chính xác.",
+          "en": "Correct."
+        },
+        "incorrect": {
+          "vi": "Hãy thử lại.",
+          "en": "Try again."
+        },
+        "explanation": {
+          "vi": "Đáp án theo mẫu mục tiêu của bài Thông tin liên hệ.",
+          "en": "The answer follows the target pattern for Contact details."
+        },
+        "hintPolicy": {
+          "revealAfterAttempts": 1,
+          "countsAsAssisted": true
+        }
+      }
+    }
+  ],
+  "advancedActivities": [
+    {
+      "id": "activity-contact-details-pronunciation",
+      "activityType": "pronunciation",
+      "contentRef": "2/lesson-contact-details/pronunciation",
+      "mediaId": "media-contact-details-dictation",
+      "expectedText": "How do you spell Ana",
+      "targetLocale": "en",
+      "feedbackLocale": "vi"
+    }
+  ]
+}

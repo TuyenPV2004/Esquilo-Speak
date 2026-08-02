@@ -50,6 +50,11 @@
       "items": { "$ref": "common.schema.json#/$defs/identifier" },
       "uniqueItems": true
     },
+    "revisitsConceptIds": {
+      "type": "array",
+      "items": { "$ref": "common.schema.json#/$defs/identifier" },
+      "uniqueItems": true
+    },
     "difficulty": { "$ref": "common.schema.json#/$defs/difficulty" },
     "estimatedMinutes": { "type": "integer", "minimum": 1, "maximum": 120 },
     "exercises": {

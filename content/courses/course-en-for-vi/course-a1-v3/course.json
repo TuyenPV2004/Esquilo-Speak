@@ -1,0 +1,435 @@
+{
+  "id": "course-en-for-vi",
+  "version": 3,
+  "sourceLanguage": "vi",
+  "targetLanguage": "en",
+  "locale": "vi",
+  "requiredLocales": [
+    "vi",
+    "en"
+  ],
+  "proficiency": {
+    "frameworkCode": "cefr",
+    "frameworkVersion": "2020",
+    "entryLevelCode": "PRE_A1",
+    "targetLevelCode": "A1"
+  },
+  "title": {
+    "vi": "Tiếng Anh A1 hoàn chỉnh",
+    "en": "Complete English A1"
+  },
+  "description": {
+    "vi": "Course A1 gồm bốn unit và hai mươi lesson; completion không phải chứng chỉ được công nhận.",
+    "en": "A four-unit, twenty-lesson A1 course; completion is not an accredited certificate."
+  },
+  "outcomes": [
+    {
+      "id": "outcome-greetings",
+      "description": {
+        "vi": "Hoàn thành tác vụ Chào hỏi.",
+        "en": "Complete the Greetings task."
+      }
+    },
+    {
+      "id": "outcome-name",
+      "description": {
+        "vi": "Hoàn thành tác vụ Tên của bạn.",
+        "en": "Complete the Your name task."
+      }
+    },
+    {
+      "id": "outcome-how-are-you",
+      "description": {
+        "vi": "Hoàn thành tác vụ Bạn khỏe không?.",
+        "en": "Complete the How are you? task."
+      }
+    },
+    {
+      "id": "outcome-numbers-age",
+      "description": {
+        "vi": "Hoàn thành tác vụ Số và tuổi.",
+        "en": "Complete the Numbers and age task."
+      }
+    },
+    {
+      "id": "outcome-checkpoint-first-contact",
+      "description": {
+        "vi": "Hoàn thành tác vụ Checkpoint: Lần gặp đầu.",
+        "en": "Complete the Checkpoint: First contact task."
+      }
+    },
+    {
+      "id": "outcome-country-city",
+      "description": {
+        "vi": "Hoàn thành tác vụ Quốc gia và thành phố.",
+        "en": "Complete the Country and city task."
+      }
+    },
+    {
+      "id": "outcome-contact-details",
+      "description": {
+        "vi": "Hoàn thành tác vụ Thông tin liên hệ.",
+        "en": "Complete the Contact details task."
+      }
+    },
+    {
+      "id": "outcome-family-people",
+      "description": {
+        "vi": "Hoàn thành tác vụ Gia đình và mọi người.",
+        "en": "Complete the Family and people task."
+      }
+    },
+    {
+      "id": "outcome-jobs-roles",
+      "description": {
+        "vi": "Hoàn thành tác vụ Nghề nghiệp và vai trò.",
+        "en": "Complete the Jobs and roles task."
+      }
+    },
+    {
+      "id": "outcome-checkpoint-personal-profile",
+      "description": {
+        "vi": "Hoàn thành tác vụ Checkpoint: Hồ sơ cá nhân.",
+        "en": "Complete the Checkpoint: Personal profile task."
+      }
+    },
+    {
+      "id": "outcome-daily-actions",
+      "description": {
+        "vi": "Hoàn thành tác vụ Hoạt động thường ngày.",
+        "en": "Complete the Daily actions task."
+      }
+    },
+    {
+      "id": "outcome-time-schedule",
+      "description": {
+        "vi": "Hoàn thành tác vụ Giờ và lịch.",
+        "en": "Complete the Time and schedule task."
+      }
+    },
+    {
+      "id": "outcome-days-frequency",
+      "description": {
+        "vi": "Hoàn thành tác vụ Ngày và tần suất.",
+        "en": "Complete the Days and frequency task."
+      }
+    },
+    {
+      "id": "outcome-likes-abilities",
+      "description": {
+        "vi": "Hoàn thành tác vụ Sở thích và khả năng.",
+        "en": "Complete the Likes and abilities task."
+      }
+    },
+    {
+      "id": "outcome-checkpoint-daily-life",
+      "description": {
+        "vi": "Hoàn thành tác vụ Checkpoint: Cuộc sống hằng ngày.",
+        "en": "Complete the Checkpoint: Daily life task."
+      }
+    },
+    {
+      "id": "outcome-food-drink",
+      "description": {
+        "vi": "Hoàn thành tác vụ Đồ ăn và thức uống.",
+        "en": "Complete the Food and drink task."
+      }
+    },
+    {
+      "id": "outcome-order-politely",
+      "description": {
+        "vi": "Hoàn thành tác vụ Gọi món lịch sự.",
+        "en": "Complete the Order politely task."
+      }
+    },
+    {
+      "id": "outcome-prices-quantities",
+      "description": {
+        "vi": "Hoàn thành tác vụ Giá và số lượng.",
+        "en": "Complete the Prices and quantities task."
+      }
+    },
+    {
+      "id": "outcome-places-directions",
+      "description": {
+        "vi": "Hoàn thành tác vụ Địa điểm và chỉ dẫn.",
+        "en": "Complete the Places and directions task."
+      }
+    },
+    {
+      "id": "outcome-checkpoint-survival-exchange",
+      "description": {
+        "vi": "Hoàn thành tác vụ Checkpoint: Giao tiếp sinh tồn.",
+        "en": "Complete the Checkpoint: Survival exchange task."
+      }
+    }
+  ],
+  "concepts": [
+    {
+      "id": "concept-greetings",
+      "description": {
+        "vi": "Từ vựng và mẫu câu Chào hỏi.",
+        "en": "Greetings vocabulary and patterns."
+      },
+      "prerequisiteConceptIds": []
+    },
+    {
+      "id": "concept-name",
+      "description": {
+        "vi": "Từ vựng và mẫu câu Tên của bạn.",
+        "en": "Your name vocabulary and patterns."
+      },
+      "prerequisiteConceptIds": [
+        "concept-greetings"
+      ]
+    },
+    {
+      "id": "concept-how-are-you",
+      "description": {
+        "vi": "Từ vựng và mẫu câu Bạn khỏe không?.",
+        "en": "How are you? vocabulary and patterns."
+      },
+      "prerequisiteConceptIds": [
+        "concept-name"
+      ]
+    },
+    {
+      "id": "concept-numbers-age",
+      "description": {
+        "vi": "Từ vựng và mẫu câu Số và tuổi.",
+        "en": "Numbers and age vocabulary and patterns."
+      },
+      "prerequisiteConceptIds": [
+        "concept-how-are-you"
+      ]
+    },
+    {
+      "id": "concept-checkpoint-first-contact",
+      "description": {
+        "vi": "Từ vựng và mẫu câu Checkpoint: Lần gặp đầu.",
+        "en": "Checkpoint: First contact vocabulary and patterns."
+      },
+      "prerequisiteConceptIds": [
+        "concept-numbers-age"
+      ]
+    },
+    {
+      "id": "concept-country-city",
+      "description": {
+        "vi": "Từ vựng và mẫu câu Quốc gia và thành phố.",
+        "en": "Country and city vocabulary and patterns."
+      },
+      "prerequisiteConceptIds": [
+        "concept-checkpoint-first-contact"
+      ]
+    },
+    {
+      "id": "concept-contact-details",
+      "description": {
+        "vi": "Từ vựng và mẫu câu Thông tin liên hệ.",
+        "en": "Contact details vocabulary and patterns."
+      },
+      "prerequisiteConceptIds": [
+        "concept-country-city"
+      ]
+    },
+    {
+      "id": "concept-family-people",
+      "description": {
+        "vi": "Từ vựng và mẫu câu Gia đình và mọi người.",
+        "en": "Family and people vocabulary and patterns."
+      },
+      "prerequisiteConceptIds": [
+        "concept-contact-details"
+      ]
+    },
+    {
+      "id": "concept-jobs-roles",
+      "description": {
+        "vi": "Từ vựng và mẫu câu Nghề nghiệp và vai trò.",
+        "en": "Jobs and roles vocabulary and patterns."
+      },
+      "prerequisiteConceptIds": [
+        "concept-family-people"
+      ]
+    },
+    {
+      "id": "concept-checkpoint-personal-profile",
+      "description": {
+        "vi": "Từ vựng và mẫu câu Checkpoint: Hồ sơ cá nhân.",
+        "en": "Checkpoint: Personal profile vocabulary and patterns."
+      },
+      "prerequisiteConceptIds": [
+        "concept-jobs-roles"
+      ]
+    },
+    {
+      "id": "concept-daily-actions",
+      "description": {
+        "vi": "Từ vựng và mẫu câu Hoạt động thường ngày.",
+        "en": "Daily actions vocabulary and patterns."
+      },
+      "prerequisiteConceptIds": [
+        "concept-checkpoint-personal-profile"
+      ]
+    },
+    {
+      "id": "concept-time-schedule",
+      "description": {
+        "vi": "Từ vựng và mẫu câu Giờ và lịch.",
+        "en": "Time and schedule vocabulary and patterns."
+      },
+      "prerequisiteConceptIds": [
+        "concept-daily-actions"
+      ]
+    },
+    {
+      "id": "concept-days-frequency",
+      "description": {
+        "vi": "Từ vựng và mẫu câu Ngày và tần suất.",
+        "en": "Days and frequency vocabulary and patterns."
+      },
+      "prerequisiteConceptIds": [
+        "concept-time-schedule"
+      ]
+    },
+    {
+      "id": "concept-likes-abilities",
+      "description": {
+        "vi": "Từ vựng và mẫu câu Sở thích và khả năng.",
+        "en": "Likes and abilities vocabulary and patterns."
+      },
+      "prerequisiteConceptIds": [
+        "concept-days-frequency"
+      ]
+    },
+    {
+      "id": "concept-checkpoint-daily-life",
+      "description": {
+        "vi": "Từ vựng và mẫu câu Checkpoint: Cuộc sống hằng ngày.",
+        "en": "Checkpoint: Daily life vocabulary and patterns."
+      },
+      "prerequisiteConceptIds": [
+        "concept-likes-abilities"
+      ]
+    },
+    {
+      "id": "concept-food-drink",
+      "description": {
+        "vi": "Từ vựng và mẫu câu Đồ ăn và thức uống.",
+        "en": "Food and drink vocabulary and patterns."
+      },
+      "prerequisiteConceptIds": [
+        "concept-checkpoint-daily-life"
+      ]
+    },
+    {
+      "id": "concept-order-politely",
+      "description": {
+        "vi": "Từ vựng và mẫu câu Gọi món lịch sự.",
+        "en": "Order politely vocabulary and patterns."
+      },
+      "prerequisiteConceptIds": [
+        "concept-food-drink"
+      ]
+    },
+    {
+      "id": "concept-prices-quantities",
+      "description": {
+        "vi": "Từ vựng và mẫu câu Giá và số lượng.",
+        "en": "Prices and quantities vocabulary and patterns."
+      },
+      "prerequisiteConceptIds": [
+        "concept-order-politely"
+      ]
+    },
+    {
+      "id": "concept-places-directions",
+      "description": {
+        "vi": "Từ vựng và mẫu câu Địa điểm và chỉ dẫn.",
+        "en": "Places and directions vocabulary and patterns."
+      },
+      "prerequisiteConceptIds": [
+        "concept-prices-quantities"
+      ]
+    },
+    {
+      "id": "concept-checkpoint-survival-exchange",
+      "description": {
+        "vi": "Từ vựng và mẫu câu Checkpoint: Giao tiếp sinh tồn.",
+        "en": "Checkpoint: Survival exchange vocabulary and patterns."
+      },
+      "prerequisiteConceptIds": [
+        "concept-places-directions"
+      ]
+    }
+  ],
+  "unitIds": [
+    "unit-first-contact",
+    "unit-personal-information",
+    "unit-everyday-life",
+    "unit-simple-transactions"
+  ],
+  "compatibilityVersion": 2,
+  "owner": "EsquiloSpeak content team",
+  "license": "Proprietary",
+  "completionAssessment": {
+    "checkpointLessonId": "lesson-checkpoint-survival-exchange",
+    "recordType": "non_accredited_completion",
+    "minimumScore": 80,
+    "skillCoverage": [
+      "listening",
+      "speaking",
+      "reading",
+      "writing",
+      "interaction"
+    ]
+  },
+  "placementPolicy": {
+    "startPoints": [
+      {
+        "unitId": "unit-first-contact",
+        "lessonId": "lesson-greetings",
+        "minimumScore": 0,
+        "levelCode": "PRE_A1",
+        "title": {
+          "vi": "Bắt đầu từ Unit 1",
+          "en": "Start at Unit 1"
+        }
+      },
+      {
+        "unitId": "unit-personal-information",
+        "lessonId": "lesson-country-city",
+        "minimumScore": 50,
+        "levelCode": "PRE_A1",
+        "title": {
+          "vi": "Bắt đầu từ Unit 2",
+          "en": "Start at Unit 2"
+        }
+      },
+      {
+        "unitId": "unit-everyday-life",
+        "lessonId": "lesson-daily-actions",
+        "minimumScore": 75,
+        "levelCode": "A1",
+        "title": {
+          "vi": "Bắt đầu từ Unit 3",
+          "en": "Start at Unit 3"
+        }
+      }
+    ]
+  },
+  "versionMigrationPolicy": {
+    "policyVersion": 1,
+    "compatibleFromCourseVersion": 2,
+    "onIncompatible": "require_restart",
+    "preserveMastery": true
+  },
+  "offlinePackagePolicy": {
+    "packageVersion": 3,
+    "maxBytes": 67108864,
+    "cacheTtlDays": 30,
+    "retainPreviousCompatibleVersions": 1,
+    "includesMedia": true
+  }
+}

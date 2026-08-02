@@ -1,0 +1,699 @@
+{
+  "id": "lesson-likes-abilities",
+  "courseId": "course-en-for-vi",
+  "courseVersion": 3,
+  "unitId": "unit-everyday-life",
+  "position": 14,
+  "locale": "vi",
+  "requiredLocales": [
+    "vi",
+    "en"
+  ],
+  "title": {
+    "vi": "Sở thích và khả năng",
+    "en": "Likes and abilities"
+  },
+  "objectives": [
+    {
+      "vi": "Dùng từ vựng và mẫu câu của Sở thích và khả năng.",
+      "en": "Use the vocabulary and patterns for Likes and abilities."
+    }
+  ],
+  "outcomeIds": [
+    "outcome-likes-abilities"
+  ],
+  "prerequisiteLessonIds": [
+    "lesson-days-frequency"
+  ],
+  "revisitsConceptIds": [
+    "concept-time-schedule",
+    "concept-days-frequency"
+  ],
+  "difficulty": "guided",
+  "estimatedMinutes": 8,
+  "exercises": [
+    {
+      "id": "exercise-likes-abilities-flashcard",
+      "type": "flashcard",
+      "learningItem": {
+        "skill": "vocabulary",
+        "conceptIds": [
+          "concept-likes-abilities"
+        ],
+        "outcomeIds": [
+          "outcome-likes-abilities"
+        ],
+        "prerequisiteConceptIds": [],
+        "difficulty": "introductory"
+      },
+      "presentation": {
+        "prompt": {
+          "vi": "Sở thích và khả năng: flashcard.",
+          "en": "Likes and abilities: flashcard."
+        },
+        "hint": {
+          "vi": "Gợi ý: I like music.",
+          "en": "Hint: I like music."
+        },
+        "mediaIds": [],
+        "accessibility": {
+          "screenReaderLabel": {
+            "vi": "Sở thích và khả năng: flashcard.",
+            "en": "Likes and abilities: flashcard."
+          },
+          "requiresAudio": false,
+          "supportsSilentMode": true
+        }
+      },
+      "answerPolicy": {
+        "kind": "self_assessment",
+        "maxAttempts": 2
+      },
+      "feedbackRule": {
+        "correct": {
+          "vi": "Chính xác.",
+          "en": "Correct."
+        },
+        "incorrect": {
+          "vi": "Hãy thử lại.",
+          "en": "Try again."
+        },
+        "explanation": {
+          "vi": "Đáp án theo mẫu mục tiêu của bài Sở thích và khả năng.",
+          "en": "The answer follows the target pattern for Likes and abilities."
+        },
+        "hintPolicy": {
+          "revealAfterAttempts": 1,
+          "countsAsAssisted": true
+        }
+      }
+    },
+    {
+      "id": "exercise-likes-abilities-choice",
+      "type": "multiple_choice",
+      "learningItem": {
+        "skill": "vocabulary",
+        "conceptIds": [
+          "concept-likes-abilities"
+        ],
+        "outcomeIds": [
+          "outcome-likes-abilities"
+        ],
+        "prerequisiteConceptIds": [],
+        "difficulty": "guided"
+      },
+      "presentation": {
+        "prompt": {
+          "vi": "Sở thích và khả năng: choice.",
+          "en": "Likes and abilities: choice."
+        },
+        "hint": {
+          "vi": "Gợi ý: I like music.",
+          "en": "Hint: I like music."
+        },
+        "mediaIds": [],
+        "accessibility": {
+          "screenReaderLabel": {
+            "vi": "Sở thích và khả năng: choice.",
+            "en": "Likes and abilities: choice."
+          },
+          "requiresAudio": false,
+          "supportsSilentMode": true
+        },
+        "options": [
+          {
+            "id": "option-meaning",
+            "text": {
+              "vi": "thích",
+              "en": "thích"
+            }
+          },
+          {
+            "id": "option-distractor",
+            "text": {
+              "vi": "có thể",
+              "en": "có thể"
+            }
+          }
+        ]
+      },
+      "answerPolicy": {
+        "kind": "option_id",
+        "correctOptionId": "option-meaning",
+        "maxAttempts": 2
+      },
+      "feedbackRule": {
+        "correct": {
+          "vi": "Chính xác.",
+          "en": "Correct."
+        },
+        "incorrect": {
+          "vi": "Hãy thử lại.",
+          "en": "Try again."
+        },
+        "explanation": {
+          "vi": "Đáp án theo mẫu mục tiêu của bài Sở thích và khả năng.",
+          "en": "The answer follows the target pattern for Likes and abilities."
+        },
+        "hintPolicy": {
+          "revealAfterAttempts": 1,
+          "countsAsAssisted": true
+        }
+      }
+    },
+    {
+      "id": "exercise-likes-abilities-listen-select",
+      "type": "listen_select",
+      "learningItem": {
+        "skill": "listening",
+        "conceptIds": [
+          "concept-likes-abilities"
+        ],
+        "outcomeIds": [
+          "outcome-likes-abilities"
+        ],
+        "prerequisiteConceptIds": [],
+        "difficulty": "guided"
+      },
+      "presentation": {
+        "prompt": {
+          "vi": "Sở thích và khả năng: listen select.",
+          "en": "Likes and abilities: listen select."
+        },
+        "hint": {
+          "vi": "Gợi ý: I like music.",
+          "en": "Hint: I like music."
+        },
+        "mediaIds": [
+          "media-likes-abilities-listen"
+        ],
+        "accessibility": {
+          "screenReaderLabel": {
+            "vi": "Sở thích và khả năng: listen select.",
+            "en": "Likes and abilities: listen select."
+          },
+          "requiresAudio": false,
+          "supportsSilentMode": true
+        },
+        "options": [
+          {
+            "id": "option-first",
+            "text": {
+              "vi": "like",
+              "en": "like"
+            }
+          },
+          {
+            "id": "option-second",
+            "text": {
+              "vi": "can",
+              "en": "can"
+            }
+          }
+        ],
+        "transcript": {
+          "vi": "like",
+          "en": "like"
+        }
+      },
+      "answerPolicy": {
+        "kind": "option_id",
+        "correctOptionId": "option-first",
+        "maxAttempts": 2
+      },
+      "feedbackRule": {
+        "correct": {
+          "vi": "Chính xác.",
+          "en": "Correct."
+        },
+        "incorrect": {
+          "vi": "Hãy thử lại.",
+          "en": "Try again."
+        },
+        "explanation": {
+          "vi": "Đáp án theo mẫu mục tiêu của bài Sở thích và khả năng.",
+          "en": "The answer follows the target pattern for Likes and abilities."
+        },
+        "hintPolicy": {
+          "revealAfterAttempts": 1,
+          "countsAsAssisted": true
+        }
+      }
+    },
+    {
+      "id": "exercise-likes-abilities-matching",
+      "type": "matching",
+      "learningItem": {
+        "skill": "vocabulary",
+        "conceptIds": [
+          "concept-likes-abilities"
+        ],
+        "outcomeIds": [
+          "outcome-likes-abilities"
+        ],
+        "prerequisiteConceptIds": [],
+        "difficulty": "guided"
+      },
+      "presentation": {
+        "prompt": {
+          "vi": "Sở thích và khả năng: matching.",
+          "en": "Likes and abilities: matching."
+        },
+        "hint": {
+          "vi": "Gợi ý: I like music.",
+          "en": "Hint: I like music."
+        },
+        "mediaIds": [],
+        "accessibility": {
+          "screenReaderLabel": {
+            "vi": "Sở thích và khả năng: matching.",
+            "en": "Likes and abilities: matching."
+          },
+          "requiresAudio": false,
+          "supportsSilentMode": true
+        },
+        "leftItems": [
+          {
+            "id": "left-one",
+            "text": {
+              "vi": "like",
+              "en": "like"
+            }
+          },
+          {
+            "id": "left-two",
+            "text": {
+              "vi": "can",
+              "en": "can"
+            }
+          }
+        ],
+        "rightItems": [
+          {
+            "id": "right-one",
+            "text": {
+              "vi": "thích",
+              "en": "thích"
+            }
+          },
+          {
+            "id": "right-two",
+            "text": {
+              "vi": "có thể",
+              "en": "có thể"
+            }
+          }
+        ]
+      },
+      "answerPolicy": {
+        "kind": "pair_set",
+        "correctPairs": [
+          {
+            "leftId": "left-one",
+            "rightId": "right-one"
+          },
+          {
+            "leftId": "left-two",
+            "rightId": "right-two"
+          }
+        ],
+        "maxAttempts": 2
+      },
+      "feedbackRule": {
+        "correct": {
+          "vi": "Chính xác.",
+          "en": "Correct."
+        },
+        "incorrect": {
+          "vi": "Hãy thử lại.",
+          "en": "Try again."
+        },
+        "explanation": {
+          "vi": "Đáp án theo mẫu mục tiêu của bài Sở thích và khả năng.",
+          "en": "The answer follows the target pattern for Likes and abilities."
+        },
+        "hintPolicy": {
+          "revealAfterAttempts": 1,
+          "countsAsAssisted": true
+        }
+      }
+    },
+    {
+      "id": "exercise-likes-abilities-ordering",
+      "type": "ordering",
+      "learningItem": {
+        "skill": "grammar",
+        "conceptIds": [
+          "concept-likes-abilities"
+        ],
+        "outcomeIds": [
+          "outcome-likes-abilities"
+        ],
+        "prerequisiteConceptIds": [],
+        "difficulty": "guided"
+      },
+      "presentation": {
+        "prompt": {
+          "vi": "Sở thích và khả năng: ordering.",
+          "en": "Likes and abilities: ordering."
+        },
+        "hint": {
+          "vi": "Gợi ý: I like music.",
+          "en": "Hint: I like music."
+        },
+        "mediaIds": [],
+        "accessibility": {
+          "screenReaderLabel": {
+            "vi": "Sở thích và khả năng: ordering.",
+            "en": "Likes and abilities: ordering."
+          },
+          "requiresAudio": false,
+          "supportsSilentMode": true
+        },
+        "items": [
+          {
+            "id": "item-1",
+            "text": {
+              "vi": "I",
+              "en": "I"
+            }
+          },
+          {
+            "id": "item-2",
+            "text": {
+              "vi": "like",
+              "en": "like"
+            }
+          },
+          {
+            "id": "item-3",
+            "text": {
+              "vi": "music",
+              "en": "music"
+            }
+          }
+        ]
+      },
+      "answerPolicy": {
+        "kind": "ordered_ids",
+        "correctOrder": [
+          "item-1",
+          "item-2",
+          "item-3"
+        ],
+        "maxAttempts": 2
+      },
+      "feedbackRule": {
+        "correct": {
+          "vi": "Chính xác.",
+          "en": "Correct."
+        },
+        "incorrect": {
+          "vi": "Hãy thử lại.",
+          "en": "Try again."
+        },
+        "explanation": {
+          "vi": "Đáp án theo mẫu mục tiêu của bài Sở thích và khả năng.",
+          "en": "The answer follows the target pattern for Likes and abilities."
+        },
+        "hintPolicy": {
+          "revealAfterAttempts": 1,
+          "countsAsAssisted": true
+        }
+      }
+    },
+    {
+      "id": "exercise-likes-abilities-fill-blank",
+      "type": "fill_blank",
+      "learningItem": {
+        "skill": "writing",
+        "conceptIds": [
+          "concept-likes-abilities"
+        ],
+        "outcomeIds": [
+          "outcome-likes-abilities"
+        ],
+        "prerequisiteConceptIds": [],
+        "difficulty": "independent"
+      },
+      "presentation": {
+        "prompt": {
+          "vi": "Sở thích và khả năng: fill blank.",
+          "en": "Likes and abilities: fill blank."
+        },
+        "hint": {
+          "vi": "Gợi ý: I like music.",
+          "en": "Hint: I like music."
+        },
+        "mediaIds": [],
+        "accessibility": {
+          "screenReaderLabel": {
+            "vi": "Sở thích và khả năng: fill blank.",
+            "en": "Likes and abilities: fill blank."
+          },
+          "requiresAudio": false,
+          "supportsSilentMode": true
+        }
+      },
+      "answerPolicy": {
+        "kind": "normalized_text",
+        "acceptedAnswers": [
+          "I like music."
+        ],
+        "caseSensitive": false,
+        "maxAttempts": 2
+      },
+      "feedbackRule": {
+        "correct": {
+          "vi": "Chính xác.",
+          "en": "Correct."
+        },
+        "incorrect": {
+          "vi": "Hãy thử lại.",
+          "en": "Try again."
+        },
+        "explanation": {
+          "vi": "Đáp án theo mẫu mục tiêu của bài Sở thích và khả năng.",
+          "en": "The answer follows the target pattern for Likes and abilities."
+        },
+        "hintPolicy": {
+          "revealAfterAttempts": 1,
+          "countsAsAssisted": true
+        }
+      }
+    },
+    {
+      "id": "exercise-likes-abilities-true-false",
+      "type": "true_false",
+      "learningItem": {
+        "skill": "reading",
+        "conceptIds": [
+          "concept-likes-abilities"
+        ],
+        "outcomeIds": [
+          "outcome-likes-abilities"
+        ],
+        "prerequisiteConceptIds": [],
+        "difficulty": "guided"
+      },
+      "presentation": {
+        "prompt": {
+          "vi": "Sở thích và khả năng: true false.",
+          "en": "Likes and abilities: true false."
+        },
+        "hint": {
+          "vi": "Gợi ý: I like music.",
+          "en": "Hint: I like music."
+        },
+        "mediaIds": [],
+        "accessibility": {
+          "screenReaderLabel": {
+            "vi": "Sở thích và khả năng: true false.",
+            "en": "Likes and abilities: true false."
+          },
+          "requiresAudio": false,
+          "supportsSilentMode": true
+        }
+      },
+      "answerPolicy": {
+        "kind": "boolean",
+        "correctAnswer": true,
+        "maxAttempts": 2
+      },
+      "feedbackRule": {
+        "correct": {
+          "vi": "Chính xác.",
+          "en": "Correct."
+        },
+        "incorrect": {
+          "vi": "Hãy thử lại.",
+          "en": "Try again."
+        },
+        "explanation": {
+          "vi": "Đáp án theo mẫu mục tiêu của bài Sở thích và khả năng.",
+          "en": "The answer follows the target pattern for Likes and abilities."
+        },
+        "hintPolicy": {
+          "revealAfterAttempts": 1,
+          "countsAsAssisted": true
+        }
+      }
+    },
+    {
+      "id": "exercise-likes-abilities-comprehension",
+      "type": "comprehension",
+      "learningItem": {
+        "skill": "reading",
+        "conceptIds": [
+          "concept-likes-abilities",
+          "concept-time-schedule",
+          "concept-days-frequency"
+        ],
+        "outcomeIds": [
+          "outcome-likes-abilities"
+        ],
+        "prerequisiteConceptIds": [],
+        "difficulty": "independent"
+      },
+      "presentation": {
+        "prompt": {
+          "vi": "Sở thích và khả năng: comprehension.",
+          "en": "Likes and abilities: comprehension."
+        },
+        "hint": {
+          "vi": "Gợi ý: I like music.",
+          "en": "Hint: I like music."
+        },
+        "mediaIds": [],
+        "accessibility": {
+          "screenReaderLabel": {
+            "vi": "Sở thích và khả năng: comprehension.",
+            "en": "Likes and abilities: comprehension."
+          },
+          "requiresAudio": false,
+          "supportsSilentMode": true
+        },
+        "instruction": {
+          "vi": "I study at eight. I work on Monday. I like music.",
+          "en": "I study at eight. I work on Monday. I like music."
+        },
+        "options": [
+          {
+            "id": "option-answer",
+            "text": {
+              "vi": "like",
+              "en": "like"
+            }
+          },
+          {
+            "id": "option-other",
+            "text": {
+              "vi": "can",
+              "en": "can"
+            }
+          }
+        ]
+      },
+      "answerPolicy": {
+        "kind": "option_id",
+        "correctOptionId": "option-answer",
+        "maxAttempts": 2
+      },
+      "feedbackRule": {
+        "correct": {
+          "vi": "Chính xác.",
+          "en": "Correct."
+        },
+        "incorrect": {
+          "vi": "Hãy thử lại.",
+          "en": "Try again."
+        },
+        "explanation": {
+          "vi": "Đáp án theo mẫu mục tiêu của bài Sở thích và khả năng.",
+          "en": "The answer follows the target pattern for Likes and abilities."
+        },
+        "hintPolicy": {
+          "revealAfterAttempts": 1,
+          "countsAsAssisted": true
+        }
+      }
+    },
+    {
+      "id": "exercise-likes-abilities-dictation",
+      "type": "dictation",
+      "learningItem": {
+        "skill": "listening",
+        "conceptIds": [
+          "concept-likes-abilities"
+        ],
+        "outcomeIds": [
+          "outcome-likes-abilities"
+        ],
+        "prerequisiteConceptIds": [],
+        "difficulty": "independent"
+      },
+      "presentation": {
+        "prompt": {
+          "vi": "Sở thích và khả năng: dictation.",
+          "en": "Likes and abilities: dictation."
+        },
+        "hint": {
+          "vi": "Gợi ý: I like music.",
+          "en": "Hint: I like music."
+        },
+        "mediaIds": [
+          "media-likes-abilities-dictation"
+        ],
+        "accessibility": {
+          "screenReaderLabel": {
+            "vi": "Sở thích và khả năng: dictation.",
+            "en": "Likes and abilities: dictation."
+          },
+          "requiresAudio": false,
+          "supportsSilentMode": true
+        },
+        "transcript": {
+          "vi": "I can cook",
+          "en": "I can cook"
+        }
+      },
+      "answerPolicy": {
+        "kind": "normalized_text",
+        "acceptedAnswers": [
+          "I can cook"
+        ],
+        "caseSensitive": false,
+        "maxAttempts": 2
+      },
+      "feedbackRule": {
+        "correct": {
+          "vi": "Chính xác.",
+          "en": "Correct."
+        },
+        "incorrect": {
+          "vi": "Hãy thử lại.",
+          "en": "Try again."
+        },
+        "explanation": {
+          "vi": "Đáp án theo mẫu mục tiêu của bài Sở thích và khả năng.",
+          "en": "The answer follows the target pattern for Likes and abilities."
+        },
+        "hintPolicy": {
+          "revealAfterAttempts": 1,
+          "countsAsAssisted": true
+        }
+      }
+    }
+  ],
+  "advancedActivities": [
+    {
+      "id": "activity-likes-abilities-pronunciation",
+      "activityType": "pronunciation",
+      "contentRef": "3/lesson-likes-abilities/pronunciation",
+      "mediaId": "media-likes-abilities-dictation",
+      "expectedText": "I can cook",
+      "targetLocale": "en",
+      "feedbackLocale": "vi"
+    }
+  ]
+}

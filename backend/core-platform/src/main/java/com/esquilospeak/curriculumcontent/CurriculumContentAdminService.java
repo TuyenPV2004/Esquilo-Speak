@@ -175,7 +175,7 @@ public class CurriculumContentAdminService {
                     .param("version", version)
                     .param("unitId", unit.id())
                     .param("position", unitIndex + 1)
-                    .param("content", writeJson(Map.of("id", unit.id(), "title", unit.title())))
+                    .param("content", writeJson(unitPayload(unit)))
                     .update();
             for (LessonDraft lesson : unit.lessons()) {
                 lessonPosition++;
@@ -699,7 +699,25 @@ public class CurriculumContentAdminService {
         payload.put("compatibilityVersion", draft.compatibilityVersion());
         payload.put("owner", draft.owner());
         payload.put("license", draft.license());
+        putIfPresent(payload, "completionAssessment", draft.completionAssessment());
+        putIfPresent(payload, "placementPolicy", draft.placementPolicy());
+        putIfPresent(payload, "versionMigrationPolicy", draft.versionMigrationPolicy());
+        putIfPresent(payload, "offlinePackagePolicy", draft.offlinePackagePolicy());
         return payload;
+    }
+
+    private Map<String, Object> unitPayload(UnitDraft unit) {
+        Map<String, Object> payload = new LinkedHashMap<>();
+        payload.put("id", unit.id());
+        payload.put("title", unit.title());
+        putIfPresent(payload, "guidebook", unit.guidebook());
+        return payload;
+    }
+
+    private void putIfPresent(Map<String, Object> payload, String key, Object value) {
+        if (value != null) {
+            payload.put(key, value);
+        }
     }
 
     private Map<String, Object> authoringLesson(
@@ -991,6 +1009,10 @@ public class CurriculumContentAdminService {
             Map<String, String> description,
             String owner,
             String license,
+            Map<String, Object> completionAssessment,
+            Map<String, Object> placementPolicy,
+            Map<String, Object> versionMigrationPolicy,
+            Map<String, Object> offlinePackagePolicy,
             List<UnitDraft> units) {}
 
     public record CourseProficiency(
@@ -999,7 +1021,11 @@ public class CurriculumContentAdminService {
             String entryLevelCode,
             String targetLevelCode) {}
 
-    public record UnitDraft(String id, Map<String, String> title, List<LessonDraft> lessons) {}
+    public record UnitDraft(
+            String id,
+            Map<String, String> title,
+            Map<String, Object> guidebook,
+            List<LessonDraft> lessons) {}
 
     public record LessonDraft(
             String id,

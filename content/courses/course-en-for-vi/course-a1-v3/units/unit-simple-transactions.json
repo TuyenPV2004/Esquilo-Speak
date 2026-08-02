@@ -1,0 +1,63 @@
+{
+  "id": "unit-simple-transactions",
+  "courseId": "course-en-for-vi",
+  "courseVersion": 3,
+  "position": 4,
+  "title": {
+    "vi": "Giao tiếp trong tình huống",
+    "en": "Simple transactions"
+  },
+  "guidebook": {
+    "summary": {
+      "vi": "Xử lý giao dịch đơn giản và yêu cầu hỗ trợ khi chưa hiểu.",
+      "en": "Handle simple transactions and request support when understanding breaks down."
+    },
+    "keyPhrases": [
+      {
+        "vi": "Cho tôi trà được không?",
+        "en": "Can I have tea, please?"
+      },
+      {
+        "vi": "Vui lòng nhắc lại chậm hơn.",
+        "en": "Please repeat more slowly."
+      }
+    ],
+    "grammarNotes": [
+      {
+        "vi": "Dùng this hoặc that để chỉ món đồ.",
+        "en": "this / that"
+      },
+      {
+        "vi": "Dùng động từ nguyên mẫu cho chỉ dẫn ngắn.",
+        "en": "Turn left / Go straight"
+      }
+    ],
+    "examples": [
+      {
+        "vi": "Cho tôi trà được không?",
+        "en": "Can I have tea, please?"
+      },
+      {
+        "vi": "Vui lòng nhắc lại chậm hơn.",
+        "en": "Please repeat more slowly."
+      }
+    ]
+  },
+  "outcomeIds": [
+    "outcome-food-drink",
+    "outcome-order-politely",
+    "outcome-prices-quantities",
+    "outcome-places-directions",
+    "outcome-checkpoint-survival-exchange"
+  ],
+  "prerequisiteUnitIds": [
+    "unit-everyday-life"
+  ],
+  "lessonIds": [
+    "lesson-food-drink",
+    "lesson-order-politely",
+    "lesson-prices-quantities",
+    "lesson-places-directions",
+    "lesson-checkpoint-survival-exchange"
+  ]
+}

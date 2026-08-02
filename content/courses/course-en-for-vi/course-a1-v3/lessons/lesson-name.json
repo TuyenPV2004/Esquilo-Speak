@@ -1,0 +1,705 @@
+{
+  "id": "lesson-name",
+  "courseId": "course-en-for-vi",
+  "courseVersion": 3,
+  "unitId": "unit-first-contact",
+  "position": 2,
+  "locale": "vi",
+  "requiredLocales": [
+    "vi",
+    "en"
+  ],
+  "title": {
+    "vi": "Tên của bạn",
+    "en": "Your name"
+  },
+  "objectives": [
+    {
+      "vi": "Dùng từ vựng và mẫu câu của Tên của bạn.",
+      "en": "Use the vocabulary and patterns for Your name."
+    }
+  ],
+  "outcomeIds": [
+    "outcome-name"
+  ],
+  "prerequisiteLessonIds": [
+    "lesson-greetings"
+  ],
+  "revisitsConceptIds": [
+    "concept-greetings"
+  ],
+  "difficulty": "guided",
+  "estimatedMinutes": 8,
+  "exercises": [
+    {
+      "id": "exercise-name-flashcard",
+      "type": "flashcard",
+      "learningItem": {
+        "skill": "vocabulary",
+        "conceptIds": [
+          "concept-name"
+        ],
+        "outcomeIds": [
+          "outcome-name"
+        ],
+        "prerequisiteConceptIds": [],
+        "difficulty": "introductory"
+      },
+      "presentation": {
+        "prompt": {
+          "vi": "Tên của bạn: flashcard.",
+          "en": "Your name: flashcard."
+        },
+        "hint": {
+          "vi": "Gợi ý: My name is Ana.",
+          "en": "Hint: My name is Ana."
+        },
+        "mediaIds": [],
+        "accessibility": {
+          "screenReaderLabel": {
+            "vi": "Tên của bạn: flashcard.",
+            "en": "Your name: flashcard."
+          },
+          "requiresAudio": false,
+          "supportsSilentMode": true
+        }
+      },
+      "answerPolicy": {
+        "kind": "self_assessment",
+        "maxAttempts": 2
+      },
+      "feedbackRule": {
+        "correct": {
+          "vi": "Chính xác.",
+          "en": "Correct."
+        },
+        "incorrect": {
+          "vi": "Hãy thử lại.",
+          "en": "Try again."
+        },
+        "explanation": {
+          "vi": "Đáp án theo mẫu mục tiêu của bài Tên của bạn.",
+          "en": "The answer follows the target pattern for Your name."
+        },
+        "hintPolicy": {
+          "revealAfterAttempts": 1,
+          "countsAsAssisted": true
+        }
+      }
+    },
+    {
+      "id": "exercise-name-choice",
+      "type": "multiple_choice",
+      "learningItem": {
+        "skill": "vocabulary",
+        "conceptIds": [
+          "concept-name"
+        ],
+        "outcomeIds": [
+          "outcome-name"
+        ],
+        "prerequisiteConceptIds": [],
+        "difficulty": "guided"
+      },
+      "presentation": {
+        "prompt": {
+          "vi": "Tên của bạn: choice.",
+          "en": "Your name: choice."
+        },
+        "hint": {
+          "vi": "Gợi ý: My name is Ana.",
+          "en": "Hint: My name is Ana."
+        },
+        "mediaIds": [],
+        "accessibility": {
+          "screenReaderLabel": {
+            "vi": "Tên của bạn: choice.",
+            "en": "Your name: choice."
+          },
+          "requiresAudio": false,
+          "supportsSilentMode": true
+        },
+        "options": [
+          {
+            "id": "option-meaning",
+            "text": {
+              "vi": "tên",
+              "en": "tên"
+            }
+          },
+          {
+            "id": "option-distractor",
+            "text": {
+              "vi": "gặp",
+              "en": "gặp"
+            }
+          }
+        ]
+      },
+      "answerPolicy": {
+        "kind": "option_id",
+        "correctOptionId": "option-meaning",
+        "maxAttempts": 2
+      },
+      "feedbackRule": {
+        "correct": {
+          "vi": "Chính xác.",
+          "en": "Correct."
+        },
+        "incorrect": {
+          "vi": "Hãy thử lại.",
+          "en": "Try again."
+        },
+        "explanation": {
+          "vi": "Đáp án theo mẫu mục tiêu của bài Tên của bạn.",
+          "en": "The answer follows the target pattern for Your name."
+        },
+        "hintPolicy": {
+          "revealAfterAttempts": 1,
+          "countsAsAssisted": true
+        }
+      }
+    },
+    {
+      "id": "exercise-name-listen-select",
+      "type": "listen_select",
+      "learningItem": {
+        "skill": "listening",
+        "conceptIds": [
+          "concept-name"
+        ],
+        "outcomeIds": [
+          "outcome-name"
+        ],
+        "prerequisiteConceptIds": [],
+        "difficulty": "guided"
+      },
+      "presentation": {
+        "prompt": {
+          "vi": "Tên của bạn: listen select.",
+          "en": "Your name: listen select."
+        },
+        "hint": {
+          "vi": "Gợi ý: My name is Ana.",
+          "en": "Hint: My name is Ana."
+        },
+        "mediaIds": [
+          "media-name-listen"
+        ],
+        "accessibility": {
+          "screenReaderLabel": {
+            "vi": "Tên của bạn: listen select.",
+            "en": "Your name: listen select."
+          },
+          "requiresAudio": false,
+          "supportsSilentMode": true
+        },
+        "options": [
+          {
+            "id": "option-first",
+            "text": {
+              "vi": "name",
+              "en": "name"
+            }
+          },
+          {
+            "id": "option-second",
+            "text": {
+              "vi": "meet",
+              "en": "meet"
+            }
+          }
+        ],
+        "transcript": {
+          "vi": "name",
+          "en": "name"
+        }
+      },
+      "answerPolicy": {
+        "kind": "option_id",
+        "correctOptionId": "option-first",
+        "maxAttempts": 2
+      },
+      "feedbackRule": {
+        "correct": {
+          "vi": "Chính xác.",
+          "en": "Correct."
+        },
+        "incorrect": {
+          "vi": "Hãy thử lại.",
+          "en": "Try again."
+        },
+        "explanation": {
+          "vi": "Đáp án theo mẫu mục tiêu của bài Tên của bạn.",
+          "en": "The answer follows the target pattern for Your name."
+        },
+        "hintPolicy": {
+          "revealAfterAttempts": 1,
+          "countsAsAssisted": true
+        }
+      }
+    },
+    {
+      "id": "exercise-name-matching",
+      "type": "matching",
+      "learningItem": {
+        "skill": "vocabulary",
+        "conceptIds": [
+          "concept-name"
+        ],
+        "outcomeIds": [
+          "outcome-name"
+        ],
+        "prerequisiteConceptIds": [],
+        "difficulty": "guided"
+      },
+      "presentation": {
+        "prompt": {
+          "vi": "Tên của bạn: matching.",
+          "en": "Your name: matching."
+        },
+        "hint": {
+          "vi": "Gợi ý: My name is Ana.",
+          "en": "Hint: My name is Ana."
+        },
+        "mediaIds": [],
+        "accessibility": {
+          "screenReaderLabel": {
+            "vi": "Tên của bạn: matching.",
+            "en": "Your name: matching."
+          },
+          "requiresAudio": false,
+          "supportsSilentMode": true
+        },
+        "leftItems": [
+          {
+            "id": "left-one",
+            "text": {
+              "vi": "name",
+              "en": "name"
+            }
+          },
+          {
+            "id": "left-two",
+            "text": {
+              "vi": "meet",
+              "en": "meet"
+            }
+          }
+        ],
+        "rightItems": [
+          {
+            "id": "right-one",
+            "text": {
+              "vi": "tên",
+              "en": "tên"
+            }
+          },
+          {
+            "id": "right-two",
+            "text": {
+              "vi": "gặp",
+              "en": "gặp"
+            }
+          }
+        ]
+      },
+      "answerPolicy": {
+        "kind": "pair_set",
+        "correctPairs": [
+          {
+            "leftId": "left-one",
+            "rightId": "right-one"
+          },
+          {
+            "leftId": "left-two",
+            "rightId": "right-two"
+          }
+        ],
+        "maxAttempts": 2
+      },
+      "feedbackRule": {
+        "correct": {
+          "vi": "Chính xác.",
+          "en": "Correct."
+        },
+        "incorrect": {
+          "vi": "Hãy thử lại.",
+          "en": "Try again."
+        },
+        "explanation": {
+          "vi": "Đáp án theo mẫu mục tiêu của bài Tên của bạn.",
+          "en": "The answer follows the target pattern for Your name."
+        },
+        "hintPolicy": {
+          "revealAfterAttempts": 1,
+          "countsAsAssisted": true
+        }
+      }
+    },
+    {
+      "id": "exercise-name-ordering",
+      "type": "ordering",
+      "learningItem": {
+        "skill": "grammar",
+        "conceptIds": [
+          "concept-name"
+        ],
+        "outcomeIds": [
+          "outcome-name"
+        ],
+        "prerequisiteConceptIds": [],
+        "difficulty": "guided"
+      },
+      "presentation": {
+        "prompt": {
+          "vi": "Tên của bạn: ordering.",
+          "en": "Your name: ordering."
+        },
+        "hint": {
+          "vi": "Gợi ý: My name is Ana.",
+          "en": "Hint: My name is Ana."
+        },
+        "mediaIds": [],
+        "accessibility": {
+          "screenReaderLabel": {
+            "vi": "Tên của bạn: ordering.",
+            "en": "Your name: ordering."
+          },
+          "requiresAudio": false,
+          "supportsSilentMode": true
+        },
+        "items": [
+          {
+            "id": "item-1",
+            "text": {
+              "vi": "My",
+              "en": "My"
+            }
+          },
+          {
+            "id": "item-2",
+            "text": {
+              "vi": "name",
+              "en": "name"
+            }
+          },
+          {
+            "id": "item-3",
+            "text": {
+              "vi": "is",
+              "en": "is"
+            }
+          },
+          {
+            "id": "item-4",
+            "text": {
+              "vi": "Ana",
+              "en": "Ana"
+            }
+          }
+        ]
+      },
+      "answerPolicy": {
+        "kind": "ordered_ids",
+        "correctOrder": [
+          "item-1",
+          "item-2",
+          "item-3",
+          "item-4"
+        ],
+        "maxAttempts": 2
+      },
+      "feedbackRule": {
+        "correct": {
+          "vi": "Chính xác.",
+          "en": "Correct."
+        },
+        "incorrect": {
+          "vi": "Hãy thử lại.",
+          "en": "Try again."
+        },
+        "explanation": {
+          "vi": "Đáp án theo mẫu mục tiêu của bài Tên của bạn.",
+          "en": "The answer follows the target pattern for Your name."
+        },
+        "hintPolicy": {
+          "revealAfterAttempts": 1,
+          "countsAsAssisted": true
+        }
+      }
+    },
+    {
+      "id": "exercise-name-fill-blank",
+      "type": "fill_blank",
+      "learningItem": {
+        "skill": "writing",
+        "conceptIds": [
+          "concept-name"
+        ],
+        "outcomeIds": [
+          "outcome-name"
+        ],
+        "prerequisiteConceptIds": [],
+        "difficulty": "independent"
+      },
+      "presentation": {
+        "prompt": {
+          "vi": "Tên của bạn: fill blank.",
+          "en": "Your name: fill blank."
+        },
+        "hint": {
+          "vi": "Gợi ý: My name is Ana.",
+          "en": "Hint: My name is Ana."
+        },
+        "mediaIds": [],
+        "accessibility": {
+          "screenReaderLabel": {
+            "vi": "Tên của bạn: fill blank.",
+            "en": "Your name: fill blank."
+          },
+          "requiresAudio": false,
+          "supportsSilentMode": true
+        }
+      },
+      "answerPolicy": {
+        "kind": "normalized_text",
+        "acceptedAnswers": [
+          "My name is Ana."
+        ],
+        "caseSensitive": false,
+        "maxAttempts": 2
+      },
+      "feedbackRule": {
+        "correct": {
+          "vi": "Chính xác.",
+          "en": "Correct."
+        },
+        "incorrect": {
+          "vi": "Hãy thử lại.",
+          "en": "Try again."
+        },
+        "explanation": {
+          "vi": "Đáp án theo mẫu mục tiêu của bài Tên của bạn.",
+          "en": "The answer follows the target pattern for Your name."
+        },
+        "hintPolicy": {
+          "revealAfterAttempts": 1,
+          "countsAsAssisted": true
+        }
+      }
+    },
+    {
+      "id": "exercise-name-true-false",
+      "type": "true_false",
+      "learningItem": {
+        "skill": "reading",
+        "conceptIds": [
+          "concept-name"
+        ],
+        "outcomeIds": [
+          "outcome-name"
+        ],
+        "prerequisiteConceptIds": [],
+        "difficulty": "guided"
+      },
+      "presentation": {
+        "prompt": {
+          "vi": "Tên của bạn: true false.",
+          "en": "Your name: true false."
+        },
+        "hint": {
+          "vi": "Gợi ý: My name is Ana.",
+          "en": "Hint: My name is Ana."
+        },
+        "mediaIds": [],
+        "accessibility": {
+          "screenReaderLabel": {
+            "vi": "Tên của bạn: true false.",
+            "en": "Your name: true false."
+          },
+          "requiresAudio": false,
+          "supportsSilentMode": true
+        }
+      },
+      "answerPolicy": {
+        "kind": "boolean",
+        "correctAnswer": true,
+        "maxAttempts": 2
+      },
+      "feedbackRule": {
+        "correct": {
+          "vi": "Chính xác.",
+          "en": "Correct."
+        },
+        "incorrect": {
+          "vi": "Hãy thử lại.",
+          "en": "Try again."
+        },
+        "explanation": {
+          "vi": "Đáp án theo mẫu mục tiêu của bài Tên của bạn.",
+          "en": "The answer follows the target pattern for Your name."
+        },
+        "hintPolicy": {
+          "revealAfterAttempts": 1,
+          "countsAsAssisted": true
+        }
+      }
+    },
+    {
+      "id": "exercise-name-comprehension",
+      "type": "comprehension",
+      "learningItem": {
+        "skill": "reading",
+        "conceptIds": [
+          "concept-name",
+          "concept-greetings"
+        ],
+        "outcomeIds": [
+          "outcome-name"
+        ],
+        "prerequisiteConceptIds": [],
+        "difficulty": "independent"
+      },
+      "presentation": {
+        "prompt": {
+          "vi": "Tên của bạn: comprehension.",
+          "en": "Your name: comprehension."
+        },
+        "hint": {
+          "vi": "Gợi ý: My name is Ana.",
+          "en": "Hint: My name is Ana."
+        },
+        "mediaIds": [],
+        "accessibility": {
+          "screenReaderLabel": {
+            "vi": "Tên của bạn: comprehension.",
+            "en": "Your name: comprehension."
+          },
+          "requiresAudio": false,
+          "supportsSilentMode": true
+        },
+        "instruction": {
+          "vi": "Hello, Ana. My name is Ana.",
+          "en": "Hello, Ana. My name is Ana."
+        },
+        "options": [
+          {
+            "id": "option-answer",
+            "text": {
+              "vi": "name",
+              "en": "name"
+            }
+          },
+          {
+            "id": "option-other",
+            "text": {
+              "vi": "meet",
+              "en": "meet"
+            }
+          }
+        ]
+      },
+      "answerPolicy": {
+        "kind": "option_id",
+        "correctOptionId": "option-answer",
+        "maxAttempts": 2
+      },
+      "feedbackRule": {
+        "correct": {
+          "vi": "Chính xác.",
+          "en": "Correct."
+        },
+        "incorrect": {
+          "vi": "Hãy thử lại.",
+          "en": "Try again."
+        },
+        "explanation": {
+          "vi": "Đáp án theo mẫu mục tiêu của bài Tên của bạn.",
+          "en": "The answer follows the target pattern for Your name."
+        },
+        "hintPolicy": {
+          "revealAfterAttempts": 1,
+          "countsAsAssisted": true
+        }
+      }
+    },
+    {
+      "id": "exercise-name-dictation",
+      "type": "dictation",
+      "learningItem": {
+        "skill": "listening",
+        "conceptIds": [
+          "concept-name"
+        ],
+        "outcomeIds": [
+          "outcome-name"
+        ],
+        "prerequisiteConceptIds": [],
+        "difficulty": "independent"
+      },
+      "presentation": {
+        "prompt": {
+          "vi": "Tên của bạn: dictation.",
+          "en": "Your name: dictation."
+        },
+        "hint": {
+          "vi": "Gợi ý: My name is Ana.",
+          "en": "Hint: My name is Ana."
+        },
+        "mediaIds": [
+          "media-name-dictation"
+        ],
+        "accessibility": {
+          "screenReaderLabel": {
+            "vi": "Tên của bạn: dictation.",
+            "en": "Your name: dictation."
+          },
+          "requiresAudio": false,
+          "supportsSilentMode": true
+        },
+        "transcript": {
+          "vi": "My name is Ana",
+          "en": "My name is Ana"
+        }
+      },
+      "answerPolicy": {
+        "kind": "normalized_text",
+        "acceptedAnswers": [
+          "My name is Ana"
+        ],
+        "caseSensitive": false,
+        "maxAttempts": 2
+      },
+      "feedbackRule": {
+        "correct": {
+          "vi": "Chính xác.",
+          "en": "Correct."
+        },
+        "incorrect": {
+          "vi": "Hãy thử lại.",
+          "en": "Try again."
+        },
+        "explanation": {
+          "vi": "Đáp án theo mẫu mục tiêu của bài Tên của bạn.",
+          "en": "The answer follows the target pattern for Your name."
+        },
+        "hintPolicy": {
+          "revealAfterAttempts": 1,
+          "countsAsAssisted": true
+        }
+      }
+    }
+  ],
+  "advancedActivities": [
+    {
+      "id": "activity-name-pronunciation",
+      "activityType": "pronunciation",
+      "contentRef": "1/lesson-name/pronunciation",
+      "mediaId": "media-name-dictation",
+      "expectedText": "My name is Ana",
+      "targetLocale": "en",
+      "feedbackLocale": "vi"
+    }
+  ]
+}

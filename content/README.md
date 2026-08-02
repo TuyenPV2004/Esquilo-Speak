@@ -14,6 +14,9 @@ dung được nhập vào lifecycle `draft → review → approved → scheduled
 - [`course-en-for-vi/unit-1-v2/`](courses/course-en-for-vi/unit-1-v2/): package
   Unit 1 version 2 gồm 5 lesson, 45 exercise, media manifest, review evidence,
   compiled admin fixture và learner-safe preview.
+- [`course-en-for-vi/course-a1-v3/`](courses/course-en-for-vi/course-a1-v3/): package
+  course hoàn chỉnh gồm 4 unit, 20 lesson, 180 exercise, 4 guidebook/checkpoint,
+  40 WAV và policy placement/completion/migration/offline có version.
 
 ## Authoring pipeline
 
@@ -28,7 +31,10 @@ dung được nhập vào lifecycle `draft → review → approved → scheduled
 - [`tools/generate-unit-one-media.ps1`](tools/generate-unit-one-media.ps1): tái tạo
   10 tệp WAV Unit 1 bằng Microsoft SAPI/Zira; generator JSON sau đó ghi checksum,
   duration và provenance từ chính binary này.
+- [`tools/generate-course-a1.mjs`](tools/generate-course-a1.mjs) và
+  [`tools/generate-course-a1-media.ps1`](tools/generate-course-a1-media.ps1): tái tạo
+  deterministic toàn course A1 v3, binary WAV, checksum, learner preview và backend fixture.
 
 Các tài liệu course mô tả curriculum đã chốt ở Giai đoạn 1. Pipeline biến package
-JSON thành draft backend và preview; Unit 1 V2 là vertical slice Giai đoạn 4 và
-không được sao chép nội dung course vào Dart hoặc Java.
+JSON thành draft backend và preview; Unit 1 V2 là vertical slice Giai đoạn 4, còn
+course A1 v3 là artifact Giai đoạn 7. Không sao chép nội dung course vào Dart hoặc Java.

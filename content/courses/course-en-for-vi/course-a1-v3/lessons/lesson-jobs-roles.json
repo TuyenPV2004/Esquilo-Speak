@@ -1,0 +1,707 @@
+{
+  "id": "lesson-jobs-roles",
+  "courseId": "course-en-for-vi",
+  "courseVersion": 3,
+  "unitId": "unit-personal-information",
+  "position": 9,
+  "locale": "vi",
+  "requiredLocales": [
+    "vi",
+    "en"
+  ],
+  "title": {
+    "vi": "Nghề nghiệp và vai trò",
+    "en": "Jobs and roles"
+  },
+  "objectives": [
+    {
+      "vi": "Dùng từ vựng và mẫu câu của Nghề nghiệp và vai trò.",
+      "en": "Use the vocabulary and patterns for Jobs and roles."
+    }
+  ],
+  "outcomeIds": [
+    "outcome-jobs-roles"
+  ],
+  "prerequisiteLessonIds": [
+    "lesson-family-people"
+  ],
+  "revisitsConceptIds": [
+    "concept-contact-details",
+    "concept-family-people"
+  ],
+  "difficulty": "guided",
+  "estimatedMinutes": 8,
+  "exercises": [
+    {
+      "id": "exercise-jobs-roles-flashcard",
+      "type": "flashcard",
+      "learningItem": {
+        "skill": "vocabulary",
+        "conceptIds": [
+          "concept-jobs-roles"
+        ],
+        "outcomeIds": [
+          "outcome-jobs-roles"
+        ],
+        "prerequisiteConceptIds": [],
+        "difficulty": "introductory"
+      },
+      "presentation": {
+        "prompt": {
+          "vi": "Nghề nghiệp và vai trò: flashcard.",
+          "en": "Jobs and roles: flashcard."
+        },
+        "hint": {
+          "vi": "Gợi ý: He is a teacher.",
+          "en": "Hint: He is a teacher."
+        },
+        "mediaIds": [],
+        "accessibility": {
+          "screenReaderLabel": {
+            "vi": "Nghề nghiệp và vai trò: flashcard.",
+            "en": "Jobs and roles: flashcard."
+          },
+          "requiresAudio": false,
+          "supportsSilentMode": true
+        }
+      },
+      "answerPolicy": {
+        "kind": "self_assessment",
+        "maxAttempts": 2
+      },
+      "feedbackRule": {
+        "correct": {
+          "vi": "Chính xác.",
+          "en": "Correct."
+        },
+        "incorrect": {
+          "vi": "Hãy thử lại.",
+          "en": "Try again."
+        },
+        "explanation": {
+          "vi": "Đáp án theo mẫu mục tiêu của bài Nghề nghiệp và vai trò.",
+          "en": "The answer follows the target pattern for Jobs and roles."
+        },
+        "hintPolicy": {
+          "revealAfterAttempts": 1,
+          "countsAsAssisted": true
+        }
+      }
+    },
+    {
+      "id": "exercise-jobs-roles-choice",
+      "type": "multiple_choice",
+      "learningItem": {
+        "skill": "vocabulary",
+        "conceptIds": [
+          "concept-jobs-roles"
+        ],
+        "outcomeIds": [
+          "outcome-jobs-roles"
+        ],
+        "prerequisiteConceptIds": [],
+        "difficulty": "guided"
+      },
+      "presentation": {
+        "prompt": {
+          "vi": "Nghề nghiệp và vai trò: choice.",
+          "en": "Jobs and roles: choice."
+        },
+        "hint": {
+          "vi": "Gợi ý: He is a teacher.",
+          "en": "Hint: He is a teacher."
+        },
+        "mediaIds": [],
+        "accessibility": {
+          "screenReaderLabel": {
+            "vi": "Nghề nghiệp và vai trò: choice.",
+            "en": "Jobs and roles: choice."
+          },
+          "requiresAudio": false,
+          "supportsSilentMode": true
+        },
+        "options": [
+          {
+            "id": "option-meaning",
+            "text": {
+              "vi": "giáo viên",
+              "en": "giáo viên"
+            }
+          },
+          {
+            "id": "option-distractor",
+            "text": {
+              "vi": "học sinh",
+              "en": "học sinh"
+            }
+          }
+        ]
+      },
+      "answerPolicy": {
+        "kind": "option_id",
+        "correctOptionId": "option-meaning",
+        "maxAttempts": 2
+      },
+      "feedbackRule": {
+        "correct": {
+          "vi": "Chính xác.",
+          "en": "Correct."
+        },
+        "incorrect": {
+          "vi": "Hãy thử lại.",
+          "en": "Try again."
+        },
+        "explanation": {
+          "vi": "Đáp án theo mẫu mục tiêu của bài Nghề nghiệp và vai trò.",
+          "en": "The answer follows the target pattern for Jobs and roles."
+        },
+        "hintPolicy": {
+          "revealAfterAttempts": 1,
+          "countsAsAssisted": true
+        }
+      }
+    },
+    {
+      "id": "exercise-jobs-roles-listen-select",
+      "type": "listen_select",
+      "learningItem": {
+        "skill": "listening",
+        "conceptIds": [
+          "concept-jobs-roles"
+        ],
+        "outcomeIds": [
+          "outcome-jobs-roles"
+        ],
+        "prerequisiteConceptIds": [],
+        "difficulty": "guided"
+      },
+      "presentation": {
+        "prompt": {
+          "vi": "Nghề nghiệp và vai trò: listen select.",
+          "en": "Jobs and roles: listen select."
+        },
+        "hint": {
+          "vi": "Gợi ý: He is a teacher.",
+          "en": "Hint: He is a teacher."
+        },
+        "mediaIds": [
+          "media-jobs-roles-listen"
+        ],
+        "accessibility": {
+          "screenReaderLabel": {
+            "vi": "Nghề nghiệp và vai trò: listen select.",
+            "en": "Jobs and roles: listen select."
+          },
+          "requiresAudio": false,
+          "supportsSilentMode": true
+        },
+        "options": [
+          {
+            "id": "option-first",
+            "text": {
+              "vi": "teacher",
+              "en": "teacher"
+            }
+          },
+          {
+            "id": "option-second",
+            "text": {
+              "vi": "student",
+              "en": "student"
+            }
+          }
+        ],
+        "transcript": {
+          "vi": "teacher",
+          "en": "teacher"
+        }
+      },
+      "answerPolicy": {
+        "kind": "option_id",
+        "correctOptionId": "option-first",
+        "maxAttempts": 2
+      },
+      "feedbackRule": {
+        "correct": {
+          "vi": "Chính xác.",
+          "en": "Correct."
+        },
+        "incorrect": {
+          "vi": "Hãy thử lại.",
+          "en": "Try again."
+        },
+        "explanation": {
+          "vi": "Đáp án theo mẫu mục tiêu của bài Nghề nghiệp và vai trò.",
+          "en": "The answer follows the target pattern for Jobs and roles."
+        },
+        "hintPolicy": {
+          "revealAfterAttempts": 1,
+          "countsAsAssisted": true
+        }
+      }
+    },
+    {
+      "id": "exercise-jobs-roles-matching",
+      "type": "matching",
+      "learningItem": {
+        "skill": "vocabulary",
+        "conceptIds": [
+          "concept-jobs-roles"
+        ],
+        "outcomeIds": [
+          "outcome-jobs-roles"
+        ],
+        "prerequisiteConceptIds": [],
+        "difficulty": "guided"
+      },
+      "presentation": {
+        "prompt": {
+          "vi": "Nghề nghiệp và vai trò: matching.",
+          "en": "Jobs and roles: matching."
+        },
+        "hint": {
+          "vi": "Gợi ý: He is a teacher.",
+          "en": "Hint: He is a teacher."
+        },
+        "mediaIds": [],
+        "accessibility": {
+          "screenReaderLabel": {
+            "vi": "Nghề nghiệp và vai trò: matching.",
+            "en": "Jobs and roles: matching."
+          },
+          "requiresAudio": false,
+          "supportsSilentMode": true
+        },
+        "leftItems": [
+          {
+            "id": "left-one",
+            "text": {
+              "vi": "teacher",
+              "en": "teacher"
+            }
+          },
+          {
+            "id": "left-two",
+            "text": {
+              "vi": "student",
+              "en": "student"
+            }
+          }
+        ],
+        "rightItems": [
+          {
+            "id": "right-one",
+            "text": {
+              "vi": "giáo viên",
+              "en": "giáo viên"
+            }
+          },
+          {
+            "id": "right-two",
+            "text": {
+              "vi": "học sinh",
+              "en": "học sinh"
+            }
+          }
+        ]
+      },
+      "answerPolicy": {
+        "kind": "pair_set",
+        "correctPairs": [
+          {
+            "leftId": "left-one",
+            "rightId": "right-one"
+          },
+          {
+            "leftId": "left-two",
+            "rightId": "right-two"
+          }
+        ],
+        "maxAttempts": 2
+      },
+      "feedbackRule": {
+        "correct": {
+          "vi": "Chính xác.",
+          "en": "Correct."
+        },
+        "incorrect": {
+          "vi": "Hãy thử lại.",
+          "en": "Try again."
+        },
+        "explanation": {
+          "vi": "Đáp án theo mẫu mục tiêu của bài Nghề nghiệp và vai trò.",
+          "en": "The answer follows the target pattern for Jobs and roles."
+        },
+        "hintPolicy": {
+          "revealAfterAttempts": 1,
+          "countsAsAssisted": true
+        }
+      }
+    },
+    {
+      "id": "exercise-jobs-roles-ordering",
+      "type": "ordering",
+      "learningItem": {
+        "skill": "grammar",
+        "conceptIds": [
+          "concept-jobs-roles"
+        ],
+        "outcomeIds": [
+          "outcome-jobs-roles"
+        ],
+        "prerequisiteConceptIds": [],
+        "difficulty": "guided"
+      },
+      "presentation": {
+        "prompt": {
+          "vi": "Nghề nghiệp và vai trò: ordering.",
+          "en": "Jobs and roles: ordering."
+        },
+        "hint": {
+          "vi": "Gợi ý: He is a teacher.",
+          "en": "Hint: He is a teacher."
+        },
+        "mediaIds": [],
+        "accessibility": {
+          "screenReaderLabel": {
+            "vi": "Nghề nghiệp và vai trò: ordering.",
+            "en": "Jobs and roles: ordering."
+          },
+          "requiresAudio": false,
+          "supportsSilentMode": true
+        },
+        "items": [
+          {
+            "id": "item-1",
+            "text": {
+              "vi": "He",
+              "en": "He"
+            }
+          },
+          {
+            "id": "item-2",
+            "text": {
+              "vi": "is",
+              "en": "is"
+            }
+          },
+          {
+            "id": "item-3",
+            "text": {
+              "vi": "a",
+              "en": "a"
+            }
+          },
+          {
+            "id": "item-4",
+            "text": {
+              "vi": "teacher",
+              "en": "teacher"
+            }
+          }
+        ]
+      },
+      "answerPolicy": {
+        "kind": "ordered_ids",
+        "correctOrder": [
+          "item-1",
+          "item-2",
+          "item-3",
+          "item-4"
+        ],
+        "maxAttempts": 2
+      },
+      "feedbackRule": {
+        "correct": {
+          "vi": "Chính xác.",
+          "en": "Correct."
+        },
+        "incorrect": {
+          "vi": "Hãy thử lại.",
+          "en": "Try again."
+        },
+        "explanation": {
+          "vi": "Đáp án theo mẫu mục tiêu của bài Nghề nghiệp và vai trò.",
+          "en": "The answer follows the target pattern for Jobs and roles."
+        },
+        "hintPolicy": {
+          "revealAfterAttempts": 1,
+          "countsAsAssisted": true
+        }
+      }
+    },
+    {
+      "id": "exercise-jobs-roles-fill-blank",
+      "type": "fill_blank",
+      "learningItem": {
+        "skill": "writing",
+        "conceptIds": [
+          "concept-jobs-roles"
+        ],
+        "outcomeIds": [
+          "outcome-jobs-roles"
+        ],
+        "prerequisiteConceptIds": [],
+        "difficulty": "independent"
+      },
+      "presentation": {
+        "prompt": {
+          "vi": "Nghề nghiệp và vai trò: fill blank.",
+          "en": "Jobs and roles: fill blank."
+        },
+        "hint": {
+          "vi": "Gợi ý: He is a teacher.",
+          "en": "Hint: He is a teacher."
+        },
+        "mediaIds": [],
+        "accessibility": {
+          "screenReaderLabel": {
+            "vi": "Nghề nghiệp và vai trò: fill blank.",
+            "en": "Jobs and roles: fill blank."
+          },
+          "requiresAudio": false,
+          "supportsSilentMode": true
+        }
+      },
+      "answerPolicy": {
+        "kind": "normalized_text",
+        "acceptedAnswers": [
+          "He is a teacher."
+        ],
+        "caseSensitive": false,
+        "maxAttempts": 2
+      },
+      "feedbackRule": {
+        "correct": {
+          "vi": "Chính xác.",
+          "en": "Correct."
+        },
+        "incorrect": {
+          "vi": "Hãy thử lại.",
+          "en": "Try again."
+        },
+        "explanation": {
+          "vi": "Đáp án theo mẫu mục tiêu của bài Nghề nghiệp và vai trò.",
+          "en": "The answer follows the target pattern for Jobs and roles."
+        },
+        "hintPolicy": {
+          "revealAfterAttempts": 1,
+          "countsAsAssisted": true
+        }
+      }
+    },
+    {
+      "id": "exercise-jobs-roles-true-false",
+      "type": "true_false",
+      "learningItem": {
+        "skill": "reading",
+        "conceptIds": [
+          "concept-jobs-roles"
+        ],
+        "outcomeIds": [
+          "outcome-jobs-roles"
+        ],
+        "prerequisiteConceptIds": [],
+        "difficulty": "guided"
+      },
+      "presentation": {
+        "prompt": {
+          "vi": "Nghề nghiệp và vai trò: true false.",
+          "en": "Jobs and roles: true false."
+        },
+        "hint": {
+          "vi": "Gợi ý: He is a teacher.",
+          "en": "Hint: He is a teacher."
+        },
+        "mediaIds": [],
+        "accessibility": {
+          "screenReaderLabel": {
+            "vi": "Nghề nghiệp và vai trò: true false.",
+            "en": "Jobs and roles: true false."
+          },
+          "requiresAudio": false,
+          "supportsSilentMode": true
+        }
+      },
+      "answerPolicy": {
+        "kind": "boolean",
+        "correctAnswer": true,
+        "maxAttempts": 2
+      },
+      "feedbackRule": {
+        "correct": {
+          "vi": "Chính xác.",
+          "en": "Correct."
+        },
+        "incorrect": {
+          "vi": "Hãy thử lại.",
+          "en": "Try again."
+        },
+        "explanation": {
+          "vi": "Đáp án theo mẫu mục tiêu của bài Nghề nghiệp và vai trò.",
+          "en": "The answer follows the target pattern for Jobs and roles."
+        },
+        "hintPolicy": {
+          "revealAfterAttempts": 1,
+          "countsAsAssisted": true
+        }
+      }
+    },
+    {
+      "id": "exercise-jobs-roles-comprehension",
+      "type": "comprehension",
+      "learningItem": {
+        "skill": "reading",
+        "conceptIds": [
+          "concept-jobs-roles",
+          "concept-contact-details",
+          "concept-family-people"
+        ],
+        "outcomeIds": [
+          "outcome-jobs-roles"
+        ],
+        "prerequisiteConceptIds": [],
+        "difficulty": "independent"
+      },
+      "presentation": {
+        "prompt": {
+          "vi": "Nghề nghiệp và vai trò: comprehension.",
+          "en": "Jobs and roles: comprehension."
+        },
+        "hint": {
+          "vi": "Gợi ý: He is a teacher.",
+          "en": "Hint: He is a teacher."
+        },
+        "mediaIds": [],
+        "accessibility": {
+          "screenReaderLabel": {
+            "vi": "Nghề nghiệp và vai trò: comprehension.",
+            "en": "Jobs and roles: comprehension."
+          },
+          "requiresAudio": false,
+          "supportsSilentMode": true
+        },
+        "instruction": {
+          "vi": "My email is ana@example.com. She is my sister. He is a teacher.",
+          "en": "My email is ana@example.com. She is my sister. He is a teacher."
+        },
+        "options": [
+          {
+            "id": "option-answer",
+            "text": {
+              "vi": "teacher",
+              "en": "teacher"
+            }
+          },
+          {
+            "id": "option-other",
+            "text": {
+              "vi": "student",
+              "en": "student"
+            }
+          }
+        ]
+      },
+      "answerPolicy": {
+        "kind": "option_id",
+        "correctOptionId": "option-answer",
+        "maxAttempts": 2
+      },
+      "feedbackRule": {
+        "correct": {
+          "vi": "Chính xác.",
+          "en": "Correct."
+        },
+        "incorrect": {
+          "vi": "Hãy thử lại.",
+          "en": "Try again."
+        },
+        "explanation": {
+          "vi": "Đáp án theo mẫu mục tiêu của bài Nghề nghiệp và vai trò.",
+          "en": "The answer follows the target pattern for Jobs and roles."
+        },
+        "hintPolicy": {
+          "revealAfterAttempts": 1,
+          "countsAsAssisted": true
+        }
+      }
+    },
+    {
+      "id": "exercise-jobs-roles-dictation",
+      "type": "dictation",
+      "learningItem": {
+        "skill": "listening",
+        "conceptIds": [
+          "concept-jobs-roles"
+        ],
+        "outcomeIds": [
+          "outcome-jobs-roles"
+        ],
+        "prerequisiteConceptIds": [],
+        "difficulty": "independent"
+      },
+      "presentation": {
+        "prompt": {
+          "vi": "Nghề nghiệp và vai trò: dictation.",
+          "en": "Jobs and roles: dictation."
+        },
+        "hint": {
+          "vi": "Gợi ý: He is a teacher.",
+          "en": "Hint: He is a teacher."
+        },
+        "mediaIds": [
+          "media-jobs-roles-dictation"
+        ],
+        "accessibility": {
+          "screenReaderLabel": {
+            "vi": "Nghề nghiệp và vai trò: dictation.",
+            "en": "Jobs and roles: dictation."
+          },
+          "requiresAudio": false,
+          "supportsSilentMode": true
+        },
+        "transcript": {
+          "vi": "What do you do",
+          "en": "What do you do"
+        }
+      },
+      "answerPolicy": {
+        "kind": "normalized_text",
+        "acceptedAnswers": [
+          "What do you do"
+        ],
+        "caseSensitive": false,
+        "maxAttempts": 2
+      },
+      "feedbackRule": {
+        "correct": {
+          "vi": "Chính xác.",
+          "en": "Correct."
+        },
+        "incorrect": {
+          "vi": "Hãy thử lại.",
+          "en": "Try again."
+        },
+        "explanation": {
+          "vi": "Đáp án theo mẫu mục tiêu của bài Nghề nghiệp và vai trò.",
+          "en": "The answer follows the target pattern for Jobs and roles."
+        },
+        "hintPolicy": {
+          "revealAfterAttempts": 1,
+          "countsAsAssisted": true
+        }
+      }
+    }
+  ],
+  "advancedActivities": [
+    {
+      "id": "activity-jobs-roles-pronunciation",
+      "activityType": "pronunciation",
+      "contentRef": "2/lesson-jobs-roles/pronunciation",
+      "mediaId": "media-jobs-roles-dictation",
+      "expectedText": "What do you do",
+      "targetLocale": "en",
+      "feedbackLocale": "vi"
+    }
+  ]
+}

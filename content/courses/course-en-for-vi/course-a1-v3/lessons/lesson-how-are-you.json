@@ -1,0 +1,699 @@
+{
+  "id": "lesson-how-are-you",
+  "courseId": "course-en-for-vi",
+  "courseVersion": 3,
+  "unitId": "unit-first-contact",
+  "position": 3,
+  "locale": "vi",
+  "requiredLocales": [
+    "vi",
+    "en"
+  ],
+  "title": {
+    "vi": "Bạn khỏe không?",
+    "en": "How are you?"
+  },
+  "objectives": [
+    {
+      "vi": "Dùng từ vựng và mẫu câu của Bạn khỏe không?.",
+      "en": "Use the vocabulary and patterns for How are you?."
+    }
+  ],
+  "outcomeIds": [
+    "outcome-how-are-you"
+  ],
+  "prerequisiteLessonIds": [
+    "lesson-name"
+  ],
+  "revisitsConceptIds": [
+    "concept-greetings",
+    "concept-name"
+  ],
+  "difficulty": "guided",
+  "estimatedMinutes": 8,
+  "exercises": [
+    {
+      "id": "exercise-how-are-you-flashcard",
+      "type": "flashcard",
+      "learningItem": {
+        "skill": "vocabulary",
+        "conceptIds": [
+          "concept-how-are-you"
+        ],
+        "outcomeIds": [
+          "outcome-how-are-you"
+        ],
+        "prerequisiteConceptIds": [],
+        "difficulty": "introductory"
+      },
+      "presentation": {
+        "prompt": {
+          "vi": "Bạn khỏe không?: flashcard.",
+          "en": "How are you?: flashcard."
+        },
+        "hint": {
+          "vi": "Gợi ý: I am fine.",
+          "en": "Hint: I am fine."
+        },
+        "mediaIds": [],
+        "accessibility": {
+          "screenReaderLabel": {
+            "vi": "Bạn khỏe không?: flashcard.",
+            "en": "How are you?: flashcard."
+          },
+          "requiresAudio": false,
+          "supportsSilentMode": true
+        }
+      },
+      "answerPolicy": {
+        "kind": "self_assessment",
+        "maxAttempts": 2
+      },
+      "feedbackRule": {
+        "correct": {
+          "vi": "Chính xác.",
+          "en": "Correct."
+        },
+        "incorrect": {
+          "vi": "Hãy thử lại.",
+          "en": "Try again."
+        },
+        "explanation": {
+          "vi": "Đáp án theo mẫu mục tiêu của bài Bạn khỏe không?.",
+          "en": "The answer follows the target pattern for How are you?."
+        },
+        "hintPolicy": {
+          "revealAfterAttempts": 1,
+          "countsAsAssisted": true
+        }
+      }
+    },
+    {
+      "id": "exercise-how-are-you-choice",
+      "type": "multiple_choice",
+      "learningItem": {
+        "skill": "vocabulary",
+        "conceptIds": [
+          "concept-how-are-you"
+        ],
+        "outcomeIds": [
+          "outcome-how-are-you"
+        ],
+        "prerequisiteConceptIds": [],
+        "difficulty": "guided"
+      },
+      "presentation": {
+        "prompt": {
+          "vi": "Bạn khỏe không?: choice.",
+          "en": "How are you?: choice."
+        },
+        "hint": {
+          "vi": "Gợi ý: I am fine.",
+          "en": "Hint: I am fine."
+        },
+        "mediaIds": [],
+        "accessibility": {
+          "screenReaderLabel": {
+            "vi": "Bạn khỏe không?: choice.",
+            "en": "How are you?: choice."
+          },
+          "requiresAudio": false,
+          "supportsSilentMode": true
+        },
+        "options": [
+          {
+            "id": "option-meaning",
+            "text": {
+              "vi": "khỏe",
+              "en": "khỏe"
+            }
+          },
+          {
+            "id": "option-distractor",
+            "text": {
+              "vi": "mệt",
+              "en": "mệt"
+            }
+          }
+        ]
+      },
+      "answerPolicy": {
+        "kind": "option_id",
+        "correctOptionId": "option-meaning",
+        "maxAttempts": 2
+      },
+      "feedbackRule": {
+        "correct": {
+          "vi": "Chính xác.",
+          "en": "Correct."
+        },
+        "incorrect": {
+          "vi": "Hãy thử lại.",
+          "en": "Try again."
+        },
+        "explanation": {
+          "vi": "Đáp án theo mẫu mục tiêu của bài Bạn khỏe không?.",
+          "en": "The answer follows the target pattern for How are you?."
+        },
+        "hintPolicy": {
+          "revealAfterAttempts": 1,
+          "countsAsAssisted": true
+        }
+      }
+    },
+    {
+      "id": "exercise-how-are-you-listen-select",
+      "type": "listen_select",
+      "learningItem": {
+        "skill": "listening",
+        "conceptIds": [
+          "concept-how-are-you"
+        ],
+        "outcomeIds": [
+          "outcome-how-are-you"
+        ],
+        "prerequisiteConceptIds": [],
+        "difficulty": "guided"
+      },
+      "presentation": {
+        "prompt": {
+          "vi": "Bạn khỏe không?: listen select.",
+          "en": "How are you?: listen select."
+        },
+        "hint": {
+          "vi": "Gợi ý: I am fine.",
+          "en": "Hint: I am fine."
+        },
+        "mediaIds": [
+          "media-how-are-you-listen"
+        ],
+        "accessibility": {
+          "screenReaderLabel": {
+            "vi": "Bạn khỏe không?: listen select.",
+            "en": "How are you?: listen select."
+          },
+          "requiresAudio": false,
+          "supportsSilentMode": true
+        },
+        "options": [
+          {
+            "id": "option-first",
+            "text": {
+              "vi": "fine",
+              "en": "fine"
+            }
+          },
+          {
+            "id": "option-second",
+            "text": {
+              "vi": "tired",
+              "en": "tired"
+            }
+          }
+        ],
+        "transcript": {
+          "vi": "fine",
+          "en": "fine"
+        }
+      },
+      "answerPolicy": {
+        "kind": "option_id",
+        "correctOptionId": "option-first",
+        "maxAttempts": 2
+      },
+      "feedbackRule": {
+        "correct": {
+          "vi": "Chính xác.",
+          "en": "Correct."
+        },
+        "incorrect": {
+          "vi": "Hãy thử lại.",
+          "en": "Try again."
+        },
+        "explanation": {
+          "vi": "Đáp án theo mẫu mục tiêu của bài Bạn khỏe không?.",
+          "en": "The answer follows the target pattern for How are you?."
+        },
+        "hintPolicy": {
+          "revealAfterAttempts": 1,
+          "countsAsAssisted": true
+        }
+      }
+    },
+    {
+      "id": "exercise-how-are-you-matching",
+      "type": "matching",
+      "learningItem": {
+        "skill": "vocabulary",
+        "conceptIds": [
+          "concept-how-are-you"
+        ],
+        "outcomeIds": [
+          "outcome-how-are-you"
+        ],
+        "prerequisiteConceptIds": [],
+        "difficulty": "guided"
+      },
+      "presentation": {
+        "prompt": {
+          "vi": "Bạn khỏe không?: matching.",
+          "en": "How are you?: matching."
+        },
+        "hint": {
+          "vi": "Gợi ý: I am fine.",
+          "en": "Hint: I am fine."
+        },
+        "mediaIds": [],
+        "accessibility": {
+          "screenReaderLabel": {
+            "vi": "Bạn khỏe không?: matching.",
+            "en": "How are you?: matching."
+          },
+          "requiresAudio": false,
+          "supportsSilentMode": true
+        },
+        "leftItems": [
+          {
+            "id": "left-one",
+            "text": {
+              "vi": "fine",
+              "en": "fine"
+            }
+          },
+          {
+            "id": "left-two",
+            "text": {
+              "vi": "tired",
+              "en": "tired"
+            }
+          }
+        ],
+        "rightItems": [
+          {
+            "id": "right-one",
+            "text": {
+              "vi": "khỏe",
+              "en": "khỏe"
+            }
+          },
+          {
+            "id": "right-two",
+            "text": {
+              "vi": "mệt",
+              "en": "mệt"
+            }
+          }
+        ]
+      },
+      "answerPolicy": {
+        "kind": "pair_set",
+        "correctPairs": [
+          {
+            "leftId": "left-one",
+            "rightId": "right-one"
+          },
+          {
+            "leftId": "left-two",
+            "rightId": "right-two"
+          }
+        ],
+        "maxAttempts": 2
+      },
+      "feedbackRule": {
+        "correct": {
+          "vi": "Chính xác.",
+          "en": "Correct."
+        },
+        "incorrect": {
+          "vi": "Hãy thử lại.",
+          "en": "Try again."
+        },
+        "explanation": {
+          "vi": "Đáp án theo mẫu mục tiêu của bài Bạn khỏe không?.",
+          "en": "The answer follows the target pattern for How are you?."
+        },
+        "hintPolicy": {
+          "revealAfterAttempts": 1,
+          "countsAsAssisted": true
+        }
+      }
+    },
+    {
+      "id": "exercise-how-are-you-ordering",
+      "type": "ordering",
+      "learningItem": {
+        "skill": "grammar",
+        "conceptIds": [
+          "concept-how-are-you"
+        ],
+        "outcomeIds": [
+          "outcome-how-are-you"
+        ],
+        "prerequisiteConceptIds": [],
+        "difficulty": "guided"
+      },
+      "presentation": {
+        "prompt": {
+          "vi": "Bạn khỏe không?: ordering.",
+          "en": "How are you?: ordering."
+        },
+        "hint": {
+          "vi": "Gợi ý: I am fine.",
+          "en": "Hint: I am fine."
+        },
+        "mediaIds": [],
+        "accessibility": {
+          "screenReaderLabel": {
+            "vi": "Bạn khỏe không?: ordering.",
+            "en": "How are you?: ordering."
+          },
+          "requiresAudio": false,
+          "supportsSilentMode": true
+        },
+        "items": [
+          {
+            "id": "item-1",
+            "text": {
+              "vi": "I",
+              "en": "I"
+            }
+          },
+          {
+            "id": "item-2",
+            "text": {
+              "vi": "am",
+              "en": "am"
+            }
+          },
+          {
+            "id": "item-3",
+            "text": {
+              "vi": "fine",
+              "en": "fine"
+            }
+          }
+        ]
+      },
+      "answerPolicy": {
+        "kind": "ordered_ids",
+        "correctOrder": [
+          "item-1",
+          "item-2",
+          "item-3"
+        ],
+        "maxAttempts": 2
+      },
+      "feedbackRule": {
+        "correct": {
+          "vi": "Chính xác.",
+          "en": "Correct."
+        },
+        "incorrect": {
+          "vi": "Hãy thử lại.",
+          "en": "Try again."
+        },
+        "explanation": {
+          "vi": "Đáp án theo mẫu mục tiêu của bài Bạn khỏe không?.",
+          "en": "The answer follows the target pattern for How are you?."
+        },
+        "hintPolicy": {
+          "revealAfterAttempts": 1,
+          "countsAsAssisted": true
+        }
+      }
+    },
+    {
+      "id": "exercise-how-are-you-fill-blank",
+      "type": "fill_blank",
+      "learningItem": {
+        "skill": "writing",
+        "conceptIds": [
+          "concept-how-are-you"
+        ],
+        "outcomeIds": [
+          "outcome-how-are-you"
+        ],
+        "prerequisiteConceptIds": [],
+        "difficulty": "independent"
+      },
+      "presentation": {
+        "prompt": {
+          "vi": "Bạn khỏe không?: fill blank.",
+          "en": "How are you?: fill blank."
+        },
+        "hint": {
+          "vi": "Gợi ý: I am fine.",
+          "en": "Hint: I am fine."
+        },
+        "mediaIds": [],
+        "accessibility": {
+          "screenReaderLabel": {
+            "vi": "Bạn khỏe không?: fill blank.",
+            "en": "How are you?: fill blank."
+          },
+          "requiresAudio": false,
+          "supportsSilentMode": true
+        }
+      },
+      "answerPolicy": {
+        "kind": "normalized_text",
+        "acceptedAnswers": [
+          "I am fine."
+        ],
+        "caseSensitive": false,
+        "maxAttempts": 2
+      },
+      "feedbackRule": {
+        "correct": {
+          "vi": "Chính xác.",
+          "en": "Correct."
+        },
+        "incorrect": {
+          "vi": "Hãy thử lại.",
+          "en": "Try again."
+        },
+        "explanation": {
+          "vi": "Đáp án theo mẫu mục tiêu của bài Bạn khỏe không?.",
+          "en": "The answer follows the target pattern for How are you?."
+        },
+        "hintPolicy": {
+          "revealAfterAttempts": 1,
+          "countsAsAssisted": true
+        }
+      }
+    },
+    {
+      "id": "exercise-how-are-you-true-false",
+      "type": "true_false",
+      "learningItem": {
+        "skill": "reading",
+        "conceptIds": [
+          "concept-how-are-you"
+        ],
+        "outcomeIds": [
+          "outcome-how-are-you"
+        ],
+        "prerequisiteConceptIds": [],
+        "difficulty": "guided"
+      },
+      "presentation": {
+        "prompt": {
+          "vi": "Bạn khỏe không?: true false.",
+          "en": "How are you?: true false."
+        },
+        "hint": {
+          "vi": "Gợi ý: I am fine.",
+          "en": "Hint: I am fine."
+        },
+        "mediaIds": [],
+        "accessibility": {
+          "screenReaderLabel": {
+            "vi": "Bạn khỏe không?: true false.",
+            "en": "How are you?: true false."
+          },
+          "requiresAudio": false,
+          "supportsSilentMode": true
+        }
+      },
+      "answerPolicy": {
+        "kind": "boolean",
+        "correctAnswer": true,
+        "maxAttempts": 2
+      },
+      "feedbackRule": {
+        "correct": {
+          "vi": "Chính xác.",
+          "en": "Correct."
+        },
+        "incorrect": {
+          "vi": "Hãy thử lại.",
+          "en": "Try again."
+        },
+        "explanation": {
+          "vi": "Đáp án theo mẫu mục tiêu của bài Bạn khỏe không?.",
+          "en": "The answer follows the target pattern for How are you?."
+        },
+        "hintPolicy": {
+          "revealAfterAttempts": 1,
+          "countsAsAssisted": true
+        }
+      }
+    },
+    {
+      "id": "exercise-how-are-you-comprehension",
+      "type": "comprehension",
+      "learningItem": {
+        "skill": "reading",
+        "conceptIds": [
+          "concept-how-are-you",
+          "concept-greetings",
+          "concept-name"
+        ],
+        "outcomeIds": [
+          "outcome-how-are-you"
+        ],
+        "prerequisiteConceptIds": [],
+        "difficulty": "independent"
+      },
+      "presentation": {
+        "prompt": {
+          "vi": "Bạn khỏe không?: comprehension.",
+          "en": "How are you?: comprehension."
+        },
+        "hint": {
+          "vi": "Gợi ý: I am fine.",
+          "en": "Hint: I am fine."
+        },
+        "mediaIds": [],
+        "accessibility": {
+          "screenReaderLabel": {
+            "vi": "Bạn khỏe không?: comprehension.",
+            "en": "How are you?: comprehension."
+          },
+          "requiresAudio": false,
+          "supportsSilentMode": true
+        },
+        "instruction": {
+          "vi": "Hello, Ana. My name is Ana. I am fine.",
+          "en": "Hello, Ana. My name is Ana. I am fine."
+        },
+        "options": [
+          {
+            "id": "option-answer",
+            "text": {
+              "vi": "fine",
+              "en": "fine"
+            }
+          },
+          {
+            "id": "option-other",
+            "text": {
+              "vi": "tired",
+              "en": "tired"
+            }
+          }
+        ]
+      },
+      "answerPolicy": {
+        "kind": "option_id",
+        "correctOptionId": "option-answer",
+        "maxAttempts": 2
+      },
+      "feedbackRule": {
+        "correct": {
+          "vi": "Chính xác.",
+          "en": "Correct."
+        },
+        "incorrect": {
+          "vi": "Hãy thử lại.",
+          "en": "Try again."
+        },
+        "explanation": {
+          "vi": "Đáp án theo mẫu mục tiêu của bài Bạn khỏe không?.",
+          "en": "The answer follows the target pattern for How are you?."
+        },
+        "hintPolicy": {
+          "revealAfterAttempts": 1,
+          "countsAsAssisted": true
+        }
+      }
+    },
+    {
+      "id": "exercise-how-are-you-dictation",
+      "type": "dictation",
+      "learningItem": {
+        "skill": "listening",
+        "conceptIds": [
+          "concept-how-are-you"
+        ],
+        "outcomeIds": [
+          "outcome-how-are-you"
+        ],
+        "prerequisiteConceptIds": [],
+        "difficulty": "independent"
+      },
+      "presentation": {
+        "prompt": {
+          "vi": "Bạn khỏe không?: dictation.",
+          "en": "How are you?: dictation."
+        },
+        "hint": {
+          "vi": "Gợi ý: I am fine.",
+          "en": "Hint: I am fine."
+        },
+        "mediaIds": [
+          "media-how-are-you-dictation"
+        ],
+        "accessibility": {
+          "screenReaderLabel": {
+            "vi": "Bạn khỏe không?: dictation.",
+            "en": "How are you?: dictation."
+          },
+          "requiresAudio": false,
+          "supportsSilentMode": true
+        },
+        "transcript": {
+          "vi": "How are you",
+          "en": "How are you"
+        }
+      },
+      "answerPolicy": {
+        "kind": "normalized_text",
+        "acceptedAnswers": [
+          "How are you"
+        ],
+        "caseSensitive": false,
+        "maxAttempts": 2
+      },
+      "feedbackRule": {
+        "correct": {
+          "vi": "Chính xác.",
+          "en": "Correct."
+        },
+        "incorrect": {
+          "vi": "Hãy thử lại.",
+          "en": "Try again."
+        },
+        "explanation": {
+          "vi": "Đáp án theo mẫu mục tiêu của bài Bạn khỏe không?.",
+          "en": "The answer follows the target pattern for How are you?."
+        },
+        "hintPolicy": {
+          "revealAfterAttempts": 1,
+          "countsAsAssisted": true
+        }
+      }
+    }
+  ],
+  "advancedActivities": [
+    {
+      "id": "activity-how-are-you-pronunciation",
+      "activityType": "pronunciation",
+      "contentRef": "1/lesson-how-are-you/pronunciation",
+      "mediaId": "media-how-are-you-dictation",
+      "expectedText": "How are you",
+      "targetLocale": "en",
+      "feedbackLocale": "vi"
+    }
+  ]
+}

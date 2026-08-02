@@ -1,0 +1,707 @@
+{
+  "id": "lesson-prices-quantities",
+  "courseId": "course-en-for-vi",
+  "courseVersion": 3,
+  "unitId": "unit-simple-transactions",
+  "position": 18,
+  "locale": "vi",
+  "requiredLocales": [
+    "vi",
+    "en"
+  ],
+  "title": {
+    "vi": "Giá và số lượng",
+    "en": "Prices and quantities"
+  },
+  "objectives": [
+    {
+      "vi": "Dùng từ vựng và mẫu câu của Giá và số lượng.",
+      "en": "Use the vocabulary and patterns for Prices and quantities."
+    }
+  ],
+  "outcomeIds": [
+    "outcome-prices-quantities"
+  ],
+  "prerequisiteLessonIds": [
+    "lesson-order-politely"
+  ],
+  "revisitsConceptIds": [
+    "concept-food-drink",
+    "concept-order-politely"
+  ],
+  "difficulty": "guided",
+  "estimatedMinutes": 8,
+  "exercises": [
+    {
+      "id": "exercise-prices-quantities-flashcard",
+      "type": "flashcard",
+      "learningItem": {
+        "skill": "vocabulary",
+        "conceptIds": [
+          "concept-prices-quantities"
+        ],
+        "outcomeIds": [
+          "outcome-prices-quantities"
+        ],
+        "prerequisiteConceptIds": [],
+        "difficulty": "introductory"
+      },
+      "presentation": {
+        "prompt": {
+          "vi": "Giá và số lượng: flashcard.",
+          "en": "Prices and quantities: flashcard."
+        },
+        "hint": {
+          "vi": "Gợi ý: How much is this?",
+          "en": "Hint: How much is this?"
+        },
+        "mediaIds": [],
+        "accessibility": {
+          "screenReaderLabel": {
+            "vi": "Giá và số lượng: flashcard.",
+            "en": "Prices and quantities: flashcard."
+          },
+          "requiresAudio": false,
+          "supportsSilentMode": true
+        }
+      },
+      "answerPolicy": {
+        "kind": "self_assessment",
+        "maxAttempts": 2
+      },
+      "feedbackRule": {
+        "correct": {
+          "vi": "Chính xác.",
+          "en": "Correct."
+        },
+        "incorrect": {
+          "vi": "Hãy thử lại.",
+          "en": "Try again."
+        },
+        "explanation": {
+          "vi": "Đáp án theo mẫu mục tiêu của bài Giá và số lượng.",
+          "en": "The answer follows the target pattern for Prices and quantities."
+        },
+        "hintPolicy": {
+          "revealAfterAttempts": 1,
+          "countsAsAssisted": true
+        }
+      }
+    },
+    {
+      "id": "exercise-prices-quantities-choice",
+      "type": "multiple_choice",
+      "learningItem": {
+        "skill": "vocabulary",
+        "conceptIds": [
+          "concept-prices-quantities"
+        ],
+        "outcomeIds": [
+          "outcome-prices-quantities"
+        ],
+        "prerequisiteConceptIds": [],
+        "difficulty": "guided"
+      },
+      "presentation": {
+        "prompt": {
+          "vi": "Giá và số lượng: choice.",
+          "en": "Prices and quantities: choice."
+        },
+        "hint": {
+          "vi": "Gợi ý: How much is this?",
+          "en": "Hint: How much is this?"
+        },
+        "mediaIds": [],
+        "accessibility": {
+          "screenReaderLabel": {
+            "vi": "Giá và số lượng: choice.",
+            "en": "Prices and quantities: choice."
+          },
+          "requiresAudio": false,
+          "supportsSilentMode": true
+        },
+        "options": [
+          {
+            "id": "option-meaning",
+            "text": {
+              "vi": "giá",
+              "en": "giá"
+            }
+          },
+          {
+            "id": "option-distractor",
+            "text": {
+              "vi": "hai",
+              "en": "hai"
+            }
+          }
+        ]
+      },
+      "answerPolicy": {
+        "kind": "option_id",
+        "correctOptionId": "option-meaning",
+        "maxAttempts": 2
+      },
+      "feedbackRule": {
+        "correct": {
+          "vi": "Chính xác.",
+          "en": "Correct."
+        },
+        "incorrect": {
+          "vi": "Hãy thử lại.",
+          "en": "Try again."
+        },
+        "explanation": {
+          "vi": "Đáp án theo mẫu mục tiêu của bài Giá và số lượng.",
+          "en": "The answer follows the target pattern for Prices and quantities."
+        },
+        "hintPolicy": {
+          "revealAfterAttempts": 1,
+          "countsAsAssisted": true
+        }
+      }
+    },
+    {
+      "id": "exercise-prices-quantities-listen-select",
+      "type": "listen_select",
+      "learningItem": {
+        "skill": "listening",
+        "conceptIds": [
+          "concept-prices-quantities"
+        ],
+        "outcomeIds": [
+          "outcome-prices-quantities"
+        ],
+        "prerequisiteConceptIds": [],
+        "difficulty": "guided"
+      },
+      "presentation": {
+        "prompt": {
+          "vi": "Giá và số lượng: listen select.",
+          "en": "Prices and quantities: listen select."
+        },
+        "hint": {
+          "vi": "Gợi ý: How much is this?",
+          "en": "Hint: How much is this?"
+        },
+        "mediaIds": [
+          "media-prices-quantities-listen"
+        ],
+        "accessibility": {
+          "screenReaderLabel": {
+            "vi": "Giá và số lượng: listen select.",
+            "en": "Prices and quantities: listen select."
+          },
+          "requiresAudio": false,
+          "supportsSilentMode": true
+        },
+        "options": [
+          {
+            "id": "option-first",
+            "text": {
+              "vi": "price",
+              "en": "price"
+            }
+          },
+          {
+            "id": "option-second",
+            "text": {
+              "vi": "two",
+              "en": "two"
+            }
+          }
+        ],
+        "transcript": {
+          "vi": "price",
+          "en": "price"
+        }
+      },
+      "answerPolicy": {
+        "kind": "option_id",
+        "correctOptionId": "option-first",
+        "maxAttempts": 2
+      },
+      "feedbackRule": {
+        "correct": {
+          "vi": "Chính xác.",
+          "en": "Correct."
+        },
+        "incorrect": {
+          "vi": "Hãy thử lại.",
+          "en": "Try again."
+        },
+        "explanation": {
+          "vi": "Đáp án theo mẫu mục tiêu của bài Giá và số lượng.",
+          "en": "The answer follows the target pattern for Prices and quantities."
+        },
+        "hintPolicy": {
+          "revealAfterAttempts": 1,
+          "countsAsAssisted": true
+        }
+      }
+    },
+    {
+      "id": "exercise-prices-quantities-matching",
+      "type": "matching",
+      "learningItem": {
+        "skill": "vocabulary",
+        "conceptIds": [
+          "concept-prices-quantities"
+        ],
+        "outcomeIds": [
+          "outcome-prices-quantities"
+        ],
+        "prerequisiteConceptIds": [],
+        "difficulty": "guided"
+      },
+      "presentation": {
+        "prompt": {
+          "vi": "Giá và số lượng: matching.",
+          "en": "Prices and quantities: matching."
+        },
+        "hint": {
+          "vi": "Gợi ý: How much is this?",
+          "en": "Hint: How much is this?"
+        },
+        "mediaIds": [],
+        "accessibility": {
+          "screenReaderLabel": {
+            "vi": "Giá và số lượng: matching.",
+            "en": "Prices and quantities: matching."
+          },
+          "requiresAudio": false,
+          "supportsSilentMode": true
+        },
+        "leftItems": [
+          {
+            "id": "left-one",
+            "text": {
+              "vi": "price",
+              "en": "price"
+            }
+          },
+          {
+            "id": "left-two",
+            "text": {
+              "vi": "two",
+              "en": "two"
+            }
+          }
+        ],
+        "rightItems": [
+          {
+            "id": "right-one",
+            "text": {
+              "vi": "giá",
+              "en": "giá"
+            }
+          },
+          {
+            "id": "right-two",
+            "text": {
+              "vi": "hai",
+              "en": "hai"
+            }
+          }
+        ]
+      },
+      "answerPolicy": {
+        "kind": "pair_set",
+        "correctPairs": [
+          {
+            "leftId": "left-one",
+            "rightId": "right-one"
+          },
+          {
+            "leftId": "left-two",
+            "rightId": "right-two"
+          }
+        ],
+        "maxAttempts": 2
+      },
+      "feedbackRule": {
+        "correct": {
+          "vi": "Chính xác.",
+          "en": "Correct."
+        },
+        "incorrect": {
+          "vi": "Hãy thử lại.",
+          "en": "Try again."
+        },
+        "explanation": {
+          "vi": "Đáp án theo mẫu mục tiêu của bài Giá và số lượng.",
+          "en": "The answer follows the target pattern for Prices and quantities."
+        },
+        "hintPolicy": {
+          "revealAfterAttempts": 1,
+          "countsAsAssisted": true
+        }
+      }
+    },
+    {
+      "id": "exercise-prices-quantities-ordering",
+      "type": "ordering",
+      "learningItem": {
+        "skill": "grammar",
+        "conceptIds": [
+          "concept-prices-quantities"
+        ],
+        "outcomeIds": [
+          "outcome-prices-quantities"
+        ],
+        "prerequisiteConceptIds": [],
+        "difficulty": "guided"
+      },
+      "presentation": {
+        "prompt": {
+          "vi": "Giá và số lượng: ordering.",
+          "en": "Prices and quantities: ordering."
+        },
+        "hint": {
+          "vi": "Gợi ý: How much is this?",
+          "en": "Hint: How much is this?"
+        },
+        "mediaIds": [],
+        "accessibility": {
+          "screenReaderLabel": {
+            "vi": "Giá và số lượng: ordering.",
+            "en": "Prices and quantities: ordering."
+          },
+          "requiresAudio": false,
+          "supportsSilentMode": true
+        },
+        "items": [
+          {
+            "id": "item-1",
+            "text": {
+              "vi": "How",
+              "en": "How"
+            }
+          },
+          {
+            "id": "item-2",
+            "text": {
+              "vi": "much",
+              "en": "much"
+            }
+          },
+          {
+            "id": "item-3",
+            "text": {
+              "vi": "is",
+              "en": "is"
+            }
+          },
+          {
+            "id": "item-4",
+            "text": {
+              "vi": "this",
+              "en": "this"
+            }
+          }
+        ]
+      },
+      "answerPolicy": {
+        "kind": "ordered_ids",
+        "correctOrder": [
+          "item-1",
+          "item-2",
+          "item-3",
+          "item-4"
+        ],
+        "maxAttempts": 2
+      },
+      "feedbackRule": {
+        "correct": {
+          "vi": "Chính xác.",
+          "en": "Correct."
+        },
+        "incorrect": {
+          "vi": "Hãy thử lại.",
+          "en": "Try again."
+        },
+        "explanation": {
+          "vi": "Đáp án theo mẫu mục tiêu của bài Giá và số lượng.",
+          "en": "The answer follows the target pattern for Prices and quantities."
+        },
+        "hintPolicy": {
+          "revealAfterAttempts": 1,
+          "countsAsAssisted": true
+        }
+      }
+    },
+    {
+      "id": "exercise-prices-quantities-fill-blank",
+      "type": "fill_blank",
+      "learningItem": {
+        "skill": "writing",
+        "conceptIds": [
+          "concept-prices-quantities"
+        ],
+        "outcomeIds": [
+          "outcome-prices-quantities"
+        ],
+        "prerequisiteConceptIds": [],
+        "difficulty": "independent"
+      },
+      "presentation": {
+        "prompt": {
+          "vi": "Giá và số lượng: fill blank.",
+          "en": "Prices and quantities: fill blank."
+        },
+        "hint": {
+          "vi": "Gợi ý: How much is this?",
+          "en": "Hint: How much is this?"
+        },
+        "mediaIds": [],
+        "accessibility": {
+          "screenReaderLabel": {
+            "vi": "Giá và số lượng: fill blank.",
+            "en": "Prices and quantities: fill blank."
+          },
+          "requiresAudio": false,
+          "supportsSilentMode": true
+        }
+      },
+      "answerPolicy": {
+        "kind": "normalized_text",
+        "acceptedAnswers": [
+          "How much is this?"
+        ],
+        "caseSensitive": false,
+        "maxAttempts": 2
+      },
+      "feedbackRule": {
+        "correct": {
+          "vi": "Chính xác.",
+          "en": "Correct."
+        },
+        "incorrect": {
+          "vi": "Hãy thử lại.",
+          "en": "Try again."
+        },
+        "explanation": {
+          "vi": "Đáp án theo mẫu mục tiêu của bài Giá và số lượng.",
+          "en": "The answer follows the target pattern for Prices and quantities."
+        },
+        "hintPolicy": {
+          "revealAfterAttempts": 1,
+          "countsAsAssisted": true
+        }
+      }
+    },
+    {
+      "id": "exercise-prices-quantities-true-false",
+      "type": "true_false",
+      "learningItem": {
+        "skill": "reading",
+        "conceptIds": [
+          "concept-prices-quantities"
+        ],
+        "outcomeIds": [
+          "outcome-prices-quantities"
+        ],
+        "prerequisiteConceptIds": [],
+        "difficulty": "guided"
+      },
+      "presentation": {
+        "prompt": {
+          "vi": "Giá và số lượng: true false.",
+          "en": "Prices and quantities: true false."
+        },
+        "hint": {
+          "vi": "Gợi ý: How much is this?",
+          "en": "Hint: How much is this?"
+        },
+        "mediaIds": [],
+        "accessibility": {
+          "screenReaderLabel": {
+            "vi": "Giá và số lượng: true false.",
+            "en": "Prices and quantities: true false."
+          },
+          "requiresAudio": false,
+          "supportsSilentMode": true
+        }
+      },
+      "answerPolicy": {
+        "kind": "boolean",
+        "correctAnswer": true,
+        "maxAttempts": 2
+      },
+      "feedbackRule": {
+        "correct": {
+          "vi": "Chính xác.",
+          "en": "Correct."
+        },
+        "incorrect": {
+          "vi": "Hãy thử lại.",
+          "en": "Try again."
+        },
+        "explanation": {
+          "vi": "Đáp án theo mẫu mục tiêu của bài Giá và số lượng.",
+          "en": "The answer follows the target pattern for Prices and quantities."
+        },
+        "hintPolicy": {
+          "revealAfterAttempts": 1,
+          "countsAsAssisted": true
+        }
+      }
+    },
+    {
+      "id": "exercise-prices-quantities-comprehension",
+      "type": "comprehension",
+      "learningItem": {
+        "skill": "reading",
+        "conceptIds": [
+          "concept-prices-quantities",
+          "concept-food-drink",
+          "concept-order-politely"
+        ],
+        "outcomeIds": [
+          "outcome-prices-quantities"
+        ],
+        "prerequisiteConceptIds": [],
+        "difficulty": "independent"
+      },
+      "presentation": {
+        "prompt": {
+          "vi": "Giá và số lượng: comprehension.",
+          "en": "Prices and quantities: comprehension."
+        },
+        "hint": {
+          "vi": "Gợi ý: How much is this?",
+          "en": "Hint: How much is this?"
+        },
+        "mediaIds": [],
+        "accessibility": {
+          "screenReaderLabel": {
+            "vi": "Giá và số lượng: comprehension.",
+            "en": "Prices and quantities: comprehension."
+          },
+          "requiresAudio": false,
+          "supportsSilentMode": true
+        },
+        "instruction": {
+          "vi": "I want water. Can I have tea, please? How much is this?",
+          "en": "I want water. Can I have tea, please? How much is this?"
+        },
+        "options": [
+          {
+            "id": "option-answer",
+            "text": {
+              "vi": "price",
+              "en": "price"
+            }
+          },
+          {
+            "id": "option-other",
+            "text": {
+              "vi": "two",
+              "en": "two"
+            }
+          }
+        ]
+      },
+      "answerPolicy": {
+        "kind": "option_id",
+        "correctOptionId": "option-answer",
+        "maxAttempts": 2
+      },
+      "feedbackRule": {
+        "correct": {
+          "vi": "Chính xác.",
+          "en": "Correct."
+        },
+        "incorrect": {
+          "vi": "Hãy thử lại.",
+          "en": "Try again."
+        },
+        "explanation": {
+          "vi": "Đáp án theo mẫu mục tiêu của bài Giá và số lượng.",
+          "en": "The answer follows the target pattern for Prices and quantities."
+        },
+        "hintPolicy": {
+          "revealAfterAttempts": 1,
+          "countsAsAssisted": true
+        }
+      }
+    },
+    {
+      "id": "exercise-prices-quantities-dictation",
+      "type": "dictation",
+      "learningItem": {
+        "skill": "listening",
+        "conceptIds": [
+          "concept-prices-quantities"
+        ],
+        "outcomeIds": [
+          "outcome-prices-quantities"
+        ],
+        "prerequisiteConceptIds": [],
+        "difficulty": "independent"
+      },
+      "presentation": {
+        "prompt": {
+          "vi": "Giá và số lượng: dictation.",
+          "en": "Prices and quantities: dictation."
+        },
+        "hint": {
+          "vi": "Gợi ý: How much is this?",
+          "en": "Hint: How much is this?"
+        },
+        "mediaIds": [
+          "media-prices-quantities-dictation"
+        ],
+        "accessibility": {
+          "screenReaderLabel": {
+            "vi": "Giá và số lượng: dictation.",
+            "en": "Prices and quantities: dictation."
+          },
+          "requiresAudio": false,
+          "supportsSilentMode": true
+        },
+        "transcript": {
+          "vi": "Two coffees please",
+          "en": "Two coffees please"
+        }
+      },
+      "answerPolicy": {
+        "kind": "normalized_text",
+        "acceptedAnswers": [
+          "Two coffees please"
+        ],
+        "caseSensitive": false,
+        "maxAttempts": 2
+      },
+      "feedbackRule": {
+        "correct": {
+          "vi": "Chính xác.",
+          "en": "Correct."
+        },
+        "incorrect": {
+          "vi": "Hãy thử lại.",
+          "en": "Try again."
+        },
+        "explanation": {
+          "vi": "Đáp án theo mẫu mục tiêu của bài Giá và số lượng.",
+          "en": "The answer follows the target pattern for Prices and quantities."
+        },
+        "hintPolicy": {
+          "revealAfterAttempts": 1,
+          "countsAsAssisted": true
+        }
+      }
+    }
+  ],
+  "advancedActivities": [
+    {
+      "id": "activity-prices-quantities-pronunciation",
+      "activityType": "pronunciation",
+      "contentRef": "4/lesson-prices-quantities/pronunciation",
+      "mediaId": "media-prices-quantities-dictation",
+      "expectedText": "Two coffees please",
+      "targetLocale": "en",
+      "feedbackLocale": "vi"
+    }
+  ]
+}

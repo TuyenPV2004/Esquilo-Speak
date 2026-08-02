@@ -1,17 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
 import '../../../core/design_system/app_tokens.dart';
 import '../../../core/design_system/component_states.dart';
 import '../../../core/design_system/responsive_content.dart';
 import '../../../l10n/app_localizations.dart';
-import '../../../core/localization/localized_text.dart';
 import '../../advanced_learning/presentation/p1_view_model.dart';
+import '../../learning/data/learning_models.dart';
+import '../../learning/presentation/learning_view_model.dart';
 
 class PlacementScreen extends StatefulWidget {
-  const PlacementScreen({required this.viewModel, super.key});
+  const PlacementScreen({
+    required this.viewModel,
+    this.learningViewModel,
+    super.key,
+  });
 
   final P1ViewModel viewModel;
+  final LearningViewModel? learningViewModel;
 
   @override
   State<PlacementScreen> createState() => _PlacementScreenState();
@@ -42,22 +49,59 @@ class _PlacementScreenState extends State<PlacementScreen> {
                 final formattedScore = NumberFormat.percentPattern(
                   Localizations.localeOf(context).toLanguageTag(),
                 ).format(result.score / 100);
-                return AppMessageState(
+                final points = _availableStartPoints(result.score);
+                return ListView(
                   key: const ValueKey('placement-result'),
-                  icon: result.passed
-                      ? Icons.verified_outlined
-                      : Icons.school_outlined,
-                  message: result.passed
-                      ? strings.placementPassed(
-                          formattedScore,
-                          result.proficiency.levelCode,
-                        )
-                      : strings.placementNotPassed(
-                          formattedScore,
-                          result.proficiency.levelCode,
+                  padding: const EdgeInsets.symmetric(vertical: AppSpacing.md),
+                  children: [
+                    AppMessageState(
+                      icon: result.passed
+                          ? Icons.verified_outlined
+                          : Icons.school_outlined,
+                      message: result.passed
+                          ? strings.placementPassed(
+                              formattedScore,
+                              result.proficiency.levelCode,
+                            )
+                          : strings.placementNotPassed(
+                              formattedScore,
+                              result.proficiency.levelCode,
+                            ),
+                      actionLabel: strings.tryAgain,
+                      onAction: viewModel.resetPlacement,
+                    ),
+                    if (points.isNotEmpty) ...[
+                      const SizedBox(height: AppSpacing.md),
+                      Text(
+                        strings.placementChooseStart,
+                        style: Theme.of(context).textTheme.titleMedium,
+                      ),
+                      const SizedBox(height: AppSpacing.xs),
+                      Text(strings.placementLowerLevelNotice),
+                      const SizedBox(height: AppSpacing.sm),
+                      for (final point in points)
+                        Card(
+                          child: ListTile(
+                            key: ValueKey('placement-start-${point.lessonId}'),
+                            title: Text(
+                              resolveLocalizedText(
+                                point.title,
+                                Localizations.localeOf(context).toLanguageTag(),
+                                defaultLocale: 'vi',
+                              ),
+                            ),
+                            subtitle: Text(point.levelCode),
+                            trailing: const Icon(Icons.arrow_forward),
+                            onTap: () async {
+                              await widget.learningViewModel!.startAtLesson(
+                                point.lessonId,
+                              );
+                              if (context.mounted) context.go('/learn');
+                            },
+                          ),
                         ),
-                  actionLabel: strings.tryAgain,
-                  onAction: viewModel.resetPlacement,
+                    ],
+                  ],
                 );
               }
               final assessment = viewModel.assessment;
@@ -170,5 +214,10 @@ class _PlacementScreenState extends State<PlacementScreen> {
         ),
       ),
     );
+  }
+
+  List<PlacementStartPoint> _availableStartPoints(int score) {
+    return widget.learningViewModel?.placementStartPointsForScore(score) ??
+        const <PlacementStartPoint>[];
   }
 }

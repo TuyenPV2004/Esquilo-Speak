@@ -1,0 +1,684 @@
+{
+  "id": "lesson-greetings",
+  "courseId": "course-en-for-vi",
+  "courseVersion": 3,
+  "unitId": "unit-first-contact",
+  "position": 1,
+  "locale": "vi",
+  "requiredLocales": [
+    "vi",
+    "en"
+  ],
+  "title": {
+    "vi": "Chào hỏi",
+    "en": "Greetings"
+  },
+  "objectives": [
+    {
+      "vi": "Dùng từ vựng và mẫu câu của Chào hỏi.",
+      "en": "Use the vocabulary and patterns for Greetings."
+    }
+  ],
+  "outcomeIds": [
+    "outcome-greetings"
+  ],
+  "prerequisiteLessonIds": [],
+  "revisitsConceptIds": [],
+  "difficulty": "guided",
+  "estimatedMinutes": 8,
+  "exercises": [
+    {
+      "id": "exercise-greetings-flashcard",
+      "type": "flashcard",
+      "learningItem": {
+        "skill": "vocabulary",
+        "conceptIds": [
+          "concept-greetings"
+        ],
+        "outcomeIds": [
+          "outcome-greetings"
+        ],
+        "prerequisiteConceptIds": [],
+        "difficulty": "introductory"
+      },
+      "presentation": {
+        "prompt": {
+          "vi": "Chào hỏi: flashcard.",
+          "en": "Greetings: flashcard."
+        },
+        "hint": {
+          "vi": "Gợi ý: Hello, Ana.",
+          "en": "Hint: Hello, Ana."
+        },
+        "mediaIds": [],
+        "accessibility": {
+          "screenReaderLabel": {
+            "vi": "Chào hỏi: flashcard.",
+            "en": "Greetings: flashcard."
+          },
+          "requiresAudio": false,
+          "supportsSilentMode": true
+        }
+      },
+      "answerPolicy": {
+        "kind": "self_assessment",
+        "maxAttempts": 2
+      },
+      "feedbackRule": {
+        "correct": {
+          "vi": "Chính xác.",
+          "en": "Correct."
+        },
+        "incorrect": {
+          "vi": "Hãy thử lại.",
+          "en": "Try again."
+        },
+        "explanation": {
+          "vi": "Đáp án theo mẫu mục tiêu của bài Chào hỏi.",
+          "en": "The answer follows the target pattern for Greetings."
+        },
+        "hintPolicy": {
+          "revealAfterAttempts": 1,
+          "countsAsAssisted": true
+        }
+      }
+    },
+    {
+      "id": "exercise-greetings-choice",
+      "type": "multiple_choice",
+      "learningItem": {
+        "skill": "vocabulary",
+        "conceptIds": [
+          "concept-greetings"
+        ],
+        "outcomeIds": [
+          "outcome-greetings"
+        ],
+        "prerequisiteConceptIds": [],
+        "difficulty": "guided"
+      },
+      "presentation": {
+        "prompt": {
+          "vi": "Chào hỏi: choice.",
+          "en": "Greetings: choice."
+        },
+        "hint": {
+          "vi": "Gợi ý: Hello, Ana.",
+          "en": "Hint: Hello, Ana."
+        },
+        "mediaIds": [],
+        "accessibility": {
+          "screenReaderLabel": {
+            "vi": "Chào hỏi: choice.",
+            "en": "Greetings: choice."
+          },
+          "requiresAudio": false,
+          "supportsSilentMode": true
+        },
+        "options": [
+          {
+            "id": "option-meaning",
+            "text": {
+              "vi": "xin chào",
+              "en": "xin chào"
+            }
+          },
+          {
+            "id": "option-distractor",
+            "text": {
+              "vi": "tạm biệt",
+              "en": "tạm biệt"
+            }
+          }
+        ]
+      },
+      "answerPolicy": {
+        "kind": "option_id",
+        "correctOptionId": "option-meaning",
+        "maxAttempts": 2
+      },
+      "feedbackRule": {
+        "correct": {
+          "vi": "Chính xác.",
+          "en": "Correct."
+        },
+        "incorrect": {
+          "vi": "Hãy thử lại.",
+          "en": "Try again."
+        },
+        "explanation": {
+          "vi": "Đáp án theo mẫu mục tiêu của bài Chào hỏi.",
+          "en": "The answer follows the target pattern for Greetings."
+        },
+        "hintPolicy": {
+          "revealAfterAttempts": 1,
+          "countsAsAssisted": true
+        }
+      }
+    },
+    {
+      "id": "exercise-greetings-listen-select",
+      "type": "listen_select",
+      "learningItem": {
+        "skill": "listening",
+        "conceptIds": [
+          "concept-greetings"
+        ],
+        "outcomeIds": [
+          "outcome-greetings"
+        ],
+        "prerequisiteConceptIds": [],
+        "difficulty": "guided"
+      },
+      "presentation": {
+        "prompt": {
+          "vi": "Chào hỏi: listen select.",
+          "en": "Greetings: listen select."
+        },
+        "hint": {
+          "vi": "Gợi ý: Hello, Ana.",
+          "en": "Hint: Hello, Ana."
+        },
+        "mediaIds": [
+          "media-greetings-listen"
+        ],
+        "accessibility": {
+          "screenReaderLabel": {
+            "vi": "Chào hỏi: listen select.",
+            "en": "Greetings: listen select."
+          },
+          "requiresAudio": false,
+          "supportsSilentMode": true
+        },
+        "options": [
+          {
+            "id": "option-first",
+            "text": {
+              "vi": "Hello",
+              "en": "Hello"
+            }
+          },
+          {
+            "id": "option-second",
+            "text": {
+              "vi": "Goodbye",
+              "en": "Goodbye"
+            }
+          }
+        ],
+        "transcript": {
+          "vi": "Hello",
+          "en": "Hello"
+        }
+      },
+      "answerPolicy": {
+        "kind": "option_id",
+        "correctOptionId": "option-first",
+        "maxAttempts": 2
+      },
+      "feedbackRule": {
+        "correct": {
+          "vi": "Chính xác.",
+          "en": "Correct."
+        },
+        "incorrect": {
+          "vi": "Hãy thử lại.",
+          "en": "Try again."
+        },
+        "explanation": {
+          "vi": "Đáp án theo mẫu mục tiêu của bài Chào hỏi.",
+          "en": "The answer follows the target pattern for Greetings."
+        },
+        "hintPolicy": {
+          "revealAfterAttempts": 1,
+          "countsAsAssisted": true
+        }
+      }
+    },
+    {
+      "id": "exercise-greetings-matching",
+      "type": "matching",
+      "learningItem": {
+        "skill": "vocabulary",
+        "conceptIds": [
+          "concept-greetings"
+        ],
+        "outcomeIds": [
+          "outcome-greetings"
+        ],
+        "prerequisiteConceptIds": [],
+        "difficulty": "guided"
+      },
+      "presentation": {
+        "prompt": {
+          "vi": "Chào hỏi: matching.",
+          "en": "Greetings: matching."
+        },
+        "hint": {
+          "vi": "Gợi ý: Hello, Ana.",
+          "en": "Hint: Hello, Ana."
+        },
+        "mediaIds": [],
+        "accessibility": {
+          "screenReaderLabel": {
+            "vi": "Chào hỏi: matching.",
+            "en": "Greetings: matching."
+          },
+          "requiresAudio": false,
+          "supportsSilentMode": true
+        },
+        "leftItems": [
+          {
+            "id": "left-one",
+            "text": {
+              "vi": "Hello",
+              "en": "Hello"
+            }
+          },
+          {
+            "id": "left-two",
+            "text": {
+              "vi": "Goodbye",
+              "en": "Goodbye"
+            }
+          }
+        ],
+        "rightItems": [
+          {
+            "id": "right-one",
+            "text": {
+              "vi": "xin chào",
+              "en": "xin chào"
+            }
+          },
+          {
+            "id": "right-two",
+            "text": {
+              "vi": "tạm biệt",
+              "en": "tạm biệt"
+            }
+          }
+        ]
+      },
+      "answerPolicy": {
+        "kind": "pair_set",
+        "correctPairs": [
+          {
+            "leftId": "left-one",
+            "rightId": "right-one"
+          },
+          {
+            "leftId": "left-two",
+            "rightId": "right-two"
+          }
+        ],
+        "maxAttempts": 2
+      },
+      "feedbackRule": {
+        "correct": {
+          "vi": "Chính xác.",
+          "en": "Correct."
+        },
+        "incorrect": {
+          "vi": "Hãy thử lại.",
+          "en": "Try again."
+        },
+        "explanation": {
+          "vi": "Đáp án theo mẫu mục tiêu của bài Chào hỏi.",
+          "en": "The answer follows the target pattern for Greetings."
+        },
+        "hintPolicy": {
+          "revealAfterAttempts": 1,
+          "countsAsAssisted": true
+        }
+      }
+    },
+    {
+      "id": "exercise-greetings-ordering",
+      "type": "ordering",
+      "learningItem": {
+        "skill": "grammar",
+        "conceptIds": [
+          "concept-greetings"
+        ],
+        "outcomeIds": [
+          "outcome-greetings"
+        ],
+        "prerequisiteConceptIds": [],
+        "difficulty": "guided"
+      },
+      "presentation": {
+        "prompt": {
+          "vi": "Chào hỏi: ordering.",
+          "en": "Greetings: ordering."
+        },
+        "hint": {
+          "vi": "Gợi ý: Hello, Ana.",
+          "en": "Hint: Hello, Ana."
+        },
+        "mediaIds": [],
+        "accessibility": {
+          "screenReaderLabel": {
+            "vi": "Chào hỏi: ordering.",
+            "en": "Greetings: ordering."
+          },
+          "requiresAudio": false,
+          "supportsSilentMode": true
+        },
+        "items": [
+          {
+            "id": "item-1",
+            "text": {
+              "vi": "Hello,",
+              "en": "Hello,"
+            }
+          },
+          {
+            "id": "item-2",
+            "text": {
+              "vi": "Ana",
+              "en": "Ana"
+            }
+          }
+        ]
+      },
+      "answerPolicy": {
+        "kind": "ordered_ids",
+        "correctOrder": [
+          "item-1",
+          "item-2"
+        ],
+        "maxAttempts": 2
+      },
+      "feedbackRule": {
+        "correct": {
+          "vi": "Chính xác.",
+          "en": "Correct."
+        },
+        "incorrect": {
+          "vi": "Hãy thử lại.",
+          "en": "Try again."
+        },
+        "explanation": {
+          "vi": "Đáp án theo mẫu mục tiêu của bài Chào hỏi.",
+          "en": "The answer follows the target pattern for Greetings."
+        },
+        "hintPolicy": {
+          "revealAfterAttempts": 1,
+          "countsAsAssisted": true
+        }
+      }
+    },
+    {
+      "id": "exercise-greetings-fill-blank",
+      "type": "fill_blank",
+      "learningItem": {
+        "skill": "writing",
+        "conceptIds": [
+          "concept-greetings"
+        ],
+        "outcomeIds": [
+          "outcome-greetings"
+        ],
+        "prerequisiteConceptIds": [],
+        "difficulty": "independent"
+      },
+      "presentation": {
+        "prompt": {
+          "vi": "Chào hỏi: fill blank.",
+          "en": "Greetings: fill blank."
+        },
+        "hint": {
+          "vi": "Gợi ý: Hello, Ana.",
+          "en": "Hint: Hello, Ana."
+        },
+        "mediaIds": [],
+        "accessibility": {
+          "screenReaderLabel": {
+            "vi": "Chào hỏi: fill blank.",
+            "en": "Greetings: fill blank."
+          },
+          "requiresAudio": false,
+          "supportsSilentMode": true
+        }
+      },
+      "answerPolicy": {
+        "kind": "normalized_text",
+        "acceptedAnswers": [
+          "Hello, Ana."
+        ],
+        "caseSensitive": false,
+        "maxAttempts": 2
+      },
+      "feedbackRule": {
+        "correct": {
+          "vi": "Chính xác.",
+          "en": "Correct."
+        },
+        "incorrect": {
+          "vi": "Hãy thử lại.",
+          "en": "Try again."
+        },
+        "explanation": {
+          "vi": "Đáp án theo mẫu mục tiêu của bài Chào hỏi.",
+          "en": "The answer follows the target pattern for Greetings."
+        },
+        "hintPolicy": {
+          "revealAfterAttempts": 1,
+          "countsAsAssisted": true
+        }
+      }
+    },
+    {
+      "id": "exercise-greetings-true-false",
+      "type": "true_false",
+      "learningItem": {
+        "skill": "reading",
+        "conceptIds": [
+          "concept-greetings"
+        ],
+        "outcomeIds": [
+          "outcome-greetings"
+        ],
+        "prerequisiteConceptIds": [],
+        "difficulty": "guided"
+      },
+      "presentation": {
+        "prompt": {
+          "vi": "Chào hỏi: true false.",
+          "en": "Greetings: true false."
+        },
+        "hint": {
+          "vi": "Gợi ý: Hello, Ana.",
+          "en": "Hint: Hello, Ana."
+        },
+        "mediaIds": [],
+        "accessibility": {
+          "screenReaderLabel": {
+            "vi": "Chào hỏi: true false.",
+            "en": "Greetings: true false."
+          },
+          "requiresAudio": false,
+          "supportsSilentMode": true
+        }
+      },
+      "answerPolicy": {
+        "kind": "boolean",
+        "correctAnswer": true,
+        "maxAttempts": 2
+      },
+      "feedbackRule": {
+        "correct": {
+          "vi": "Chính xác.",
+          "en": "Correct."
+        },
+        "incorrect": {
+          "vi": "Hãy thử lại.",
+          "en": "Try again."
+        },
+        "explanation": {
+          "vi": "Đáp án theo mẫu mục tiêu của bài Chào hỏi.",
+          "en": "The answer follows the target pattern for Greetings."
+        },
+        "hintPolicy": {
+          "revealAfterAttempts": 1,
+          "countsAsAssisted": true
+        }
+      }
+    },
+    {
+      "id": "exercise-greetings-comprehension",
+      "type": "comprehension",
+      "learningItem": {
+        "skill": "reading",
+        "conceptIds": [
+          "concept-greetings"
+        ],
+        "outcomeIds": [
+          "outcome-greetings"
+        ],
+        "prerequisiteConceptIds": [],
+        "difficulty": "independent"
+      },
+      "presentation": {
+        "prompt": {
+          "vi": "Chào hỏi: comprehension.",
+          "en": "Greetings: comprehension."
+        },
+        "hint": {
+          "vi": "Gợi ý: Hello, Ana.",
+          "en": "Hint: Hello, Ana."
+        },
+        "mediaIds": [],
+        "accessibility": {
+          "screenReaderLabel": {
+            "vi": "Chào hỏi: comprehension.",
+            "en": "Greetings: comprehension."
+          },
+          "requiresAudio": false,
+          "supportsSilentMode": true
+        },
+        "instruction": {
+          "vi": "Hello, Ana.",
+          "en": "Hello, Ana."
+        },
+        "options": [
+          {
+            "id": "option-answer",
+            "text": {
+              "vi": "Hello",
+              "en": "Hello"
+            }
+          },
+          {
+            "id": "option-other",
+            "text": {
+              "vi": "Goodbye",
+              "en": "Goodbye"
+            }
+          }
+        ]
+      },
+      "answerPolicy": {
+        "kind": "option_id",
+        "correctOptionId": "option-answer",
+        "maxAttempts": 2
+      },
+      "feedbackRule": {
+        "correct": {
+          "vi": "Chính xác.",
+          "en": "Correct."
+        },
+        "incorrect": {
+          "vi": "Hãy thử lại.",
+          "en": "Try again."
+        },
+        "explanation": {
+          "vi": "Đáp án theo mẫu mục tiêu của bài Chào hỏi.",
+          "en": "The answer follows the target pattern for Greetings."
+        },
+        "hintPolicy": {
+          "revealAfterAttempts": 1,
+          "countsAsAssisted": true
+        }
+      }
+    },
+    {
+      "id": "exercise-greetings-dictation",
+      "type": "dictation",
+      "learningItem": {
+        "skill": "listening",
+        "conceptIds": [
+          "concept-greetings"
+        ],
+        "outcomeIds": [
+          "outcome-greetings"
+        ],
+        "prerequisiteConceptIds": [],
+        "difficulty": "independent"
+      },
+      "presentation": {
+        "prompt": {
+          "vi": "Chào hỏi: dictation.",
+          "en": "Greetings: dictation."
+        },
+        "hint": {
+          "vi": "Gợi ý: Hello, Ana.",
+          "en": "Hint: Hello, Ana."
+        },
+        "mediaIds": [
+          "media-greetings-dictation"
+        ],
+        "accessibility": {
+          "screenReaderLabel": {
+            "vi": "Chào hỏi: dictation.",
+            "en": "Greetings: dictation."
+          },
+          "requiresAudio": false,
+          "supportsSilentMode": true
+        },
+        "transcript": {
+          "vi": "Hello, my name is Ana",
+          "en": "Hello, my name is Ana"
+        }
+      },
+      "answerPolicy": {
+        "kind": "normalized_text",
+        "acceptedAnswers": [
+          "Hello, my name is Ana"
+        ],
+        "caseSensitive": false,
+        "maxAttempts": 2
+      },
+      "feedbackRule": {
+        "correct": {
+          "vi": "Chính xác.",
+          "en": "Correct."
+        },
+        "incorrect": {
+          "vi": "Hãy thử lại.",
+          "en": "Try again."
+        },
+        "explanation": {
+          "vi": "Đáp án theo mẫu mục tiêu của bài Chào hỏi.",
+          "en": "The answer follows the target pattern for Greetings."
+        },
+        "hintPolicy": {
+          "revealAfterAttempts": 1,
+          "countsAsAssisted": true
+        }
+      }
+    }
+  ],
+  "advancedActivities": [
+    {
+      "id": "activity-greetings-pronunciation",
+      "activityType": "pronunciation",
+      "contentRef": "1/lesson-greetings/pronunciation",
+      "mediaId": "media-greetings-dictation",
+      "expectedText": "Hello, my name is Ana",
+      "targetLocale": "en",
+      "feedbackLocale": "vi"
+    }
+  ]
+}

@@ -53,7 +53,66 @@
     },
     "compatibilityVersion": { "type": "integer", "minimum": 1 },
     "owner": { "type": "string", "minLength": 1, "maxLength": 200 },
-    "license": { "type": "string", "minLength": 1, "maxLength": 200 }
+    "license": { "type": "string", "minLength": 1, "maxLength": 200 },
+    "completionAssessment": {
+      "type": "object",
+      "required": ["checkpointLessonId", "recordType", "minimumScore", "skillCoverage"],
+      "properties": {
+        "checkpointLessonId": { "$ref": "common.schema.json#/$defs/identifier" },
+        "recordType": { "const": "non_accredited_completion" },
+        "minimumScore": { "type": "integer", "minimum": 0, "maximum": 100 },
+        "skillCoverage": {
+          "type": "array", "minItems": 4, "uniqueItems": true,
+          "items": { "enum": ["listening", "speaking", "reading", "writing", "interaction"] }
+        }
+      },
+      "additionalProperties": false
+    },
+    "placementPolicy": {
+      "type": "object",
+      "required": ["startPoints"],
+      "properties": {
+        "startPoints": {
+          "type": "array", "minItems": 2,
+          "items": {
+            "type": "object",
+            "required": ["unitId", "lessonId", "minimumScore", "levelCode", "title"],
+            "properties": {
+              "unitId": { "$ref": "common.schema.json#/$defs/identifier" },
+              "lessonId": { "$ref": "common.schema.json#/$defs/identifier" },
+              "minimumScore": { "type": "integer", "minimum": 0, "maximum": 100 },
+              "levelCode": { "type": "string", "minLength": 1, "maxLength": 50 },
+              "title": { "$ref": "common.schema.json#/$defs/localizedText" }
+            },
+            "additionalProperties": false
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "versionMigrationPolicy": {
+      "type": "object",
+      "required": ["policyVersion", "compatibleFromCourseVersion", "onIncompatible", "preserveMastery"],
+      "properties": {
+        "policyVersion": { "type": "integer", "minimum": 1 },
+        "compatibleFromCourseVersion": { "type": "integer", "minimum": 1 },
+        "onIncompatible": { "enum": ["require_restart", "restart_at_unit_boundary"] },
+        "preserveMastery": { "type": "boolean" }
+      },
+      "additionalProperties": false
+    },
+    "offlinePackagePolicy": {
+      "type": "object",
+      "required": ["packageVersion", "maxBytes", "cacheTtlDays", "retainPreviousCompatibleVersions", "includesMedia"],
+      "properties": {
+        "packageVersion": { "type": "integer", "minimum": 1 },
+        "maxBytes": { "type": "integer", "minimum": 1 },
+        "cacheTtlDays": { "type": "integer", "minimum": 1, "maximum": 365 },
+        "retainPreviousCompatibleVersions": { "type": "integer", "minimum": 0, "maximum": 5 },
+        "includesMedia": { "type": "boolean" }
+      },
+      "additionalProperties": false
+    }
   },
   "additionalProperties": false
 }

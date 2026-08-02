@@ -1,0 +1,743 @@
+{
+  "id": "lesson-checkpoint-daily-life",
+  "courseId": "course-en-for-vi",
+  "courseVersion": 3,
+  "unitId": "unit-everyday-life",
+  "position": 15,
+  "locale": "vi",
+  "requiredLocales": [
+    "vi",
+    "en"
+  ],
+  "title": {
+    "vi": "Checkpoint: Cuộc sống hằng ngày",
+    "en": "Checkpoint: Daily life"
+  },
+  "objectives": [
+    {
+      "vi": "Dùng từ vựng và mẫu câu của Checkpoint: Cuộc sống hằng ngày.",
+      "en": "Use the vocabulary and patterns for Checkpoint: Daily life."
+    }
+  ],
+  "outcomeIds": [
+    "outcome-checkpoint-daily-life"
+  ],
+  "prerequisiteLessonIds": [
+    "lesson-likes-abilities"
+  ],
+  "revisitsConceptIds": [
+    "concept-days-frequency",
+    "concept-likes-abilities"
+  ],
+  "difficulty": "checkpoint",
+  "estimatedMinutes": 12,
+  "exercises": [
+    {
+      "id": "exercise-checkpoint-daily-life-flashcard",
+      "type": "flashcard",
+      "learningItem": {
+        "skill": "vocabulary",
+        "conceptIds": [
+          "concept-checkpoint-daily-life"
+        ],
+        "outcomeIds": [
+          "outcome-checkpoint-daily-life"
+        ],
+        "prerequisiteConceptIds": [],
+        "difficulty": "introductory"
+      },
+      "presentation": {
+        "prompt": {
+          "vi": "Checkpoint: Cuộc sống hằng ngày: flashcard.",
+          "en": "Checkpoint: Daily life: flashcard."
+        },
+        "hint": {
+          "vi": "Gợi ý: I study at eight every day.",
+          "en": "Hint: I study at eight every day."
+        },
+        "mediaIds": [],
+        "accessibility": {
+          "screenReaderLabel": {
+            "vi": "Checkpoint: Cuộc sống hằng ngày: flashcard.",
+            "en": "Checkpoint: Daily life: flashcard."
+          },
+          "requiresAudio": false,
+          "supportsSilentMode": true
+        }
+      },
+      "answerPolicy": {
+        "kind": "self_assessment",
+        "maxAttempts": 2
+      },
+      "feedbackRule": {
+        "correct": {
+          "vi": "Chính xác.",
+          "en": "Correct."
+        },
+        "incorrect": {
+          "vi": "Hãy thử lại.",
+          "en": "Try again."
+        },
+        "explanation": {
+          "vi": "Đáp án theo mẫu mục tiêu của bài Checkpoint: Cuộc sống hằng ngày.",
+          "en": "The answer follows the target pattern for Checkpoint: Daily life."
+        },
+        "hintPolicy": {
+          "revealAfterAttempts": 1,
+          "countsAsAssisted": true
+        }
+      }
+    },
+    {
+      "id": "exercise-checkpoint-daily-life-choice",
+      "type": "multiple_choice",
+      "learningItem": {
+        "skill": "vocabulary",
+        "conceptIds": [
+          "concept-checkpoint-daily-life"
+        ],
+        "outcomeIds": [
+          "outcome-checkpoint-daily-life"
+        ],
+        "prerequisiteConceptIds": [],
+        "difficulty": "guided"
+      },
+      "presentation": {
+        "prompt": {
+          "vi": "Checkpoint: Cuộc sống hằng ngày: choice.",
+          "en": "Checkpoint: Daily life: choice."
+        },
+        "hint": {
+          "vi": "Gợi ý: I study at eight every day.",
+          "en": "Hint: I study at eight every day."
+        },
+        "mediaIds": [],
+        "accessibility": {
+          "screenReaderLabel": {
+            "vi": "Checkpoint: Cuộc sống hằng ngày: choice.",
+            "en": "Checkpoint: Daily life: choice."
+          },
+          "requiresAudio": false,
+          "supportsSilentMode": true
+        },
+        "options": [
+          {
+            "id": "option-meaning",
+            "text": {
+              "vi": "thói quen",
+              "en": "thói quen"
+            }
+          },
+          {
+            "id": "option-distractor",
+            "text": {
+              "vi": "tuần",
+              "en": "tuần"
+            }
+          }
+        ]
+      },
+      "answerPolicy": {
+        "kind": "option_id",
+        "correctOptionId": "option-meaning",
+        "maxAttempts": 2
+      },
+      "feedbackRule": {
+        "correct": {
+          "vi": "Chính xác.",
+          "en": "Correct."
+        },
+        "incorrect": {
+          "vi": "Hãy thử lại.",
+          "en": "Try again."
+        },
+        "explanation": {
+          "vi": "Đáp án theo mẫu mục tiêu của bài Checkpoint: Cuộc sống hằng ngày.",
+          "en": "The answer follows the target pattern for Checkpoint: Daily life."
+        },
+        "hintPolicy": {
+          "revealAfterAttempts": 1,
+          "countsAsAssisted": true
+        }
+      }
+    },
+    {
+      "id": "exercise-checkpoint-daily-life-listen-select",
+      "type": "listen_select",
+      "learningItem": {
+        "skill": "listening",
+        "conceptIds": [
+          "concept-checkpoint-daily-life"
+        ],
+        "outcomeIds": [
+          "outcome-checkpoint-daily-life"
+        ],
+        "prerequisiteConceptIds": [],
+        "difficulty": "guided"
+      },
+      "presentation": {
+        "prompt": {
+          "vi": "Checkpoint: Cuộc sống hằng ngày: listen select.",
+          "en": "Checkpoint: Daily life: listen select."
+        },
+        "hint": {
+          "vi": "Gợi ý: I study at eight every day.",
+          "en": "Hint: I study at eight every day."
+        },
+        "mediaIds": [
+          "media-checkpoint-daily-life-listen"
+        ],
+        "accessibility": {
+          "screenReaderLabel": {
+            "vi": "Checkpoint: Cuộc sống hằng ngày: listen select.",
+            "en": "Checkpoint: Daily life: listen select."
+          },
+          "requiresAudio": false,
+          "supportsSilentMode": true
+        },
+        "options": [
+          {
+            "id": "option-first",
+            "text": {
+              "vi": "routine",
+              "en": "routine"
+            }
+          },
+          {
+            "id": "option-second",
+            "text": {
+              "vi": "week",
+              "en": "week"
+            }
+          }
+        ],
+        "transcript": {
+          "vi": "routine",
+          "en": "routine"
+        }
+      },
+      "answerPolicy": {
+        "kind": "option_id",
+        "correctOptionId": "option-first",
+        "maxAttempts": 2
+      },
+      "feedbackRule": {
+        "correct": {
+          "vi": "Chính xác.",
+          "en": "Correct."
+        },
+        "incorrect": {
+          "vi": "Hãy thử lại.",
+          "en": "Try again."
+        },
+        "explanation": {
+          "vi": "Đáp án theo mẫu mục tiêu của bài Checkpoint: Cuộc sống hằng ngày.",
+          "en": "The answer follows the target pattern for Checkpoint: Daily life."
+        },
+        "hintPolicy": {
+          "revealAfterAttempts": 1,
+          "countsAsAssisted": true
+        }
+      }
+    },
+    {
+      "id": "exercise-checkpoint-daily-life-matching",
+      "type": "matching",
+      "learningItem": {
+        "skill": "vocabulary",
+        "conceptIds": [
+          "concept-checkpoint-daily-life"
+        ],
+        "outcomeIds": [
+          "outcome-checkpoint-daily-life"
+        ],
+        "prerequisiteConceptIds": [],
+        "difficulty": "guided"
+      },
+      "presentation": {
+        "prompt": {
+          "vi": "Checkpoint: Cuộc sống hằng ngày: matching.",
+          "en": "Checkpoint: Daily life: matching."
+        },
+        "hint": {
+          "vi": "Gợi ý: I study at eight every day.",
+          "en": "Hint: I study at eight every day."
+        },
+        "mediaIds": [],
+        "accessibility": {
+          "screenReaderLabel": {
+            "vi": "Checkpoint: Cuộc sống hằng ngày: matching.",
+            "en": "Checkpoint: Daily life: matching."
+          },
+          "requiresAudio": false,
+          "supportsSilentMode": true
+        },
+        "leftItems": [
+          {
+            "id": "left-one",
+            "text": {
+              "vi": "routine",
+              "en": "routine"
+            }
+          },
+          {
+            "id": "left-two",
+            "text": {
+              "vi": "week",
+              "en": "week"
+            }
+          }
+        ],
+        "rightItems": [
+          {
+            "id": "right-one",
+            "text": {
+              "vi": "thói quen",
+              "en": "thói quen"
+            }
+          },
+          {
+            "id": "right-two",
+            "text": {
+              "vi": "tuần",
+              "en": "tuần"
+            }
+          }
+        ]
+      },
+      "answerPolicy": {
+        "kind": "pair_set",
+        "correctPairs": [
+          {
+            "leftId": "left-one",
+            "rightId": "right-one"
+          },
+          {
+            "leftId": "left-two",
+            "rightId": "right-two"
+          }
+        ],
+        "maxAttempts": 2
+      },
+      "feedbackRule": {
+        "correct": {
+          "vi": "Chính xác.",
+          "en": "Correct."
+        },
+        "incorrect": {
+          "vi": "Hãy thử lại.",
+          "en": "Try again."
+        },
+        "explanation": {
+          "vi": "Đáp án theo mẫu mục tiêu của bài Checkpoint: Cuộc sống hằng ngày.",
+          "en": "The answer follows the target pattern for Checkpoint: Daily life."
+        },
+        "hintPolicy": {
+          "revealAfterAttempts": 1,
+          "countsAsAssisted": true
+        }
+      }
+    },
+    {
+      "id": "exercise-checkpoint-daily-life-ordering",
+      "type": "ordering",
+      "learningItem": {
+        "skill": "grammar",
+        "conceptIds": [
+          "concept-checkpoint-daily-life"
+        ],
+        "outcomeIds": [
+          "outcome-checkpoint-daily-life"
+        ],
+        "prerequisiteConceptIds": [],
+        "difficulty": "guided"
+      },
+      "presentation": {
+        "prompt": {
+          "vi": "Checkpoint: Cuộc sống hằng ngày: ordering.",
+          "en": "Checkpoint: Daily life: ordering."
+        },
+        "hint": {
+          "vi": "Gợi ý: I study at eight every day.",
+          "en": "Hint: I study at eight every day."
+        },
+        "mediaIds": [],
+        "accessibility": {
+          "screenReaderLabel": {
+            "vi": "Checkpoint: Cuộc sống hằng ngày: ordering.",
+            "en": "Checkpoint: Daily life: ordering."
+          },
+          "requiresAudio": false,
+          "supportsSilentMode": true
+        },
+        "items": [
+          {
+            "id": "item-1",
+            "text": {
+              "vi": "I",
+              "en": "I"
+            }
+          },
+          {
+            "id": "item-2",
+            "text": {
+              "vi": "study",
+              "en": "study"
+            }
+          },
+          {
+            "id": "item-3",
+            "text": {
+              "vi": "at",
+              "en": "at"
+            }
+          },
+          {
+            "id": "item-4",
+            "text": {
+              "vi": "eight",
+              "en": "eight"
+            }
+          },
+          {
+            "id": "item-5",
+            "text": {
+              "vi": "every",
+              "en": "every"
+            }
+          },
+          {
+            "id": "item-6",
+            "text": {
+              "vi": "day",
+              "en": "day"
+            }
+          }
+        ]
+      },
+      "answerPolicy": {
+        "kind": "ordered_ids",
+        "correctOrder": [
+          "item-1",
+          "item-2",
+          "item-3",
+          "item-4",
+          "item-5",
+          "item-6"
+        ],
+        "maxAttempts": 2
+      },
+      "feedbackRule": {
+        "correct": {
+          "vi": "Chính xác.",
+          "en": "Correct."
+        },
+        "incorrect": {
+          "vi": "Hãy thử lại.",
+          "en": "Try again."
+        },
+        "explanation": {
+          "vi": "Đáp án theo mẫu mục tiêu của bài Checkpoint: Cuộc sống hằng ngày.",
+          "en": "The answer follows the target pattern for Checkpoint: Daily life."
+        },
+        "hintPolicy": {
+          "revealAfterAttempts": 1,
+          "countsAsAssisted": true
+        }
+      }
+    },
+    {
+      "id": "exercise-checkpoint-daily-life-fill-blank",
+      "type": "fill_blank",
+      "learningItem": {
+        "skill": "writing",
+        "conceptIds": [
+          "concept-checkpoint-daily-life"
+        ],
+        "outcomeIds": [
+          "outcome-checkpoint-daily-life"
+        ],
+        "prerequisiteConceptIds": [],
+        "difficulty": "independent"
+      },
+      "presentation": {
+        "prompt": {
+          "vi": "Checkpoint: Cuộc sống hằng ngày: fill blank.",
+          "en": "Checkpoint: Daily life: fill blank."
+        },
+        "hint": {
+          "vi": "Gợi ý: I study at eight every day.",
+          "en": "Hint: I study at eight every day."
+        },
+        "mediaIds": [],
+        "accessibility": {
+          "screenReaderLabel": {
+            "vi": "Checkpoint: Cuộc sống hằng ngày: fill blank.",
+            "en": "Checkpoint: Daily life: fill blank."
+          },
+          "requiresAudio": false,
+          "supportsSilentMode": true
+        }
+      },
+      "answerPolicy": {
+        "kind": "normalized_text",
+        "acceptedAnswers": [
+          "I study at eight every day."
+        ],
+        "caseSensitive": false,
+        "maxAttempts": 2
+      },
+      "feedbackRule": {
+        "correct": {
+          "vi": "Chính xác.",
+          "en": "Correct."
+        },
+        "incorrect": {
+          "vi": "Hãy thử lại.",
+          "en": "Try again."
+        },
+        "explanation": {
+          "vi": "Đáp án theo mẫu mục tiêu của bài Checkpoint: Cuộc sống hằng ngày.",
+          "en": "The answer follows the target pattern for Checkpoint: Daily life."
+        },
+        "hintPolicy": {
+          "revealAfterAttempts": 1,
+          "countsAsAssisted": true
+        }
+      }
+    },
+    {
+      "id": "exercise-checkpoint-daily-life-true-false",
+      "type": "true_false",
+      "learningItem": {
+        "skill": "reading",
+        "conceptIds": [
+          "concept-checkpoint-daily-life"
+        ],
+        "outcomeIds": [
+          "outcome-checkpoint-daily-life"
+        ],
+        "prerequisiteConceptIds": [],
+        "difficulty": "guided"
+      },
+      "presentation": {
+        "prompt": {
+          "vi": "Checkpoint: Cuộc sống hằng ngày: true false.",
+          "en": "Checkpoint: Daily life: true false."
+        },
+        "hint": {
+          "vi": "Gợi ý: I study at eight every day.",
+          "en": "Hint: I study at eight every day."
+        },
+        "mediaIds": [],
+        "accessibility": {
+          "screenReaderLabel": {
+            "vi": "Checkpoint: Cuộc sống hằng ngày: true false.",
+            "en": "Checkpoint: Daily life: true false."
+          },
+          "requiresAudio": false,
+          "supportsSilentMode": true
+        }
+      },
+      "answerPolicy": {
+        "kind": "boolean",
+        "correctAnswer": true,
+        "maxAttempts": 2
+      },
+      "feedbackRule": {
+        "correct": {
+          "vi": "Chính xác.",
+          "en": "Correct."
+        },
+        "incorrect": {
+          "vi": "Hãy thử lại.",
+          "en": "Try again."
+        },
+        "explanation": {
+          "vi": "Đáp án theo mẫu mục tiêu của bài Checkpoint: Cuộc sống hằng ngày.",
+          "en": "The answer follows the target pattern for Checkpoint: Daily life."
+        },
+        "hintPolicy": {
+          "revealAfterAttempts": 1,
+          "countsAsAssisted": true
+        }
+      }
+    },
+    {
+      "id": "exercise-checkpoint-daily-life-comprehension",
+      "type": "comprehension",
+      "learningItem": {
+        "skill": "reading",
+        "conceptIds": [
+          "concept-checkpoint-daily-life",
+          "concept-daily-actions",
+          "concept-time-schedule",
+          "concept-days-frequency",
+          "concept-likes-abilities"
+        ],
+        "outcomeIds": [
+          "outcome-checkpoint-daily-life"
+        ],
+        "prerequisiteConceptIds": [],
+        "difficulty": "independent"
+      },
+      "presentation": {
+        "prompt": {
+          "vi": "Checkpoint: Cuộc sống hằng ngày: comprehension.",
+          "en": "Checkpoint: Daily life: comprehension."
+        },
+        "hint": {
+          "vi": "Gợi ý: I study at eight every day.",
+          "en": "Hint: I study at eight every day."
+        },
+        "mediaIds": [],
+        "accessibility": {
+          "screenReaderLabel": {
+            "vi": "Checkpoint: Cuộc sống hằng ngày: comprehension.",
+            "en": "Checkpoint: Daily life: comprehension."
+          },
+          "requiresAudio": false,
+          "supportsSilentMode": true
+        },
+        "instruction": {
+          "vi": "I study every day. I study at eight. I work on Monday. I like music. I study at eight every day.",
+          "en": "I study every day. I study at eight. I work on Monday. I like music. I study at eight every day."
+        },
+        "options": [
+          {
+            "id": "option-answer",
+            "text": {
+              "vi": "routine",
+              "en": "routine"
+            }
+          },
+          {
+            "id": "option-other",
+            "text": {
+              "vi": "week",
+              "en": "week"
+            }
+          }
+        ]
+      },
+      "answerPolicy": {
+        "kind": "option_id",
+        "correctOptionId": "option-answer",
+        "maxAttempts": 2
+      },
+      "feedbackRule": {
+        "correct": {
+          "vi": "Chính xác.",
+          "en": "Correct."
+        },
+        "incorrect": {
+          "vi": "Hãy thử lại.",
+          "en": "Try again."
+        },
+        "explanation": {
+          "vi": "Đáp án theo mẫu mục tiêu của bài Checkpoint: Cuộc sống hằng ngày.",
+          "en": "The answer follows the target pattern for Checkpoint: Daily life."
+        },
+        "hintPolicy": {
+          "revealAfterAttempts": 1,
+          "countsAsAssisted": true
+        }
+      }
+    },
+    {
+      "id": "exercise-checkpoint-daily-life-dictation",
+      "type": "dictation",
+      "learningItem": {
+        "skill": "listening",
+        "conceptIds": [
+          "concept-checkpoint-daily-life"
+        ],
+        "outcomeIds": [
+          "outcome-checkpoint-daily-life"
+        ],
+        "prerequisiteConceptIds": [],
+        "difficulty": "checkpoint"
+      },
+      "presentation": {
+        "prompt": {
+          "vi": "Checkpoint: Cuộc sống hằng ngày: dictation.",
+          "en": "Checkpoint: Daily life: dictation."
+        },
+        "hint": {
+          "vi": "Gợi ý: I study at eight every day.",
+          "en": "Hint: I study at eight every day."
+        },
+        "mediaIds": [
+          "media-checkpoint-daily-life-dictation"
+        ],
+        "accessibility": {
+          "screenReaderLabel": {
+            "vi": "Checkpoint: Cuộc sống hằng ngày: dictation.",
+            "en": "Checkpoint: Daily life: dictation."
+          },
+          "requiresAudio": false,
+          "supportsSilentMode": true
+        },
+        "transcript": {
+          "vi": "I like music and I can cook",
+          "en": "I like music and I can cook"
+        }
+      },
+      "answerPolicy": {
+        "kind": "normalized_text",
+        "acceptedAnswers": [
+          "I like music and I can cook"
+        ],
+        "caseSensitive": false,
+        "maxAttempts": 2
+      },
+      "feedbackRule": {
+        "correct": {
+          "vi": "Chính xác.",
+          "en": "Correct."
+        },
+        "incorrect": {
+          "vi": "Hãy thử lại.",
+          "en": "Try again."
+        },
+        "explanation": {
+          "vi": "Đáp án theo mẫu mục tiêu của bài Checkpoint: Cuộc sống hằng ngày.",
+          "en": "The answer follows the target pattern for Checkpoint: Daily life."
+        },
+        "hintPolicy": {
+          "revealAfterAttempts": 1,
+          "countsAsAssisted": true
+        }
+      }
+    }
+  ],
+  "advancedActivities": [
+    {
+      "id": "activity-checkpoint-daily-life-pronunciation",
+      "activityType": "pronunciation",
+      "contentRef": "3/lesson-checkpoint-daily-life/pronunciation",
+      "mediaId": "media-checkpoint-daily-life-dictation",
+      "expectedText": "I like music and I can cook",
+      "targetLocale": "en",
+      "feedbackLocale": "vi"
+    },
+    {
+      "id": "activity-checkpoint-daily-life-writing",
+      "activityType": "writing",
+      "contentRef": "3/lesson-checkpoint-daily-life/writing",
+      "mediaId": "media-checkpoint-daily-life-dictation",
+      "expectedText": "I study at eight every day.",
+      "targetLocale": "en",
+      "feedbackLocale": "vi"
+    },
+    {
+      "id": "activity-checkpoint-daily-life-conversation",
+      "activityType": "conversation",
+      "contentRef": "3/lesson-checkpoint-daily-life/conversation",
+      "mediaId": "media-checkpoint-daily-life-dictation",
+      "expectedText": "I like music and I can cook",
+      "targetLocale": "en",
+      "feedbackLocale": "vi"
+    }
+  ]
+}

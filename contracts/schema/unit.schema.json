@@ -35,6 +35,17 @@
       "items": { "$ref": "common.schema.json#/$defs/identifier" },
       "minItems": 1,
       "uniqueItems": true
+    },
+    "guidebook": {
+      "type": "object",
+      "required": ["summary", "keyPhrases", "grammarNotes", "examples"],
+      "properties": {
+        "summary": { "$ref": "common.schema.json#/$defs/localizedText" },
+        "keyPhrases": { "type": "array", "minItems": 2, "items": { "$ref": "common.schema.json#/$defs/localizedText" } },
+        "grammarNotes": { "type": "array", "minItems": 1, "items": { "$ref": "common.schema.json#/$defs/localizedText" } },
+        "examples": { "type": "array", "minItems": 2, "items": { "$ref": "common.schema.json#/$defs/localizedText" } }
+      },
+      "additionalProperties": false
     }
   },
   "additionalProperties": false

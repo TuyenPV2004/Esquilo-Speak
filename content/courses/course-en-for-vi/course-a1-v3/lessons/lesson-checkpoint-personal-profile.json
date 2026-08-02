@@ -1,0 +1,735 @@
+{
+  "id": "lesson-checkpoint-personal-profile",
+  "courseId": "course-en-for-vi",
+  "courseVersion": 3,
+  "unitId": "unit-personal-information",
+  "position": 10,
+  "locale": "vi",
+  "requiredLocales": [
+    "vi",
+    "en"
+  ],
+  "title": {
+    "vi": "Checkpoint: Hồ sơ cá nhân",
+    "en": "Checkpoint: Personal profile"
+  },
+  "objectives": [
+    {
+      "vi": "Dùng từ vựng và mẫu câu của Checkpoint: Hồ sơ cá nhân.",
+      "en": "Use the vocabulary and patterns for Checkpoint: Personal profile."
+    }
+  ],
+  "outcomeIds": [
+    "outcome-checkpoint-personal-profile"
+  ],
+  "prerequisiteLessonIds": [
+    "lesson-jobs-roles"
+  ],
+  "revisitsConceptIds": [
+    "concept-family-people",
+    "concept-jobs-roles"
+  ],
+  "difficulty": "checkpoint",
+  "estimatedMinutes": 12,
+  "exercises": [
+    {
+      "id": "exercise-checkpoint-personal-profile-flashcard",
+      "type": "flashcard",
+      "learningItem": {
+        "skill": "vocabulary",
+        "conceptIds": [
+          "concept-checkpoint-personal-profile"
+        ],
+        "outcomeIds": [
+          "outcome-checkpoint-personal-profile"
+        ],
+        "prerequisiteConceptIds": [],
+        "difficulty": "introductory"
+      },
+      "presentation": {
+        "prompt": {
+          "vi": "Checkpoint: Hồ sơ cá nhân: flashcard.",
+          "en": "Checkpoint: Personal profile: flashcard."
+        },
+        "hint": {
+          "vi": "Gợi ý: I am Mai from Hanoi.",
+          "en": "Hint: I am Mai from Hanoi."
+        },
+        "mediaIds": [],
+        "accessibility": {
+          "screenReaderLabel": {
+            "vi": "Checkpoint: Hồ sơ cá nhân: flashcard.",
+            "en": "Checkpoint: Personal profile: flashcard."
+          },
+          "requiresAudio": false,
+          "supportsSilentMode": true
+        }
+      },
+      "answerPolicy": {
+        "kind": "self_assessment",
+        "maxAttempts": 2
+      },
+      "feedbackRule": {
+        "correct": {
+          "vi": "Chính xác.",
+          "en": "Correct."
+        },
+        "incorrect": {
+          "vi": "Hãy thử lại.",
+          "en": "Try again."
+        },
+        "explanation": {
+          "vi": "Đáp án theo mẫu mục tiêu của bài Checkpoint: Hồ sơ cá nhân.",
+          "en": "The answer follows the target pattern for Checkpoint: Personal profile."
+        },
+        "hintPolicy": {
+          "revealAfterAttempts": 1,
+          "countsAsAssisted": true
+        }
+      }
+    },
+    {
+      "id": "exercise-checkpoint-personal-profile-choice",
+      "type": "multiple_choice",
+      "learningItem": {
+        "skill": "vocabulary",
+        "conceptIds": [
+          "concept-checkpoint-personal-profile"
+        ],
+        "outcomeIds": [
+          "outcome-checkpoint-personal-profile"
+        ],
+        "prerequisiteConceptIds": [],
+        "difficulty": "guided"
+      },
+      "presentation": {
+        "prompt": {
+          "vi": "Checkpoint: Hồ sơ cá nhân: choice.",
+          "en": "Checkpoint: Personal profile: choice."
+        },
+        "hint": {
+          "vi": "Gợi ý: I am Mai from Hanoi.",
+          "en": "Hint: I am Mai from Hanoi."
+        },
+        "mediaIds": [],
+        "accessibility": {
+          "screenReaderLabel": {
+            "vi": "Checkpoint: Hồ sơ cá nhân: choice.",
+            "en": "Checkpoint: Personal profile: choice."
+          },
+          "requiresAudio": false,
+          "supportsSilentMode": true
+        },
+        "options": [
+          {
+            "id": "option-meaning",
+            "text": {
+              "vi": "hồ sơ",
+              "en": "hồ sơ"
+            }
+          },
+          {
+            "id": "option-distractor",
+            "text": {
+              "vi": "địa chỉ",
+              "en": "địa chỉ"
+            }
+          }
+        ]
+      },
+      "answerPolicy": {
+        "kind": "option_id",
+        "correctOptionId": "option-meaning",
+        "maxAttempts": 2
+      },
+      "feedbackRule": {
+        "correct": {
+          "vi": "Chính xác.",
+          "en": "Correct."
+        },
+        "incorrect": {
+          "vi": "Hãy thử lại.",
+          "en": "Try again."
+        },
+        "explanation": {
+          "vi": "Đáp án theo mẫu mục tiêu của bài Checkpoint: Hồ sơ cá nhân.",
+          "en": "The answer follows the target pattern for Checkpoint: Personal profile."
+        },
+        "hintPolicy": {
+          "revealAfterAttempts": 1,
+          "countsAsAssisted": true
+        }
+      }
+    },
+    {
+      "id": "exercise-checkpoint-personal-profile-listen-select",
+      "type": "listen_select",
+      "learningItem": {
+        "skill": "listening",
+        "conceptIds": [
+          "concept-checkpoint-personal-profile"
+        ],
+        "outcomeIds": [
+          "outcome-checkpoint-personal-profile"
+        ],
+        "prerequisiteConceptIds": [],
+        "difficulty": "guided"
+      },
+      "presentation": {
+        "prompt": {
+          "vi": "Checkpoint: Hồ sơ cá nhân: listen select.",
+          "en": "Checkpoint: Personal profile: listen select."
+        },
+        "hint": {
+          "vi": "Gợi ý: I am Mai from Hanoi.",
+          "en": "Hint: I am Mai from Hanoi."
+        },
+        "mediaIds": [
+          "media-checkpoint-personal-profile-listen"
+        ],
+        "accessibility": {
+          "screenReaderLabel": {
+            "vi": "Checkpoint: Hồ sơ cá nhân: listen select.",
+            "en": "Checkpoint: Personal profile: listen select."
+          },
+          "requiresAudio": false,
+          "supportsSilentMode": true
+        },
+        "options": [
+          {
+            "id": "option-first",
+            "text": {
+              "vi": "profile",
+              "en": "profile"
+            }
+          },
+          {
+            "id": "option-second",
+            "text": {
+              "vi": "address",
+              "en": "address"
+            }
+          }
+        ],
+        "transcript": {
+          "vi": "profile",
+          "en": "profile"
+        }
+      },
+      "answerPolicy": {
+        "kind": "option_id",
+        "correctOptionId": "option-first",
+        "maxAttempts": 2
+      },
+      "feedbackRule": {
+        "correct": {
+          "vi": "Chính xác.",
+          "en": "Correct."
+        },
+        "incorrect": {
+          "vi": "Hãy thử lại.",
+          "en": "Try again."
+        },
+        "explanation": {
+          "vi": "Đáp án theo mẫu mục tiêu của bài Checkpoint: Hồ sơ cá nhân.",
+          "en": "The answer follows the target pattern for Checkpoint: Personal profile."
+        },
+        "hintPolicy": {
+          "revealAfterAttempts": 1,
+          "countsAsAssisted": true
+        }
+      }
+    },
+    {
+      "id": "exercise-checkpoint-personal-profile-matching",
+      "type": "matching",
+      "learningItem": {
+        "skill": "vocabulary",
+        "conceptIds": [
+          "concept-checkpoint-personal-profile"
+        ],
+        "outcomeIds": [
+          "outcome-checkpoint-personal-profile"
+        ],
+        "prerequisiteConceptIds": [],
+        "difficulty": "guided"
+      },
+      "presentation": {
+        "prompt": {
+          "vi": "Checkpoint: Hồ sơ cá nhân: matching.",
+          "en": "Checkpoint: Personal profile: matching."
+        },
+        "hint": {
+          "vi": "Gợi ý: I am Mai from Hanoi.",
+          "en": "Hint: I am Mai from Hanoi."
+        },
+        "mediaIds": [],
+        "accessibility": {
+          "screenReaderLabel": {
+            "vi": "Checkpoint: Hồ sơ cá nhân: matching.",
+            "en": "Checkpoint: Personal profile: matching."
+          },
+          "requiresAudio": false,
+          "supportsSilentMode": true
+        },
+        "leftItems": [
+          {
+            "id": "left-one",
+            "text": {
+              "vi": "profile",
+              "en": "profile"
+            }
+          },
+          {
+            "id": "left-two",
+            "text": {
+              "vi": "address",
+              "en": "address"
+            }
+          }
+        ],
+        "rightItems": [
+          {
+            "id": "right-one",
+            "text": {
+              "vi": "hồ sơ",
+              "en": "hồ sơ"
+            }
+          },
+          {
+            "id": "right-two",
+            "text": {
+              "vi": "địa chỉ",
+              "en": "địa chỉ"
+            }
+          }
+        ]
+      },
+      "answerPolicy": {
+        "kind": "pair_set",
+        "correctPairs": [
+          {
+            "leftId": "left-one",
+            "rightId": "right-one"
+          },
+          {
+            "leftId": "left-two",
+            "rightId": "right-two"
+          }
+        ],
+        "maxAttempts": 2
+      },
+      "feedbackRule": {
+        "correct": {
+          "vi": "Chính xác.",
+          "en": "Correct."
+        },
+        "incorrect": {
+          "vi": "Hãy thử lại.",
+          "en": "Try again."
+        },
+        "explanation": {
+          "vi": "Đáp án theo mẫu mục tiêu của bài Checkpoint: Hồ sơ cá nhân.",
+          "en": "The answer follows the target pattern for Checkpoint: Personal profile."
+        },
+        "hintPolicy": {
+          "revealAfterAttempts": 1,
+          "countsAsAssisted": true
+        }
+      }
+    },
+    {
+      "id": "exercise-checkpoint-personal-profile-ordering",
+      "type": "ordering",
+      "learningItem": {
+        "skill": "grammar",
+        "conceptIds": [
+          "concept-checkpoint-personal-profile"
+        ],
+        "outcomeIds": [
+          "outcome-checkpoint-personal-profile"
+        ],
+        "prerequisiteConceptIds": [],
+        "difficulty": "guided"
+      },
+      "presentation": {
+        "prompt": {
+          "vi": "Checkpoint: Hồ sơ cá nhân: ordering.",
+          "en": "Checkpoint: Personal profile: ordering."
+        },
+        "hint": {
+          "vi": "Gợi ý: I am Mai from Hanoi.",
+          "en": "Hint: I am Mai from Hanoi."
+        },
+        "mediaIds": [],
+        "accessibility": {
+          "screenReaderLabel": {
+            "vi": "Checkpoint: Hồ sơ cá nhân: ordering.",
+            "en": "Checkpoint: Personal profile: ordering."
+          },
+          "requiresAudio": false,
+          "supportsSilentMode": true
+        },
+        "items": [
+          {
+            "id": "item-1",
+            "text": {
+              "vi": "I",
+              "en": "I"
+            }
+          },
+          {
+            "id": "item-2",
+            "text": {
+              "vi": "am",
+              "en": "am"
+            }
+          },
+          {
+            "id": "item-3",
+            "text": {
+              "vi": "Mai",
+              "en": "Mai"
+            }
+          },
+          {
+            "id": "item-4",
+            "text": {
+              "vi": "from",
+              "en": "from"
+            }
+          },
+          {
+            "id": "item-5",
+            "text": {
+              "vi": "Hanoi",
+              "en": "Hanoi"
+            }
+          }
+        ]
+      },
+      "answerPolicy": {
+        "kind": "ordered_ids",
+        "correctOrder": [
+          "item-1",
+          "item-2",
+          "item-3",
+          "item-4",
+          "item-5"
+        ],
+        "maxAttempts": 2
+      },
+      "feedbackRule": {
+        "correct": {
+          "vi": "Chính xác.",
+          "en": "Correct."
+        },
+        "incorrect": {
+          "vi": "Hãy thử lại.",
+          "en": "Try again."
+        },
+        "explanation": {
+          "vi": "Đáp án theo mẫu mục tiêu của bài Checkpoint: Hồ sơ cá nhân.",
+          "en": "The answer follows the target pattern for Checkpoint: Personal profile."
+        },
+        "hintPolicy": {
+          "revealAfterAttempts": 1,
+          "countsAsAssisted": true
+        }
+      }
+    },
+    {
+      "id": "exercise-checkpoint-personal-profile-fill-blank",
+      "type": "fill_blank",
+      "learningItem": {
+        "skill": "writing",
+        "conceptIds": [
+          "concept-checkpoint-personal-profile"
+        ],
+        "outcomeIds": [
+          "outcome-checkpoint-personal-profile"
+        ],
+        "prerequisiteConceptIds": [],
+        "difficulty": "independent"
+      },
+      "presentation": {
+        "prompt": {
+          "vi": "Checkpoint: Hồ sơ cá nhân: fill blank.",
+          "en": "Checkpoint: Personal profile: fill blank."
+        },
+        "hint": {
+          "vi": "Gợi ý: I am Mai from Hanoi.",
+          "en": "Hint: I am Mai from Hanoi."
+        },
+        "mediaIds": [],
+        "accessibility": {
+          "screenReaderLabel": {
+            "vi": "Checkpoint: Hồ sơ cá nhân: fill blank.",
+            "en": "Checkpoint: Personal profile: fill blank."
+          },
+          "requiresAudio": false,
+          "supportsSilentMode": true
+        }
+      },
+      "answerPolicy": {
+        "kind": "normalized_text",
+        "acceptedAnswers": [
+          "I am Mai from Hanoi."
+        ],
+        "caseSensitive": false,
+        "maxAttempts": 2
+      },
+      "feedbackRule": {
+        "correct": {
+          "vi": "Chính xác.",
+          "en": "Correct."
+        },
+        "incorrect": {
+          "vi": "Hãy thử lại.",
+          "en": "Try again."
+        },
+        "explanation": {
+          "vi": "Đáp án theo mẫu mục tiêu của bài Checkpoint: Hồ sơ cá nhân.",
+          "en": "The answer follows the target pattern for Checkpoint: Personal profile."
+        },
+        "hintPolicy": {
+          "revealAfterAttempts": 1,
+          "countsAsAssisted": true
+        }
+      }
+    },
+    {
+      "id": "exercise-checkpoint-personal-profile-true-false",
+      "type": "true_false",
+      "learningItem": {
+        "skill": "reading",
+        "conceptIds": [
+          "concept-checkpoint-personal-profile"
+        ],
+        "outcomeIds": [
+          "outcome-checkpoint-personal-profile"
+        ],
+        "prerequisiteConceptIds": [],
+        "difficulty": "guided"
+      },
+      "presentation": {
+        "prompt": {
+          "vi": "Checkpoint: Hồ sơ cá nhân: true false.",
+          "en": "Checkpoint: Personal profile: true false."
+        },
+        "hint": {
+          "vi": "Gợi ý: I am Mai from Hanoi.",
+          "en": "Hint: I am Mai from Hanoi."
+        },
+        "mediaIds": [],
+        "accessibility": {
+          "screenReaderLabel": {
+            "vi": "Checkpoint: Hồ sơ cá nhân: true false.",
+            "en": "Checkpoint: Personal profile: true false."
+          },
+          "requiresAudio": false,
+          "supportsSilentMode": true
+        }
+      },
+      "answerPolicy": {
+        "kind": "boolean",
+        "correctAnswer": true,
+        "maxAttempts": 2
+      },
+      "feedbackRule": {
+        "correct": {
+          "vi": "Chính xác.",
+          "en": "Correct."
+        },
+        "incorrect": {
+          "vi": "Hãy thử lại.",
+          "en": "Try again."
+        },
+        "explanation": {
+          "vi": "Đáp án theo mẫu mục tiêu của bài Checkpoint: Hồ sơ cá nhân.",
+          "en": "The answer follows the target pattern for Checkpoint: Personal profile."
+        },
+        "hintPolicy": {
+          "revealAfterAttempts": 1,
+          "countsAsAssisted": true
+        }
+      }
+    },
+    {
+      "id": "exercise-checkpoint-personal-profile-comprehension",
+      "type": "comprehension",
+      "learningItem": {
+        "skill": "reading",
+        "conceptIds": [
+          "concept-checkpoint-personal-profile",
+          "concept-country-city",
+          "concept-contact-details",
+          "concept-family-people",
+          "concept-jobs-roles"
+        ],
+        "outcomeIds": [
+          "outcome-checkpoint-personal-profile"
+        ],
+        "prerequisiteConceptIds": [],
+        "difficulty": "independent"
+      },
+      "presentation": {
+        "prompt": {
+          "vi": "Checkpoint: Hồ sơ cá nhân: comprehension.",
+          "en": "Checkpoint: Personal profile: comprehension."
+        },
+        "hint": {
+          "vi": "Gợi ý: I am Mai from Hanoi.",
+          "en": "Hint: I am Mai from Hanoi."
+        },
+        "mediaIds": [],
+        "accessibility": {
+          "screenReaderLabel": {
+            "vi": "Checkpoint: Hồ sơ cá nhân: comprehension.",
+            "en": "Checkpoint: Personal profile: comprehension."
+          },
+          "requiresAudio": false,
+          "supportsSilentMode": true
+        },
+        "instruction": {
+          "vi": "I am from Hanoi. My email is ana@example.com. She is my sister. He is a teacher. I am Mai from Hanoi.",
+          "en": "I am from Hanoi. My email is ana@example.com. She is my sister. He is a teacher. I am Mai from Hanoi."
+        },
+        "options": [
+          {
+            "id": "option-answer",
+            "text": {
+              "vi": "profile",
+              "en": "profile"
+            }
+          },
+          {
+            "id": "option-other",
+            "text": {
+              "vi": "address",
+              "en": "address"
+            }
+          }
+        ]
+      },
+      "answerPolicy": {
+        "kind": "option_id",
+        "correctOptionId": "option-answer",
+        "maxAttempts": 2
+      },
+      "feedbackRule": {
+        "correct": {
+          "vi": "Chính xác.",
+          "en": "Correct."
+        },
+        "incorrect": {
+          "vi": "Hãy thử lại.",
+          "en": "Try again."
+        },
+        "explanation": {
+          "vi": "Đáp án theo mẫu mục tiêu của bài Checkpoint: Hồ sơ cá nhân.",
+          "en": "The answer follows the target pattern for Checkpoint: Personal profile."
+        },
+        "hintPolicy": {
+          "revealAfterAttempts": 1,
+          "countsAsAssisted": true
+        }
+      }
+    },
+    {
+      "id": "exercise-checkpoint-personal-profile-dictation",
+      "type": "dictation",
+      "learningItem": {
+        "skill": "listening",
+        "conceptIds": [
+          "concept-checkpoint-personal-profile"
+        ],
+        "outcomeIds": [
+          "outcome-checkpoint-personal-profile"
+        ],
+        "prerequisiteConceptIds": [],
+        "difficulty": "checkpoint"
+      },
+      "presentation": {
+        "prompt": {
+          "vi": "Checkpoint: Hồ sơ cá nhân: dictation.",
+          "en": "Checkpoint: Personal profile: dictation."
+        },
+        "hint": {
+          "vi": "Gợi ý: I am Mai from Hanoi.",
+          "en": "Hint: I am Mai from Hanoi."
+        },
+        "mediaIds": [
+          "media-checkpoint-personal-profile-dictation"
+        ],
+        "accessibility": {
+          "screenReaderLabel": {
+            "vi": "Checkpoint: Hồ sơ cá nhân: dictation.",
+            "en": "Checkpoint: Personal profile: dictation."
+          },
+          "requiresAudio": false,
+          "supportsSilentMode": true
+        },
+        "transcript": {
+          "vi": "My name is Mai and I am from Hanoi",
+          "en": "My name is Mai and I am from Hanoi"
+        }
+      },
+      "answerPolicy": {
+        "kind": "normalized_text",
+        "acceptedAnswers": [
+          "My name is Mai and I am from Hanoi"
+        ],
+        "caseSensitive": false,
+        "maxAttempts": 2
+      },
+      "feedbackRule": {
+        "correct": {
+          "vi": "Chính xác.",
+          "en": "Correct."
+        },
+        "incorrect": {
+          "vi": "Hãy thử lại.",
+          "en": "Try again."
+        },
+        "explanation": {
+          "vi": "Đáp án theo mẫu mục tiêu của bài Checkpoint: Hồ sơ cá nhân.",
+          "en": "The answer follows the target pattern for Checkpoint: Personal profile."
+        },
+        "hintPolicy": {
+          "revealAfterAttempts": 1,
+          "countsAsAssisted": true
+        }
+      }
+    }
+  ],
+  "advancedActivities": [
+    {
+      "id": "activity-checkpoint-personal-profile-pronunciation",
+      "activityType": "pronunciation",
+      "contentRef": "2/lesson-checkpoint-personal-profile/pronunciation",
+      "mediaId": "media-checkpoint-personal-profile-dictation",
+      "expectedText": "My name is Mai and I am from Hanoi",
+      "targetLocale": "en",
+      "feedbackLocale": "vi"
+    },
+    {
+      "id": "activity-checkpoint-personal-profile-writing",
+      "activityType": "writing",
+      "contentRef": "2/lesson-checkpoint-personal-profile/writing",
+      "mediaId": "media-checkpoint-personal-profile-dictation",
+      "expectedText": "I am Mai from Hanoi.",
+      "targetLocale": "en",
+      "feedbackLocale": "vi"
+    },
+    {
+      "id": "activity-checkpoint-personal-profile-conversation",
+      "activityType": "conversation",
+      "contentRef": "2/lesson-checkpoint-personal-profile/conversation",
+      "mediaId": "media-checkpoint-personal-profile-dictation",
+      "expectedText": "My name is Mai and I am from Hanoi",
+      "targetLocale": "en",
+      "feedbackLocale": "vi"
+    }
+  ]
+}

@@ -1,0 +1,61 @@
+{
+  "id": "unit-first-contact",
+  "courseId": "course-en-for-vi",
+  "courseVersion": 3,
+  "position": 1,
+  "title": {
+    "vi": "Lần gặp đầu tiên",
+    "en": "First contact"
+  },
+  "guidebook": {
+    "summary": {
+      "vi": "Chào hỏi, giới thiệu tên, hỏi thăm và trao đổi tuổi.",
+      "en": "Greet, introduce a name, ask about wellbeing and exchange age."
+    },
+    "keyPhrases": [
+      {
+        "vi": "Xin chào. Tôi tên là Ana.",
+        "en": "Hello. My name is Ana."
+      },
+      {
+        "vi": "Bạn khỏe không?",
+        "en": "How are you?"
+      }
+    ],
+    "grammarNotes": [
+      {
+        "vi": "Dùng I am hoặc My name is để giới thiệu.",
+        "en": "I am / My name is"
+      },
+      {
+        "vi": "Dùng How old để hỏi tuổi.",
+        "en": "How old are you?"
+      }
+    ],
+    "examples": [
+      {
+        "vi": "Xin chào. Tôi tên là Ana.",
+        "en": "Hello. My name is Ana."
+      },
+      {
+        "vi": "Bạn khỏe không?",
+        "en": "How are you?"
+      }
+    ]
+  },
+  "outcomeIds": [
+    "outcome-greetings",
+    "outcome-name",
+    "outcome-how-are-you",
+    "outcome-numbers-age",
+    "outcome-checkpoint-first-contact"
+  ],
+  "prerequisiteUnitIds": [],
+  "lessonIds": [
+    "lesson-greetings",
+    "lesson-name",
+    "lesson-how-are-you",
+    "lesson-numbers-age",
+    "lesson-checkpoint-first-contact"
+  ]
+}

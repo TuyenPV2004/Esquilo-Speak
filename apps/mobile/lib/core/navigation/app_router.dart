@@ -90,8 +90,10 @@ GoRouter createAppRouter(AppDependencies dependencies) => GoRouter(
                     ),
                     GoRoute(
                       path: 'placement',
-                      builder: (context, state) =>
-                          PlacementScreen(viewModel: dependencies.p1ViewModel),
+                      builder: (context, state) => PlacementScreen(
+                        viewModel: dependencies.p1ViewModel,
+                        learningViewModel: dependencies.learningViewModel,
+                      ),
                     ),
                     GoRoute(
                       path: 'engagement',
@@ -122,6 +124,7 @@ GoRouter createAppRouter(AppDependencies dependencies) => GoRouter(
               builder: (context, state) => LearningFlowScreen(
                 viewModel: dependencies.learningViewModel,
                 onPlayMedia: dependencies.p1ViewModel.playMedia,
+                onDownloadMedia: dependencies.p1ViewModel.downloadMedia,
               ),
             ),
           ],

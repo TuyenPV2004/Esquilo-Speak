@@ -1,0 +1,844 @@
+{
+  "media": [
+    {
+      "id": "media-greetings-listen",
+      "type": "audio",
+      "objectKey": "content/audio/course-a1-v3/media-greetings-listen.wav",
+      "assetPath": "media/media-greetings-listen.wav",
+      "checksum": "sha256:a06903c9cd549418f6975d82ebe57bb24659902d1eab3f19c4514bb7c483e7a4",
+      "locale": "en",
+      "durationMs": 1379,
+      "license": "Project-owned synthetic media; content-owner review required",
+      "source": "https://learn.microsoft.com/windows/win32/speech/sapi-5-3",
+      "generator": "Microsoft Speech API 5.4 local TTS",
+      "voice": "Microsoft Zira Desktop - English (United States)",
+      "transcript": {
+        "vi": "Hello",
+        "en": "Hello"
+      },
+      "captions": {
+        "vi": "Hello",
+        "en": "Hello"
+      }
+    },
+    {
+      "id": "media-greetings-dictation",
+      "type": "audio",
+      "objectKey": "content/audio/course-a1-v3/media-greetings-dictation.wav",
+      "assetPath": "media/media-greetings-dictation.wav",
+      "checksum": "sha256:9377042143e10d7865fe973345a8968f4075c8b893ec2c56f305f798acaebc02",
+      "locale": "en",
+      "durationMs": 2859,
+      "license": "Project-owned synthetic media; content-owner review required",
+      "source": "https://learn.microsoft.com/windows/win32/speech/sapi-5-3",
+      "generator": "Microsoft Speech API 5.4 local TTS",
+      "voice": "Microsoft Zira Desktop - English (United States)",
+      "transcript": {
+        "vi": "Hello, my name is Ana",
+        "en": "Hello, my name is Ana"
+      },
+      "captions": {
+        "vi": "Hello, my name is Ana",
+        "en": "Hello, my name is Ana"
+      }
+    },
+    {
+      "id": "media-name-listen",
+      "type": "audio",
+      "objectKey": "content/audio/course-a1-v3/media-name-listen.wav",
+      "assetPath": "media/media-name-listen.wav",
+      "checksum": "sha256:1a6277751bc74f6d2f3f82cd185c8d3a6f0d2d1197dc2651f9d01a77e7d041ff",
+      "locale": "en",
+      "durationMs": 1439,
+      "license": "Project-owned synthetic media; content-owner review required",
+      "source": "https://learn.microsoft.com/windows/win32/speech/sapi-5-3",
+      "generator": "Microsoft Speech API 5.4 local TTS",
+      "voice": "Microsoft Zira Desktop - English (United States)",
+      "transcript": {
+        "vi": "name",
+        "en": "name"
+      },
+      "captions": {
+        "vi": "name",
+        "en": "name"
+      }
+    },
+    {
+      "id": "media-name-dictation",
+      "type": "audio",
+      "objectKey": "content/audio/course-a1-v3/media-name-dictation.wav",
+      "assetPath": "media/media-name-dictation.wav",
+      "checksum": "sha256:f929caad31505346b44488483be22903ffa391fbd1bb79588aa16730eae89abe",
+      "locale": "en",
+      "durationMs": 1964,
+      "license": "Project-owned synthetic media; content-owner review required",
+      "source": "https://learn.microsoft.com/windows/win32/speech/sapi-5-3",
+      "generator": "Microsoft Speech API 5.4 local TTS",
+      "voice": "Microsoft Zira Desktop - English (United States)",
+      "transcript": {
+        "vi": "My name is Ana",
+        "en": "My name is Ana"
+      },
+      "captions": {
+        "vi": "My name is Ana",
+        "en": "My name is Ana"
+      }
+    },
+    {
+      "id": "media-how-are-you-listen",
+      "type": "audio",
+      "objectKey": "content/audio/course-a1-v3/media-how-are-you-listen.wav",
+      "assetPath": "media/media-how-are-you-listen.wav",
+      "checksum": "sha256:367eb9c650d42edb087b67af711056fc8b163464faffbb0e74723db32d808d40",
+      "locale": "en",
+      "durationMs": 1509,
+      "license": "Project-owned synthetic media; content-owner review required",
+      "source": "https://learn.microsoft.com/windows/win32/speech/sapi-5-3",
+      "generator": "Microsoft Speech API 5.4 local TTS",
+      "voice": "Microsoft Zira Desktop - English (United States)",
+      "transcript": {
+        "vi": "fine",
+        "en": "fine"
+      },
+      "captions": {
+        "vi": "fine",
+        "en": "fine"
+      }
+    },
+    {
+      "id": "media-how-are-you-dictation",
+      "type": "audio",
+      "objectKey": "content/audio/course-a1-v3/media-how-are-you-dictation.wav",
+      "assetPath": "media/media-how-are-you-dictation.wav",
+      "checksum": "sha256:f775309dd42cde6878e4c1fb748a545f1819d07f7350a16fbb37a0d98e0debcc",
+      "locale": "en",
+      "durationMs": 1654,
+      "license": "Project-owned synthetic media; content-owner review required",
+      "source": "https://learn.microsoft.com/windows/win32/speech/sapi-5-3",
+      "generator": "Microsoft Speech API 5.4 local TTS",
+      "voice": "Microsoft Zira Desktop - English (United States)",
+      "transcript": {
+        "vi": "How are you",
+        "en": "How are you"
+      },
+      "captions": {
+        "vi": "How are you",
+        "en": "How are you"
+      }
+    },
+    {
+      "id": "media-numbers-age-listen",
+      "type": "audio",
+      "objectKey": "content/audio/course-a1-v3/media-numbers-age-listen.wav",
+      "assetPath": "media/media-numbers-age-listen.wav",
+      "checksum": "sha256:32fde2512b26005d3db2161f56735109370a998b7ac5978a90c3f656ccdf744b",
+      "locale": "en",
+      "durationMs": 1544,
+      "license": "Project-owned synthetic media; content-owner review required",
+      "source": "https://learn.microsoft.com/windows/win32/speech/sapi-5-3",
+      "generator": "Microsoft Speech API 5.4 local TTS",
+      "voice": "Microsoft Zira Desktop - English (United States)",
+      "transcript": {
+        "vi": "twelve",
+        "en": "twelve"
+      },
+      "captions": {
+        "vi": "twelve",
+        "en": "twelve"
+      }
+    },
+    {
+      "id": "media-numbers-age-dictation",
+      "type": "audio",
+      "objectKey": "content/audio/course-a1-v3/media-numbers-age-dictation.wav",
+      "assetPath": "media/media-numbers-age-dictation.wav",
+      "checksum": "sha256:0e669cfa5a027f5a10ae7d70c352c88e0ec92b6001c1ef15689ea172d8324e2b",
+      "locale": "en",
+      "durationMs": 1639,
+      "license": "Project-owned synthetic media; content-owner review required",
+      "source": "https://learn.microsoft.com/windows/win32/speech/sapi-5-3",
+      "generator": "Microsoft Speech API 5.4 local TTS",
+      "voice": "Microsoft Zira Desktop - English (United States)",
+      "transcript": {
+        "vi": "I am ten",
+        "en": "I am ten"
+      },
+      "captions": {
+        "vi": "I am ten",
+        "en": "I am ten"
+      }
+    },
+    {
+      "id": "media-checkpoint-first-contact-listen",
+      "type": "audio",
+      "objectKey": "content/audio/course-a1-v3/media-checkpoint-first-contact-listen.wav",
+      "assetPath": "media/media-checkpoint-first-contact-listen.wav",
+      "checksum": "sha256:79f24c227de54788ff2b1d30952c6008ff5000928f3ffe2d72fd9680adf065e0",
+      "locale": "en",
+      "durationMs": 1634,
+      "license": "Project-owned synthetic media; content-owner review required",
+      "source": "https://learn.microsoft.com/windows/win32/speech/sapi-5-3",
+      "generator": "Microsoft Speech API 5.4 local TTS",
+      "voice": "Microsoft Zira Desktop - English (United States)",
+      "transcript": {
+        "vi": "introduce",
+        "en": "introduce"
+      },
+      "captions": {
+        "vi": "introduce",
+        "en": "introduce"
+      }
+    },
+    {
+      "id": "media-checkpoint-first-contact-dictation",
+      "type": "audio",
+      "objectKey": "content/audio/course-a1-v3/media-checkpoint-first-contact-dictation.wav",
+      "assetPath": "media/media-checkpoint-first-contact-dictation.wav",
+      "checksum": "sha256:5765b52fa52dc281e6a4ba29725cc753e7c7c0504198d942b3f54194cc07344a",
+      "locale": "en",
+      "durationMs": 2929,
+      "license": "Project-owned synthetic media; content-owner review required",
+      "source": "https://learn.microsoft.com/windows/win32/speech/sapi-5-3",
+      "generator": "Microsoft Speech API 5.4 local TTS",
+      "voice": "Microsoft Zira Desktop - English (United States)",
+      "transcript": {
+        "vi": "Hello, my name is Sam",
+        "en": "Hello, my name is Sam"
+      },
+      "captions": {
+        "vi": "Hello, my name is Sam",
+        "en": "Hello, my name is Sam"
+      }
+    },
+    {
+      "id": "media-country-city-listen",
+      "type": "audio",
+      "objectKey": "content/audio/course-a1-v3/media-country-city-listen.wav",
+      "assetPath": "media/media-country-city-listen.wav",
+      "checksum": "sha256:3eb7130695b0873a3843d50089278ae7e38897e4f16d5a09e8e535b32515d0d3",
+      "locale": "en",
+      "durationMs": 1564,
+      "license": "Project-owned synthetic media; content-owner review required",
+      "source": "https://learn.microsoft.com/windows/win32/speech/sapi-5-3",
+      "generator": "Microsoft Speech API 5.4 local TTS",
+      "voice": "Microsoft Zira Desktop - English (United States)",
+      "transcript": {
+        "vi": "country",
+        "en": "country"
+      },
+      "captions": {
+        "vi": "country",
+        "en": "country"
+      }
+    },
+    {
+      "id": "media-country-city-dictation",
+      "type": "audio",
+      "objectKey": "content/audio/course-a1-v3/media-country-city-dictation.wav",
+      "assetPath": "media/media-country-city-dictation.wav",
+      "checksum": "sha256:c3e879c06d7b43664ce3bd55f6ea498a072676578c3d2fb58c55006ef25c0a85",
+      "locale": "en",
+      "durationMs": 1984,
+      "license": "Project-owned synthetic media; content-owner review required",
+      "source": "https://learn.microsoft.com/windows/win32/speech/sapi-5-3",
+      "generator": "Microsoft Speech API 5.4 local TTS",
+      "voice": "Microsoft Zira Desktop - English (United States)",
+      "transcript": {
+        "vi": "Where are you from",
+        "en": "Where are you from"
+      },
+      "captions": {
+        "vi": "Where are you from",
+        "en": "Where are you from"
+      }
+    },
+    {
+      "id": "media-contact-details-listen",
+      "type": "audio",
+      "objectKey": "content/audio/course-a1-v3/media-contact-details-listen.wav",
+      "assetPath": "media/media-contact-details-listen.wav",
+      "checksum": "sha256:2dbd32f96f7b49653f990ecd80a5b35163e9f78429e8006030ff3d5c74edaaef",
+      "locale": "en",
+      "durationMs": 1564,
+      "license": "Project-owned synthetic media; content-owner review required",
+      "source": "https://learn.microsoft.com/windows/win32/speech/sapi-5-3",
+      "generator": "Microsoft Speech API 5.4 local TTS",
+      "voice": "Microsoft Zira Desktop - English (United States)",
+      "transcript": {
+        "vi": "email",
+        "en": "email"
+      },
+      "captions": {
+        "vi": "email",
+        "en": "email"
+      }
+    },
+    {
+      "id": "media-contact-details-dictation",
+      "type": "audio",
+      "objectKey": "content/audio/course-a1-v3/media-contact-details-dictation.wav",
+      "assetPath": "media/media-contact-details-dictation.wav",
+      "checksum": "sha256:642099752a211b216f1061c1dc853852e2ddd97384ce62ad0ac5275ce8f35beb",
+      "locale": "en",
+      "durationMs": 2289,
+      "license": "Project-owned synthetic media; content-owner review required",
+      "source": "https://learn.microsoft.com/windows/win32/speech/sapi-5-3",
+      "generator": "Microsoft Speech API 5.4 local TTS",
+      "voice": "Microsoft Zira Desktop - English (United States)",
+      "transcript": {
+        "vi": "How do you spell Ana",
+        "en": "How do you spell Ana"
+      },
+      "captions": {
+        "vi": "How do you spell Ana",
+        "en": "How do you spell Ana"
+      }
+    },
+    {
+      "id": "media-family-people-listen",
+      "type": "audio",
+      "objectKey": "content/audio/course-a1-v3/media-family-people-listen.wav",
+      "assetPath": "media/media-family-people-listen.wav",
+      "checksum": "sha256:be099511aecee8dffd5d30aed21c9f7ec7da94cb43415e123c38a31cf4ab7a27",
+      "locale": "en",
+      "durationMs": 1694,
+      "license": "Project-owned synthetic media; content-owner review required",
+      "source": "https://learn.microsoft.com/windows/win32/speech/sapi-5-3",
+      "generator": "Microsoft Speech API 5.4 local TTS",
+      "voice": "Microsoft Zira Desktop - English (United States)",
+      "transcript": {
+        "vi": "sister",
+        "en": "sister"
+      },
+      "captions": {
+        "vi": "sister",
+        "en": "sister"
+      }
+    },
+    {
+      "id": "media-family-people-dictation",
+      "type": "audio",
+      "objectKey": "content/audio/course-a1-v3/media-family-people-dictation.wav",
+      "assetPath": "media/media-family-people-dictation.wav",
+      "checksum": "sha256:e49c45a34d3f2d33e961cbebc20423064652dae9e830c8294f7f4bcf44dc2de4",
+      "locale": "en",
+      "durationMs": 2019,
+      "license": "Project-owned synthetic media; content-owner review required",
+      "source": "https://learn.microsoft.com/windows/win32/speech/sapi-5-3",
+      "generator": "Microsoft Speech API 5.4 local TTS",
+      "voice": "Microsoft Zira Desktop - English (United States)",
+      "transcript": {
+        "vi": "This is my friend",
+        "en": "This is my friend"
+      },
+      "captions": {
+        "vi": "This is my friend",
+        "en": "This is my friend"
+      }
+    },
+    {
+      "id": "media-jobs-roles-listen",
+      "type": "audio",
+      "objectKey": "content/audio/course-a1-v3/media-jobs-roles-listen.wav",
+      "assetPath": "media/media-jobs-roles-listen.wav",
+      "checksum": "sha256:2c293222d4599056efd2fbb05c700f7185eb97e04123f75829bd3269c8c4b63c",
+      "locale": "en",
+      "durationMs": 1554,
+      "license": "Project-owned synthetic media; content-owner review required",
+      "source": "https://learn.microsoft.com/windows/win32/speech/sapi-5-3",
+      "generator": "Microsoft Speech API 5.4 local TTS",
+      "voice": "Microsoft Zira Desktop - English (United States)",
+      "transcript": {
+        "vi": "teacher",
+        "en": "teacher"
+      },
+      "captions": {
+        "vi": "teacher",
+        "en": "teacher"
+      }
+    },
+    {
+      "id": "media-jobs-roles-dictation",
+      "type": "audio",
+      "objectKey": "content/audio/course-a1-v3/media-jobs-roles-dictation.wav",
+      "assetPath": "media/media-jobs-roles-dictation.wav",
+      "checksum": "sha256:f11ce512fb06e61a06f945ddae2821748c6ff57b5f645a75feeef36ec5e37246",
+      "locale": "en",
+      "durationMs": 1839,
+      "license": "Project-owned synthetic media; content-owner review required",
+      "source": "https://learn.microsoft.com/windows/win32/speech/sapi-5-3",
+      "generator": "Microsoft Speech API 5.4 local TTS",
+      "voice": "Microsoft Zira Desktop - English (United States)",
+      "transcript": {
+        "vi": "What do you do",
+        "en": "What do you do"
+      },
+      "captions": {
+        "vi": "What do you do",
+        "en": "What do you do"
+      }
+    },
+    {
+      "id": "media-checkpoint-personal-profile-listen",
+      "type": "audio",
+      "objectKey": "content/audio/course-a1-v3/media-checkpoint-personal-profile-listen.wav",
+      "assetPath": "media/media-checkpoint-personal-profile-listen.wav",
+      "checksum": "sha256:8e756b373e64761343b77723d851020b5da52cd0119307f85a5925a0cad49b93",
+      "locale": "en",
+      "durationMs": 1689,
+      "license": "Project-owned synthetic media; content-owner review required",
+      "source": "https://learn.microsoft.com/windows/win32/speech/sapi-5-3",
+      "generator": "Microsoft Speech API 5.4 local TTS",
+      "voice": "Microsoft Zira Desktop - English (United States)",
+      "transcript": {
+        "vi": "profile",
+        "en": "profile"
+      },
+      "captions": {
+        "vi": "profile",
+        "en": "profile"
+      }
+    },
+    {
+      "id": "media-checkpoint-personal-profile-dictation",
+      "type": "audio",
+      "objectKey": "content/audio/course-a1-v3/media-checkpoint-personal-profile-dictation.wav",
+      "assetPath": "media/media-checkpoint-personal-profile-dictation.wav",
+      "checksum": "sha256:ed385fe4fd0a7077265b8fa51eb1a741f3bb9974f70056fa6f9442f0c5c8789f",
+      "locale": "en",
+      "durationMs": 3064,
+      "license": "Project-owned synthetic media; content-owner review required",
+      "source": "https://learn.microsoft.com/windows/win32/speech/sapi-5-3",
+      "generator": "Microsoft Speech API 5.4 local TTS",
+      "voice": "Microsoft Zira Desktop - English (United States)",
+      "transcript": {
+        "vi": "My name is Mai and I am from Hanoi",
+        "en": "My name is Mai and I am from Hanoi"
+      },
+      "captions": {
+        "vi": "My name is Mai and I am from Hanoi",
+        "en": "My name is Mai and I am from Hanoi"
+      }
+    },
+    {
+      "id": "media-daily-actions-listen",
+      "type": "audio",
+      "objectKey": "content/audio/course-a1-v3/media-daily-actions-listen.wav",
+      "assetPath": "media/media-daily-actions-listen.wav",
+      "checksum": "sha256:0935efe7b531492803cc81564dc99e864ef64b17142c9d0ed2223d13275b4eab",
+      "locale": "en",
+      "durationMs": 1494,
+      "license": "Project-owned synthetic media; content-owner review required",
+      "source": "https://learn.microsoft.com/windows/win32/speech/sapi-5-3",
+      "generator": "Microsoft Speech API 5.4 local TTS",
+      "voice": "Microsoft Zira Desktop - English (United States)",
+      "transcript": {
+        "vi": "study",
+        "en": "study"
+      },
+      "captions": {
+        "vi": "study",
+        "en": "study"
+      }
+    },
+    {
+      "id": "media-daily-actions-dictation",
+      "type": "audio",
+      "objectKey": "content/audio/course-a1-v3/media-daily-actions-dictation.wav",
+      "assetPath": "media/media-daily-actions-dictation.wav",
+      "checksum": "sha256:4f491201e45d98c1e2f646a884452b62a20e915fe2cdc27529955e9e27732b76",
+      "locale": "en",
+      "durationMs": 1954,
+      "license": "Project-owned synthetic media; content-owner review required",
+      "source": "https://learn.microsoft.com/windows/win32/speech/sapi-5-3",
+      "generator": "Microsoft Speech API 5.4 local TTS",
+      "voice": "Microsoft Zira Desktop - English (United States)",
+      "transcript": {
+        "vi": "I work every day",
+        "en": "I work every day"
+      },
+      "captions": {
+        "vi": "I work every day",
+        "en": "I work every day"
+      }
+    },
+    {
+      "id": "media-time-schedule-listen",
+      "type": "audio",
+      "objectKey": "content/audio/course-a1-v3/media-time-schedule-listen.wav",
+      "assetPath": "media/media-time-schedule-listen.wav",
+      "checksum": "sha256:ccfcf84df4b1989004f5be7c1561abce1da180a69a818490769ee1b9e2219b91",
+      "locale": "en",
+      "durationMs": 1714,
+      "license": "Project-owned synthetic media; content-owner review required",
+      "source": "https://learn.microsoft.com/windows/win32/speech/sapi-5-3",
+      "generator": "Microsoft Speech API 5.4 local TTS",
+      "voice": "Microsoft Zira Desktop - English (United States)",
+      "transcript": {
+        "vi": "eight o'clock",
+        "en": "eight o'clock"
+      },
+      "captions": {
+        "vi": "eight o'clock",
+        "en": "eight o'clock"
+      }
+    },
+    {
+      "id": "media-time-schedule-dictation",
+      "type": "audio",
+      "objectKey": "content/audio/course-a1-v3/media-time-schedule-dictation.wav",
+      "assetPath": "media/media-time-schedule-dictation.wav",
+      "checksum": "sha256:7953076da65b9310a6925644b0d841ea5345890c3bf0af88902f4b0963b1e00e",
+      "locale": "en",
+      "durationMs": 2374,
+      "license": "Project-owned synthetic media; content-owner review required",
+      "source": "https://learn.microsoft.com/windows/win32/speech/sapi-5-3",
+      "generator": "Microsoft Speech API 5.4 local TTS",
+      "voice": "Microsoft Zira Desktop - English (United States)",
+      "transcript": {
+        "vi": "What time do you study",
+        "en": "What time do you study"
+      },
+      "captions": {
+        "vi": "What time do you study",
+        "en": "What time do you study"
+      }
+    },
+    {
+      "id": "media-days-frequency-listen",
+      "type": "audio",
+      "objectKey": "content/audio/course-a1-v3/media-days-frequency-listen.wav",
+      "assetPath": "media/media-days-frequency-listen.wav",
+      "checksum": "sha256:98f7fbead26ee2baa27b3373a9052375df0b65e69d6241e8440daa719f40bf0a",
+      "locale": "en",
+      "durationMs": 1439,
+      "license": "Project-owned synthetic media; content-owner review required",
+      "source": "https://learn.microsoft.com/windows/win32/speech/sapi-5-3",
+      "generator": "Microsoft Speech API 5.4 local TTS",
+      "voice": "Microsoft Zira Desktop - English (United States)",
+      "transcript": {
+        "vi": "Monday",
+        "en": "Monday"
+      },
+      "captions": {
+        "vi": "Monday",
+        "en": "Monday"
+      }
+    },
+    {
+      "id": "media-days-frequency-dictation",
+      "type": "audio",
+      "objectKey": "content/audio/course-a1-v3/media-days-frequency-dictation.wav",
+      "assetPath": "media/media-days-frequency-dictation.wav",
+      "checksum": "sha256:a53e7a8f4fea747114b5542ec6eaeb6af685a8e3e95f0e6ecec0abbf255b122e",
+      "locale": "en",
+      "durationMs": 2519,
+      "license": "Project-owned synthetic media; content-owner review required",
+      "source": "https://learn.microsoft.com/windows/win32/speech/sapi-5-3",
+      "generator": "Microsoft Speech API 5.4 local TTS",
+      "voice": "Microsoft Zira Desktop - English (United States)",
+      "transcript": {
+        "vi": "I often study on Monday",
+        "en": "I often study on Monday"
+      },
+      "captions": {
+        "vi": "I often study on Monday",
+        "en": "I often study on Monday"
+      }
+    },
+    {
+      "id": "media-likes-abilities-listen",
+      "type": "audio",
+      "objectKey": "content/audio/course-a1-v3/media-likes-abilities-listen.wav",
+      "assetPath": "media/media-likes-abilities-listen.wav",
+      "checksum": "sha256:869e4f631ac23c1f193a27b32fa0679134d710cbd1ebfd206fdf093d1c274777",
+      "locale": "en",
+      "durationMs": 1409,
+      "license": "Project-owned synthetic media; content-owner review required",
+      "source": "https://learn.microsoft.com/windows/win32/speech/sapi-5-3",
+      "generator": "Microsoft Speech API 5.4 local TTS",
+      "voice": "Microsoft Zira Desktop - English (United States)",
+      "transcript": {
+        "vi": "like",
+        "en": "like"
+      },
+      "captions": {
+        "vi": "like",
+        "en": "like"
+      }
+    },
+    {
+      "id": "media-likes-abilities-dictation",
+      "type": "audio",
+      "objectKey": "content/audio/course-a1-v3/media-likes-abilities-dictation.wav",
+      "assetPath": "media/media-likes-abilities-dictation.wav",
+      "checksum": "sha256:4479664ac12d544f94fd601e96047480cd9f9a5ac94d8cb86f67eeaeb39e0091",
+      "locale": "en",
+      "durationMs": 1649,
+      "license": "Project-owned synthetic media; content-owner review required",
+      "source": "https://learn.microsoft.com/windows/win32/speech/sapi-5-3",
+      "generator": "Microsoft Speech API 5.4 local TTS",
+      "voice": "Microsoft Zira Desktop - English (United States)",
+      "transcript": {
+        "vi": "I can cook",
+        "en": "I can cook"
+      },
+      "captions": {
+        "vi": "I can cook",
+        "en": "I can cook"
+      }
+    },
+    {
+      "id": "media-checkpoint-daily-life-listen",
+      "type": "audio",
+      "objectKey": "content/audio/course-a1-v3/media-checkpoint-daily-life-listen.wav",
+      "assetPath": "media/media-checkpoint-daily-life-listen.wav",
+      "checksum": "sha256:d5f78769148a6b32aca5497fb596267dde5eace0165203bbe202b5660047d38e",
+      "locale": "en",
+      "durationMs": 1599,
+      "license": "Project-owned synthetic media; content-owner review required",
+      "source": "https://learn.microsoft.com/windows/win32/speech/sapi-5-3",
+      "generator": "Microsoft Speech API 5.4 local TTS",
+      "voice": "Microsoft Zira Desktop - English (United States)",
+      "transcript": {
+        "vi": "routine",
+        "en": "routine"
+      },
+      "captions": {
+        "vi": "routine",
+        "en": "routine"
+      }
+    },
+    {
+      "id": "media-checkpoint-daily-life-dictation",
+      "type": "audio",
+      "objectKey": "content/audio/course-a1-v3/media-checkpoint-daily-life-dictation.wav",
+      "assetPath": "media/media-checkpoint-daily-life-dictation.wav",
+      "checksum": "sha256:eb9b6d6a0e4b28a1744f3f7efd2fff4a6079c6c18e1310068f253eb5a51bf4ec",
+      "locale": "en",
+      "durationMs": 2609,
+      "license": "Project-owned synthetic media; content-owner review required",
+      "source": "https://learn.microsoft.com/windows/win32/speech/sapi-5-3",
+      "generator": "Microsoft Speech API 5.4 local TTS",
+      "voice": "Microsoft Zira Desktop - English (United States)",
+      "transcript": {
+        "vi": "I like music and I can cook",
+        "en": "I like music and I can cook"
+      },
+      "captions": {
+        "vi": "I like music and I can cook",
+        "en": "I like music and I can cook"
+      }
+    },
+    {
+      "id": "media-food-drink-listen",
+      "type": "audio",
+      "objectKey": "content/audio/course-a1-v3/media-food-drink-listen.wav",
+      "assetPath": "media/media-food-drink-listen.wav",
+      "checksum": "sha256:478199e9750c849d66bec661ba4b82a02cb6b219f58f753f9eb77293f5d6ea65",
+      "locale": "en",
+      "durationMs": 1429,
+      "license": "Project-owned synthetic media; content-owner review required",
+      "source": "https://learn.microsoft.com/windows/win32/speech/sapi-5-3",
+      "generator": "Microsoft Speech API 5.4 local TTS",
+      "voice": "Microsoft Zira Desktop - English (United States)",
+      "transcript": {
+        "vi": "water",
+        "en": "water"
+      },
+      "captions": {
+        "vi": "water",
+        "en": "water"
+      }
+    },
+    {
+      "id": "media-food-drink-dictation",
+      "type": "audio",
+      "objectKey": "content/audio/course-a1-v3/media-food-drink-dictation.wav",
+      "assetPath": "media/media-food-drink-dictation.wav",
+      "checksum": "sha256:aeb12030619eca1c2491fc3c1538be1c6d27866ea0a8ed1961f9678162da6e15",
+      "locale": "en",
+      "durationMs": 1999,
+      "license": "Project-owned synthetic media; content-owner review required",
+      "source": "https://learn.microsoft.com/windows/win32/speech/sapi-5-3",
+      "generator": "Microsoft Speech API 5.4 local TTS",
+      "voice": "Microsoft Zira Desktop - English (United States)",
+      "transcript": {
+        "vi": "I would like water",
+        "en": "I would like water"
+      },
+      "captions": {
+        "vi": "I would like water",
+        "en": "I would like water"
+      }
+    },
+    {
+      "id": "media-order-politely-listen",
+      "type": "audio",
+      "objectKey": "content/audio/course-a1-v3/media-order-politely-listen.wav",
+      "assetPath": "media/media-order-politely-listen.wav",
+      "checksum": "sha256:372fd2ce0de8b3d11f60da5009a504a36feebd3ead7c99affe8fe1fc8b2f2267",
+      "locale": "en",
+      "durationMs": 1574,
+      "license": "Project-owned synthetic media; content-owner review required",
+      "source": "https://learn.microsoft.com/windows/win32/speech/sapi-5-3",
+      "generator": "Microsoft Speech API 5.4 local TTS",
+      "voice": "Microsoft Zira Desktop - English (United States)",
+      "transcript": {
+        "vi": "please",
+        "en": "please"
+      },
+      "captions": {
+        "vi": "please",
+        "en": "please"
+      }
+    },
+    {
+      "id": "media-order-politely-dictation",
+      "type": "audio",
+      "objectKey": "content/audio/course-a1-v3/media-order-politely-dictation.wav",
+      "assetPath": "media/media-order-politely-dictation.wav",
+      "checksum": "sha256:d68059e0029cf2e1eac03675c203a7567369d17b66ff9a103b71a8a5ce76b26f",
+      "locale": "en",
+      "durationMs": 2409,
+      "license": "Project-owned synthetic media; content-owner review required",
+      "source": "https://learn.microsoft.com/windows/win32/speech/sapi-5-3",
+      "generator": "Microsoft Speech API 5.4 local TTS",
+      "voice": "Microsoft Zira Desktop - English (United States)",
+      "transcript": {
+        "vi": "Can I have tea please",
+        "en": "Can I have tea please"
+      },
+      "captions": {
+        "vi": "Can I have tea please",
+        "en": "Can I have tea please"
+      }
+    },
+    {
+      "id": "media-prices-quantities-listen",
+      "type": "audio",
+      "objectKey": "content/audio/course-a1-v3/media-prices-quantities-listen.wav",
+      "assetPath": "media/media-prices-quantities-listen.wav",
+      "checksum": "sha256:0db6a070b123aa683f43aa91221a803c64b8349771dcee3d861ecd1612cde6f1",
+      "locale": "en",
+      "durationMs": 1574,
+      "license": "Project-owned synthetic media; content-owner review required",
+      "source": "https://learn.microsoft.com/windows/win32/speech/sapi-5-3",
+      "generator": "Microsoft Speech API 5.4 local TTS",
+      "voice": "Microsoft Zira Desktop - English (United States)",
+      "transcript": {
+        "vi": "price",
+        "en": "price"
+      },
+      "captions": {
+        "vi": "price",
+        "en": "price"
+      }
+    },
+    {
+      "id": "media-prices-quantities-dictation",
+      "type": "audio",
+      "objectKey": "content/audio/course-a1-v3/media-prices-quantities-dictation.wav",
+      "assetPath": "media/media-prices-quantities-dictation.wav",
+      "checksum": "sha256:f2ea146af1b0ec74ec83bb3288005891a677bb7e545d6d2665b742340b161b95",
+      "locale": "en",
+      "durationMs": 2339,
+      "license": "Project-owned synthetic media; content-owner review required",
+      "source": "https://learn.microsoft.com/windows/win32/speech/sapi-5-3",
+      "generator": "Microsoft Speech API 5.4 local TTS",
+      "voice": "Microsoft Zira Desktop - English (United States)",
+      "transcript": {
+        "vi": "Two coffees please",
+        "en": "Two coffees please"
+      },
+      "captions": {
+        "vi": "Two coffees please",
+        "en": "Two coffees please"
+      }
+    },
+    {
+      "id": "media-places-directions-listen",
+      "type": "audio",
+      "objectKey": "content/audio/course-a1-v3/media-places-directions-listen.wav",
+      "assetPath": "media/media-places-directions-listen.wav",
+      "checksum": "sha256:5bf23304e15682451ed7f36c36305141748df4f086d25767b63a191ae9b7fb7b",
+      "locale": "en",
+      "durationMs": 1849,
+      "license": "Project-owned synthetic media; content-owner review required",
+      "source": "https://learn.microsoft.com/windows/win32/speech/sapi-5-3",
+      "generator": "Microsoft Speech API 5.4 local TTS",
+      "voice": "Microsoft Zira Desktop - English (United States)",
+      "transcript": {
+        "vi": "station",
+        "en": "station"
+      },
+      "captions": {
+        "vi": "station",
+        "en": "station"
+      }
+    },
+    {
+      "id": "media-places-directions-dictation",
+      "type": "audio",
+      "objectKey": "content/audio/course-a1-v3/media-places-directions-dictation.wav",
+      "assetPath": "media/media-places-directions-dictation.wav",
+      "checksum": "sha256:a107ca5a9aff55b4a90651c5bebcd769100635be8f07205d240dfd6580d235e3",
+      "locale": "en",
+      "durationMs": 2474,
+      "license": "Project-owned synthetic media; content-owner review required",
+      "source": "https://learn.microsoft.com/windows/win32/speech/sapi-5-3",
+      "generator": "Microsoft Speech API 5.4 local TTS",
+      "voice": "Microsoft Zira Desktop - English (United States)",
+      "transcript": {
+        "vi": "Go straight and turn left",
+        "en": "Go straight and turn left"
+      },
+      "captions": {
+        "vi": "Go straight and turn left",
+        "en": "Go straight and turn left"
+      }
+    },
+    {
+      "id": "media-checkpoint-survival-exchange-listen",
+      "type": "audio",
+      "objectKey": "content/audio/course-a1-v3/media-checkpoint-survival-exchange-listen.wav",
+      "assetPath": "media/media-checkpoint-survival-exchange-listen.wav",
+      "checksum": "sha256:a0cb1b6d2ee674903d94ba3ff24d821b1c67b231e5b2e4481922fd8dff81a08f",
+      "locale": "en",
+      "durationMs": 1514,
+      "license": "Project-owned synthetic media; content-owner review required",
+      "source": "https://learn.microsoft.com/windows/win32/speech/sapi-5-3",
+      "generator": "Microsoft Speech API 5.4 local TTS",
+      "voice": "Microsoft Zira Desktop - English (United States)",
+      "transcript": {
+        "vi": "repeat",
+        "en": "repeat"
+      },
+      "captions": {
+        "vi": "repeat",
+        "en": "repeat"
+      }
+    },
+    {
+      "id": "media-checkpoint-survival-exchange-dictation",
+      "type": "audio",
+      "objectKey": "content/audio/course-a1-v3/media-checkpoint-survival-exchange-dictation.wav",
+      "assetPath": "media/media-checkpoint-survival-exchange-dictation.wav",
+      "checksum": "sha256:b0c57e596ee82d680c828acddf8f5dbc15435c9aa05b3a4d395da72bd692e582",
+      "locale": "en",
+      "durationMs": 2499,
+      "license": "Project-owned synthetic media; content-owner review required",
+      "source": "https://learn.microsoft.com/windows/win32/speech/sapi-5-3",
+      "generator": "Microsoft Speech API 5.4 local TTS",
+      "voice": "Microsoft Zira Desktop - English (United States)",
+      "transcript": {
+        "vi": "Please repeat more slowly",
+        "en": "Please repeat more slowly"
+      },
+      "captions": {
+        "vi": "Please repeat more slowly",
+        "en": "Please repeat more slowly"
+      }
+    }
+  ]
+}

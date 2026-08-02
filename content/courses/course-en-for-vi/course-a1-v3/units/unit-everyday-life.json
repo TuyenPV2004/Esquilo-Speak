@@ -1,0 +1,63 @@
+{
+  "id": "unit-everyday-life",
+  "courseId": "course-en-for-vi",
+  "courseVersion": 3,
+  "position": 3,
+  "title": {
+    "vi": "Cuộc sống hằng ngày",
+    "en": "Everyday life"
+  },
+  "guidebook": {
+    "summary": {
+      "vi": "Trao đổi về hoạt động, thời gian, lịch, sở thích và khả năng.",
+      "en": "Exchange information about routines, time, schedules, likes and abilities."
+    },
+    "keyPhrases": [
+      {
+        "vi": "Tôi học lúc tám giờ.",
+        "en": "I study at eight."
+      },
+      {
+        "vi": "Tôi có thể nấu ăn.",
+        "en": "I can cook."
+      }
+    ],
+    "grammarNotes": [
+      {
+        "vi": "Dùng hiện tại đơn cho thói quen.",
+        "en": "present simple"
+      },
+      {
+        "vi": "Dùng can hoặc cannot trước động từ nguyên mẫu.",
+        "en": "can / cannot"
+      }
+    ],
+    "examples": [
+      {
+        "vi": "Tôi học lúc tám giờ.",
+        "en": "I study at eight."
+      },
+      {
+        "vi": "Tôi có thể nấu ăn.",
+        "en": "I can cook."
+      }
+    ]
+  },
+  "outcomeIds": [
+    "outcome-daily-actions",
+    "outcome-time-schedule",
+    "outcome-days-frequency",
+    "outcome-likes-abilities",
+    "outcome-checkpoint-daily-life"
+  ],
+  "prerequisiteUnitIds": [
+    "unit-personal-information"
+  ],
+  "lessonIds": [
+    "lesson-daily-actions",
+    "lesson-time-schedule",
+    "lesson-days-frequency",
+    "lesson-likes-abilities",
+    "lesson-checkpoint-daily-life"
+  ]
+}

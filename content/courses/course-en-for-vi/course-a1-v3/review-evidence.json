@@ -1,0 +1,45 @@
+{
+  "checklistVersion": "content-review-v3-technical",
+  "checks": [
+    {
+      "id": "schema",
+      "passed": true,
+      "evidence": "All schemas and A1 course-shape invariants pass"
+    },
+    {
+      "id": "references",
+      "passed": true,
+      "evidence": "Stable references and recurrence declarations pass"
+    },
+    {
+      "id": "pedagogy",
+      "passed": true,
+      "evidence": "Automated progression and four-checkpoint structure audit pass; content-owner sign-off remains required"
+    },
+    {
+      "id": "language",
+      "passed": true,
+      "evidence": "Bilingual locale completeness and target-language answer integrity pass; content-owner sign-off remains required"
+    },
+    {
+      "id": "cultural-safety",
+      "passed": true,
+      "evidence": "Names, roles and everyday scenarios pass the neutral-scenario audit; content-owner sign-off remains required"
+    },
+    {
+      "id": "media-accessibility",
+      "passed": true,
+      "evidence": "All audio has checksums, transcripts, provenance and a silent path"
+    },
+    {
+      "id": "answer-integrity",
+      "passed": true,
+      "evidence": "Canonical answers pass and are stripped from learner delivery"
+    },
+    {
+      "id": "preview",
+      "passed": true,
+      "evidence": "Learner-safe preview generated for all twenty lessons"
+    }
+  ]
+}

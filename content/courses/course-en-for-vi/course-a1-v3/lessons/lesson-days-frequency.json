@@ -1,0 +1,707 @@
+{
+  "id": "lesson-days-frequency",
+  "courseId": "course-en-for-vi",
+  "courseVersion": 3,
+  "unitId": "unit-everyday-life",
+  "position": 13,
+  "locale": "vi",
+  "requiredLocales": [
+    "vi",
+    "en"
+  ],
+  "title": {
+    "vi": "Ngày và tần suất",
+    "en": "Days and frequency"
+  },
+  "objectives": [
+    {
+      "vi": "Dùng từ vựng và mẫu câu của Ngày và tần suất.",
+      "en": "Use the vocabulary and patterns for Days and frequency."
+    }
+  ],
+  "outcomeIds": [
+    "outcome-days-frequency"
+  ],
+  "prerequisiteLessonIds": [
+    "lesson-time-schedule"
+  ],
+  "revisitsConceptIds": [
+    "concept-daily-actions",
+    "concept-time-schedule"
+  ],
+  "difficulty": "guided",
+  "estimatedMinutes": 8,
+  "exercises": [
+    {
+      "id": "exercise-days-frequency-flashcard",
+      "type": "flashcard",
+      "learningItem": {
+        "skill": "vocabulary",
+        "conceptIds": [
+          "concept-days-frequency"
+        ],
+        "outcomeIds": [
+          "outcome-days-frequency"
+        ],
+        "prerequisiteConceptIds": [],
+        "difficulty": "introductory"
+      },
+      "presentation": {
+        "prompt": {
+          "vi": "Ngày và tần suất: flashcard.",
+          "en": "Days and frequency: flashcard."
+        },
+        "hint": {
+          "vi": "Gợi ý: I work on Monday.",
+          "en": "Hint: I work on Monday."
+        },
+        "mediaIds": [],
+        "accessibility": {
+          "screenReaderLabel": {
+            "vi": "Ngày và tần suất: flashcard.",
+            "en": "Days and frequency: flashcard."
+          },
+          "requiresAudio": false,
+          "supportsSilentMode": true
+        }
+      },
+      "answerPolicy": {
+        "kind": "self_assessment",
+        "maxAttempts": 2
+      },
+      "feedbackRule": {
+        "correct": {
+          "vi": "Chính xác.",
+          "en": "Correct."
+        },
+        "incorrect": {
+          "vi": "Hãy thử lại.",
+          "en": "Try again."
+        },
+        "explanation": {
+          "vi": "Đáp án theo mẫu mục tiêu của bài Ngày và tần suất.",
+          "en": "The answer follows the target pattern for Days and frequency."
+        },
+        "hintPolicy": {
+          "revealAfterAttempts": 1,
+          "countsAsAssisted": true
+        }
+      }
+    },
+    {
+      "id": "exercise-days-frequency-choice",
+      "type": "multiple_choice",
+      "learningItem": {
+        "skill": "vocabulary",
+        "conceptIds": [
+          "concept-days-frequency"
+        ],
+        "outcomeIds": [
+          "outcome-days-frequency"
+        ],
+        "prerequisiteConceptIds": [],
+        "difficulty": "guided"
+      },
+      "presentation": {
+        "prompt": {
+          "vi": "Ngày và tần suất: choice.",
+          "en": "Days and frequency: choice."
+        },
+        "hint": {
+          "vi": "Gợi ý: I work on Monday.",
+          "en": "Hint: I work on Monday."
+        },
+        "mediaIds": [],
+        "accessibility": {
+          "screenReaderLabel": {
+            "vi": "Ngày và tần suất: choice.",
+            "en": "Days and frequency: choice."
+          },
+          "requiresAudio": false,
+          "supportsSilentMode": true
+        },
+        "options": [
+          {
+            "id": "option-meaning",
+            "text": {
+              "vi": "thứ Hai",
+              "en": "thứ Hai"
+            }
+          },
+          {
+            "id": "option-distractor",
+            "text": {
+              "vi": "thường xuyên",
+              "en": "thường xuyên"
+            }
+          }
+        ]
+      },
+      "answerPolicy": {
+        "kind": "option_id",
+        "correctOptionId": "option-meaning",
+        "maxAttempts": 2
+      },
+      "feedbackRule": {
+        "correct": {
+          "vi": "Chính xác.",
+          "en": "Correct."
+        },
+        "incorrect": {
+          "vi": "Hãy thử lại.",
+          "en": "Try again."
+        },
+        "explanation": {
+          "vi": "Đáp án theo mẫu mục tiêu của bài Ngày và tần suất.",
+          "en": "The answer follows the target pattern for Days and frequency."
+        },
+        "hintPolicy": {
+          "revealAfterAttempts": 1,
+          "countsAsAssisted": true
+        }
+      }
+    },
+    {
+      "id": "exercise-days-frequency-listen-select",
+      "type": "listen_select",
+      "learningItem": {
+        "skill": "listening",
+        "conceptIds": [
+          "concept-days-frequency"
+        ],
+        "outcomeIds": [
+          "outcome-days-frequency"
+        ],
+        "prerequisiteConceptIds": [],
+        "difficulty": "guided"
+      },
+      "presentation": {
+        "prompt": {
+          "vi": "Ngày và tần suất: listen select.",
+          "en": "Days and frequency: listen select."
+        },
+        "hint": {
+          "vi": "Gợi ý: I work on Monday.",
+          "en": "Hint: I work on Monday."
+        },
+        "mediaIds": [
+          "media-days-frequency-listen"
+        ],
+        "accessibility": {
+          "screenReaderLabel": {
+            "vi": "Ngày và tần suất: listen select.",
+            "en": "Days and frequency: listen select."
+          },
+          "requiresAudio": false,
+          "supportsSilentMode": true
+        },
+        "options": [
+          {
+            "id": "option-first",
+            "text": {
+              "vi": "Monday",
+              "en": "Monday"
+            }
+          },
+          {
+            "id": "option-second",
+            "text": {
+              "vi": "often",
+              "en": "often"
+            }
+          }
+        ],
+        "transcript": {
+          "vi": "Monday",
+          "en": "Monday"
+        }
+      },
+      "answerPolicy": {
+        "kind": "option_id",
+        "correctOptionId": "option-first",
+        "maxAttempts": 2
+      },
+      "feedbackRule": {
+        "correct": {
+          "vi": "Chính xác.",
+          "en": "Correct."
+        },
+        "incorrect": {
+          "vi": "Hãy thử lại.",
+          "en": "Try again."
+        },
+        "explanation": {
+          "vi": "Đáp án theo mẫu mục tiêu của bài Ngày và tần suất.",
+          "en": "The answer follows the target pattern for Days and frequency."
+        },
+        "hintPolicy": {
+          "revealAfterAttempts": 1,
+          "countsAsAssisted": true
+        }
+      }
+    },
+    {
+      "id": "exercise-days-frequency-matching",
+      "type": "matching",
+      "learningItem": {
+        "skill": "vocabulary",
+        "conceptIds": [
+          "concept-days-frequency"
+        ],
+        "outcomeIds": [
+          "outcome-days-frequency"
+        ],
+        "prerequisiteConceptIds": [],
+        "difficulty": "guided"
+      },
+      "presentation": {
+        "prompt": {
+          "vi": "Ngày và tần suất: matching.",
+          "en": "Days and frequency: matching."
+        },
+        "hint": {
+          "vi": "Gợi ý: I work on Monday.",
+          "en": "Hint: I work on Monday."
+        },
+        "mediaIds": [],
+        "accessibility": {
+          "screenReaderLabel": {
+            "vi": "Ngày và tần suất: matching.",
+            "en": "Days and frequency: matching."
+          },
+          "requiresAudio": false,
+          "supportsSilentMode": true
+        },
+        "leftItems": [
+          {
+            "id": "left-one",
+            "text": {
+              "vi": "Monday",
+              "en": "Monday"
+            }
+          },
+          {
+            "id": "left-two",
+            "text": {
+              "vi": "often",
+              "en": "often"
+            }
+          }
+        ],
+        "rightItems": [
+          {
+            "id": "right-one",
+            "text": {
+              "vi": "thứ Hai",
+              "en": "thứ Hai"
+            }
+          },
+          {
+            "id": "right-two",
+            "text": {
+              "vi": "thường xuyên",
+              "en": "thường xuyên"
+            }
+          }
+        ]
+      },
+      "answerPolicy": {
+        "kind": "pair_set",
+        "correctPairs": [
+          {
+            "leftId": "left-one",
+            "rightId": "right-one"
+          },
+          {
+            "leftId": "left-two",
+            "rightId": "right-two"
+          }
+        ],
+        "maxAttempts": 2
+      },
+      "feedbackRule": {
+        "correct": {
+          "vi": "Chính xác.",
+          "en": "Correct."
+        },
+        "incorrect": {
+          "vi": "Hãy thử lại.",
+          "en": "Try again."
+        },
+        "explanation": {
+          "vi": "Đáp án theo mẫu mục tiêu của bài Ngày và tần suất.",
+          "en": "The answer follows the target pattern for Days and frequency."
+        },
+        "hintPolicy": {
+          "revealAfterAttempts": 1,
+          "countsAsAssisted": true
+        }
+      }
+    },
+    {
+      "id": "exercise-days-frequency-ordering",
+      "type": "ordering",
+      "learningItem": {
+        "skill": "grammar",
+        "conceptIds": [
+          "concept-days-frequency"
+        ],
+        "outcomeIds": [
+          "outcome-days-frequency"
+        ],
+        "prerequisiteConceptIds": [],
+        "difficulty": "guided"
+      },
+      "presentation": {
+        "prompt": {
+          "vi": "Ngày và tần suất: ordering.",
+          "en": "Days and frequency: ordering."
+        },
+        "hint": {
+          "vi": "Gợi ý: I work on Monday.",
+          "en": "Hint: I work on Monday."
+        },
+        "mediaIds": [],
+        "accessibility": {
+          "screenReaderLabel": {
+            "vi": "Ngày và tần suất: ordering.",
+            "en": "Days and frequency: ordering."
+          },
+          "requiresAudio": false,
+          "supportsSilentMode": true
+        },
+        "items": [
+          {
+            "id": "item-1",
+            "text": {
+              "vi": "I",
+              "en": "I"
+            }
+          },
+          {
+            "id": "item-2",
+            "text": {
+              "vi": "work",
+              "en": "work"
+            }
+          },
+          {
+            "id": "item-3",
+            "text": {
+              "vi": "on",
+              "en": "on"
+            }
+          },
+          {
+            "id": "item-4",
+            "text": {
+              "vi": "Monday",
+              "en": "Monday"
+            }
+          }
+        ]
+      },
+      "answerPolicy": {
+        "kind": "ordered_ids",
+        "correctOrder": [
+          "item-1",
+          "item-2",
+          "item-3",
+          "item-4"
+        ],
+        "maxAttempts": 2
+      },
+      "feedbackRule": {
+        "correct": {
+          "vi": "Chính xác.",
+          "en": "Correct."
+        },
+        "incorrect": {
+          "vi": "Hãy thử lại.",
+          "en": "Try again."
+        },
+        "explanation": {
+          "vi": "Đáp án theo mẫu mục tiêu của bài Ngày và tần suất.",
+          "en": "The answer follows the target pattern for Days and frequency."
+        },
+        "hintPolicy": {
+          "revealAfterAttempts": 1,
+          "countsAsAssisted": true
+        }
+      }
+    },
+    {
+      "id": "exercise-days-frequency-fill-blank",
+      "type": "fill_blank",
+      "learningItem": {
+        "skill": "writing",
+        "conceptIds": [
+          "concept-days-frequency"
+        ],
+        "outcomeIds": [
+          "outcome-days-frequency"
+        ],
+        "prerequisiteConceptIds": [],
+        "difficulty": "independent"
+      },
+      "presentation": {
+        "prompt": {
+          "vi": "Ngày và tần suất: fill blank.",
+          "en": "Days and frequency: fill blank."
+        },
+        "hint": {
+          "vi": "Gợi ý: I work on Monday.",
+          "en": "Hint: I work on Monday."
+        },
+        "mediaIds": [],
+        "accessibility": {
+          "screenReaderLabel": {
+            "vi": "Ngày và tần suất: fill blank.",
+            "en": "Days and frequency: fill blank."
+          },
+          "requiresAudio": false,
+          "supportsSilentMode": true
+        }
+      },
+      "answerPolicy": {
+        "kind": "normalized_text",
+        "acceptedAnswers": [
+          "I work on Monday."
+        ],
+        "caseSensitive": false,
+        "maxAttempts": 2
+      },
+      "feedbackRule": {
+        "correct": {
+          "vi": "Chính xác.",
+          "en": "Correct."
+        },
+        "incorrect": {
+          "vi": "Hãy thử lại.",
+          "en": "Try again."
+        },
+        "explanation": {
+          "vi": "Đáp án theo mẫu mục tiêu của bài Ngày và tần suất.",
+          "en": "The answer follows the target pattern for Days and frequency."
+        },
+        "hintPolicy": {
+          "revealAfterAttempts": 1,
+          "countsAsAssisted": true
+        }
+      }
+    },
+    {
+      "id": "exercise-days-frequency-true-false",
+      "type": "true_false",
+      "learningItem": {
+        "skill": "reading",
+        "conceptIds": [
+          "concept-days-frequency"
+        ],
+        "outcomeIds": [
+          "outcome-days-frequency"
+        ],
+        "prerequisiteConceptIds": [],
+        "difficulty": "guided"
+      },
+      "presentation": {
+        "prompt": {
+          "vi": "Ngày và tần suất: true false.",
+          "en": "Days and frequency: true false."
+        },
+        "hint": {
+          "vi": "Gợi ý: I work on Monday.",
+          "en": "Hint: I work on Monday."
+        },
+        "mediaIds": [],
+        "accessibility": {
+          "screenReaderLabel": {
+            "vi": "Ngày và tần suất: true false.",
+            "en": "Days and frequency: true false."
+          },
+          "requiresAudio": false,
+          "supportsSilentMode": true
+        }
+      },
+      "answerPolicy": {
+        "kind": "boolean",
+        "correctAnswer": true,
+        "maxAttempts": 2
+      },
+      "feedbackRule": {
+        "correct": {
+          "vi": "Chính xác.",
+          "en": "Correct."
+        },
+        "incorrect": {
+          "vi": "Hãy thử lại.",
+          "en": "Try again."
+        },
+        "explanation": {
+          "vi": "Đáp án theo mẫu mục tiêu của bài Ngày và tần suất.",
+          "en": "The answer follows the target pattern for Days and frequency."
+        },
+        "hintPolicy": {
+          "revealAfterAttempts": 1,
+          "countsAsAssisted": true
+        }
+      }
+    },
+    {
+      "id": "exercise-days-frequency-comprehension",
+      "type": "comprehension",
+      "learningItem": {
+        "skill": "reading",
+        "conceptIds": [
+          "concept-days-frequency",
+          "concept-daily-actions",
+          "concept-time-schedule"
+        ],
+        "outcomeIds": [
+          "outcome-days-frequency"
+        ],
+        "prerequisiteConceptIds": [],
+        "difficulty": "independent"
+      },
+      "presentation": {
+        "prompt": {
+          "vi": "Ngày và tần suất: comprehension.",
+          "en": "Days and frequency: comprehension."
+        },
+        "hint": {
+          "vi": "Gợi ý: I work on Monday.",
+          "en": "Hint: I work on Monday."
+        },
+        "mediaIds": [],
+        "accessibility": {
+          "screenReaderLabel": {
+            "vi": "Ngày và tần suất: comprehension.",
+            "en": "Days and frequency: comprehension."
+          },
+          "requiresAudio": false,
+          "supportsSilentMode": true
+        },
+        "instruction": {
+          "vi": "I study every day. I study at eight. I work on Monday.",
+          "en": "I study every day. I study at eight. I work on Monday."
+        },
+        "options": [
+          {
+            "id": "option-answer",
+            "text": {
+              "vi": "Monday",
+              "en": "Monday"
+            }
+          },
+          {
+            "id": "option-other",
+            "text": {
+              "vi": "often",
+              "en": "often"
+            }
+          }
+        ]
+      },
+      "answerPolicy": {
+        "kind": "option_id",
+        "correctOptionId": "option-answer",
+        "maxAttempts": 2
+      },
+      "feedbackRule": {
+        "correct": {
+          "vi": "Chính xác.",
+          "en": "Correct."
+        },
+        "incorrect": {
+          "vi": "Hãy thử lại.",
+          "en": "Try again."
+        },
+        "explanation": {
+          "vi": "Đáp án theo mẫu mục tiêu của bài Ngày và tần suất.",
+          "en": "The answer follows the target pattern for Days and frequency."
+        },
+        "hintPolicy": {
+          "revealAfterAttempts": 1,
+          "countsAsAssisted": true
+        }
+      }
+    },
+    {
+      "id": "exercise-days-frequency-dictation",
+      "type": "dictation",
+      "learningItem": {
+        "skill": "listening",
+        "conceptIds": [
+          "concept-days-frequency"
+        ],
+        "outcomeIds": [
+          "outcome-days-frequency"
+        ],
+        "prerequisiteConceptIds": [],
+        "difficulty": "independent"
+      },
+      "presentation": {
+        "prompt": {
+          "vi": "Ngày và tần suất: dictation.",
+          "en": "Days and frequency: dictation."
+        },
+        "hint": {
+          "vi": "Gợi ý: I work on Monday.",
+          "en": "Hint: I work on Monday."
+        },
+        "mediaIds": [
+          "media-days-frequency-dictation"
+        ],
+        "accessibility": {
+          "screenReaderLabel": {
+            "vi": "Ngày và tần suất: dictation.",
+            "en": "Days and frequency: dictation."
+          },
+          "requiresAudio": false,
+          "supportsSilentMode": true
+        },
+        "transcript": {
+          "vi": "I often study on Monday",
+          "en": "I often study on Monday"
+        }
+      },
+      "answerPolicy": {
+        "kind": "normalized_text",
+        "acceptedAnswers": [
+          "I often study on Monday"
+        ],
+        "caseSensitive": false,
+        "maxAttempts": 2
+      },
+      "feedbackRule": {
+        "correct": {
+          "vi": "Chính xác.",
+          "en": "Correct."
+        },
+        "incorrect": {
+          "vi": "Hãy thử lại.",
+          "en": "Try again."
+        },
+        "explanation": {
+          "vi": "Đáp án theo mẫu mục tiêu của bài Ngày và tần suất.",
+          "en": "The answer follows the target pattern for Days and frequency."
+        },
+        "hintPolicy": {
+          "revealAfterAttempts": 1,
+          "countsAsAssisted": true
+        }
+      }
+    }
+  ],
+  "advancedActivities": [
+    {
+      "id": "activity-days-frequency-pronunciation",
+      "activityType": "pronunciation",
+      "contentRef": "3/lesson-days-frequency/pronunciation",
+      "mediaId": "media-days-frequency-dictation",
+      "expectedText": "I often study on Monday",
+      "targetLocale": "en",
+      "feedbackLocale": "vi"
+    }
+  ]
+}

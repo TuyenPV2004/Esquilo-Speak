@@ -1,0 +1,715 @@
+{
+  "id": "lesson-order-politely",
+  "courseId": "course-en-for-vi",
+  "courseVersion": 3,
+  "unitId": "unit-simple-transactions",
+  "position": 17,
+  "locale": "vi",
+  "requiredLocales": [
+    "vi",
+    "en"
+  ],
+  "title": {
+    "vi": "Gọi món lịch sự",
+    "en": "Order politely"
+  },
+  "objectives": [
+    {
+      "vi": "Dùng từ vựng và mẫu câu của Gọi món lịch sự.",
+      "en": "Use the vocabulary and patterns for Order politely."
+    }
+  ],
+  "outcomeIds": [
+    "outcome-order-politely"
+  ],
+  "prerequisiteLessonIds": [
+    "lesson-food-drink"
+  ],
+  "revisitsConceptIds": [
+    "concept-checkpoint-daily-life",
+    "concept-food-drink"
+  ],
+  "difficulty": "guided",
+  "estimatedMinutes": 8,
+  "exercises": [
+    {
+      "id": "exercise-order-politely-flashcard",
+      "type": "flashcard",
+      "learningItem": {
+        "skill": "vocabulary",
+        "conceptIds": [
+          "concept-order-politely"
+        ],
+        "outcomeIds": [
+          "outcome-order-politely"
+        ],
+        "prerequisiteConceptIds": [],
+        "difficulty": "introductory"
+      },
+      "presentation": {
+        "prompt": {
+          "vi": "Gọi món lịch sự: flashcard.",
+          "en": "Order politely: flashcard."
+        },
+        "hint": {
+          "vi": "Gợi ý: Can I have tea, please?",
+          "en": "Hint: Can I have tea, please?"
+        },
+        "mediaIds": [],
+        "accessibility": {
+          "screenReaderLabel": {
+            "vi": "Gọi món lịch sự: flashcard.",
+            "en": "Order politely: flashcard."
+          },
+          "requiresAudio": false,
+          "supportsSilentMode": true
+        }
+      },
+      "answerPolicy": {
+        "kind": "self_assessment",
+        "maxAttempts": 2
+      },
+      "feedbackRule": {
+        "correct": {
+          "vi": "Chính xác.",
+          "en": "Correct."
+        },
+        "incorrect": {
+          "vi": "Hãy thử lại.",
+          "en": "Try again."
+        },
+        "explanation": {
+          "vi": "Đáp án theo mẫu mục tiêu của bài Gọi món lịch sự.",
+          "en": "The answer follows the target pattern for Order politely."
+        },
+        "hintPolicy": {
+          "revealAfterAttempts": 1,
+          "countsAsAssisted": true
+        }
+      }
+    },
+    {
+      "id": "exercise-order-politely-choice",
+      "type": "multiple_choice",
+      "learningItem": {
+        "skill": "vocabulary",
+        "conceptIds": [
+          "concept-order-politely"
+        ],
+        "outcomeIds": [
+          "outcome-order-politely"
+        ],
+        "prerequisiteConceptIds": [],
+        "difficulty": "guided"
+      },
+      "presentation": {
+        "prompt": {
+          "vi": "Gọi món lịch sự: choice.",
+          "en": "Order politely: choice."
+        },
+        "hint": {
+          "vi": "Gợi ý: Can I have tea, please?",
+          "en": "Hint: Can I have tea, please?"
+        },
+        "mediaIds": [],
+        "accessibility": {
+          "screenReaderLabel": {
+            "vi": "Gọi món lịch sự: choice.",
+            "en": "Order politely: choice."
+          },
+          "requiresAudio": false,
+          "supportsSilentMode": true
+        },
+        "options": [
+          {
+            "id": "option-meaning",
+            "text": {
+              "vi": "vui lòng",
+              "en": "vui lòng"
+            }
+          },
+          {
+            "id": "option-distractor",
+            "text": {
+              "vi": "thực đơn",
+              "en": "thực đơn"
+            }
+          }
+        ]
+      },
+      "answerPolicy": {
+        "kind": "option_id",
+        "correctOptionId": "option-meaning",
+        "maxAttempts": 2
+      },
+      "feedbackRule": {
+        "correct": {
+          "vi": "Chính xác.",
+          "en": "Correct."
+        },
+        "incorrect": {
+          "vi": "Hãy thử lại.",
+          "en": "Try again."
+        },
+        "explanation": {
+          "vi": "Đáp án theo mẫu mục tiêu của bài Gọi món lịch sự.",
+          "en": "The answer follows the target pattern for Order politely."
+        },
+        "hintPolicy": {
+          "revealAfterAttempts": 1,
+          "countsAsAssisted": true
+        }
+      }
+    },
+    {
+      "id": "exercise-order-politely-listen-select",
+      "type": "listen_select",
+      "learningItem": {
+        "skill": "listening",
+        "conceptIds": [
+          "concept-order-politely"
+        ],
+        "outcomeIds": [
+          "outcome-order-politely"
+        ],
+        "prerequisiteConceptIds": [],
+        "difficulty": "guided"
+      },
+      "presentation": {
+        "prompt": {
+          "vi": "Gọi món lịch sự: listen select.",
+          "en": "Order politely: listen select."
+        },
+        "hint": {
+          "vi": "Gợi ý: Can I have tea, please?",
+          "en": "Hint: Can I have tea, please?"
+        },
+        "mediaIds": [
+          "media-order-politely-listen"
+        ],
+        "accessibility": {
+          "screenReaderLabel": {
+            "vi": "Gọi món lịch sự: listen select.",
+            "en": "Order politely: listen select."
+          },
+          "requiresAudio": false,
+          "supportsSilentMode": true
+        },
+        "options": [
+          {
+            "id": "option-first",
+            "text": {
+              "vi": "please",
+              "en": "please"
+            }
+          },
+          {
+            "id": "option-second",
+            "text": {
+              "vi": "menu",
+              "en": "menu"
+            }
+          }
+        ],
+        "transcript": {
+          "vi": "please",
+          "en": "please"
+        }
+      },
+      "answerPolicy": {
+        "kind": "option_id",
+        "correctOptionId": "option-first",
+        "maxAttempts": 2
+      },
+      "feedbackRule": {
+        "correct": {
+          "vi": "Chính xác.",
+          "en": "Correct."
+        },
+        "incorrect": {
+          "vi": "Hãy thử lại.",
+          "en": "Try again."
+        },
+        "explanation": {
+          "vi": "Đáp án theo mẫu mục tiêu của bài Gọi món lịch sự.",
+          "en": "The answer follows the target pattern for Order politely."
+        },
+        "hintPolicy": {
+          "revealAfterAttempts": 1,
+          "countsAsAssisted": true
+        }
+      }
+    },
+    {
+      "id": "exercise-order-politely-matching",
+      "type": "matching",
+      "learningItem": {
+        "skill": "vocabulary",
+        "conceptIds": [
+          "concept-order-politely"
+        ],
+        "outcomeIds": [
+          "outcome-order-politely"
+        ],
+        "prerequisiteConceptIds": [],
+        "difficulty": "guided"
+      },
+      "presentation": {
+        "prompt": {
+          "vi": "Gọi món lịch sự: matching.",
+          "en": "Order politely: matching."
+        },
+        "hint": {
+          "vi": "Gợi ý: Can I have tea, please?",
+          "en": "Hint: Can I have tea, please?"
+        },
+        "mediaIds": [],
+        "accessibility": {
+          "screenReaderLabel": {
+            "vi": "Gọi món lịch sự: matching.",
+            "en": "Order politely: matching."
+          },
+          "requiresAudio": false,
+          "supportsSilentMode": true
+        },
+        "leftItems": [
+          {
+            "id": "left-one",
+            "text": {
+              "vi": "please",
+              "en": "please"
+            }
+          },
+          {
+            "id": "left-two",
+            "text": {
+              "vi": "menu",
+              "en": "menu"
+            }
+          }
+        ],
+        "rightItems": [
+          {
+            "id": "right-one",
+            "text": {
+              "vi": "vui lòng",
+              "en": "vui lòng"
+            }
+          },
+          {
+            "id": "right-two",
+            "text": {
+              "vi": "thực đơn",
+              "en": "thực đơn"
+            }
+          }
+        ]
+      },
+      "answerPolicy": {
+        "kind": "pair_set",
+        "correctPairs": [
+          {
+            "leftId": "left-one",
+            "rightId": "right-one"
+          },
+          {
+            "leftId": "left-two",
+            "rightId": "right-two"
+          }
+        ],
+        "maxAttempts": 2
+      },
+      "feedbackRule": {
+        "correct": {
+          "vi": "Chính xác.",
+          "en": "Correct."
+        },
+        "incorrect": {
+          "vi": "Hãy thử lại.",
+          "en": "Try again."
+        },
+        "explanation": {
+          "vi": "Đáp án theo mẫu mục tiêu của bài Gọi món lịch sự.",
+          "en": "The answer follows the target pattern for Order politely."
+        },
+        "hintPolicy": {
+          "revealAfterAttempts": 1,
+          "countsAsAssisted": true
+        }
+      }
+    },
+    {
+      "id": "exercise-order-politely-ordering",
+      "type": "ordering",
+      "learningItem": {
+        "skill": "grammar",
+        "conceptIds": [
+          "concept-order-politely"
+        ],
+        "outcomeIds": [
+          "outcome-order-politely"
+        ],
+        "prerequisiteConceptIds": [],
+        "difficulty": "guided"
+      },
+      "presentation": {
+        "prompt": {
+          "vi": "Gọi món lịch sự: ordering.",
+          "en": "Order politely: ordering."
+        },
+        "hint": {
+          "vi": "Gợi ý: Can I have tea, please?",
+          "en": "Hint: Can I have tea, please?"
+        },
+        "mediaIds": [],
+        "accessibility": {
+          "screenReaderLabel": {
+            "vi": "Gọi món lịch sự: ordering.",
+            "en": "Order politely: ordering."
+          },
+          "requiresAudio": false,
+          "supportsSilentMode": true
+        },
+        "items": [
+          {
+            "id": "item-1",
+            "text": {
+              "vi": "Can",
+              "en": "Can"
+            }
+          },
+          {
+            "id": "item-2",
+            "text": {
+              "vi": "I",
+              "en": "I"
+            }
+          },
+          {
+            "id": "item-3",
+            "text": {
+              "vi": "have",
+              "en": "have"
+            }
+          },
+          {
+            "id": "item-4",
+            "text": {
+              "vi": "tea,",
+              "en": "tea,"
+            }
+          },
+          {
+            "id": "item-5",
+            "text": {
+              "vi": "please",
+              "en": "please"
+            }
+          }
+        ]
+      },
+      "answerPolicy": {
+        "kind": "ordered_ids",
+        "correctOrder": [
+          "item-1",
+          "item-2",
+          "item-3",
+          "item-4",
+          "item-5"
+        ],
+        "maxAttempts": 2
+      },
+      "feedbackRule": {
+        "correct": {
+          "vi": "Chính xác.",
+          "en": "Correct."
+        },
+        "incorrect": {
+          "vi": "Hãy thử lại.",
+          "en": "Try again."
+        },
+        "explanation": {
+          "vi": "Đáp án theo mẫu mục tiêu của bài Gọi món lịch sự.",
+          "en": "The answer follows the target pattern for Order politely."
+        },
+        "hintPolicy": {
+          "revealAfterAttempts": 1,
+          "countsAsAssisted": true
+        }
+      }
+    },
+    {
+      "id": "exercise-order-politely-fill-blank",
+      "type": "fill_blank",
+      "learningItem": {
+        "skill": "writing",
+        "conceptIds": [
+          "concept-order-politely"
+        ],
+        "outcomeIds": [
+          "outcome-order-politely"
+        ],
+        "prerequisiteConceptIds": [],
+        "difficulty": "independent"
+      },
+      "presentation": {
+        "prompt": {
+          "vi": "Gọi món lịch sự: fill blank.",
+          "en": "Order politely: fill blank."
+        },
+        "hint": {
+          "vi": "Gợi ý: Can I have tea, please?",
+          "en": "Hint: Can I have tea, please?"
+        },
+        "mediaIds": [],
+        "accessibility": {
+          "screenReaderLabel": {
+            "vi": "Gọi món lịch sự: fill blank.",
+            "en": "Order politely: fill blank."
+          },
+          "requiresAudio": false,
+          "supportsSilentMode": true
+        }
+      },
+      "answerPolicy": {
+        "kind": "normalized_text",
+        "acceptedAnswers": [
+          "Can I have tea, please?"
+        ],
+        "caseSensitive": false,
+        "maxAttempts": 2
+      },
+      "feedbackRule": {
+        "correct": {
+          "vi": "Chính xác.",
+          "en": "Correct."
+        },
+        "incorrect": {
+          "vi": "Hãy thử lại.",
+          "en": "Try again."
+        },
+        "explanation": {
+          "vi": "Đáp án theo mẫu mục tiêu của bài Gọi món lịch sự.",
+          "en": "The answer follows the target pattern for Order politely."
+        },
+        "hintPolicy": {
+          "revealAfterAttempts": 1,
+          "countsAsAssisted": true
+        }
+      }
+    },
+    {
+      "id": "exercise-order-politely-true-false",
+      "type": "true_false",
+      "learningItem": {
+        "skill": "reading",
+        "conceptIds": [
+          "concept-order-politely"
+        ],
+        "outcomeIds": [
+          "outcome-order-politely"
+        ],
+        "prerequisiteConceptIds": [],
+        "difficulty": "guided"
+      },
+      "presentation": {
+        "prompt": {
+          "vi": "Gọi món lịch sự: true false.",
+          "en": "Order politely: true false."
+        },
+        "hint": {
+          "vi": "Gợi ý: Can I have tea, please?",
+          "en": "Hint: Can I have tea, please?"
+        },
+        "mediaIds": [],
+        "accessibility": {
+          "screenReaderLabel": {
+            "vi": "Gọi món lịch sự: true false.",
+            "en": "Order politely: true false."
+          },
+          "requiresAudio": false,
+          "supportsSilentMode": true
+        }
+      },
+      "answerPolicy": {
+        "kind": "boolean",
+        "correctAnswer": true,
+        "maxAttempts": 2
+      },
+      "feedbackRule": {
+        "correct": {
+          "vi": "Chính xác.",
+          "en": "Correct."
+        },
+        "incorrect": {
+          "vi": "Hãy thử lại.",
+          "en": "Try again."
+        },
+        "explanation": {
+          "vi": "Đáp án theo mẫu mục tiêu của bài Gọi món lịch sự.",
+          "en": "The answer follows the target pattern for Order politely."
+        },
+        "hintPolicy": {
+          "revealAfterAttempts": 1,
+          "countsAsAssisted": true
+        }
+      }
+    },
+    {
+      "id": "exercise-order-politely-comprehension",
+      "type": "comprehension",
+      "learningItem": {
+        "skill": "reading",
+        "conceptIds": [
+          "concept-order-politely",
+          "concept-checkpoint-daily-life",
+          "concept-food-drink"
+        ],
+        "outcomeIds": [
+          "outcome-order-politely"
+        ],
+        "prerequisiteConceptIds": [],
+        "difficulty": "independent"
+      },
+      "presentation": {
+        "prompt": {
+          "vi": "Gọi món lịch sự: comprehension.",
+          "en": "Order politely: comprehension."
+        },
+        "hint": {
+          "vi": "Gợi ý: Can I have tea, please?",
+          "en": "Hint: Can I have tea, please?"
+        },
+        "mediaIds": [],
+        "accessibility": {
+          "screenReaderLabel": {
+            "vi": "Gọi món lịch sự: comprehension.",
+            "en": "Order politely: comprehension."
+          },
+          "requiresAudio": false,
+          "supportsSilentMode": true
+        },
+        "instruction": {
+          "vi": "I study at eight every day. I want water. Can I have tea, please?",
+          "en": "I study at eight every day. I want water. Can I have tea, please?"
+        },
+        "options": [
+          {
+            "id": "option-answer",
+            "text": {
+              "vi": "please",
+              "en": "please"
+            }
+          },
+          {
+            "id": "option-other",
+            "text": {
+              "vi": "menu",
+              "en": "menu"
+            }
+          }
+        ]
+      },
+      "answerPolicy": {
+        "kind": "option_id",
+        "correctOptionId": "option-answer",
+        "maxAttempts": 2
+      },
+      "feedbackRule": {
+        "correct": {
+          "vi": "Chính xác.",
+          "en": "Correct."
+        },
+        "incorrect": {
+          "vi": "Hãy thử lại.",
+          "en": "Try again."
+        },
+        "explanation": {
+          "vi": "Đáp án theo mẫu mục tiêu của bài Gọi món lịch sự.",
+          "en": "The answer follows the target pattern for Order politely."
+        },
+        "hintPolicy": {
+          "revealAfterAttempts": 1,
+          "countsAsAssisted": true
+        }
+      }
+    },
+    {
+      "id": "exercise-order-politely-dictation",
+      "type": "dictation",
+      "learningItem": {
+        "skill": "listening",
+        "conceptIds": [
+          "concept-order-politely"
+        ],
+        "outcomeIds": [
+          "outcome-order-politely"
+        ],
+        "prerequisiteConceptIds": [],
+        "difficulty": "independent"
+      },
+      "presentation": {
+        "prompt": {
+          "vi": "Gọi món lịch sự: dictation.",
+          "en": "Order politely: dictation."
+        },
+        "hint": {
+          "vi": "Gợi ý: Can I have tea, please?",
+          "en": "Hint: Can I have tea, please?"
+        },
+        "mediaIds": [
+          "media-order-politely-dictation"
+        ],
+        "accessibility": {
+          "screenReaderLabel": {
+            "vi": "Gọi món lịch sự: dictation.",
+            "en": "Order politely: dictation."
+          },
+          "requiresAudio": false,
+          "supportsSilentMode": true
+        },
+        "transcript": {
+          "vi": "Can I have tea please",
+          "en": "Can I have tea please"
+        }
+      },
+      "answerPolicy": {
+        "kind": "normalized_text",
+        "acceptedAnswers": [
+          "Can I have tea please"
+        ],
+        "caseSensitive": false,
+        "maxAttempts": 2
+      },
+      "feedbackRule": {
+        "correct": {
+          "vi": "Chính xác.",
+          "en": "Correct."
+        },
+        "incorrect": {
+          "vi": "Hãy thử lại.",
+          "en": "Try again."
+        },
+        "explanation": {
+          "vi": "Đáp án theo mẫu mục tiêu của bài Gọi món lịch sự.",
+          "en": "The answer follows the target pattern for Order politely."
+        },
+        "hintPolicy": {
+          "revealAfterAttempts": 1,
+          "countsAsAssisted": true
+        }
+      }
+    }
+  ],
+  "advancedActivities": [
+    {
+      "id": "activity-order-politely-pronunciation",
+      "activityType": "pronunciation",
+      "contentRef": "4/lesson-order-politely/pronunciation",
+      "mediaId": "media-order-politely-dictation",
+      "expectedText": "Can I have tea please",
+      "targetLocale": "en",
+      "feedbackLocale": "vi"
+    }
+  ]
+}

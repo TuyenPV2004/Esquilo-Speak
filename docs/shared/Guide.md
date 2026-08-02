@@ -500,6 +500,26 @@ session mới.
 6. Bật cỡ chữ 200% và TalkBack: mọi mode phải dùng được bằng nút/control native, lỗi và
    summary được đọc, không phụ thuộc màu, tốc độ, swipe hoặc gesture ẩn.
 
+### Kiểm tra Giai đoạn 7 — Course A1 hoàn chỉnh
+
+1. Chọn English A1 rồi mở Learn. Xác nhận có 4 unit/20 lesson; mở **Tóm tắt kiến thức
+   unit** để kiểm tra summary, key phrase và grammar note dùng đúng ngôn ngữ giao diện.
+2. Chọn **Tải toàn course**. Xác nhận UI nêu package version, giới hạn MB và TTL; sau khi
+   hoàn tất, tắt mạng rồi mở một lesson ở mỗi unit và phát một audio đã tải.
+3. Làm placement với score đủ vào Unit 3. Xác nhận Unit 3 được đề xuất đầu tiên nhưng Unit 2
+   và Unit 1 vẫn chọn được; chọn Unit 2 phải mở đúng lesson đầu mà không tự đánh dấu các lesson
+   trước đó hoàn thành.
+4. Hoàn thành checkpoint từng unit và kiểm tra speaking/writing/conversation activity. Ở
+   checkpoint cuối, đối chiếu listening, speaking, reading và writing đều có evidence.
+5. Hoàn tất toàn course. Summary phải ghi rõ completion A1 là bản ghi nội bộ
+   `non-accredited`, không dùng từ ngữ khiến learner hiểu là chứng chỉ được công nhận.
+6. Với course version 2 đã có tiến độ, nâng sang version 3 và xác nhận compatibility version 2
+   giữ mastery/progress. Version không tương thích phải làm theo `require_restart`, không âm
+   thầm trộn evidence giữa hai semantics.
+7. Ghi thiết bị/API Android, flavor, trạng thái online/offline, package size thực tế và bằng
+   chứng hoàn tất 20 lesson vào báo cáo closed-testing. Không đóng gate nếu chỉ chạy widget test
+   hoặc build APK mà chưa hoàn tất hành trình trên Android target.
+
 ## 10. Dừng môi trường
 
 Nhấn `Ctrl+C` tại cửa sổ Flutter và backend. Sau đó, từ thư mục gốc:

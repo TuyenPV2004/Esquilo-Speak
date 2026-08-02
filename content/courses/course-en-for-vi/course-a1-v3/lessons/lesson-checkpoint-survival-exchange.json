@@ -1,0 +1,727 @@
+{
+  "id": "lesson-checkpoint-survival-exchange",
+  "courseId": "course-en-for-vi",
+  "courseVersion": 3,
+  "unitId": "unit-simple-transactions",
+  "position": 20,
+  "locale": "vi",
+  "requiredLocales": [
+    "vi",
+    "en"
+  ],
+  "title": {
+    "vi": "Checkpoint: Giao tiếp sinh tồn",
+    "en": "Checkpoint: Survival exchange"
+  },
+  "objectives": [
+    {
+      "vi": "Dùng từ vựng và mẫu câu của Checkpoint: Giao tiếp sinh tồn.",
+      "en": "Use the vocabulary and patterns for Checkpoint: Survival exchange."
+    }
+  ],
+  "outcomeIds": [
+    "outcome-checkpoint-survival-exchange"
+  ],
+  "prerequisiteLessonIds": [
+    "lesson-places-directions"
+  ],
+  "revisitsConceptIds": [
+    "concept-prices-quantities",
+    "concept-places-directions"
+  ],
+  "difficulty": "checkpoint",
+  "estimatedMinutes": 12,
+  "exercises": [
+    {
+      "id": "exercise-checkpoint-survival-exchange-flashcard",
+      "type": "flashcard",
+      "learningItem": {
+        "skill": "vocabulary",
+        "conceptIds": [
+          "concept-checkpoint-survival-exchange"
+        ],
+        "outcomeIds": [
+          "outcome-checkpoint-survival-exchange"
+        ],
+        "prerequisiteConceptIds": [],
+        "difficulty": "introductory"
+      },
+      "presentation": {
+        "prompt": {
+          "vi": "Checkpoint: Giao tiếp sinh tồn: flashcard.",
+          "en": "Checkpoint: Survival exchange: flashcard."
+        },
+        "hint": {
+          "vi": "Gợi ý: Please repeat more slowly.",
+          "en": "Hint: Please repeat more slowly."
+        },
+        "mediaIds": [],
+        "accessibility": {
+          "screenReaderLabel": {
+            "vi": "Checkpoint: Giao tiếp sinh tồn: flashcard.",
+            "en": "Checkpoint: Survival exchange: flashcard."
+          },
+          "requiresAudio": false,
+          "supportsSilentMode": true
+        }
+      },
+      "answerPolicy": {
+        "kind": "self_assessment",
+        "maxAttempts": 2
+      },
+      "feedbackRule": {
+        "correct": {
+          "vi": "Chính xác.",
+          "en": "Correct."
+        },
+        "incorrect": {
+          "vi": "Hãy thử lại.",
+          "en": "Try again."
+        },
+        "explanation": {
+          "vi": "Đáp án theo mẫu mục tiêu của bài Checkpoint: Giao tiếp sinh tồn.",
+          "en": "The answer follows the target pattern for Checkpoint: Survival exchange."
+        },
+        "hintPolicy": {
+          "revealAfterAttempts": 1,
+          "countsAsAssisted": true
+        }
+      }
+    },
+    {
+      "id": "exercise-checkpoint-survival-exchange-choice",
+      "type": "multiple_choice",
+      "learningItem": {
+        "skill": "vocabulary",
+        "conceptIds": [
+          "concept-checkpoint-survival-exchange"
+        ],
+        "outcomeIds": [
+          "outcome-checkpoint-survival-exchange"
+        ],
+        "prerequisiteConceptIds": [],
+        "difficulty": "guided"
+      },
+      "presentation": {
+        "prompt": {
+          "vi": "Checkpoint: Giao tiếp sinh tồn: choice.",
+          "en": "Checkpoint: Survival exchange: choice."
+        },
+        "hint": {
+          "vi": "Gợi ý: Please repeat more slowly.",
+          "en": "Hint: Please repeat more slowly."
+        },
+        "mediaIds": [],
+        "accessibility": {
+          "screenReaderLabel": {
+            "vi": "Checkpoint: Giao tiếp sinh tồn: choice.",
+            "en": "Checkpoint: Survival exchange: choice."
+          },
+          "requiresAudio": false,
+          "supportsSilentMode": true
+        },
+        "options": [
+          {
+            "id": "option-meaning",
+            "text": {
+              "vi": "nhắc lại",
+              "en": "nhắc lại"
+            }
+          },
+          {
+            "id": "option-distractor",
+            "text": {
+              "vi": "chậm",
+              "en": "chậm"
+            }
+          }
+        ]
+      },
+      "answerPolicy": {
+        "kind": "option_id",
+        "correctOptionId": "option-meaning",
+        "maxAttempts": 2
+      },
+      "feedbackRule": {
+        "correct": {
+          "vi": "Chính xác.",
+          "en": "Correct."
+        },
+        "incorrect": {
+          "vi": "Hãy thử lại.",
+          "en": "Try again."
+        },
+        "explanation": {
+          "vi": "Đáp án theo mẫu mục tiêu của bài Checkpoint: Giao tiếp sinh tồn.",
+          "en": "The answer follows the target pattern for Checkpoint: Survival exchange."
+        },
+        "hintPolicy": {
+          "revealAfterAttempts": 1,
+          "countsAsAssisted": true
+        }
+      }
+    },
+    {
+      "id": "exercise-checkpoint-survival-exchange-listen-select",
+      "type": "listen_select",
+      "learningItem": {
+        "skill": "listening",
+        "conceptIds": [
+          "concept-checkpoint-survival-exchange"
+        ],
+        "outcomeIds": [
+          "outcome-checkpoint-survival-exchange"
+        ],
+        "prerequisiteConceptIds": [],
+        "difficulty": "guided"
+      },
+      "presentation": {
+        "prompt": {
+          "vi": "Checkpoint: Giao tiếp sinh tồn: listen select.",
+          "en": "Checkpoint: Survival exchange: listen select."
+        },
+        "hint": {
+          "vi": "Gợi ý: Please repeat more slowly.",
+          "en": "Hint: Please repeat more slowly."
+        },
+        "mediaIds": [
+          "media-checkpoint-survival-exchange-listen"
+        ],
+        "accessibility": {
+          "screenReaderLabel": {
+            "vi": "Checkpoint: Giao tiếp sinh tồn: listen select.",
+            "en": "Checkpoint: Survival exchange: listen select."
+          },
+          "requiresAudio": false,
+          "supportsSilentMode": true
+        },
+        "options": [
+          {
+            "id": "option-first",
+            "text": {
+              "vi": "repeat",
+              "en": "repeat"
+            }
+          },
+          {
+            "id": "option-second",
+            "text": {
+              "vi": "slowly",
+              "en": "slowly"
+            }
+          }
+        ],
+        "transcript": {
+          "vi": "repeat",
+          "en": "repeat"
+        }
+      },
+      "answerPolicy": {
+        "kind": "option_id",
+        "correctOptionId": "option-first",
+        "maxAttempts": 2
+      },
+      "feedbackRule": {
+        "correct": {
+          "vi": "Chính xác.",
+          "en": "Correct."
+        },
+        "incorrect": {
+          "vi": "Hãy thử lại.",
+          "en": "Try again."
+        },
+        "explanation": {
+          "vi": "Đáp án theo mẫu mục tiêu của bài Checkpoint: Giao tiếp sinh tồn.",
+          "en": "The answer follows the target pattern for Checkpoint: Survival exchange."
+        },
+        "hintPolicy": {
+          "revealAfterAttempts": 1,
+          "countsAsAssisted": true
+        }
+      }
+    },
+    {
+      "id": "exercise-checkpoint-survival-exchange-matching",
+      "type": "matching",
+      "learningItem": {
+        "skill": "vocabulary",
+        "conceptIds": [
+          "concept-checkpoint-survival-exchange"
+        ],
+        "outcomeIds": [
+          "outcome-checkpoint-survival-exchange"
+        ],
+        "prerequisiteConceptIds": [],
+        "difficulty": "guided"
+      },
+      "presentation": {
+        "prompt": {
+          "vi": "Checkpoint: Giao tiếp sinh tồn: matching.",
+          "en": "Checkpoint: Survival exchange: matching."
+        },
+        "hint": {
+          "vi": "Gợi ý: Please repeat more slowly.",
+          "en": "Hint: Please repeat more slowly."
+        },
+        "mediaIds": [],
+        "accessibility": {
+          "screenReaderLabel": {
+            "vi": "Checkpoint: Giao tiếp sinh tồn: matching.",
+            "en": "Checkpoint: Survival exchange: matching."
+          },
+          "requiresAudio": false,
+          "supportsSilentMode": true
+        },
+        "leftItems": [
+          {
+            "id": "left-one",
+            "text": {
+              "vi": "repeat",
+              "en": "repeat"
+            }
+          },
+          {
+            "id": "left-two",
+            "text": {
+              "vi": "slowly",
+              "en": "slowly"
+            }
+          }
+        ],
+        "rightItems": [
+          {
+            "id": "right-one",
+            "text": {
+              "vi": "nhắc lại",
+              "en": "nhắc lại"
+            }
+          },
+          {
+            "id": "right-two",
+            "text": {
+              "vi": "chậm",
+              "en": "chậm"
+            }
+          }
+        ]
+      },
+      "answerPolicy": {
+        "kind": "pair_set",
+        "correctPairs": [
+          {
+            "leftId": "left-one",
+            "rightId": "right-one"
+          },
+          {
+            "leftId": "left-two",
+            "rightId": "right-two"
+          }
+        ],
+        "maxAttempts": 2
+      },
+      "feedbackRule": {
+        "correct": {
+          "vi": "Chính xác.",
+          "en": "Correct."
+        },
+        "incorrect": {
+          "vi": "Hãy thử lại.",
+          "en": "Try again."
+        },
+        "explanation": {
+          "vi": "Đáp án theo mẫu mục tiêu của bài Checkpoint: Giao tiếp sinh tồn.",
+          "en": "The answer follows the target pattern for Checkpoint: Survival exchange."
+        },
+        "hintPolicy": {
+          "revealAfterAttempts": 1,
+          "countsAsAssisted": true
+        }
+      }
+    },
+    {
+      "id": "exercise-checkpoint-survival-exchange-ordering",
+      "type": "ordering",
+      "learningItem": {
+        "skill": "grammar",
+        "conceptIds": [
+          "concept-checkpoint-survival-exchange"
+        ],
+        "outcomeIds": [
+          "outcome-checkpoint-survival-exchange"
+        ],
+        "prerequisiteConceptIds": [],
+        "difficulty": "guided"
+      },
+      "presentation": {
+        "prompt": {
+          "vi": "Checkpoint: Giao tiếp sinh tồn: ordering.",
+          "en": "Checkpoint: Survival exchange: ordering."
+        },
+        "hint": {
+          "vi": "Gợi ý: Please repeat more slowly.",
+          "en": "Hint: Please repeat more slowly."
+        },
+        "mediaIds": [],
+        "accessibility": {
+          "screenReaderLabel": {
+            "vi": "Checkpoint: Giao tiếp sinh tồn: ordering.",
+            "en": "Checkpoint: Survival exchange: ordering."
+          },
+          "requiresAudio": false,
+          "supportsSilentMode": true
+        },
+        "items": [
+          {
+            "id": "item-1",
+            "text": {
+              "vi": "Please",
+              "en": "Please"
+            }
+          },
+          {
+            "id": "item-2",
+            "text": {
+              "vi": "repeat",
+              "en": "repeat"
+            }
+          },
+          {
+            "id": "item-3",
+            "text": {
+              "vi": "more",
+              "en": "more"
+            }
+          },
+          {
+            "id": "item-4",
+            "text": {
+              "vi": "slowly",
+              "en": "slowly"
+            }
+          }
+        ]
+      },
+      "answerPolicy": {
+        "kind": "ordered_ids",
+        "correctOrder": [
+          "item-1",
+          "item-2",
+          "item-3",
+          "item-4"
+        ],
+        "maxAttempts": 2
+      },
+      "feedbackRule": {
+        "correct": {
+          "vi": "Chính xác.",
+          "en": "Correct."
+        },
+        "incorrect": {
+          "vi": "Hãy thử lại.",
+          "en": "Try again."
+        },
+        "explanation": {
+          "vi": "Đáp án theo mẫu mục tiêu của bài Checkpoint: Giao tiếp sinh tồn.",
+          "en": "The answer follows the target pattern for Checkpoint: Survival exchange."
+        },
+        "hintPolicy": {
+          "revealAfterAttempts": 1,
+          "countsAsAssisted": true
+        }
+      }
+    },
+    {
+      "id": "exercise-checkpoint-survival-exchange-fill-blank",
+      "type": "fill_blank",
+      "learningItem": {
+        "skill": "writing",
+        "conceptIds": [
+          "concept-checkpoint-survival-exchange"
+        ],
+        "outcomeIds": [
+          "outcome-checkpoint-survival-exchange"
+        ],
+        "prerequisiteConceptIds": [],
+        "difficulty": "independent"
+      },
+      "presentation": {
+        "prompt": {
+          "vi": "Checkpoint: Giao tiếp sinh tồn: fill blank.",
+          "en": "Checkpoint: Survival exchange: fill blank."
+        },
+        "hint": {
+          "vi": "Gợi ý: Please repeat more slowly.",
+          "en": "Hint: Please repeat more slowly."
+        },
+        "mediaIds": [],
+        "accessibility": {
+          "screenReaderLabel": {
+            "vi": "Checkpoint: Giao tiếp sinh tồn: fill blank.",
+            "en": "Checkpoint: Survival exchange: fill blank."
+          },
+          "requiresAudio": false,
+          "supportsSilentMode": true
+        }
+      },
+      "answerPolicy": {
+        "kind": "normalized_text",
+        "acceptedAnswers": [
+          "Please repeat more slowly."
+        ],
+        "caseSensitive": false,
+        "maxAttempts": 2
+      },
+      "feedbackRule": {
+        "correct": {
+          "vi": "Chính xác.",
+          "en": "Correct."
+        },
+        "incorrect": {
+          "vi": "Hãy thử lại.",
+          "en": "Try again."
+        },
+        "explanation": {
+          "vi": "Đáp án theo mẫu mục tiêu của bài Checkpoint: Giao tiếp sinh tồn.",
+          "en": "The answer follows the target pattern for Checkpoint: Survival exchange."
+        },
+        "hintPolicy": {
+          "revealAfterAttempts": 1,
+          "countsAsAssisted": true
+        }
+      }
+    },
+    {
+      "id": "exercise-checkpoint-survival-exchange-true-false",
+      "type": "true_false",
+      "learningItem": {
+        "skill": "reading",
+        "conceptIds": [
+          "concept-checkpoint-survival-exchange"
+        ],
+        "outcomeIds": [
+          "outcome-checkpoint-survival-exchange"
+        ],
+        "prerequisiteConceptIds": [],
+        "difficulty": "guided"
+      },
+      "presentation": {
+        "prompt": {
+          "vi": "Checkpoint: Giao tiếp sinh tồn: true false.",
+          "en": "Checkpoint: Survival exchange: true false."
+        },
+        "hint": {
+          "vi": "Gợi ý: Please repeat more slowly.",
+          "en": "Hint: Please repeat more slowly."
+        },
+        "mediaIds": [],
+        "accessibility": {
+          "screenReaderLabel": {
+            "vi": "Checkpoint: Giao tiếp sinh tồn: true false.",
+            "en": "Checkpoint: Survival exchange: true false."
+          },
+          "requiresAudio": false,
+          "supportsSilentMode": true
+        }
+      },
+      "answerPolicy": {
+        "kind": "boolean",
+        "correctAnswer": true,
+        "maxAttempts": 2
+      },
+      "feedbackRule": {
+        "correct": {
+          "vi": "Chính xác.",
+          "en": "Correct."
+        },
+        "incorrect": {
+          "vi": "Hãy thử lại.",
+          "en": "Try again."
+        },
+        "explanation": {
+          "vi": "Đáp án theo mẫu mục tiêu của bài Checkpoint: Giao tiếp sinh tồn.",
+          "en": "The answer follows the target pattern for Checkpoint: Survival exchange."
+        },
+        "hintPolicy": {
+          "revealAfterAttempts": 1,
+          "countsAsAssisted": true
+        }
+      }
+    },
+    {
+      "id": "exercise-checkpoint-survival-exchange-comprehension",
+      "type": "comprehension",
+      "learningItem": {
+        "skill": "reading",
+        "conceptIds": [
+          "concept-checkpoint-survival-exchange",
+          "concept-food-drink",
+          "concept-order-politely",
+          "concept-prices-quantities",
+          "concept-places-directions"
+        ],
+        "outcomeIds": [
+          "outcome-checkpoint-survival-exchange"
+        ],
+        "prerequisiteConceptIds": [],
+        "difficulty": "independent"
+      },
+      "presentation": {
+        "prompt": {
+          "vi": "Checkpoint: Giao tiếp sinh tồn: comprehension.",
+          "en": "Checkpoint: Survival exchange: comprehension."
+        },
+        "hint": {
+          "vi": "Gợi ý: Please repeat more slowly.",
+          "en": "Hint: Please repeat more slowly."
+        },
+        "mediaIds": [],
+        "accessibility": {
+          "screenReaderLabel": {
+            "vi": "Checkpoint: Giao tiếp sinh tồn: comprehension.",
+            "en": "Checkpoint: Survival exchange: comprehension."
+          },
+          "requiresAudio": false,
+          "supportsSilentMode": true
+        },
+        "instruction": {
+          "vi": "I want water. Can I have tea, please? How much is this? The station is on the left. Please repeat more slowly.",
+          "en": "I want water. Can I have tea, please? How much is this? The station is on the left. Please repeat more slowly."
+        },
+        "options": [
+          {
+            "id": "option-answer",
+            "text": {
+              "vi": "repeat",
+              "en": "repeat"
+            }
+          },
+          {
+            "id": "option-other",
+            "text": {
+              "vi": "slowly",
+              "en": "slowly"
+            }
+          }
+        ]
+      },
+      "answerPolicy": {
+        "kind": "option_id",
+        "correctOptionId": "option-answer",
+        "maxAttempts": 2
+      },
+      "feedbackRule": {
+        "correct": {
+          "vi": "Chính xác.",
+          "en": "Correct."
+        },
+        "incorrect": {
+          "vi": "Hãy thử lại.",
+          "en": "Try again."
+        },
+        "explanation": {
+          "vi": "Đáp án theo mẫu mục tiêu của bài Checkpoint: Giao tiếp sinh tồn.",
+          "en": "The answer follows the target pattern for Checkpoint: Survival exchange."
+        },
+        "hintPolicy": {
+          "revealAfterAttempts": 1,
+          "countsAsAssisted": true
+        }
+      }
+    },
+    {
+      "id": "exercise-checkpoint-survival-exchange-dictation",
+      "type": "dictation",
+      "learningItem": {
+        "skill": "listening",
+        "conceptIds": [
+          "concept-checkpoint-survival-exchange"
+        ],
+        "outcomeIds": [
+          "outcome-checkpoint-survival-exchange"
+        ],
+        "prerequisiteConceptIds": [],
+        "difficulty": "checkpoint"
+      },
+      "presentation": {
+        "prompt": {
+          "vi": "Checkpoint: Giao tiếp sinh tồn: dictation.",
+          "en": "Checkpoint: Survival exchange: dictation."
+        },
+        "hint": {
+          "vi": "Gợi ý: Please repeat more slowly.",
+          "en": "Hint: Please repeat more slowly."
+        },
+        "mediaIds": [
+          "media-checkpoint-survival-exchange-dictation"
+        ],
+        "accessibility": {
+          "screenReaderLabel": {
+            "vi": "Checkpoint: Giao tiếp sinh tồn: dictation.",
+            "en": "Checkpoint: Survival exchange: dictation."
+          },
+          "requiresAudio": false,
+          "supportsSilentMode": true
+        },
+        "transcript": {
+          "vi": "Please repeat more slowly",
+          "en": "Please repeat more slowly"
+        }
+      },
+      "answerPolicy": {
+        "kind": "normalized_text",
+        "acceptedAnswers": [
+          "Please repeat more slowly"
+        ],
+        "caseSensitive": false,
+        "maxAttempts": 2
+      },
+      "feedbackRule": {
+        "correct": {
+          "vi": "Chính xác.",
+          "en": "Correct."
+        },
+        "incorrect": {
+          "vi": "Hãy thử lại.",
+          "en": "Try again."
+        },
+        "explanation": {
+          "vi": "Đáp án theo mẫu mục tiêu của bài Checkpoint: Giao tiếp sinh tồn.",
+          "en": "The answer follows the target pattern for Checkpoint: Survival exchange."
+        },
+        "hintPolicy": {
+          "revealAfterAttempts": 1,
+          "countsAsAssisted": true
+        }
+      }
+    }
+  ],
+  "advancedActivities": [
+    {
+      "id": "activity-checkpoint-survival-exchange-pronunciation",
+      "activityType": "pronunciation",
+      "contentRef": "4/lesson-checkpoint-survival-exchange/pronunciation",
+      "mediaId": "media-checkpoint-survival-exchange-dictation",
+      "expectedText": "Please repeat more slowly",
+      "targetLocale": "en",
+      "feedbackLocale": "vi"
+    },
+    {
+      "id": "activity-checkpoint-survival-exchange-writing",
+      "activityType": "writing",
+      "contentRef": "4/lesson-checkpoint-survival-exchange/writing",
+      "mediaId": "media-checkpoint-survival-exchange-dictation",
+      "expectedText": "Please repeat more slowly.",
+      "targetLocale": "en",
+      "feedbackLocale": "vi"
+    },
+    {
+      "id": "activity-checkpoint-survival-exchange-conversation",
+      "activityType": "conversation",
+      "contentRef": "4/lesson-checkpoint-survival-exchange/conversation",
+      "mediaId": "media-checkpoint-survival-exchange-dictation",
+      "expectedText": "Please repeat more slowly",
+      "targetLocale": "en",
+      "feedbackLocale": "vi"
+    }
+  ]
+}

@@ -106,6 +106,9 @@ public class CurriculumContentService {
                     summary.put("estimatedMinutes", lesson.get("estimatedMinutes"));
                     summary.put("unitId", rs.getString("unit_id"));
                     summary.put("unitTitle", unit.get("title"));
+                    if (unit.containsKey("guidebook")) {
+                        summary.put("unitGuidebook", unit.get("guidebook"));
+                    }
                     summary.put("position", rs.getInt("position"));
                     return summary;
                 })

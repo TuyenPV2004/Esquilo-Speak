@@ -192,6 +192,74 @@ class CurriculumContentPublishingIntegrationTest {
         org.junit.jupiter.api.Assertions.assertEquals(5L, schedules);
     }
 
+    @Test
+    void publishesCompleteA1CourseWithGuidebooksPoliciesAndLearnerSafeDelivery()
+            throws Exception {
+        String courseId = "course-a1-full-fixture";
+        int version = 3;
+        String draft;
+        try (var stream = Objects.requireNonNull(getClass()
+                .getResourceAsStream("/content/course-a1-v3-admin-draft.json"))) {
+            draft = new String(stream.readAllBytes(), StandardCharsets.UTF_8);
+        }
+        draft = draft.replace("\"lesson-", "\"lesson-full-")
+                .replace("\"unit-", "\"unit-full-");
+
+        mockMvc.perform(put("/api/admin/v1/content/courses/{courseId}/versions/{version}",
+                                courseId, version)
+                        .with(contentStaffJwt())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(draft))
+                .andExpect(status().isCreated());
+        transition(courseId, version, "review", null);
+        transition(courseId, version, "approved", null);
+        transition(courseId, version, "published", null);
+
+        mockMvc.perform(get("/api/mobile/v1/courses")
+                        .param("sourceLanguage", "vi")
+                        .param("targetLanguage", "en"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.items[?(@.id == 'course-a1-full-fixture')].version")
+                        .value(version))
+                .andExpect(jsonPath("$.items[?(@.id == 'course-a1-full-fixture')].completionAssessment.recordType")
+                        .value("non_accredited_completion"))
+                .andExpect(jsonPath("$.items[?(@.id == 'course-a1-full-fixture')].versionMigrationPolicy.compatibleFromCourseVersion")
+                        .value(2))
+                .andExpect(jsonPath("$.items[?(@.id == 'course-a1-full-fixture')].offlinePackagePolicy.packageVersion")
+                        .value(3));
+
+        mockMvc.perform(get("/api/mobile/v1/courses/{courseId}/lessons", courseId))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.items.length()").value(20))
+                .andExpect(jsonPath("$.items[0].unitGuidebook.keyPhrases.length()").value(2))
+                .andExpect(jsonPath("$.items[19].unitId")
+                        .value("unit-full-simple-transactions"));
+
+        mockMvc.perform(get("/api/mobile/v1/lessons/{lessonId}",
+                                "lesson-full-checkpoint-survival-exchange")
+                        .param("version", String.valueOf(version)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.exercises.length()").value(9))
+                .andExpect(jsonPath("$.advancedActivities.length()").value(3))
+                .andExpect(jsonPath("$.exercises[1].correctOptionId").doesNotExist())
+                .andExpect(jsonPath("$.exercises[5].acceptedAnswers").doesNotExist())
+                .andExpect(jsonPath("$.exercises[8].media.checksum").exists());
+
+        JsonNode fixture = objectMapper.readTree(draft);
+        int lessonCount = 0;
+        int exerciseCount = 0;
+        for (JsonNode unit : fixture.get("units")) {
+            org.junit.jupiter.api.Assertions.assertTrue(unit.has("guidebook"));
+            org.junit.jupiter.api.Assertions.assertEquals(5, unit.get("lessons").size());
+            lessonCount += unit.get("lessons").size();
+            for (JsonNode lesson : unit.get("lessons")) {
+                exerciseCount += lesson.get("exercises").size();
+            }
+        }
+        org.junit.jupiter.api.Assertions.assertEquals(20, lessonCount);
+        org.junit.jupiter.api.Assertions.assertEquals(180, exerciseCount);
+    }
+
     private java.util.Map<String, Object> correctResponse(JsonNode exercise) {
         String type = exercise.get("type").asString();
         return switch (type) {

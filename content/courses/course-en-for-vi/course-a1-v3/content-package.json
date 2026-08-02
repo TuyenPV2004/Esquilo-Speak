@@ -1,0 +1,34 @@
+{
+  "schemaVersion": 1,
+  "course": "course.json",
+  "units": [
+    "units/unit-first-contact.json",
+    "units/unit-personal-information.json",
+    "units/unit-everyday-life.json",
+    "units/unit-simple-transactions.json"
+  ],
+  "lessons": [
+    "lessons/lesson-greetings.json",
+    "lessons/lesson-name.json",
+    "lessons/lesson-how-are-you.json",
+    "lessons/lesson-numbers-age.json",
+    "lessons/lesson-checkpoint-first-contact.json",
+    "lessons/lesson-country-city.json",
+    "lessons/lesson-contact-details.json",
+    "lessons/lesson-family-people.json",
+    "lessons/lesson-jobs-roles.json",
+    "lessons/lesson-checkpoint-personal-profile.json",
+    "lessons/lesson-daily-actions.json",
+    "lessons/lesson-time-schedule.json",
+    "lessons/lesson-days-frequency.json",
+    "lessons/lesson-likes-abilities.json",
+    "lessons/lesson-checkpoint-daily-life.json",
+    "lessons/lesson-food-drink.json",
+    "lessons/lesson-order-politely.json",
+    "lessons/lesson-prices-quantities.json",
+    "lessons/lesson-places-directions.json",
+    "lessons/lesson-checkpoint-survival-exchange.json"
+  ],
+  "mediaManifest": "media-manifest.json",
+  "reviewEvidence": "review-evidence.json"
+}

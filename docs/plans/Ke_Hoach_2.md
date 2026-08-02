@@ -335,23 +335,30 @@ Mở rộng từ Unit 1 đã được kiểm chứng thành course A1 đủ dùn
 
 ### Checklist
 
-- [ ] Hoàn thiện Unit 2 — Thông tin cá nhân.
-- [ ] Hoàn thiện Unit 3 — Cuộc sống hằng ngày.
-- [ ] Hoàn thiện Unit 4 — Giao tiếp trong tình huống.
-- [ ] Mỗi unit có guidebook/tóm tắt kiến thức và checkpoint.
-- [ ] Vocabulary/grammar được interleave và tái xuất hiện theo curriculum map.
-- [ ] Listening, speaking, reading và writing có tỷ lệ evidence phù hợp A1.
-- [ ] Placement đề xuất đúng điểm bắt đầu nhưng cho learner chọn mức thấp hơn.
-- [ ] Completion assessment lấy mẫu nhiều skill.
+- [x] Hoàn thiện Unit 2 — Thông tin cá nhân.
+- [x] Hoàn thiện Unit 3 — Cuộc sống hằng ngày.
+- [x] Hoàn thiện Unit 4 — Giao tiếp trong tình huống.
+- [x] Mỗi unit có guidebook/tóm tắt kiến thức và checkpoint.
+- [x] Vocabulary/grammar được interleave và tái xuất hiện theo curriculum map.
+- [x] Listening, speaking, reading và writing có tỷ lệ evidence phù hợp A1.
+- [x] Placement đề xuất đúng điểm bắt đầu nhưng cho learner chọn mức thấp hơn.
+- [x] Completion assessment lấy mẫu nhiều skill.
 - [ ] Toàn bộ content qua language, pedagogy, cultural, media và accessibility review.
-- [ ] Có version migration policy cho learner đang học khi course được sửa.
-- [ ] Full-course offline package có dung lượng, version và cache policy rõ ràng.
+- [x] Có version migration policy cho learner đang học khi course được sửa.
+- [x] Full-course offline package có dung lượng, version và cache policy rõ ràng.
 
 ### Gate
 
-- [ ] Có tối thiểu 4 unit/20 lesson đã publish và learner-safe.
+- [x] Có tối thiểu 4 unit/20 lesson đã publish và learner-safe.
 - [ ] Learner hoàn thành được toàn course trên Android closed-testing.
-- [ ] A1 completion vẫn được mô tả đúng là non-accredited nếu chưa có công nhận ngoài.
+- [x] A1 completion vẫn được mô tả đúng là non-accredited nếu chưa có công nhận ngoài.
+
+Evidence kỹ thuật ngày 2026-08-02: package `course-a1-v3` có 4 unit/20 lesson/180 exercise,
+4 guidebook/checkpoint và 40 WAV; pipeline kiểm tra recurrence, skill ratio, checksum và
+learner-safe preview. Integration đi trọn lifecycle publish trên PostgreSQL/Testcontainers;
+mobile có guidebook, placement lower-start choice, full-course lesson/media download và nhãn
+non-accredited. Content-owner language/pedagogy/cultural/media sign-off và Android closed-test
+20 lesson chưa có bằng chứng nên hai checkbox tương ứng vẫn mở.
 
 ## Giai đoạn 8 — Product quality, analytics và personalization
 

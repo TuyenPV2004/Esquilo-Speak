@@ -15,11 +15,13 @@ class LearningFlowScreen extends StatelessWidget {
   const LearningFlowScreen({
     required this.viewModel,
     this.onPlayMedia,
+    this.onDownloadMedia,
     super.key,
   });
 
   final LearningViewModel viewModel;
   final Future<void> Function(String mediaId)? onPlayMedia;
+  final Future<void> Function(String mediaId)? onDownloadMedia;
 
   @override
   Widget build(BuildContext context) {
@@ -91,6 +93,11 @@ class LearningFlowScreen extends StatelessWidget {
         progress: viewModel.courseProgress,
         downloadStatuses: viewModel.unitDownloadStatuses,
         downloadingUnitId: viewModel.downloadingUnitId,
+        course: viewModel.selectedCourse,
+        courseDownloadStatus: viewModel.courseDownloadStatus,
+        downloadingCourse: viewModel.downloadingCourse,
+        onDownloadCourse: () =>
+            viewModel.downloadCourse(downloadMedia: onDownloadMedia),
         onDownloadUnit: viewModel.downloadUnit,
         onSelected: viewModel.chooseLesson,
         actionLabel: strings.startLesson,
@@ -313,6 +320,10 @@ class _Lessons extends StatelessWidget {
     required this.progress,
     required this.downloadStatuses,
     required this.downloadingUnitId,
+    required this.course,
+    required this.courseDownloadStatus,
+    required this.downloadingCourse,
+    required this.onDownloadCourse,
     required this.onDownloadUnit,
     required this.onSelected,
     required this.actionLabel,
@@ -324,6 +335,10 @@ class _Lessons extends StatelessWidget {
   final CourseProgress? progress;
   final Map<String, UnitDownloadStatus> downloadStatuses;
   final String? downloadingUnitId;
+  final Course? course;
+  final CourseDownloadStatus? courseDownloadStatus;
+  final bool downloadingCourse;
+  final VoidCallback onDownloadCourse;
   final ValueChanged<String> onDownloadUnit;
   final ValueChanged<LessonSummary> onSelected;
   final String actionLabel;
@@ -346,10 +361,57 @@ class _Lessons extends StatelessWidget {
     return ListView.separated(
       key: const ValueKey('lessons'),
       padding: const EdgeInsets.all(16),
-      itemCount: groups.length,
+      itemCount: groups.length + 1,
       separatorBuilder: (_, _) => const SizedBox(height: 16),
       itemBuilder: (context, index) {
-        final entry = groups.entries.elementAt(index);
+        if (index == 0) {
+          final policy = course?.offlinePackagePolicy;
+          return Card(
+            child: Padding(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Text(
+                    strings.offlineCourseTitle,
+                    style: Theme.of(context).textTheme.titleMedium,
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    policy == null
+                        ? strings.offlineCourseDescription
+                        : strings.offlineCoursePolicy(
+                            policy.packageVersion,
+                            (policy.maxBytes / 1048576).ceil(),
+                            policy.cacheTtlDays,
+                          ),
+                  ),
+                  const SizedBox(height: 12),
+                  OutlinedButton.icon(
+                    key: const ValueKey('download-course'),
+                    onPressed: downloadingCourse ? null : onDownloadCourse,
+                    icon: downloadingCourse
+                        ? const SizedBox.square(
+                            dimension: 20,
+                            child: CircularProgressIndicator(strokeWidth: 2),
+                          )
+                        : Icon(
+                            courseDownloadStatus?.downloaded == true
+                                ? Icons.offline_pin_outlined
+                                : Icons.download_for_offline_outlined,
+                          ),
+                    label: Text(
+                      courseDownloadStatus?.downloaded == true
+                          ? strings.courseDownloaded
+                          : strings.downloadCourse,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          );
+        }
+        final entry = groups.entries.elementAt(index - 1);
         final unitLessons = entry.value;
         final first = unitLessons.first;
         final status = downloadStatuses[entry.key];
@@ -374,6 +436,50 @@ class _Lessons extends StatelessWidget {
                 ),
                 const SizedBox(height: 4),
                 Text(strings.unitProgress(completedCount, unitLessons.length)),
+                if (first.unitGuidebook != null) ...[
+                  const SizedBox(height: 8),
+                  ExpansionTile(
+                    key: ValueKey('guidebook-${entry.key}'),
+                    tilePadding: EdgeInsets.zero,
+                    title: Text(strings.unitGuidebook),
+                    children: [
+                      Align(
+                        alignment: AlignmentDirectional.centerStart,
+                        child: Text(
+                          localized(
+                            first.unitGuidebook!.summary,
+                            _locale(context),
+                            defaultLocale: first.locale,
+                          ),
+                        ),
+                      ),
+                      for (final phrase in first.unitGuidebook!.keyPhrases)
+                        ListTile(
+                          contentPadding: EdgeInsets.zero,
+                          leading: const Icon(Icons.chat_bubble_outline),
+                          title: Text(
+                            localized(
+                              phrase,
+                              _locale(context),
+                              defaultLocale: first.locale,
+                            ),
+                          ),
+                        ),
+                      for (final note in first.unitGuidebook!.grammarNotes)
+                        ListTile(
+                          contentPadding: EdgeInsets.zero,
+                          leading: const Icon(Icons.menu_book_outlined),
+                          title: Text(
+                            localized(
+                              note,
+                              _locale(context),
+                              defaultLocale: first.locale,
+                            ),
+                          ),
+                        ),
+                    ],
+                  ),
+                ],
                 const SizedBox(height: 12),
                 OutlinedButton.icon(
                   key: ValueKey('download-unit-${entry.key}'),
@@ -575,6 +681,25 @@ class _Progress extends StatelessWidget {
               const SizedBox(height: 20),
               LinearProgressIndicator(value: value, minHeight: 12),
               const SizedBox(height: 20),
+              if (!isPractice &&
+                  total > 0 &&
+                  progress.completedExerciseCount == total) ...[
+                Card(
+                  color: Theme.of(context).colorScheme.primaryContainer,
+                  child: ListTile(
+                    leading: const Icon(Icons.workspace_premium_outlined),
+                    title: Text(
+                      AppLocalizations.of(context).courseCompletionTitle,
+                    ),
+                    subtitle: Text(
+                      AppLocalizations.of(
+                        context,
+                      ).courseCompletionNonAccredited,
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 20),
+              ],
               Card(
                 child: Padding(
                   padding: const EdgeInsets.all(AppSpacing.md),

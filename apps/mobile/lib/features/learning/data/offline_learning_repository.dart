@@ -9,6 +9,7 @@ class OfflineLearningRepository
         LearningRepository,
         LessonResumeStore,
         UnitDownloadStore,
+        CourseDownloadStore,
         PracticeHistoryStore {
   OfflineLearningRepository(this._remote, this._sync, this._database);
 
@@ -235,6 +236,67 @@ class OfflineLearningRepository
       unitId: unitId,
       downloadedLessonCount: lessons.length,
       totalLessonCount: lessons.length,
+      updatedAt: updatedAt,
+    );
+  }
+
+  String _courseDownloadKey(String courseId) =>
+      'learning.download.$courseId.course';
+
+  @override
+  Future<CourseDownloadStatus> courseDownloadStatus({
+    required Course course,
+    required List<LessonSummary> lessons,
+  }) async {
+    var downloaded = 0;
+    for (final summary in lessons) {
+      if (await _database.cachedJson(
+            'learning.lesson.${summary.id}.${summary.version}',
+          ) !=
+          null) {
+        downloaded += 1;
+      }
+    }
+    final manifest = await _database.cachedJson(_courseDownloadKey(course.id));
+    return CourseDownloadStatus(
+      courseId: course.id,
+      downloadedLessonCount: downloaded,
+      totalLessonCount: lessons.length,
+      packageVersion: course.offlinePackagePolicy?.packageVersion ?? 1,
+      updatedAt: manifest?['updatedAt'] == null
+          ? null
+          : DateTime.tryParse(manifest!['updatedAt'] as String),
+    );
+  }
+
+  @override
+  Future<CourseDownloadStatus> downloadCourse({
+    required Course course,
+    required List<LessonSummary> lessons,
+  }) async {
+    final unitIds = lessons
+        .map((item) => item.unitId)
+        .whereType<String>()
+        .toSet();
+    for (final unitId in unitIds) {
+      await downloadUnit(
+        courseId: course.id,
+        unitId: unitId,
+        lessons: lessons.where((item) => item.unitId == unitId).toList(),
+      );
+    }
+    final updatedAt = DateTime.now().toUtc();
+    await _database.cacheJson(_courseDownloadKey(course.id), {
+      'courseId': course.id,
+      'packageVersion': course.offlinePackagePolicy?.packageVersion ?? 1,
+      'cacheTtlDays': course.offlinePackagePolicy?.cacheTtlDays,
+      'updatedAt': updatedAt.toIso8601String(),
+    });
+    return CourseDownloadStatus(
+      courseId: course.id,
+      downloadedLessonCount: lessons.length,
+      totalLessonCount: lessons.length,
+      packageVersion: course.offlinePackagePolicy?.packageVersion ?? 1,
       updatedAt: updatedAt,
     );
   }

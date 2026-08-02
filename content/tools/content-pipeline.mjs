@@ -298,6 +298,14 @@ export function validateAuthoringPackage(pkg) {
     }
     requirePositiveInteger(unit?.position, `${location}.position`, errors);
     requireLocalized(unit?.title, requiredLocales, `${location}.title`, errors);
+    if (unit?.guidebook !== undefined) {
+      requireLocalized(unit.guidebook?.summary, requiredLocales, `${location}.guidebook.summary`, errors);
+      for (const field of ["keyPhrases", "grammarNotes", "examples"]) {
+        const values = unit.guidebook?.[field] ?? [];
+        if (!Array.isArray(values) || values.length === 0) errors.push(issue("GUIDEBOOK", `${location}.guidebook.${field}`, "Guidebook phải có nội dung."));
+        values.forEach((value, index) => requireLocalized(value, requiredLocales, `${location}.guidebook.${field}[${index}]`, errors));
+      }
+    }
     for (const prerequisiteId of unit?.prerequisiteUnitIds ?? []) {
       if (!unitIds.has(prerequisiteId) || prerequisiteId === unit.id) {
         errors.push(issue("REFERENCE_MISSING", `${location}.prerequisiteUnitIds`, `Prerequisite unit ${prerequisiteId} không hợp lệ.`));
@@ -332,6 +340,9 @@ export function validateAuthoringPackage(pkg) {
     }
     for (const prerequisiteId of lesson?.prerequisiteLessonIds ?? []) {
       if (!lessonIds.has(prerequisiteId) || prerequisiteId === lesson.id) errors.push(issue("REFERENCE_MISSING", `${location}.prerequisiteLessonIds`, `Prerequisite lesson ${prerequisiteId} không hợp lệ.`));
+    }
+    for (const conceptId of lesson?.revisitsConceptIds ?? []) {
+      if (!courseConceptIds.has(conceptId)) errors.push(issue("REFERENCE_MISSING", `${location}.revisitsConceptIds`, `Concept tái xuất hiện ${conceptId} chưa khai báo.`));
     }
     for (const outcomeId of lesson?.outcomeIds ?? []) {
       if (!courseOutcomeIds.has(outcomeId)) errors.push(issue("REFERENCE_MISSING", `${location}.outcomeIds`, `Outcome ${outcomeId} chưa khai báo ở course.`));
@@ -422,6 +433,32 @@ export function validateAuthoringPackage(pkg) {
       if (!LOCALE.test(activity?.targetLocale ?? "") || !LOCALE.test(activity?.feedbackLocale ?? "")) errors.push(issue("LOCALE_FORMAT", activityLocation, "Advanced activity locale không hợp lệ."));
     }
   });
+  if (units.length >= 4) {
+    if (units.length !== 4 || lessons.length !== 20 || units.some((unit) => (unit.lessonIds ?? []).length !== 5)) {
+      errors.push(issue("A1_COURSE_SHAPE", "course", "Course A1 hoàn chỉnh phải có đúng 4 unit và 20 lesson, mỗi unit 5 lesson."));
+    }
+    for (const [index, unit] of units.entries()) {
+      if (!unit.guidebook) errors.push(issue("GUIDEBOOK", `units[${index}].guidebook`, "Mỗi unit A1 phải có guidebook."));
+      const checkpointId = (unit.lessonIds ?? []).at(-1);
+      const checkpoint = lessons.find((lesson) => lesson.id === checkpointId);
+      if (!checkpoint || checkpoint.difficulty !== "checkpoint") errors.push(issue("CHECKPOINT", `units[${index}].lessonIds`, "Lesson cuối unit phải là checkpoint."));
+    }
+    const completion = pkg.course?.completionAssessment;
+    const finalLessonId = units.at(-1)?.lessonIds?.at(-1);
+    if (!completion || completion.checkpointLessonId !== finalLessonId || completion.recordType !== "non_accredited_completion") {
+      errors.push(issue("COMPLETION_ASSESSMENT", "course.completionAssessment", "Completion assessment phải trỏ checkpoint cuối và là non-accredited."));
+    }
+    const skillCoverage = new Set(completion?.skillCoverage ?? []);
+    for (const skill of ["listening", "speaking", "reading", "writing"]) if (!skillCoverage.has(skill)) errors.push(issue("SKILL_COVERAGE", "course.completionAssessment.skillCoverage", `Thiếu skill ${skill}.`));
+    if (!pkg.course?.placementPolicy?.startPoints?.length || !pkg.course?.versionMigrationPolicy || !pkg.course?.offlinePackagePolicy) {
+      errors.push(issue("COURSE_POLICY", "course", "Course đầy đủ phải có placement, version migration và offline package policy."));
+    }
+    const startScores = pkg.course?.placementPolicy?.startPoints?.map((point) => point.minimumScore) ?? [];
+    if (startScores.some((score, index) => index > 0 && score <= startScores[index - 1])) errors.push(issue("PLACEMENT_POLICY", "course.placementPolicy.startPoints", "Start point phải tăng dần theo minimumScore."));
+    for (const point of pkg.course?.placementPolicy?.startPoints ?? []) {
+      if (!unitIds.has(point.unitId) || !lessonIds.has(point.lessonId)) errors.push(issue("REFERENCE_MISSING", "course.placementPolicy.startPoints", `Start point ${point.unitId}/${point.lessonId} không hợp lệ.`));
+    }
+  }
   for (const outcomeId of courseOutcomeIds) if (!coveredOutcomes.has(outcomeId)) errors.push(issue("CONCEPT_COVERAGE", "course.outcomes", `Outcome ${outcomeId} chưa có lesson/exercise evidence.`));
   for (const conceptId of courseConceptIds) if (!usedConcepts.has(conceptId)) warnings.push(issue("CONCEPT_COVERAGE", "course.concepts", `Concept ${conceptId} chưa được exercise sử dụng.`));
   validateReview(pkg.reviewEvidence, errors);
@@ -475,6 +512,7 @@ export function compileAdminDraft(pkg) {
   const units = [...pkg.units].sort((a, b) => a.position - b.position).map((unit) => ({
     id: unit.id,
     title: unit.title,
+    ...(unit.guidebook ? { guidebook: unit.guidebook } : {}),
     lessons: (lessonsByUnit.get(unit.id) ?? []).sort((a, b) => a.position - b.position).map((lesson) => ({
       id: lesson.id,
       locale: lesson.locale,
@@ -496,6 +534,10 @@ export function compileAdminDraft(pkg) {
     description: course.description,
     owner: course.owner,
     license: course.license,
+    ...(course.completionAssessment ? { completionAssessment: course.completionAssessment } : {}),
+    ...(course.placementPolicy ? { placementPolicy: course.placementPolicy } : {}),
+    ...(course.versionMigrationPolicy ? { versionMigrationPolicy: course.versionMigrationPolicy } : {}),
+    ...(course.offlinePackagePolicy ? { offlinePackagePolicy: course.offlinePackagePolicy } : {}),
     units,
   };
 }

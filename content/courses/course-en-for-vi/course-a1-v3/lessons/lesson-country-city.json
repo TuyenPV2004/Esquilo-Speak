@@ -1,0 +1,707 @@
+{
+  "id": "lesson-country-city",
+  "courseId": "course-en-for-vi",
+  "courseVersion": 3,
+  "unitId": "unit-personal-information",
+  "position": 6,
+  "locale": "vi",
+  "requiredLocales": [
+    "vi",
+    "en"
+  ],
+  "title": {
+    "vi": "Quốc gia và thành phố",
+    "en": "Country and city"
+  },
+  "objectives": [
+    {
+      "vi": "Dùng từ vựng và mẫu câu của Quốc gia và thành phố.",
+      "en": "Use the vocabulary and patterns for Country and city."
+    }
+  ],
+  "outcomeIds": [
+    "outcome-country-city"
+  ],
+  "prerequisiteLessonIds": [
+    "lesson-checkpoint-first-contact"
+  ],
+  "revisitsConceptIds": [
+    "concept-numbers-age",
+    "concept-checkpoint-first-contact"
+  ],
+  "difficulty": "guided",
+  "estimatedMinutes": 8,
+  "exercises": [
+    {
+      "id": "exercise-country-city-flashcard",
+      "type": "flashcard",
+      "learningItem": {
+        "skill": "vocabulary",
+        "conceptIds": [
+          "concept-country-city"
+        ],
+        "outcomeIds": [
+          "outcome-country-city"
+        ],
+        "prerequisiteConceptIds": [],
+        "difficulty": "introductory"
+      },
+      "presentation": {
+        "prompt": {
+          "vi": "Quốc gia và thành phố: flashcard.",
+          "en": "Country and city: flashcard."
+        },
+        "hint": {
+          "vi": "Gợi ý: I am from Hanoi.",
+          "en": "Hint: I am from Hanoi."
+        },
+        "mediaIds": [],
+        "accessibility": {
+          "screenReaderLabel": {
+            "vi": "Quốc gia và thành phố: flashcard.",
+            "en": "Country and city: flashcard."
+          },
+          "requiresAudio": false,
+          "supportsSilentMode": true
+        }
+      },
+      "answerPolicy": {
+        "kind": "self_assessment",
+        "maxAttempts": 2
+      },
+      "feedbackRule": {
+        "correct": {
+          "vi": "Chính xác.",
+          "en": "Correct."
+        },
+        "incorrect": {
+          "vi": "Hãy thử lại.",
+          "en": "Try again."
+        },
+        "explanation": {
+          "vi": "Đáp án theo mẫu mục tiêu của bài Quốc gia và thành phố.",
+          "en": "The answer follows the target pattern for Country and city."
+        },
+        "hintPolicy": {
+          "revealAfterAttempts": 1,
+          "countsAsAssisted": true
+        }
+      }
+    },
+    {
+      "id": "exercise-country-city-choice",
+      "type": "multiple_choice",
+      "learningItem": {
+        "skill": "vocabulary",
+        "conceptIds": [
+          "concept-country-city"
+        ],
+        "outcomeIds": [
+          "outcome-country-city"
+        ],
+        "prerequisiteConceptIds": [],
+        "difficulty": "guided"
+      },
+      "presentation": {
+        "prompt": {
+          "vi": "Quốc gia và thành phố: choice.",
+          "en": "Country and city: choice."
+        },
+        "hint": {
+          "vi": "Gợi ý: I am from Hanoi.",
+          "en": "Hint: I am from Hanoi."
+        },
+        "mediaIds": [],
+        "accessibility": {
+          "screenReaderLabel": {
+            "vi": "Quốc gia và thành phố: choice.",
+            "en": "Country and city: choice."
+          },
+          "requiresAudio": false,
+          "supportsSilentMode": true
+        },
+        "options": [
+          {
+            "id": "option-meaning",
+            "text": {
+              "vi": "quốc gia",
+              "en": "quốc gia"
+            }
+          },
+          {
+            "id": "option-distractor",
+            "text": {
+              "vi": "thành phố",
+              "en": "thành phố"
+            }
+          }
+        ]
+      },
+      "answerPolicy": {
+        "kind": "option_id",
+        "correctOptionId": "option-meaning",
+        "maxAttempts": 2
+      },
+      "feedbackRule": {
+        "correct": {
+          "vi": "Chính xác.",
+          "en": "Correct."
+        },
+        "incorrect": {
+          "vi": "Hãy thử lại.",
+          "en": "Try again."
+        },
+        "explanation": {
+          "vi": "Đáp án theo mẫu mục tiêu của bài Quốc gia và thành phố.",
+          "en": "The answer follows the target pattern for Country and city."
+        },
+        "hintPolicy": {
+          "revealAfterAttempts": 1,
+          "countsAsAssisted": true
+        }
+      }
+    },
+    {
+      "id": "exercise-country-city-listen-select",
+      "type": "listen_select",
+      "learningItem": {
+        "skill": "listening",
+        "conceptIds": [
+          "concept-country-city"
+        ],
+        "outcomeIds": [
+          "outcome-country-city"
+        ],
+        "prerequisiteConceptIds": [],
+        "difficulty": "guided"
+      },
+      "presentation": {
+        "prompt": {
+          "vi": "Quốc gia và thành phố: listen select.",
+          "en": "Country and city: listen select."
+        },
+        "hint": {
+          "vi": "Gợi ý: I am from Hanoi.",
+          "en": "Hint: I am from Hanoi."
+        },
+        "mediaIds": [
+          "media-country-city-listen"
+        ],
+        "accessibility": {
+          "screenReaderLabel": {
+            "vi": "Quốc gia và thành phố: listen select.",
+            "en": "Country and city: listen select."
+          },
+          "requiresAudio": false,
+          "supportsSilentMode": true
+        },
+        "options": [
+          {
+            "id": "option-first",
+            "text": {
+              "vi": "country",
+              "en": "country"
+            }
+          },
+          {
+            "id": "option-second",
+            "text": {
+              "vi": "city",
+              "en": "city"
+            }
+          }
+        ],
+        "transcript": {
+          "vi": "country",
+          "en": "country"
+        }
+      },
+      "answerPolicy": {
+        "kind": "option_id",
+        "correctOptionId": "option-first",
+        "maxAttempts": 2
+      },
+      "feedbackRule": {
+        "correct": {
+          "vi": "Chính xác.",
+          "en": "Correct."
+        },
+        "incorrect": {
+          "vi": "Hãy thử lại.",
+          "en": "Try again."
+        },
+        "explanation": {
+          "vi": "Đáp án theo mẫu mục tiêu của bài Quốc gia và thành phố.",
+          "en": "The answer follows the target pattern for Country and city."
+        },
+        "hintPolicy": {
+          "revealAfterAttempts": 1,
+          "countsAsAssisted": true
+        }
+      }
+    },
+    {
+      "id": "exercise-country-city-matching",
+      "type": "matching",
+      "learningItem": {
+        "skill": "vocabulary",
+        "conceptIds": [
+          "concept-country-city"
+        ],
+        "outcomeIds": [
+          "outcome-country-city"
+        ],
+        "prerequisiteConceptIds": [],
+        "difficulty": "guided"
+      },
+      "presentation": {
+        "prompt": {
+          "vi": "Quốc gia và thành phố: matching.",
+          "en": "Country and city: matching."
+        },
+        "hint": {
+          "vi": "Gợi ý: I am from Hanoi.",
+          "en": "Hint: I am from Hanoi."
+        },
+        "mediaIds": [],
+        "accessibility": {
+          "screenReaderLabel": {
+            "vi": "Quốc gia và thành phố: matching.",
+            "en": "Country and city: matching."
+          },
+          "requiresAudio": false,
+          "supportsSilentMode": true
+        },
+        "leftItems": [
+          {
+            "id": "left-one",
+            "text": {
+              "vi": "country",
+              "en": "country"
+            }
+          },
+          {
+            "id": "left-two",
+            "text": {
+              "vi": "city",
+              "en": "city"
+            }
+          }
+        ],
+        "rightItems": [
+          {
+            "id": "right-one",
+            "text": {
+              "vi": "quốc gia",
+              "en": "quốc gia"
+            }
+          },
+          {
+            "id": "right-two",
+            "text": {
+              "vi": "thành phố",
+              "en": "thành phố"
+            }
+          }
+        ]
+      },
+      "answerPolicy": {
+        "kind": "pair_set",
+        "correctPairs": [
+          {
+            "leftId": "left-one",
+            "rightId": "right-one"
+          },
+          {
+            "leftId": "left-two",
+            "rightId": "right-two"
+          }
+        ],
+        "maxAttempts": 2
+      },
+      "feedbackRule": {
+        "correct": {
+          "vi": "Chính xác.",
+          "en": "Correct."
+        },
+        "incorrect": {
+          "vi": "Hãy thử lại.",
+          "en": "Try again."
+        },
+        "explanation": {
+          "vi": "Đáp án theo mẫu mục tiêu của bài Quốc gia và thành phố.",
+          "en": "The answer follows the target pattern for Country and city."
+        },
+        "hintPolicy": {
+          "revealAfterAttempts": 1,
+          "countsAsAssisted": true
+        }
+      }
+    },
+    {
+      "id": "exercise-country-city-ordering",
+      "type": "ordering",
+      "learningItem": {
+        "skill": "grammar",
+        "conceptIds": [
+          "concept-country-city"
+        ],
+        "outcomeIds": [
+          "outcome-country-city"
+        ],
+        "prerequisiteConceptIds": [],
+        "difficulty": "guided"
+      },
+      "presentation": {
+        "prompt": {
+          "vi": "Quốc gia và thành phố: ordering.",
+          "en": "Country and city: ordering."
+        },
+        "hint": {
+          "vi": "Gợi ý: I am from Hanoi.",
+          "en": "Hint: I am from Hanoi."
+        },
+        "mediaIds": [],
+        "accessibility": {
+          "screenReaderLabel": {
+            "vi": "Quốc gia và thành phố: ordering.",
+            "en": "Country and city: ordering."
+          },
+          "requiresAudio": false,
+          "supportsSilentMode": true
+        },
+        "items": [
+          {
+            "id": "item-1",
+            "text": {
+              "vi": "I",
+              "en": "I"
+            }
+          },
+          {
+            "id": "item-2",
+            "text": {
+              "vi": "am",
+              "en": "am"
+            }
+          },
+          {
+            "id": "item-3",
+            "text": {
+              "vi": "from",
+              "en": "from"
+            }
+          },
+          {
+            "id": "item-4",
+            "text": {
+              "vi": "Hanoi",
+              "en": "Hanoi"
+            }
+          }
+        ]
+      },
+      "answerPolicy": {
+        "kind": "ordered_ids",
+        "correctOrder": [
+          "item-1",
+          "item-2",
+          "item-3",
+          "item-4"
+        ],
+        "maxAttempts": 2
+      },
+      "feedbackRule": {
+        "correct": {
+          "vi": "Chính xác.",
+          "en": "Correct."
+        },
+        "incorrect": {
+          "vi": "Hãy thử lại.",
+          "en": "Try again."
+        },
+        "explanation": {
+          "vi": "Đáp án theo mẫu mục tiêu của bài Quốc gia và thành phố.",
+          "en": "The answer follows the target pattern for Country and city."
+        },
+        "hintPolicy": {
+          "revealAfterAttempts": 1,
+          "countsAsAssisted": true
+        }
+      }
+    },
+    {
+      "id": "exercise-country-city-fill-blank",
+      "type": "fill_blank",
+      "learningItem": {
+        "skill": "writing",
+        "conceptIds": [
+          "concept-country-city"
+        ],
+        "outcomeIds": [
+          "outcome-country-city"
+        ],
+        "prerequisiteConceptIds": [],
+        "difficulty": "independent"
+      },
+      "presentation": {
+        "prompt": {
+          "vi": "Quốc gia và thành phố: fill blank.",
+          "en": "Country and city: fill blank."
+        },
+        "hint": {
+          "vi": "Gợi ý: I am from Hanoi.",
+          "en": "Hint: I am from Hanoi."
+        },
+        "mediaIds": [],
+        "accessibility": {
+          "screenReaderLabel": {
+            "vi": "Quốc gia và thành phố: fill blank.",
+            "en": "Country and city: fill blank."
+          },
+          "requiresAudio": false,
+          "supportsSilentMode": true
+        }
+      },
+      "answerPolicy": {
+        "kind": "normalized_text",
+        "acceptedAnswers": [
+          "I am from Hanoi."
+        ],
+        "caseSensitive": false,
+        "maxAttempts": 2
+      },
+      "feedbackRule": {
+        "correct": {
+          "vi": "Chính xác.",
+          "en": "Correct."
+        },
+        "incorrect": {
+          "vi": "Hãy thử lại.",
+          "en": "Try again."
+        },
+        "explanation": {
+          "vi": "Đáp án theo mẫu mục tiêu của bài Quốc gia và thành phố.",
+          "en": "The answer follows the target pattern for Country and city."
+        },
+        "hintPolicy": {
+          "revealAfterAttempts": 1,
+          "countsAsAssisted": true
+        }
+      }
+    },
+    {
+      "id": "exercise-country-city-true-false",
+      "type": "true_false",
+      "learningItem": {
+        "skill": "reading",
+        "conceptIds": [
+          "concept-country-city"
+        ],
+        "outcomeIds": [
+          "outcome-country-city"
+        ],
+        "prerequisiteConceptIds": [],
+        "difficulty": "guided"
+      },
+      "presentation": {
+        "prompt": {
+          "vi": "Quốc gia và thành phố: true false.",
+          "en": "Country and city: true false."
+        },
+        "hint": {
+          "vi": "Gợi ý: I am from Hanoi.",
+          "en": "Hint: I am from Hanoi."
+        },
+        "mediaIds": [],
+        "accessibility": {
+          "screenReaderLabel": {
+            "vi": "Quốc gia và thành phố: true false.",
+            "en": "Country and city: true false."
+          },
+          "requiresAudio": false,
+          "supportsSilentMode": true
+        }
+      },
+      "answerPolicy": {
+        "kind": "boolean",
+        "correctAnswer": true,
+        "maxAttempts": 2
+      },
+      "feedbackRule": {
+        "correct": {
+          "vi": "Chính xác.",
+          "en": "Correct."
+        },
+        "incorrect": {
+          "vi": "Hãy thử lại.",
+          "en": "Try again."
+        },
+        "explanation": {
+          "vi": "Đáp án theo mẫu mục tiêu của bài Quốc gia và thành phố.",
+          "en": "The answer follows the target pattern for Country and city."
+        },
+        "hintPolicy": {
+          "revealAfterAttempts": 1,
+          "countsAsAssisted": true
+        }
+      }
+    },
+    {
+      "id": "exercise-country-city-comprehension",
+      "type": "comprehension",
+      "learningItem": {
+        "skill": "reading",
+        "conceptIds": [
+          "concept-country-city",
+          "concept-numbers-age",
+          "concept-checkpoint-first-contact"
+        ],
+        "outcomeIds": [
+          "outcome-country-city"
+        ],
+        "prerequisiteConceptIds": [],
+        "difficulty": "independent"
+      },
+      "presentation": {
+        "prompt": {
+          "vi": "Quốc gia và thành phố: comprehension.",
+          "en": "Country and city: comprehension."
+        },
+        "hint": {
+          "vi": "Gợi ý: I am from Hanoi.",
+          "en": "Hint: I am from Hanoi."
+        },
+        "mediaIds": [],
+        "accessibility": {
+          "screenReaderLabel": {
+            "vi": "Quốc gia và thành phố: comprehension.",
+            "en": "Country and city: comprehension."
+          },
+          "requiresAudio": false,
+          "supportsSilentMode": true
+        },
+        "instruction": {
+          "vi": "I am twelve. Hello, my name is Mai. I am from Hanoi.",
+          "en": "I am twelve. Hello, my name is Mai. I am from Hanoi."
+        },
+        "options": [
+          {
+            "id": "option-answer",
+            "text": {
+              "vi": "country",
+              "en": "country"
+            }
+          },
+          {
+            "id": "option-other",
+            "text": {
+              "vi": "city",
+              "en": "city"
+            }
+          }
+        ]
+      },
+      "answerPolicy": {
+        "kind": "option_id",
+        "correctOptionId": "option-answer",
+        "maxAttempts": 2
+      },
+      "feedbackRule": {
+        "correct": {
+          "vi": "Chính xác.",
+          "en": "Correct."
+        },
+        "incorrect": {
+          "vi": "Hãy thử lại.",
+          "en": "Try again."
+        },
+        "explanation": {
+          "vi": "Đáp án theo mẫu mục tiêu của bài Quốc gia và thành phố.",
+          "en": "The answer follows the target pattern for Country and city."
+        },
+        "hintPolicy": {
+          "revealAfterAttempts": 1,
+          "countsAsAssisted": true
+        }
+      }
+    },
+    {
+      "id": "exercise-country-city-dictation",
+      "type": "dictation",
+      "learningItem": {
+        "skill": "listening",
+        "conceptIds": [
+          "concept-country-city"
+        ],
+        "outcomeIds": [
+          "outcome-country-city"
+        ],
+        "prerequisiteConceptIds": [],
+        "difficulty": "independent"
+      },
+      "presentation": {
+        "prompt": {
+          "vi": "Quốc gia và thành phố: dictation.",
+          "en": "Country and city: dictation."
+        },
+        "hint": {
+          "vi": "Gợi ý: I am from Hanoi.",
+          "en": "Hint: I am from Hanoi."
+        },
+        "mediaIds": [
+          "media-country-city-dictation"
+        ],
+        "accessibility": {
+          "screenReaderLabel": {
+            "vi": "Quốc gia và thành phố: dictation.",
+            "en": "Country and city: dictation."
+          },
+          "requiresAudio": false,
+          "supportsSilentMode": true
+        },
+        "transcript": {
+          "vi": "Where are you from",
+          "en": "Where are you from"
+        }
+      },
+      "answerPolicy": {
+        "kind": "normalized_text",
+        "acceptedAnswers": [
+          "Where are you from"
+        ],
+        "caseSensitive": false,
+        "maxAttempts": 2
+      },
+      "feedbackRule": {
+        "correct": {
+          "vi": "Chính xác.",
+          "en": "Correct."
+        },
+        "incorrect": {
+          "vi": "Hãy thử lại.",
+          "en": "Try again."
+        },
+        "explanation": {
+          "vi": "Đáp án theo mẫu mục tiêu của bài Quốc gia và thành phố.",
+          "en": "The answer follows the target pattern for Country and city."
+        },
+        "hintPolicy": {
+          "revealAfterAttempts": 1,
+          "countsAsAssisted": true
+        }
+      }
+    }
+  ],
+  "advancedActivities": [
+    {
+      "id": "activity-country-city-pronunciation",
+      "activityType": "pronunciation",
+      "contentRef": "2/lesson-country-city/pronunciation",
+      "mediaId": "media-country-city-dictation",
+      "expectedText": "Where are you from",
+      "targetLocale": "en",
+      "feedbackLocale": "vi"
+    }
+  ]
+}

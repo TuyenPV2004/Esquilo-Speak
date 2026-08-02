@@ -2,6 +2,7 @@ import 'package:esquilospeak_mobile/core/platform/advanced_learning_platform.dar
 import 'package:esquilospeak_mobile/core/models/proficiency_models.dart';
 import 'package:esquilospeak_mobile/features/advanced_learning/data/p1_api_service.dart';
 import 'package:esquilospeak_mobile/features/advanced_learning/data/p1_models.dart';
+import 'package:flutter/services.dart';
 
 class FakeP1Gateway implements P1Gateway {
   int activities = 0;
@@ -256,6 +257,9 @@ class FakeAdvancedLearningPlatform implements AdvancedLearningPlatform {
 
   @override
   Future<void> playDownloadedMedia(String mediaId) async {
+    if (!downloads.contains(mediaId)) {
+      throw PlatformException(code: 'MEDIA_NOT_DOWNLOADED');
+    }
     played.add('downloaded:$mediaId');
   }
 

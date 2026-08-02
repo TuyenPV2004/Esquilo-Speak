@@ -45,6 +45,18 @@ abstract interface class UnitDownloadStore {
   });
 }
 
+abstract interface class CourseDownloadStore {
+  Future<CourseDownloadStatus> courseDownloadStatus({
+    required Course course,
+    required List<LessonSummary> lessons,
+  });
+
+  Future<CourseDownloadStatus> downloadCourse({
+    required Course course,
+    required List<LessonSummary> lessons,
+  });
+}
+
 abstract interface class PracticeHistoryStore {
   Future<List<String>> recentMistakeExerciseIds(String courseId);
 }

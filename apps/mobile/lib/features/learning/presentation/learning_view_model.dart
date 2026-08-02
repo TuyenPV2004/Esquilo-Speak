@@ -68,6 +68,8 @@ class LearningViewModel extends ChangeNotifier {
   CourseProgress? courseProgress;
   final Map<String, UnitDownloadStatus> unitDownloadStatuses = {};
   String? downloadingUnitId;
+  CourseDownloadStatus? courseDownloadStatus;
+  bool downloadingCourse = false;
   LearningSessionKind sessionKind = LearningSessionKind.lesson;
   int sessionMistakeCount = 0;
   int sessionCorrectCount = 0;
@@ -168,6 +170,68 @@ class LearningViewModel extends ChangeNotifier {
     }
   }
 
+  Future<void> downloadCourse({
+    Future<void> Function(String mediaId)? downloadMedia,
+  }) async {
+    final course = selectedCourse;
+    final store = _repository is CourseDownloadStore
+        ? _repository as CourseDownloadStore
+        : null;
+    if (course == null || store == null || downloadingCourse) return;
+    downloadingCourse = true;
+    error = null;
+    notifyListeners();
+    try {
+      courseDownloadStatus = await store.downloadCourse(
+        course: course,
+        lessons: lessons,
+      );
+      if (course.offlinePackagePolicy?.includesMedia == true &&
+          downloadMedia != null) {
+        final mediaIds = <String>{};
+        for (final summary in lessons) {
+          final lesson = await _repository.lesson(
+            summary.id,
+            version: summary.version,
+          );
+          mediaIds.addAll(
+            lesson.exercises
+                .map((exercise) => exercise.mediaId)
+                .whereType<String>(),
+          );
+        }
+        for (final mediaId in mediaIds) {
+          await downloadMedia(mediaId);
+        }
+      }
+      await _loadUnitDownloadStatuses(course.id);
+    } on Object catch (exception) {
+      error = mapUserFacingFailure(exception);
+    } finally {
+      downloadingCourse = false;
+      notifyListeners();
+    }
+  }
+
+  Future<void> startAtLesson(String lessonId) async {
+    final match = lessons.where((item) => item.id == lessonId);
+    if (match.isEmpty) {
+      throw StateError('Placement start lesson is unavailable.');
+    }
+    await chooseLesson(match.first);
+  }
+
+  List<PlacementStartPoint> placementStartPointsForScore(int score) {
+    final available =
+        (selectedCourse?.placementPolicy?.startPoints ?? const [])
+            .where((point) => point.minimumScore <= score)
+            .toList(growable: false)
+          ..sort(
+            (left, right) => right.minimumScore.compareTo(left.minimumScore),
+          );
+    return available;
+  }
+
   Future<void> _loadUnitDownloadStatuses(String courseId) async {
     unitDownloadStatuses.clear();
     if (_repository is! UnitDownloadStore) return;
@@ -182,6 +246,10 @@ class LearningViewModel extends ChangeNotifier {
         unitId: unitId,
         lessons: unitLessons,
       );
+    }
+    if (_repository is CourseDownloadStore && selectedCourse != null) {
+      courseDownloadStatus = await (_repository as CourseDownloadStore)
+          .courseDownloadStatus(course: selectedCourse!, lessons: lessons);
     }
   }
 

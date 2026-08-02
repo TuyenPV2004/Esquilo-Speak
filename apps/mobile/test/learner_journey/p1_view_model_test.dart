@@ -48,6 +48,27 @@ void main() {
   );
 
   test(
+    'discovers persisted media before falling back to remote playback',
+    () async {
+      final platform = FakeAdvancedLearningPlatform()
+        ..downloads.add('persisted');
+      final viewModel = P1ViewModel(
+        FakeP1Gateway(),
+        platform,
+        closedTestingCommerceEnabled: true,
+        closedTestingProductId: 'premium-monthly',
+        selectedCourseId: () => 'course-en-for-vi',
+      );
+
+      await viewModel.playMedia('persisted');
+      await viewModel.playMedia('remote-only');
+
+      expect(platform.played, ['downloaded:persisted', 'remote:remote-only']);
+      expect(viewModel.downloadedMediaIds, contains('persisted'));
+    },
+  );
+
+  test(
     'completes placement, engagement, reminder and entitlement lifecycle',
     () async {
       final gateway = FakeP1Gateway();

@@ -10,6 +10,49 @@ import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   test(
+    'placement recommends the highest eligible start and keeps lower choices',
+    () {
+      final viewModel = _viewModel(FakeLearningRepository());
+      viewModel.selectedCourse = const Course(
+        id: 'course-en-for-vi',
+        sourceLanguage: 'vi',
+        targetLanguage: 'en',
+        title: {'en': 'English A1'},
+        description: {'en': 'A1'},
+        placementPolicy: PlacementPolicy(
+          startPoints: [
+            PlacementStartPoint(
+              unitId: 'unit-one',
+              lessonId: 'lesson-one',
+              minimumScore: 0,
+              levelCode: 'PRE_A1',
+              title: {'en': 'Unit 1'},
+            ),
+            PlacementStartPoint(
+              unitId: 'unit-two',
+              lessonId: 'lesson-two',
+              minimumScore: 50,
+              levelCode: 'PRE_A1',
+              title: {'en': 'Unit 2'},
+            ),
+            PlacementStartPoint(
+              unitId: 'unit-three',
+              lessonId: 'lesson-three',
+              minimumScore: 75,
+              levelCode: 'A1',
+              title: {'en': 'Unit 3'},
+            ),
+          ],
+        ),
+      );
+      expect(
+        viewModel.placementStartPointsForScore(80).map((item) => item.lessonId),
+        ['lesson-three', 'lesson-two', 'lesson-one'],
+      );
+    },
+  );
+
+  test(
     'practice submits against canonical lesson with mode evidence',
     () async {
       final repository = CapturePracticeLearningRepository();

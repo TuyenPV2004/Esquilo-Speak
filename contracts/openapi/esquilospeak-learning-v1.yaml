@@ -1556,6 +1556,14 @@ components:
           type: string
           minLength: 1
           maxLength: 200
+        completionAssessment:
+          $ref: ../schema/course.schema.json#/properties/completionAssessment
+        placementPolicy:
+          $ref: ../schema/course.schema.json#/properties/placementPolicy
+        versionMigrationPolicy:
+          $ref: ../schema/course.schema.json#/properties/versionMigrationPolicy
+        offlinePackagePolicy:
+          $ref: ../schema/course.schema.json#/properties/offlinePackagePolicy
         units:
           type: array
           minItems: 1
@@ -1592,11 +1600,32 @@ components:
           $ref: '#/components/schemas/Identifier'
         title:
           $ref: '#/components/schemas/LocalizedText'
+        guidebook:
+          $ref: '#/components/schemas/UnitGuidebook'
         lessons:
           type: array
           minItems: 1
           items:
             $ref: '#/components/schemas/LessonDraft'
+      additionalProperties: false
+    UnitGuidebook:
+      type: object
+      required: [summary, keyPhrases, grammarNotes, examples]
+      properties:
+        summary:
+          $ref: '#/components/schemas/LocalizedText'
+        keyPhrases:
+          type: array
+          minItems: 1
+          items: { $ref: '#/components/schemas/LocalizedText' }
+        grammarNotes:
+          type: array
+          minItems: 1
+          items: { $ref: '#/components/schemas/LocalizedText' }
+        examples:
+          type: array
+          minItems: 1
+          items: { $ref: '#/components/schemas/LocalizedText' }
       additionalProperties: false
     LessonDraft:
       type: object
@@ -1790,6 +1819,8 @@ components:
           $ref: '#/components/schemas/Identifier'
         unitTitle:
           $ref: '#/components/schemas/LocalizedText'
+        unitGuidebook:
+          $ref: '#/components/schemas/UnitGuidebook'
         position:
           type: integer
           minimum: 1

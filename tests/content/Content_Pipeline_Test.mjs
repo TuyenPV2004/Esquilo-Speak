@@ -108,6 +108,56 @@ test("Unit 1 vertical slice has five lessons, nine exercise types and no answer 
   }
 });
 
+test("complete A1 course has four guidebook units, twenty lessons and balanced skill evidence", async () => {
+  const completeA1 = await loadAuthoringPackage(path.join(
+    repositoryRoot,
+    "content", "courses", "course-en-for-vi", "course-a1-v3", "content-package.json",
+  ));
+  const validation = validateAuthoringPackage(completeA1);
+  assert.equal(validation.valid, true, JSON.stringify(validation.errors, null, 2));
+  assert.equal(completeA1.units.length, 4);
+  assert.equal(completeA1.lessons.length, 20);
+  assert.equal(completeA1.lessons.reduce((total, lesson) => total + lesson.exercises.length, 0), 180);
+  assert.ok(completeA1.units.every((unit) => unit.guidebook && unit.lessonIds.length === 5));
+  assert.ok(completeA1.units.every((unit) => {
+    const checkpoint = completeA1.lessons.find((lesson) => lesson.id === unit.lessonIds.at(-1));
+    return checkpoint?.difficulty === "checkpoint" && checkpoint.advancedActivities.length === 3;
+  }));
+
+  const skills = completeA1.lessons.flatMap((lesson) => lesson.exercises.map((item) => item.learningItem.skill));
+  const counts = Object.fromEntries(["listening", "reading", "writing"].map((skill) => [
+    skill, skills.filter((value) => value === skill).length,
+  ]));
+  assert.deepEqual(counts, { listening: 40, reading: 40, writing: 20 });
+  assert.equal(completeA1.lessons.flatMap((lesson) => lesson.advancedActivities)
+    .filter((activity) => activity.activityType === "pronunciation").length, 20);
+  assert.ok(completeA1.lessons.slice(1).every((lesson) => lesson.revisitsConceptIds.length >= 1));
+  assert.equal(completeA1.course.completionAssessment.recordType, "non_accredited_completion");
+  assert.equal(completeA1.course.placementPolicy.startPoints.length, 3);
+
+  const learnerJson = JSON.stringify(compileLearnerPreview(completeA1));
+  assert.doesNotMatch(learnerJson, /correctOptionId|correctAnswer|correctPairs|correctOrder|acceptedAnswers|caseSensitive|explanation/);
+  assert.equal(completeA1.mediaManifest.media.length, 40);
+  let mediaBytes = 0;
+  for (const media of completeA1.mediaManifest.media) {
+    const bytes = await readFile(path.join(completeA1.root, media.assetPath));
+    mediaBytes += bytes.length;
+    assert.equal(media.checksum, `sha256:${createHash("sha256").update(bytes).digest("hex")}`);
+  }
+  assert.ok(mediaBytes < completeA1.course.offlinePackagePolicy.maxBytes);
+});
+
+test("complete A1 backend fixture stays equal to compiler output", async () => {
+  const completeA1 = await loadAuthoringPackage(path.join(
+    repositoryRoot,
+    "content", "courses", "course-en-for-vi", "course-a1-v3", "content-package.json",
+  ));
+  const fixture = JSON.parse(await readFile(path.join(
+    repositoryRoot, "backend", "core-platform", "src", "test", "resources", "content", "course-a1-v3-admin-draft.json",
+  ), "utf8"));
+  assert.deepEqual(fixture, compileAdminDraft(completeA1));
+});
+
 test("backend integration fixture stays equal to compiler output", async () => {
   const pkg = await packageFixture();
   const fixturePath = path.join(

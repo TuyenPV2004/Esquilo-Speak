@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
+import 'package:flutter/services.dart';
 
 import '../../../core/network/user_facing_failure.dart';
 import '../../../core/platform/advanced_learning_platform.dart';
@@ -70,11 +71,15 @@ class P1ViewModel extends ChangeNotifier {
     assessment = await _gateway.getPlacement(courseId);
   }
 
-  Future<void> playMedia(String mediaId) => _run(
-    () => downloadedMediaIds.contains(mediaId)
-        ? _platform.playDownloadedMedia(mediaId)
-        : _platform.playRemoteMedia(mediaId),
-  );
+  Future<void> playMedia(String mediaId) => _run(() async {
+    try {
+      await _platform.playDownloadedMedia(mediaId);
+      downloadedMediaIds.add(mediaId);
+    } on PlatformException catch (error) {
+      if (error.code != 'MEDIA_NOT_DOWNLOADED') rethrow;
+      await _platform.playRemoteMedia(mediaId);
+    }
+  });
 
   Future<void> downloadMedia(String mediaId) => _run(() async {
     await _platform.downloadMedia(mediaId);

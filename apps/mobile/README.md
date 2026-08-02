@@ -86,6 +86,11 @@ Learning path lưu manifest download theo course/unit và exact lesson version. 
 toàn bộ payload đã cache thì unit mới hiện trạng thái tải xong; tải lại cùng version là
 idempotent và nội dung vẫn đọc được khi offline.
 
+Course A1 v3 còn cung cấp guidebook theo unit và full-course package policy. Nút tải toàn
+course cache exact version của 20 lesson rồi gọi media downloader cho mọi audio ID; UI hiển
+thị package version, size cap và TTL. Placement sắp điểm bắt đầu phù hợp lên đầu nhưng giữ
+các điểm thấp hơn để learner chọn; summary completion luôn ghi rõ non-accredited.
+
 If host networking blocks `10.0.2.2`, use a temporary ADB reverse tunnel:
 
 ```powershell

@@ -1,0 +1,63 @@
+{
+  "id": "unit-personal-information",
+  "courseId": "course-en-for-vi",
+  "courseVersion": 3,
+  "position": 2,
+  "title": {
+    "vi": "Thông tin cá nhân",
+    "en": "Personal information"
+  },
+  "guidebook": {
+    "summary": {
+      "vi": "Hỏi, hiểu và cung cấp thông tin cá nhân cơ bản.",
+      "en": "Ask for, understand and provide basic personal information."
+    },
+    "keyPhrases": [
+      {
+        "vi": "Bạn đến từ đâu?",
+        "en": "Where are you from?"
+      },
+      {
+        "vi": "Bạn đánh vần từ đó thế nào?",
+        "en": "How do you spell that?"
+      }
+    ],
+    "grammarNotes": [
+      {
+        "vi": "Dùng he hoặc she với is.",
+        "en": "He is / She is"
+      },
+      {
+        "vi": "Tính từ sở hữu đứng trước danh từ.",
+        "en": "my / your / his / her"
+      }
+    ],
+    "examples": [
+      {
+        "vi": "Bạn đến từ đâu?",
+        "en": "Where are you from?"
+      },
+      {
+        "vi": "Bạn đánh vần từ đó thế nào?",
+        "en": "How do you spell that?"
+      }
+    ]
+  },
+  "outcomeIds": [
+    "outcome-country-city",
+    "outcome-contact-details",
+    "outcome-family-people",
+    "outcome-jobs-roles",
+    "outcome-checkpoint-personal-profile"
+  ],
+  "prerequisiteUnitIds": [
+    "unit-first-contact"
+  ],
+  "lessonIds": [
+    "lesson-country-city",
+    "lesson-contact-details",
+    "lesson-family-people",
+    "lesson-jobs-roles",
+    "lesson-checkpoint-personal-profile"
+  ]
+}
