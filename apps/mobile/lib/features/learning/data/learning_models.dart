@@ -198,6 +198,7 @@ class Exercise {
     this.instruction = const {},
     this.hint = const {},
     this.transcript = const {},
+    this.mediaId,
   });
 
   factory Exercise.fromJson(Map<String, dynamic> json) => Exercise(
@@ -215,6 +216,7 @@ class Exercise {
     instruction: _optionalLocalizedText(json['instruction']),
     hint: _optionalLocalizedText(json['hint']),
     transcript: _optionalLocalizedText(json['transcript']),
+    mediaId: (json['media'] as Map<String, dynamic>?)?['id'] as String?,
   );
 
   final String id;
@@ -228,6 +230,7 @@ class Exercise {
   final LocalizedText instruction;
   final LocalizedText hint;
   final LocalizedText transcript;
+  final String? mediaId;
 
   Map<String, dynamic> toJson() => {
     'id': id,
@@ -243,6 +246,7 @@ class Exercise {
     if (instruction.isNotEmpty) 'instruction': instruction,
     if (hint.isNotEmpty) 'hint': hint,
     if (transcript.isNotEmpty) 'transcript': transcript,
+    if (mediaId != null) 'media': {'id': mediaId},
   };
 }
 

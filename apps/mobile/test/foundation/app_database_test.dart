@@ -107,5 +107,32 @@ void main() {
     expect(await database.cachedJson('course.english-for-vietnamese'), {
       'id': 'english-for-vietnamese',
     });
+    expect(await database.recentMistakeExerciseIds('course-1'), isEmpty);
+  });
+
+  test('recent mistakes use the latest saved result per exercise', () async {
+    final database = AppDatabase(factory: databaseFactoryFfi);
+    await database.open(path: inMemoryDatabasePath);
+    addTearDown(database.close);
+
+    Future<void> record(String id, String exercise, bool correct, int minute) =>
+        database.recordPracticeAttempt(
+          clientAttemptId: id,
+          courseId: 'course-1',
+          lessonId: 'lesson-1',
+          lessonVersion: 1,
+          exerciseId: exercise,
+          correct: correct,
+          practiceMode: 'mistakes',
+          occurredAt: DateTime.utc(2026, 8, 2, 12, minute),
+        );
+
+    await record('attempt-a', 'exercise-fixed', false, 1);
+    await record('attempt-b', 'exercise-still-wrong', false, 2);
+    await record('attempt-c', 'exercise-fixed', true, 3);
+
+    expect(await database.recentMistakeExerciseIds('course-1'), [
+      'exercise-still-wrong',
+    ]);
   });
 }

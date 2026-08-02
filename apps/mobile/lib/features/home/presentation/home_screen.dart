@@ -108,6 +108,13 @@ class HomeScreen extends StatelessWidget {
                       label: Text(strings.openReviewQueue),
                     ),
                     const SizedBox(height: AppSpacing.sm),
+                    OutlinedButton.icon(
+                      key: const ValueKey('practice-modes-entry'),
+                      onPressed: () => context.push('/home/practice'),
+                      icon: const Icon(Icons.fitness_center_outlined),
+                      label: Text(strings.openPracticeModes),
+                    ),
+                    const SizedBox(height: AppSpacing.sm),
                     TextButton.icon(
                       key: const ValueKey('advanced-learning-entry'),
                       onPressed: () => context.push('/home/advanced'),

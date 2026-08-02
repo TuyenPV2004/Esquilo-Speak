@@ -7,7 +7,7 @@ class AppDatabase {
     : _factory = factory ?? databaseFactory;
 
   static const _databaseName = 'esquilospeak_mobile.db';
-  static const _schemaVersion = 2;
+  static const _schemaVersion = 3;
 
   final DatabaseFactory _factory;
   Database? _database;
@@ -52,9 +52,11 @@ class AppDatabase {
             )
           ''');
           await _createContentCache(database);
+          await _createPracticeHistory(database);
         },
         onUpgrade: (database, oldVersion, newVersion) async {
           if (oldVersion < 2) await _createContentCache(database);
+          if (oldVersion < 3) await _createPracticeHistory(database);
         },
       ),
     );
@@ -68,6 +70,25 @@ class AppDatabase {
           updated_at TEXT NOT NULL
         )
       ''');
+
+  static Future<void> _createPracticeHistory(DatabaseExecutor database) async {
+    await database.execute('''
+      CREATE TABLE practice_attempt_history (
+        client_attempt_id TEXT PRIMARY KEY,
+        course_id TEXT NOT NULL,
+        lesson_id TEXT NOT NULL,
+        lesson_version INTEGER NOT NULL,
+        exercise_id TEXT NOT NULL,
+        correct INTEGER NOT NULL,
+        practice_mode TEXT,
+        occurred_at TEXT NOT NULL
+      )
+    ''');
+    await database.execute('''
+      CREATE INDEX practice_attempt_history_recent_idx
+      ON practice_attempt_history (course_id, exercise_id, occurred_at DESC)
+    ''');
+  }
 
   Future<void> enqueueMutation(LocalMutation mutation) async {
     await _db.insert(
@@ -189,6 +210,57 @@ class AppDatabase {
       'SELECT COUNT(*) AS pending_count FROM pending_mutation',
     );
     return (rows.single['pending_count'] as num).toInt();
+  }
+
+  Future<void> recordPracticeAttempt({
+    required String clientAttemptId,
+    required String courseId,
+    required String lessonId,
+    required int lessonVersion,
+    required String exerciseId,
+    required bool correct,
+    required String? practiceMode,
+    required DateTime occurredAt,
+  }) => _db.insert('practice_attempt_history', {
+    'client_attempt_id': clientAttemptId,
+    'course_id': courseId,
+    'lesson_id': lessonId,
+    'lesson_version': lessonVersion,
+    'exercise_id': exerciseId,
+    'correct': correct ? 1 : 0,
+    'practice_mode': practiceMode,
+    'occurred_at': occurredAt.toUtc().toIso8601String(),
+  }, conflictAlgorithm: ConflictAlgorithm.replace);
+
+  Future<List<String>> recentMistakeExerciseIds(
+    String courseId, {
+    int limit = 50,
+  }) async {
+    final rows = await _db.rawQuery(
+      '''
+      SELECT history.exercise_id
+      FROM practice_attempt_history history
+      WHERE history.course_id = ?
+        AND history.correct = 0
+        AND NOT EXISTS (
+          SELECT 1
+          FROM practice_attempt_history newer
+          WHERE newer.course_id = history.course_id
+            AND newer.exercise_id = history.exercise_id
+            AND (
+              newer.occurred_at > history.occurred_at
+              OR (newer.occurred_at = history.occurred_at
+                  AND newer.client_attempt_id > history.client_attempt_id)
+            )
+        )
+      ORDER BY history.occurred_at DESC
+      LIMIT ?
+      ''',
+      [courseId, limit],
+    );
+    return rows
+        .map((row) => row['exercise_id'] as String)
+        .toList(growable: false);
   }
 
   Future<void> close() async {

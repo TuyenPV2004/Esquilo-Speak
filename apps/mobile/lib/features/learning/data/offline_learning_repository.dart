@@ -5,7 +5,11 @@ import 'learning_models.dart';
 import 'learning_repository.dart';
 
 class OfflineLearningRepository
-    implements LearningRepository, LessonResumeStore, UnitDownloadStore {
+    implements
+        LearningRepository,
+        LessonResumeStore,
+        UnitDownloadStore,
+        PracticeHistoryStore {
   OfflineLearningRepository(this._remote, this._sync, this._database);
 
   final LearningRepository _remote;
@@ -85,8 +89,23 @@ class OfflineLearningRepository
     }
     final attemptResult = result.results[attempt.clientMutationId];
     if (attemptResult == null) throw const AttemptQueuedForSync();
-    return AttemptFeedback.fromJson(attemptResult);
+    final feedback = AttemptFeedback.fromJson(attemptResult);
+    await _database.recordPracticeAttempt(
+      clientAttemptId: attempt.clientAttemptId,
+      courseId: attempt.courseId,
+      lessonId: attempt.lessonId,
+      lessonVersion: attempt.lessonVersion,
+      exerciseId: attempt.exerciseId,
+      correct: feedback.correct,
+      practiceMode: attempt.evidence.practiceMode,
+      occurredAt: attempt.occurredAt,
+    );
+    return feedback;
   }
+
+  @override
+  Future<List<String>> recentMistakeExerciseIds(String courseId) =>
+      _database.recentMistakeExerciseIds(courseId);
 
   @override
   Future<CourseProgress> progress(String courseId) async {

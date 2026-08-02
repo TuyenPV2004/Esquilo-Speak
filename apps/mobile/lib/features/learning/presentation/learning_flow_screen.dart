@@ -12,9 +12,14 @@ import 'exercise_renderer_registry.dart';
 import 'learning_view_model.dart';
 
 class LearningFlowScreen extends StatelessWidget {
-  const LearningFlowScreen({required this.viewModel, super.key});
+  const LearningFlowScreen({
+    required this.viewModel,
+    this.onPlayMedia,
+    super.key,
+  });
 
   final LearningViewModel viewModel;
+  final Future<void> Function(String mediaId)? onPlayMedia;
 
   @override
   Widget build(BuildContext context) {
@@ -92,25 +97,7 @@ class LearningFlowScreen extends StatelessWidget {
         emptyLabel: strings.empty,
         strings: strings,
       ),
-      LearningStep.lesson => ExerciseRendererRegistry(
-        lesson: viewModel.selectedLesson!,
-        exerciseIndex: viewModel.currentExerciseIndex,
-        response: viewModel.selectedResponse,
-        selectionError: viewModel.selectionError == null
-            ? null
-            : strings.selectAnswer,
-        hintVisible: viewModel.hintVisible,
-        onResponse: viewModel.setResponse,
-        onHint: viewModel.showHint,
-        onSubmit: viewModel.submitAnswer,
-        submitLabel: strings.submitAnswer,
-        hintLabel: strings.showHint,
-        knowLabel: strings.flashcardKnow,
-        learningLabel: strings.flashcardLearning,
-        moveUpLabel: strings.moveUp,
-        moveDownLabel: strings.moveDown,
-        unsupportedLabel: strings.destinationUnavailable,
-      ),
+      LearningStep.lesson => _exercise(strings),
       LearningStep.queued => AppMessageState(
         icon: Icons.cloud_done_outlined,
         message: strings.offlineSavedMessage,
@@ -130,18 +117,91 @@ class LearningFlowScreen extends StatelessWidget {
       ),
       LearningStep.progress => _Progress(
         progress: viewModel.courseProgress!,
-        summary: strings.completedExercises(
-          viewModel.courseProgress!.completedExerciseCount,
-          viewModel.courseProgress!.totalExerciseCount,
-        ),
+        summary: viewModel.sessionKind == LearningSessionKind.practice
+            ? strings.practiceScore(
+                viewModel.sessionCorrectCount,
+                viewModel.selectedLesson?.exercises.length ?? 0,
+              )
+            : strings.completedExercises(
+                viewModel.courseProgress!.completedExerciseCount,
+                viewModel.courseProgress!.totalExerciseCount,
+              ),
         actionLabel: strings.continueLearning,
         onContinue: viewModel.continueFromProgress,
         sessionExerciseCount: viewModel.selectedLesson?.exercises.length ?? 0,
         sessionMistakeCount: viewModel.sessionMistakeCount,
+        practiceCorrectCount: viewModel.sessionCorrectCount,
+        isPractice: viewModel.sessionKind == LearningSessionKind.practice,
         onReturnHome: () => context.go('/home'),
       ),
     };
   }
+
+  Widget _exercise(AppLocalizations strings) {
+    final mediaId = viewModel.currentExerciseMediaId;
+    final renderer = ExerciseRendererRegistry(
+      lesson: viewModel.selectedLesson!,
+      exerciseIndex: viewModel.currentExerciseIndex,
+      response: viewModel.selectedResponse,
+      selectionError: viewModel.selectionError == null
+          ? null
+          : strings.selectAnswer,
+      hintVisible: viewModel.hintVisible,
+      onResponse: viewModel.setResponse,
+      onHint: viewModel.showHint,
+      onSubmit: viewModel.submitAnswer,
+      submitLabel: strings.submitAnswer,
+      hintLabel: strings.showHint,
+      knowLabel: strings.flashcardKnow,
+      learningLabel: strings.flashcardLearning,
+      moveUpLabel: strings.moveUp,
+      moveDownLabel: strings.moveDown,
+      unsupportedLabel: strings.destinationUnavailable,
+      flashcardRevealed: viewModel.flashcardRevealed,
+      onFlashcardFlip: viewModel.flipFlashcard,
+      flipCardLabel: strings.flipCard,
+      cardBackLabel: strings.cardBack,
+      playAudioLabel: strings.playAudio,
+      onPlayAudio: mediaId == null || onPlayMedia == null
+          ? null
+          : () {
+              onPlayMedia!(mediaId);
+            },
+    );
+    if (viewModel.sessionKind != LearningSessionKind.practice) return renderer;
+    return Column(
+      children: [
+        Card(
+          margin: const EdgeInsets.fromLTRB(16, 8, 16, 0),
+          child: ListTile(
+            leading: const Icon(Icons.psychology_alt_outlined),
+            title: Text(_practiceReason(strings)),
+            trailing: viewModel.activePracticeMode?.apiValue == 'flashcards'
+                ? IconButton(
+                    tooltip: strings.shuffleCards,
+                    onPressed: viewModel.shufflePractice,
+                    icon: const Icon(Icons.shuffle),
+                  )
+                : null,
+          ),
+        ),
+        Expanded(child: renderer),
+      ],
+    );
+  }
+
+  String _practiceReason(AppLocalizations strings) =>
+      viewModel.practiceUsedFallback
+      ? strings.practiceReasonFallback
+      : switch (viewModel.practiceExplanationCode) {
+          'practice_reason_flashcards' => strings.practiceReasonFlashcards,
+          'practice_reason_adaptive' => strings.practiceReasonAdaptive,
+          'practice_reason_test' => strings.practiceReasonTest,
+          'practice_reason_match' => strings.practiceReasonMatch,
+          'practice_reason_mistakes' => strings.practiceReasonMistakes,
+          'practice_reason_weak' => strings.practiceReasonWeak,
+          _ => strings.practiceReasonFallback,
+        };
 }
 
 String _locale(BuildContext context) =>
@@ -475,6 +535,8 @@ class _Progress extends StatelessWidget {
     required this.sessionExerciseCount,
     required this.sessionMistakeCount,
     required this.onReturnHome,
+    required this.practiceCorrectCount,
+    required this.isPractice,
   });
 
   final CourseProgress progress;
@@ -484,11 +546,19 @@ class _Progress extends StatelessWidget {
   final int sessionExerciseCount;
   final int sessionMistakeCount;
   final VoidCallback onReturnHome;
+  final int practiceCorrectCount;
+  final bool isPractice;
 
   @override
   Widget build(BuildContext context) {
     final total = progress.totalExerciseCount;
-    final value = total == 0 ? 0.0 : progress.completedExerciseCount / total;
+    final value = isPractice
+        ? (sessionExerciseCount == 0
+              ? 0.0
+              : practiceCorrectCount / sessionExerciseCount)
+        : total == 0
+        ? 0.0
+        : progress.completedExerciseCount / total;
     return Center(
       key: const ValueKey('progress'),
       child: Padding(

@@ -146,6 +146,7 @@ public class LearningService {
                         where learner_id = :learnerId
                           and course_id = :courseId
                           and correct = true
+                          and evidence ->> 'practiceMode' is null
                         group by lesson_id, lesson_version
                         """)
                 .param("learnerId", learnerId)
@@ -438,14 +439,16 @@ public class LearningService {
             }
             evidence = evidence == null ? Map.of() : Map.copyOf(evidence);
             Set<String> allowedEvidence = Set.of(
-                    "responseTimeMs", "hintUsed", "hintLevel", "retryIndex", "confidence", "inputModality");
+                    "responseTimeMs", "hintUsed", "hintLevel", "retryIndex", "confidence", "inputModality",
+                    "practiceMode");
             if (!allowedEvidence.containsAll(evidence.keySet())
                     || !validInteger(evidence.get("responseTimeMs"), 0, Integer.MAX_VALUE)
                     || !validBoolean(evidence.get("hintUsed"))
                     || !validInteger(evidence.get("hintLevel"), 0, 5)
                     || !validInteger(evidence.get("retryIndex"), 0, 20)
                     || !validInteger(evidence.get("confidence"), 1, 5)
-                    || !validModality(evidence.get("inputModality"))) {
+                    || !validModality(evidence.get("inputModality"))
+                    || !validPracticeMode(evidence.get("practiceMode"))) {
                 throw new ApiException(
                         HttpStatus.BAD_REQUEST,
                         "ATTEMPT_EVIDENCE_INVALID",
@@ -471,6 +474,20 @@ public class LearningService {
                     || value instanceof String modality
                             && Set.of("touch", "keyboard", "voice", "assistive_technology", "unknown")
                                     .contains(modality);
+        }
+
+        private static boolean validPracticeMode(Object value) {
+            return value == null
+                    || value instanceof String mode
+                            && Set.of(
+                                            "daily_quick_practice",
+                                            "flashcards",
+                                            "adaptive_learn",
+                                            "practice_test",
+                                            "match",
+                                            "mistakes",
+                                            "weak_concepts")
+                                    .contains(mode);
         }
     }
 

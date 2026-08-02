@@ -4,6 +4,7 @@ import '../../../core/network/user_facing_failure.dart';
 import '../data/learning_models.dart';
 import '../data/offline_learning_repository.dart';
 import '../data/learning_repository.dart';
+import '../../practice/data/practice_models.dart';
 
 enum LearningStep {
   catalog,
@@ -15,7 +16,7 @@ enum LearningStep {
   progress,
 }
 
-enum LearningSessionKind { lesson, dailyQuickPractice }
+enum LearningSessionKind { lesson, dailyQuickPractice, practice }
 
 class LearningCompletion {
   const LearningCompletion({
@@ -69,7 +70,15 @@ class LearningViewModel extends ChangeNotifier {
   String? downloadingUnitId;
   LearningSessionKind sessionKind = LearningSessionKind.lesson;
   int sessionMistakeCount = 0;
+  int sessionCorrectCount = 0;
+  PracticeMode? activePracticeMode;
+  String? practiceExplanationCode;
+  bool practiceUsedFallback = false;
+  bool flashcardRevealed = false;
   final Set<String> _sessionMistakeExerciseIds = {};
+  final Set<String> _sessionCorrectExerciseIds = {};
+  final Map<String, Lesson> _practiceSources = {};
+  final Map<String, String> _practiceMediaIds = {};
   PendingAttempt? _pendingAttempt;
   String? _requestedSourceLanguage;
   String? _requestedTargetLanguage;
@@ -182,6 +191,11 @@ class LearningViewModel extends ChangeNotifier {
       version: summary.version,
     );
     sessionKind = LearningSessionKind.lesson;
+    activePracticeMode = null;
+    practiceExplanationCode = null;
+    practiceUsedFallback = false;
+    _practiceSources.clear();
+    _practiceMediaIds.clear();
     _resetSessionState();
     await _restoreResume();
     step = LearningStep.lesson;
@@ -250,9 +264,133 @@ class LearningViewModel extends ChangeNotifier {
       exercises: selectedExercises,
     );
     sessionKind = LearningSessionKind.dailyQuickPractice;
+    activePracticeMode = null;
+    _practiceSources.clear();
+    _practiceMediaIds.clear();
     _resetSessionState();
     step = LearningStep.lesson;
   });
+
+  Future<void> startPractice({
+    required PracticeConfiguration configuration,
+    Map<String, double> masteryByConcept = const {},
+    Set<String> dueConceptIds = const {},
+  }) => _run(() async {
+    final course = selectedCourse;
+    if (course == null) throw StateError('Select a course before practice.');
+    final recentMistakes = _repository is PracticeHistoryStore
+        ? (await (_repository as PracticeHistoryStore).recentMistakeExerciseIds(
+            course.id,
+          )).toSet()
+        : const <String>{};
+    final candidates = <PracticeCandidate>[];
+    for (final summary in lessons) {
+      try {
+        final lesson = await _repository.lesson(
+          summary.id,
+          version: summary.version,
+        );
+        for (final exercise in lesson.exercises) {
+          candidates.add(
+            PracticeCandidate(
+              lesson: lesson,
+              exercise: exercise,
+              unitId: summary.unitId,
+            ),
+          );
+        }
+      } on Object {
+        continue;
+      }
+    }
+    final selection = const PracticeSelector().select(
+      configuration: configuration,
+      candidates: candidates,
+      masteryByConcept: masteryByConcept,
+      dueConceptIds: dueConceptIds,
+      recentMistakeExerciseIds: recentMistakes,
+    );
+    if (selection.items.isEmpty) {
+      throw StateError(
+        'No cached or reachable content supports this practice.',
+      );
+    }
+    final first = selection.items.first.lesson;
+    _practiceSources
+      ..clear()
+      ..addEntries(
+        selection.items.map((item) => MapEntry(item.exercise.id, item.lesson)),
+      );
+    _practiceMediaIds.clear();
+    for (final item in selection.items) {
+      final directMedia = item.exercise.mediaId;
+      String? relatedMedia;
+      for (final candidate in candidates) {
+        if (candidate.exercise.mediaId != null &&
+            candidate.exercise.conceptIds.any(
+              item.exercise.conceptIds.contains,
+            )) {
+          relatedMedia = candidate.exercise.mediaId;
+          break;
+        }
+      }
+      final mediaId = directMedia ?? relatedMedia;
+      if (mediaId != null) _practiceMediaIds[item.exercise.id] = mediaId;
+    }
+    selectedLesson = Lesson(
+      id: 'practice-${configuration.mode.apiValue}',
+      courseId: first.courseId,
+      version: first.version,
+      locale: first.locale,
+      title: first.title,
+      objectives: first.objectives,
+      exercises: selection.items
+          .map((item) => item.exercise)
+          .toList(growable: false),
+    );
+    sessionKind = LearningSessionKind.practice;
+    activePracticeMode = configuration.mode;
+    practiceExplanationCode = selection.explanationCode;
+    practiceUsedFallback = selection.usedFallback;
+    _resetSessionState();
+    step = LearningStep.lesson;
+  });
+
+  void shufflePractice() {
+    final lesson = selectedLesson;
+    if (sessionKind != LearningSessionKind.practice ||
+        activePracticeMode != PracticeMode.flashcards ||
+        lesson == null ||
+        lesson.exercises.length < 2) {
+      return;
+    }
+    final exercises = [...lesson.exercises]..shuffle();
+    selectedLesson = Lesson(
+      id: lesson.id,
+      courseId: lesson.courseId,
+      version: lesson.version,
+      locale: lesson.locale,
+      title: lesson.title,
+      objectives: lesson.objectives,
+      exercises: exercises,
+    );
+    _resetSessionState();
+    notifyListeners();
+  }
+
+  void flipFlashcard() {
+    flashcardRevealed = !flashcardRevealed;
+    notifyListeners();
+  }
+
+  String? get currentExerciseMediaId {
+    final lesson = selectedLesson;
+    if (lesson == null || currentExerciseIndex >= lesson.exercises.length) {
+      return null;
+    }
+    final exercise = lesson.exercises[currentExerciseIndex];
+    return exercise.mediaId ?? _practiceMediaIds[exercise.id];
+  }
 
   void _resetSessionState() {
     selectedOptionId = null;
@@ -263,7 +401,10 @@ class LearningViewModel extends ChangeNotifier {
     reviewingMistakes = false;
     mistakeExerciseIndexes.clear();
     _sessionMistakeExerciseIds.clear();
+    _sessionCorrectExerciseIds.clear();
     sessionMistakeCount = 0;
+    sessionCorrectCount = 0;
+    flashcardRevealed = false;
     _exerciseStartedAt = DateTime.now();
     selectionError = null;
     _pendingAttempt = null;
@@ -320,10 +461,12 @@ class LearningViewModel extends ChangeNotifier {
       return;
     }
     await _run(() async {
+      final exercise = lesson.exercises[currentExerciseIndex];
+      final sourceLesson = _practiceSources[exercise.id] ?? lesson;
       _pendingAttempt ??= _repository
           .createAttempt(
-            lesson: lesson,
-            exercise: lesson.exercises[currentExerciseIndex],
+            lesson: sourceLesson,
+            exercise: exercise,
             response: response,
           )
           .withEvidence(
@@ -334,10 +477,12 @@ class LearningViewModel extends ChangeNotifier {
               hintUsed: hintVisible,
               hintLevel: hintVisible ? 1 : 0,
               retryIndex: retryIndex,
-              practiceMode:
-                  sessionKind == LearningSessionKind.dailyQuickPractice
-                  ? 'daily_quick_practice'
-                  : null,
+              practiceMode: switch (sessionKind) {
+                LearningSessionKind.dailyQuickPractice =>
+                  'daily_quick_practice',
+                LearningSessionKind.practice => activePracticeMode?.apiValue,
+                LearningSessionKind.lesson => null,
+              },
             ),
           );
       feedback = await _repository.submitAttempt(_pendingAttempt!);
@@ -350,6 +495,9 @@ class LearningViewModel extends ChangeNotifier {
             lesson.exercises[currentExerciseIndex].id,
           )) {
         sessionMistakeCount += 1;
+      }
+      if (feedback!.correct && _sessionCorrectExerciseIds.add(exercise.id)) {
+        sessionCorrectCount += 1;
       }
       await _persistResume();
       _pendingAttempt = null;
@@ -420,6 +568,10 @@ class LearningViewModel extends ChangeNotifier {
       await _persistResume();
       return;
     }
+    if (sessionKind == LearningSessionKind.practice) {
+      await _finishLesson();
+      return;
+    }
     if (mistakeExerciseIndexes.isNotEmpty) {
       reviewingMistakes = true;
       currentExerciseIndex = mistakeExerciseIndexes.first;
@@ -481,6 +633,7 @@ class LearningViewModel extends ChangeNotifier {
     selectedResponse = null;
     selectionError = null;
     hintVisible = false;
+    flashcardRevealed = false;
     retryIndex = retry ? retryIndex + 1 : 0;
     feedback = null;
     _pendingAttempt = null;

@@ -81,6 +81,12 @@ phục vụ phát triển, không được xem là API production.
 `POST /attempts` vẫn là API nộp một attempt trực tiếp. Tuy nhiên luồng mobile hiện tại chủ
 yếu dùng hàng đợi offline và `sync/push` để tránh mất bài khi mạng không ổn định.
 
+Attempt luyện tập gửi `evidence.practiceMode` thuộc một trong các giá trị
+`daily_quick_practice`, `flashcards`, `adaptive_learn`, `practice_test`, `match`,
+`mistakes`, `weak_concepts`. Các attempt này vẫn là evidence canonical cho mastery và
+review scheduler, nhưng backend loại chúng khỏi phép tính lesson/course completion. Vì
+vậy đổi mode, làm lại cùng item hoặc luyện offline rồi sync không thể mở khóa curriculum.
+
 ### 3.3. Học nâng cao
 
 1. `GET /media/{mediaId}` tải audio học tập có xác thực.

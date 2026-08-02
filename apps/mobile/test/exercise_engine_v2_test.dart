@@ -132,6 +132,73 @@ void main() {
     await pump(hintVisible: true);
     expect(find.text('Hello'), findsOneWidget);
   });
+
+  testWidgets('flashcard works with buttons, audio and 200% text', (
+    tester,
+  ) async {
+    const exercise = Exercise(
+      id: 'exercise-flashcard-accessible',
+      type: 'flashcard',
+      prompt: {'en': 'Recall Hello.'},
+      hint: {'en': 'Hello means a greeting.'},
+      mediaId: 'media-hello',
+    );
+    var revealed = false;
+    var played = false;
+    ExerciseResponse? response;
+
+    await tester.pumpWidget(
+      MaterialApp(
+        home: MediaQuery(
+          data: const MediaQueryData(textScaler: TextScaler.linear(2)),
+          child: Scaffold(
+            body: StatefulBuilder(
+              builder: (context, setState) => ExerciseRendererRegistry(
+                lesson: _lesson(exercise),
+                exerciseIndex: 0,
+                response: response,
+                selectionError: null,
+                hintVisible: false,
+                onResponse: (value) => response = value,
+                onHint: () {},
+                onSubmit: () {},
+                submitLabel: 'Submit',
+                hintLabel: 'Hint',
+                knowLabel: 'Know',
+                learningLabel: 'Learning',
+                moveUpLabel: 'Move up',
+                moveDownLabel: 'Move down',
+                unsupportedLabel: 'Unsupported',
+                flashcardRevealed: revealed,
+                onFlashcardFlip: () => setState(() => revealed = !revealed),
+                flipCardLabel: 'Reveal card',
+                cardBackLabel: 'Card answer',
+                playAudioLabel: 'Play audio',
+                onPlayAudio: () => played = true,
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+
+    expect(
+      tester
+          .widget<OutlinedButton>(
+            find.byKey(const ValueKey('flashcard-learning')),
+          )
+          .onPressed,
+      isNull,
+    );
+    await tester.tap(find.byKey(const ValueKey('flashcard-flip')));
+    await tester.pump();
+    expect(find.text('Hello means a greeting.'), findsOneWidget);
+    await tester.tap(find.byKey(const ValueKey('flashcard-audio')));
+    await tester.tap(find.byKey(const ValueKey('flashcard-know')));
+    expect(played, isTrue);
+    expect(response?.toJson(), {'kind': 'self_assessment', 'value': 'know'});
+    expect(tester.takeException(), isNull);
+  });
 }
 
 Lesson _lesson(Exercise exercise) => Lesson(

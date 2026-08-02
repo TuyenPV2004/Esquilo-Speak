@@ -4,6 +4,8 @@ import '../data/learning_models.dart';
 
 typedef ExerciseRendererBuilder = Widget Function(ExerciseRenderContext data);
 
+void _noop() {}
+
 class ExerciseRenderContext {
   const ExerciseRenderContext({
     required this.lesson,
@@ -21,6 +23,12 @@ class ExerciseRenderContext {
     required this.learningLabel,
     required this.moveUpLabel,
     required this.moveDownLabel,
+    this.flashcardRevealed = false,
+    this.onFlashcardFlip = _noop,
+    this.flipCardLabel = 'Flip card',
+    this.cardBackLabel = 'Card back',
+    this.playAudioLabel = 'Play audio',
+    this.onPlayAudio,
   });
 
   final Lesson lesson;
@@ -38,6 +46,12 @@ class ExerciseRenderContext {
   final String learningLabel;
   final String moveUpLabel;
   final String moveDownLabel;
+  final bool flashcardRevealed;
+  final VoidCallback onFlashcardFlip;
+  final String flipCardLabel;
+  final String cardBackLabel;
+  final String playAudioLabel;
+  final VoidCallback? onPlayAudio;
 }
 
 class ExerciseRendererRegistry extends StatelessWidget {
@@ -57,6 +71,12 @@ class ExerciseRendererRegistry extends StatelessWidget {
     required this.moveUpLabel,
     required this.moveDownLabel,
     required this.unsupportedLabel,
+    this.flashcardRevealed = false,
+    this.onFlashcardFlip = _noop,
+    this.flipCardLabel = 'Flip card',
+    this.cardBackLabel = 'Card back',
+    this.playAudioLabel = 'Play audio',
+    this.onPlayAudio,
     super.key,
   });
 
@@ -87,6 +107,12 @@ class ExerciseRendererRegistry extends StatelessWidget {
   final String moveUpLabel;
   final String moveDownLabel;
   final String unsupportedLabel;
+  final bool flashcardRevealed;
+  final VoidCallback onFlashcardFlip;
+  final String flipCardLabel;
+  final String cardBackLabel;
+  final String playAudioLabel;
+  final VoidCallback? onPlayAudio;
 
   @override
   Widget build(BuildContext context) {
@@ -109,6 +135,12 @@ class ExerciseRendererRegistry extends StatelessWidget {
       learningLabel: learningLabel,
       moveUpLabel: moveUpLabel,
       moveDownLabel: moveDownLabel,
+      flashcardRevealed: flashcardRevealed,
+      onFlashcardFlip: onFlashcardFlip,
+      flipCardLabel: flipCardLabel,
+      cardBackLabel: cardBackLabel,
+      playAudioLabel: playAudioLabel,
+      onPlayAudio: onPlayAudio,
     );
     return _ExerciseFrame(data: data, child: renderer(data));
   }
@@ -146,27 +178,69 @@ class ExerciseRendererRegistry extends StatelessWidget {
     );
   }
 
-  static Widget _flashcardRenderer(ExerciseRenderContext data) => Row(
+  static Widget _flashcardRenderer(ExerciseRenderContext data) => Column(
+    crossAxisAlignment: CrossAxisAlignment.stretch,
     children: [
-      Expanded(
+      Semantics(
+        button: true,
+        label: data.flashcardRevealed ? data.cardBackLabel : data.flipCardLabel,
         child: OutlinedButton(
-          key: const ValueKey('flashcard-learning'),
-          onPressed: () =>
-              data.onResponse(const SelfAssessmentExerciseResponse('learning')),
-          child: Text(data.learningLabel),
+          key: const ValueKey('flashcard-flip'),
+          style: OutlinedButton.styleFrom(minimumSize: const Size(48, 120)),
+          onPressed: data.onFlashcardFlip,
+          child: Text(
+            data.flashcardRevealed ? _flashcardBack(data) : data.flipCardLabel,
+            textAlign: TextAlign.center,
+          ),
         ),
       ),
-      const SizedBox(width: 12),
-      Expanded(
-        child: FilledButton.tonal(
-          key: const ValueKey('flashcard-know'),
-          onPressed: () =>
-              data.onResponse(const SelfAssessmentExerciseResponse('know')),
-          child: Text(data.knowLabel),
+      if (data.onPlayAudio != null) ...[
+        const SizedBox(height: 8),
+        OutlinedButton.icon(
+          key: const ValueKey('flashcard-audio'),
+          onPressed: data.onPlayAudio,
+          icon: const Icon(Icons.volume_up_outlined),
+          label: Text(data.playAudioLabel),
         ),
+      ],
+      const SizedBox(height: 12),
+      Row(
+        children: [
+          Expanded(
+            child: OutlinedButton(
+              key: const ValueKey('flashcard-learning'),
+              onPressed: data.flashcardRevealed
+                  ? () => data.onResponse(
+                      const SelfAssessmentExerciseResponse('learning'),
+                    )
+                  : null,
+              child: Text(data.learningLabel),
+            ),
+          ),
+          const SizedBox(width: 12),
+          Expanded(
+            child: FilledButton.tonal(
+              key: const ValueKey('flashcard-know'),
+              onPressed: data.flashcardRevealed
+                  ? () => data.onResponse(
+                      const SelfAssessmentExerciseResponse('know'),
+                    )
+                  : null,
+              child: Text(data.knowLabel),
+            ),
+          ),
+        ],
       ),
     ],
   );
+
+  static String _flashcardBack(ExerciseRenderContext data) {
+    if (data.exercise.transcript.isNotEmpty) {
+      return _text(data, data.exercise.transcript);
+    }
+    if (data.exercise.hint.isNotEmpty) return _text(data, data.exercise.hint);
+    return _text(data, data.exercise.prompt);
+  }
 
   static Widget _textRenderer(ExerciseRenderContext data) => TextFormField(
     key: ValueKey('text-${data.exercise.id}'),

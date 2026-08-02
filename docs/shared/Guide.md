@@ -482,6 +482,24 @@ adb uninstall com.esquilospeak.mobile.local
 Sau đó chạy lại `flutter run`. Không xóa Docker volume nếu chỉ cần tạo guest
 session mới.
 
+### Kiểm tra Giai đoạn 6 — Practice modes
+
+1. Từ Home chọn **Chọn chế độ luyện**, lần lượt mở Flashcards, Học thích ứng,
+   Practice Test, Match, Lỗi gần đây và Khái niệm yếu.
+2. Đổi phạm vi toàn khóa/unit/lesson/concept. Xác nhận màn Learn luôn nêu lý do chọn
+   nội dung; Practice Test tôn trọng số câu và loại bài đã chọn.
+3. Với Flashcards, dùng nút lật (không vuốt), phát audio nếu nút khả dụng, chọn
+   biết/chưa biết và xáo thẻ. Khi mất mạng, audio chưa cache có thể không phát nhưng
+   transcript/silent path và thao tác trả lời vẫn dùng được.
+4. Trả lời sai một exercise, hoàn tất sync rồi mở **Lỗi gần đây**; exercise phải xuất
+   hiện. Trả lời đúng lại, mở phiên mới và xác nhận item không còn được ưu tiên như lỗi
+   mới nhất.
+5. Ghi lại `completedExerciseCount`, luyện đúng toàn bộ một mode rồi đọc lại
+   `GET /progress/courses/{courseId}`: curriculum progress phải không đổi. Đồng thời
+   `GET /mastery` phải có thêm evidence và `GET /reviews` tiếp tục phản ánh scheduler.
+6. Bật cỡ chữ 200% và TalkBack: mọi mode phải dùng được bằng nút/control native, lỗi và
+   summary được đọc, không phụ thuộc màu, tốc độ, swipe hoặc gesture ẩn.
+
 ## 10. Dừng môi trường
 
 Nhấn `Ctrl+C` tại cửa sổ Flutter và backend. Sau đó, từ thư mục gốc:

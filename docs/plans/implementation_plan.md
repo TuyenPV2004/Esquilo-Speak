@@ -407,3 +407,79 @@ thay vì literal UI hoặc event do client tự khai báo không kiểm chứng.
 
 Developer phê duyệt thực hiện ngày 2026-08-02 bằng yêu cầu triển khai toàn bộ Giai đoạn 5
 theo `docs/plans/Ke_Hoach_2.md`.
+
+## 13. Giai đoạn 6 — Practice modes dùng lại content
+
+### Mục tiêu
+
+Tạo sáu chế độ luyện chủ động từ lesson/exercise canonical đã publish, giữ nguyên scorer,
+attempt, mastery và review hiện có nhưng tách rõ practice evidence khỏi curriculum progress.
+Learner chọn được phạm vi unit/lesson/concept, nhận lý do chọn nội dung và vẫn có fallback
+giới hạn khi chỉ còn content đã cache.
+
+### Phạm vi triển khai
+
+1. Chuẩn hóa `practiceMode` trong attempt evidence cho daily quick practice, flashcards,
+   adaptive learn, practice test, match, mistakes và weak concepts. Backend vẫn phát
+   `AttemptAccepted` cho mastery/review nhưng loại mọi practice attempt khỏi phép tính
+   lesson/course completion.
+2. Thêm selector thuần, deterministic theo mode/scope/count/type, mastery, review đến hạn và
+   lịch sử lỗi. Selection giữ tham chiếu exercise cùng source lesson/version; không tạo bản
+   sao content hay scorer.
+3. Lưu kết quả attempt tối thiểu trong SQLite để chọn lỗi gần đây. Query dùng trạng thái mới
+   nhất của mỗi exercise, có giới hạn và làm nguồn offline; content vẫn chỉ được lấy từ cache
+   lesson/unit hiện có.
+4. Mở Practice Hub từ Home với sáu mode. Practice Test cấu hình số câu/type; learner chọn
+   unit/lesson/concept; màn hình giải thích vì sao nội dung được chọn và thông báo fallback.
+5. Mở rộng learning flow cho practice nhiều lesson, summary điểm đúng/sai và evidence mode.
+   Flashcard có nút lật, xáo, phát audio khi canonical exercise có media, biết/chưa biết;
+   Match dùng control chọn cặp và không dùng thời gian làm tín hiệu mastery duy nhất.
+6. Dùng control Material native, semantic/live region, text theme co giãn và vùng chạm tối
+   thiểu 48dp; không mode nào bắt buộc swipe, gesture ẩn hoặc giới hạn thời gian.
+
+### Khu vực dự kiến thay đổi
+
+- Backend learning service và integration test.
+- OpenAPI cùng `docs/reference/API_Check.md`, `docs/shared/Guide.md`.
+- Mobile learning model/repository/view-model/renderer, SQLite, practice feature, Home/router,
+  localization và test deterministic/offline/widget.
+- Roadmap/process chỉ được đánh dấu hoàn tất sau khi validation tương ứng pass.
+
+### Validation
+
+1. Backend learning integration chứng minh practice cập nhật mastery/review nhưng progress và
+   completion không đổi; invalid mode bị từ chối. Sau đó chạy full backend test và `bootJar`.
+2. OpenAPI lint và đối chiếu enum evidence giữa contract, Java và Dart.
+3. Dart format, `flutter gen-l10n`, analyzer, targeted selector/database/widget test và full
+   Flutter regression tích lũy.
+4. Widget accessibility ở text scaling 200%, semantic labels, touch target; build debug APK và
+   Android integration test khi có emulator/device khả dụng.
+5. `git diff --check`, rà soát không copy canonical data, không answer leakage và cập nhật
+   roadmap/change log theo bằng chứng thực tế.
+
+### Giả định và rủi ro
+
+- Audio practice dùng metadata/media endpoint canonical hiện có. Khi media chưa cache và mất
+  mạng, transcript/silent path là fallback; không coi phát audio là điều kiện bắt buộc để trả lời.
+- Mistakes offline chỉ phản ánh attempt đã nhận được feedback và lưu local; attempt còn trong
+  outbox chưa có kết quả server nên không được đoán đúng/sai.
+- Adaptive Learn giai đoạn này dùng mastery/review evidence hiện có để chuyển recognition sang
+  recall; không thêm mô hình ML hoặc công thức mastery riêng trên client.
+
+### Phê duyệt
+
+Developer phê duyệt thực hiện ngày 2026-08-02 bằng yêu cầu triển khai toàn bộ Giai đoạn 6
+theo `docs/plans/Ke_Hoach_2.md`.
+
+### Kết quả
+
+- Practice Hub cung cấp đủ sáu mode, scope unit/lesson/concept, giới hạn câu/type, lý do
+  selection và fallback offline. Flashcard dùng nút lật/xáo/audio và biết/chưa biết; summary
+  dùng score của phiên thay vì biến practice thành course progress.
+- Selector giữ tham chiếu exercise/source lesson/version canonical; deterministic test chứng
+  minh một object dùng qua ba mode và Adaptive Learn đổi recognition→recall theo mastery.
+- SQLite V3 lưu outcome mới nhất để chọn lỗi gần đây. Attempt có `practiceMode` thống nhất;
+  backend vẫn cập nhật mastery/review nhưng lọc khỏi progress và learning completion.
+- Learning API targeted 9/9, full backend regression và `bootJar`, OpenAPI lint/P0 freeze,
+  Flutter analyzer, 61/61 mobile test và local debug APK đều pass. Không có Android target
+  trong `flutter devices`, vì vậy device E2E không được ghi nhận trong lượt này.

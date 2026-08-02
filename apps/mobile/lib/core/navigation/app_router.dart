@@ -12,6 +12,7 @@ import '../../features/learning/presentation/learning_flow_screen.dart';
 import '../../features/profile/presentation/onboarding_screen.dart';
 import '../../features/profile/presentation/profile_screen.dart';
 import '../../features/profile/presentation/welcome_screen.dart';
+import '../../features/practice/presentation/practice_hub_screen.dart';
 import '../../features/review/presentation/review_screen.dart';
 import '../../features/support/presentation/support_screen.dart';
 import '../../l10n/app_localizations.dart';
@@ -70,6 +71,13 @@ GoRouter createAppRouter(AppDependencies dependencies) => GoRouter(
               ),
               routes: [
                 GoRoute(
+                  path: 'practice',
+                  builder: (context, state) => PracticeHubScreen(
+                    learning: dependencies.learningViewModel,
+                    insights: dependencies.insightsViewModel,
+                  ),
+                ),
+                GoRoute(
                   path: 'advanced',
                   builder: (context, state) =>
                       const AdvancedLearningHubScreen(),
@@ -111,8 +119,10 @@ GoRouter createAppRouter(AppDependencies dependencies) => GoRouter(
             GoRoute(
               path: '/learn',
               name: 'learning',
-              builder: (context, state) =>
-                  LearningFlowScreen(viewModel: dependencies.learningViewModel),
+              builder: (context, state) => LearningFlowScreen(
+                viewModel: dependencies.learningViewModel,
+                onPlayMedia: dependencies.p1ViewModel.playMedia,
+              ),
             ),
           ],
         ),

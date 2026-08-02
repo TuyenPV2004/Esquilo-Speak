@@ -103,11 +103,15 @@ flutter test integration_test/learning_flow_integration_test.dart `
   storage.
 - SQLite stores cached catalog/course/lesson/profile/insight payloads, pending
   mutations, canonical sync changes, the opaque cursor, and non-sensitive
-  settings. Schema V2 migrates existing Phase 10 databases in place.
+  settings. Schema V3 also stores the latest local attempt outcomes used by
+  recent-mistake practice and migrates existing databases in place.
 - A write is persisted before delivery; only safe reads and idempotent mutations
   are retried automatically.
 - Offline content remains readable, attempt mutations stay pending until sync,
   and the UI exposes cached, pending, retry, conflict, and authentication states.
+- Practice Hub reuses published exercises for flashcards, adaptive learn,
+  practice tests, short matching rounds, recent mistakes, and weak concepts.
+  Practice evidence updates mastery/review but never lesson/course completion.
 - Analytics and crash events are disabled until consent is stored. The P0 sink
   is deliberately no-op until a provider and privacy review are approved.
 

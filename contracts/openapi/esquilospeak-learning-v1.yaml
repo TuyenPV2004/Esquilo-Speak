@@ -1,7 +1,7 @@
 openapi: 3.1.1
 info:
   title: EsquiloSpeak Learning API
-  version: 0.11.0
+  version: 0.12.0
   description: >-
     Mobile contract for identity/profile onboarding and the first learning
     vertical slice: resolve a guest or account learner, manage profile and
@@ -2024,7 +2024,8 @@ components:
           enum: [touch, keyboard, voice, assistive_technology, unknown]
         practiceMode:
           type: string
-          enum: [daily_quick_practice]
+          description: Practice attempts update mastery/review evidence but never curriculum completion.
+          enum: [daily_quick_practice, flashcards, adaptive_learn, practice_test, match, mistakes, weak_concepts]
       additionalProperties: false
     LessonProgress:
       type: object

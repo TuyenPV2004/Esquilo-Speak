@@ -45,6 +45,10 @@ abstract interface class UnitDownloadStore {
   });
 }
 
+abstract interface class PracticeHistoryStore {
+  Future<List<String>> recentMistakeExerciseIds(String courseId);
+}
+
 class LessonResume {
   const LessonResume({
     required this.lessonId,

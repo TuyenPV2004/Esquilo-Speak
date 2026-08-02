@@ -162,6 +162,50 @@ class LearningApiIntegrationTest {
     }
 
     @Test
+    void practiceAttemptsUpdateMasteryWithoutCompletingCurriculum() throws Exception {
+        String subject = "learner-practice-" + UUID.randomUUID();
+        String practiceAttempt = attemptJson(UUID.randomUUID(), "option-hello")
+                .replace(
+                        "\"inputModality\": \"touch\"",
+                        "\"inputModality\": \"touch\", \"practiceMode\": \"adaptive_learn\"");
+
+        mockMvc.perform(post("/api/mobile/v1/attempts")
+                        .with(guestJwt(subject))
+                        .header("Idempotency-Key", UUID.randomUUID())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(practiceAttempt))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.correct").value(true))
+                .andExpect(jsonPath("$.progress.completedExerciseCount").value(0))
+                .andExpect(jsonPath("$.progress.lessonProgress[0].status").value("not_started"));
+
+        mockMvc.perform(get("/api/mobile/v1/mastery").with(guestJwt(subject)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.items[0].conceptId").value("concept-basic-greetings"))
+                .andExpect(jsonPath("$.items[0].evidenceCount").value(1));
+
+        mockMvc.perform(get("/api/mobile/v1/progress/courses/course-en-for-vi")
+                        .with(guestJwt(subject)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.completedExerciseCount").value(0))
+                .andExpect(jsonPath("$.completedLessonCount").value(0));
+    }
+
+    @Test
+    void rejectsUnknownPracticeMode() throws Exception {
+        mockMvc.perform(post("/api/mobile/v1/attempts")
+                        .with(guestJwt("learner-invalid-practice-mode"))
+                        .header("Idempotency-Key", UUID.randomUUID())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(attemptJson(UUID.randomUUID(), "option-hello")
+                                .replace(
+                                        "\"inputModality\": \"touch\"",
+                                        "\"inputModality\": \"touch\", \"practiceMode\": \"speed_run\"")))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.code").value("ATTEMPT_EVIDENCE_INVALID"));
+    }
+
+    @Test
     void rejectsIdempotencyKeyReusedWithDifferentPayload() throws Exception {
         UUID idempotencyKey = UUID.randomUUID();
         mockMvc.perform(post("/api/mobile/v1/attempts")

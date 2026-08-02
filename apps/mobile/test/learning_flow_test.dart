@@ -2,12 +2,40 @@ import 'package:esquilospeak_mobile/features/learning/data/learning_models.dart'
 import 'package:esquilospeak_mobile/features/learning/data/learning_repository.dart';
 import 'package:esquilospeak_mobile/features/learning/presentation/learning_flow_screen.dart';
 import 'package:esquilospeak_mobile/features/learning/presentation/learning_view_model.dart';
+import 'package:esquilospeak_mobile/features/practice/data/practice_models.dart';
 import 'package:esquilospeak_mobile/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
+  test(
+    'practice submits against canonical lesson with mode evidence',
+    () async {
+      final repository = CapturePracticeLearningRepository();
+      final viewModel = _viewModel(repository);
+      await viewModel.chooseCourse(FakeLearningRepository.course);
+
+      await viewModel.startPractice(
+        configuration: const PracticeConfiguration(
+          mode: PracticeMode.practiceTest,
+          count: 3,
+        ),
+      );
+      viewModel.setResponse(const OptionExerciseResponse('option-hello'));
+      await viewModel.submitAnswer();
+
+      expect(viewModel.sessionKind, LearningSessionKind.practice);
+      expect(
+        repository.submitted?.lessonId,
+        FakeLearningRepository.lessonValue.id,
+      );
+      expect(repository.submitted?.lessonId, isNot(startsWith('practice-')));
+      expect(repository.submitted?.evidence.practiceMode, 'practice_test');
+      expect(viewModel.sessionCorrectCount, 1);
+    },
+  );
+
   testWidgets('completes the first learning vertical slice', (tester) async {
     final viewModel = _viewModel(FakeLearningRepository());
     await tester.pumpWidget(
@@ -325,6 +353,16 @@ class RetryOnceLearningRepository extends FakeLearningRepository {
     if (submissions.length == 1) {
       throw const LearningTestException();
     }
+    return super.submitAttempt(attempt);
+  }
+}
+
+class CapturePracticeLearningRepository extends FakeLearningRepository {
+  PendingAttempt? submitted;
+
+  @override
+  Future<AttemptFeedback> submitAttempt(PendingAttempt attempt) async {
+    submitted = attempt;
     return super.submitAttempt(attempt);
   }
 }

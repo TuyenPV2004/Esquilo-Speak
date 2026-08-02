@@ -295,22 +295,37 @@ liệu hoặc tách rời mastery.
 
 ### Checklist
 
-- [ ] Flashcards: lật thẻ, shuffle, audio và phân loại biết/chưa biết.
-- [ ] Adaptive Learn: tăng dần từ recognition sang recall theo evidence.
-- [ ] Practice Test: cấu hình số câu/type, chấm điểm và summary.
-- [ ] Match: ghép cặp theo lượt ngắn, không dùng tốc độ làm mastery duy nhất.
-- [ ] Mistakes practice: luyện lại lỗi gần đây.
-- [ ] Weak concepts practice: chọn concept có mastery thấp/sắp quên.
-- [ ] Cho phép chọn phạm vi unit/lesson/concept khi luyện chủ động.
-- [ ] Mọi mode ghi attempt/evidence nhất quán và không làm sai progress course.
-- [ ] Mode có giới hạn và fallback phù hợp khi offline.
-- [ ] Accessibility không phụ thuộc gesture hoặc tốc độ.
+- [x] Flashcards: lật thẻ, shuffle, audio và phân loại biết/chưa biết.
+- [x] Adaptive Learn: tăng dần từ recognition sang recall theo evidence.
+- [x] Practice Test: cấu hình số câu/type, chấm điểm và summary.
+- [x] Match: ghép cặp theo lượt ngắn, không dùng tốc độ làm mastery duy nhất.
+- [x] Mistakes practice: luyện lại lỗi gần đây.
+- [x] Weak concepts practice: chọn concept có mastery thấp/sắp quên.
+- [x] Cho phép chọn phạm vi unit/lesson/concept khi luyện chủ động.
+- [x] Mọi mode ghi attempt/evidence nhất quán và không làm sai progress course.
+- [x] Mode có giới hạn và fallback phù hợp khi offline.
+- [x] Accessibility không phụ thuộc gesture hoặc tốc độ.
 
 ### Gate
 
-- [ ] Một learning item được dùng trong ít nhất ba mode mà không copy canonical data.
-- [ ] Personalized selection có explanation và test deterministic.
-- [ ] Practice mode không tạo đường tắt hoàn thành curriculum ngoài policy.
+- [x] Một learning item được dùng trong ít nhất ba mode mà không copy canonical data.
+- [x] Personalized selection có explanation và test deterministic.
+- [x] Practice mode không tạo đường tắt hoàn thành curriculum ngoài policy.
+
+### Bằng chứng hoàn thành ngày 2026-08-02
+
+Practice selector giữ trực tiếp tham chiếu `Lesson`/`Exercise` canonical và test dùng cùng
+object/version qua Flashcards, Practice Test và Mistakes. Selector deterministic theo seed,
+scope, mastery/review/lỗi gần nhất và luôn trả explanation/fallback; adaptive test chứng minh
+mastery thấp ưu tiên recognition, mastery cao ưu tiên recall. SQLite schema V3 lưu kết quả mới
+nhất để luyện lỗi khi offline; các mode chỉ tải lesson đã cache khi mạng không khả dụng.
+
+Attempt evidence dùng enum `practiceMode` đồng nhất trên OpenAPI/Java/Dart. Integration test
+PostgreSQL xác nhận practice attempt đúng vẫn tạo mastery evidence nhưng
+`completedExerciseCount = 0`, lesson `not_started` và không có completion shortcut. Full backend
+regression cùng `bootJar`, OpenAPI lint/P0 freeze, Flutter analyzer và 61/61 mobile test đều pass;
+widget test khóa lật thẻ/audio/control nút ở text 200%. Debug APK build thành công; Android device
+test không chạy trong lượt này vì `flutter devices` không phát hiện target Android.
 
 ## Giai đoạn 7 — Hoàn thiện course A1
 
