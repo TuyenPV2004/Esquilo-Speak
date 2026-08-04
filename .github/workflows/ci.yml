@@ -48,7 +48,7 @@ jobs:
           fi
 
       - name: Detect breaking OpenAPI changes
-        uses: oasdiff/oasdiff-action/breaking@v0
+        uses: oasdiff/oasdiff-action/breaking@v0.1.10
         with:
           base: "${{ steps.compatibility-base.outputs.source }}"
           revision: "HEAD:contracts/openapi/esquilospeak-learning-v1.yaml"
