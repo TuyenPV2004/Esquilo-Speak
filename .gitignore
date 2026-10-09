@@ -1,5 +1,4 @@
 # Local agent workspace instructions
-.agent/
 .claude/
 
 # Local environment and secrets
