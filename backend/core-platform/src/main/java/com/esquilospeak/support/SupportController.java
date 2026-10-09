@@ -3,6 +3,7 @@ package com.esquilospeak.support;
 import com.esquilospeak.identityprofile.IdentityProfileService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import java.util.List;
@@ -51,6 +52,28 @@ class SupportController {
         return service.updateStatus(ticketId, body.status());
     }
 
+    @GetMapping("/api/support/v1/tickets")
+    List<SupportService.OperationalTicket> listOperational() {
+        return service.listOperational();
+    }
+
+    @PatchMapping("/api/support/v1/tickets/{ticketId}/triage")
+    SupportService.OperationalTicket triage(
+            @AuthenticationPrincipal Jwt jwt,
+            @PathVariable UUID ticketId,
+            @Valid @RequestBody TriageBody body) {
+        return service.triage(
+                ticketId,
+                jwt.getSubject(),
+                body.status(),
+                body.severity(),
+                body.ownerRef(),
+                body.actionPlan(),
+                body.releaseDecision(),
+                body.resolutionSummary(),
+                body.closedLoopConfirmed());
+    }
+
     record TicketBody(
             @NotBlank @Pattern(regexp = "support|content_report") String type,
             @Size(max = 160) String contentRef,
@@ -59,4 +82,18 @@ class SupportController {
 
     record StatusBody(
             @NotBlank @Pattern(regexp = "triaged|resolved|dismissed") String status) {}
+
+    record TriageBody(
+            @NotBlank @Pattern(regexp = "triaged|resolved|dismissed") String status,
+            @NotBlank @Pattern(regexp = "P0|P1|P2") String severity,
+            @NotBlank
+                    @Size(max = 120)
+                    @Pattern(regexp = "[a-z0-9][a-z0-9._:-]{1,119}")
+                    String ownerRef,
+            @NotBlank @Size(max = 2000) String actionPlan,
+            @NotBlank
+                    @Pattern(regexp = "pending|block|accept_with_plan|fixed|not_applicable")
+                    String releaseDecision,
+            @Size(max = 2000) String resolutionSummary,
+            @NotNull Boolean closedLoopConfirmed) {}
 }

@@ -55,6 +55,7 @@ docs/
 - [Backend SLO/load test](operations/Backend_Slo_And_Load_Test.md)
 - [Backend ASVS review](operations/Backend_Asvs_Review.md)
 - [Backend release gate](operations/Backend_Release_Gate.md)
+- [Closed beta và Product Completion Gate](operations/Closed_Beta_Runbook.md)
 - [API Check](reference/API_Check.md)
 
 ### Process

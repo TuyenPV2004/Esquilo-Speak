@@ -1,0 +1,96 @@
+{
+  "schemaVersion": 1,
+  "planVersion": "closed-beta-v1",
+  "courseId": "course-en-for-vi",
+  "market": "vi-VN",
+  "targetLanguage": "en",
+  "proficiencyLevel": "A1",
+  "cohort": {
+    "audience": "Vietnamese-speaking adults learning foundational English",
+    "minimumConsentedLearners": 20,
+    "minimumMaturedD7Learners": 15,
+    "observationDays": 14,
+    "excludeMinors": true,
+    "participantIdentifiers": "pseudonymous_beta_ids_only",
+    "samplingNote": "Operational beta baseline, not a statistically powered efficacy study"
+  },
+  "consent": {
+    "participationPolicyVersion": "beta-participation-v1",
+    "operationalTelemetryPolicyVersion": 1,
+    "telemetryOptional": true,
+    "withdrawalChannel": "in_app_support",
+    "rawVoiceCollection": false,
+    "repositoryMayStorePersonalData": false
+  },
+  "feedback": {
+    "canonicalChannel": "in_app_support",
+    "structuredInterviewAreas": [
+      "onboarding",
+      "learning_path",
+      "lesson",
+      "daily_loop",
+      "feedback"
+    ],
+    "repositoryStoresOnlyAggregateEvidence": true,
+    "closeLoopThroughTicket": true
+  },
+  "supportSla": {
+    "P0": {
+      "acknowledgeBusinessHours": 4,
+      "containBusinessHours": 8,
+      "releaseDecisionRequired": true
+    },
+    "P1": {
+      "acknowledgeBusinessHours": 8,
+      "actionPlanBusinessHours": 16,
+      "releaseDecisionRequired": true
+    },
+    "privacyOrSafety": {
+      "acknowledgeHours": 24,
+      "releaseDecisionRequired": true
+    }
+  },
+  "deviceMatrix": {
+    "minimumDistinctAndroidApiLevels": 3,
+    "requiredApiBuckets": [
+      "minimum_supported",
+      "intermediate_supported",
+      "target_supported"
+    ],
+    "minimumPhysicalDeviceModels": 2,
+    "minimumPhysicalMicrophonePasses": 2,
+    "emulatorEvidenceMaySupplementButNotReplacePhysical": true
+  },
+  "decisionMetrics": {
+    "firstLessonCompletionMinimum": 0.6,
+    "unitOneCompletion": "measure_and_review",
+    "d1Retention": "baseline_after_maturity",
+    "d7Retention": "baseline_after_maturity",
+    "acknowledgedAttemptLossMaximum": 0,
+    "duplicateAcceptedAttemptRateMaximum": 0.0001,
+    "androidCrashFreeSessionMinimum": 0.995
+  },
+  "requiredRehearsals": [
+    "backup_restore",
+    "privacy_export",
+    "privacy_delete",
+    "support_closed_loop",
+    "offline_reconnect",
+    "physical_microphone"
+  ],
+  "requiredProductGates": [
+    "courseReviewed",
+    "exerciseEngineStable",
+    "dailyReviewPracticeSummaryEndToEnd",
+    "authoringWithoutApplicationCodeChange",
+    "advancedSkillsPedagogyReviewed",
+    "accessibilityPrivacySafetyLocalizationPass",
+    "productDirectionAccepted"
+  ],
+  "releaseRules": {
+    "openP0Maximum": 0,
+    "p1RequiresOwnerPlanAndDecision": true,
+    "productOwnerAndDeveloperSignOffRequired": true,
+    "developerStage13UnlockRequired": true
+  }
+}

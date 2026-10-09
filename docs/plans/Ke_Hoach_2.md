@@ -403,28 +403,45 @@ người dùng và evidence thay vì chỉ dựa trên số lượng tính năng
 
 ### Closed-beta checklist
 
-- [ ] Chốt test cohort, consent, feedback channel và support SLA nội bộ.
+- [x] Chốt test cohort, consent, feedback channel và support SLA nội bộ.
 - [ ] Chạy beta trên nhiều Android API level và tối thiểu một số thiết bị thật.
 - [ ] Thu phản hồi định tính về onboarding, path, lesson, daily loop và feedback.
 - [ ] Đo first-lesson completion và Unit 1 completion.
 - [ ] Đo D1/D7 retention sau thời gian quan sát hợp lý.
 - [ ] Xử lý content report P0/P1 và đóng vòng phản hồi với tester.
 - [ ] Không còn lỗi P0; lỗi P1 có owner, kế hoạch và quyết định release rõ.
-- [ ] Backup/restore, privacy export/delete và support workflow được diễn tập lại.
+- [x] Backup/restore, privacy export/delete và support workflow được diễn tập lại.
 - [ ] Full regression P0/P1, offline/reconnect và physical-device microphone pass.
 
 ### Product Completion Gate bắt buộc
 
 - [ ] Course A1 có tối thiểu 4 unit/20 lesson đã publish và được review.
-- [ ] Có ít nhất 8 exercise type ổn định và được tích hợp vào lesson.
+- [x] Có ít nhất 8 exercise type ổn định và được tích hợp vào lesson.
 - [ ] Daily session, review, practice modes và session summary hoạt động end-to-end.
-- [ ] Authoring/validation/preview/publish không yêu cầu sửa application code mỗi lesson.
+- [x] Authoring/validation/preview/publish không yêu cầu sửa application code mỗi lesson.
 - [ ] Writing, pronunciation và conversation xuất hiện trong learning path phù hợp.
 - [ ] Online/offline/reconnect không làm mất hoặc nhân đôi acknowledged attempt.
 - [ ] Accessibility, privacy, safety và localization gate pass.
 - [ ] Product metrics và closed-beta feedback cho thấy hướng sản phẩm được chấp nhận.
 - [ ] Product owner/developer ký xác nhận app đủ hoàn thiện để chuẩn bị phát hành.
 - [ ] Developer xác nhận bằng văn bản việc mở khóa Giai đoạn 13 trong Phần 1.
+
+Evidence kỹ thuật Giai đoạn 9: `closed-beta-v1` khóa cohort người lớn 20 learner,
+tối thiểu 15 learner trưởng thành D7, observation 14 ngày, telemetry tùy chọn,
+in-app Support, SLA P0/P1/privacy-safety và device matrix fail-closed. Flyway V16 +
+OpenAPI 0.14.0 cung cấp operations queue với severity, owner giả danh, action plan,
+release decision và audit trail; P0 không thể `accept_with_plan`. Content pipeline
+xác minh 9 exercise type trong lesson và authoring → validation → learner-safe
+preview → publish không cần sửa app theo từng lesson. Backup/restore, privacy
+export/delete và support triage/resolve được integration test diễn tập lại.
+
+`Evaluate_Closed_Beta_Gate.mjs` hiện trả `BLOCKED` đúng thiết kế vì chưa có evidence
+cohort thật. Các mục device thật/microphone, phản hồi định tính, first lesson/Unit 1,
+D1/D7, P0/P1 thực tế, full regression Android, content/pedagogy review, product
+acceptance và hai chữ ký không được suy diễn từ test tự động nên vẫn mở. Giai đoạn
+13 tiếp tục bị khóa. Android Unit 1 instrumentation bổ sung đã pass 5 lesson/45
+exercise trên emulator API 37; evidence này chỉ bao phủ một API level và không thay
+thế physical-device/microphone matrix.
 
 ## 14. Thứ tự thực hiện và dependency
 

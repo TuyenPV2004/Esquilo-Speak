@@ -652,3 +652,57 @@ theo `docs/plans/Ke_Hoach_2.md`.
   Redocly + P0 freeze, Flutter analyzer + full suite 65/65 và local debug APK đều pass.
   Không có Android target trong `flutter devices`; D1/D7/target thực tế vẫn chờ cohort
   closed beta Giai đoạn 9 thay vì dùng synthetic test data để đóng gate sản phẩm.
+
+## 16. Giai đoạn 9 — Closed beta và Product Completion Gate
+
+### Mục tiêu
+
+Khóa contract vận hành closed beta, thu evidence thật theo cohort/device/metrics,
+đóng vòng P0/P1 có owner và quyết định release, rồi fail-closed Product Completion
+Gate cho đến khi đủ dữ liệu D7 và chữ ký product owner/developer.
+
+### Phạm vi triển khai
+
+1. Version hóa `closed-beta-v1`: 20 người học trưởng thành consent, tối thiểu 15
+   learner trưởng thành D7, cửa sổ 14 ngày; telemetry vẫn tùy chọn.
+2. Chốt in-app Support là feedback channel canonical, năm vùng phỏng vấn tổng hợp,
+   SLA P0/P1/privacy-safety và quy tắc không lưu PII/raw feedback trong Git.
+3. Mở operations support queue riêng; triage ghi severity, owner giả danh, action
+   plan, release decision, resolution summary và audit event. P0 không thể
+   `accept_with_plan`.
+4. Khóa evidence matrix tối thiểu 3 Android API level, 2 model thật, 2 microphone
+   pass cùng offline/reconnect journey.
+5. Thêm contract test và completion evaluator. Evaluator chỉ pass một evidence
+   bundle thật đủ cohort, metrics, device, defect, rehearsal, product gate và sign-off.
+
+### Validation
+
+1. Node contract test xác nhận plan/template aggregate-only và fail-closed.
+2. Backend integration xác nhận Flyway V16, operations authority, triage rule và
+   actor hash/audit event.
+3. OpenAPI lint + compatibility/freeze, backend full regression và `bootJar`.
+4. Content pipeline, Flutter analyzer/test/build cùng Android E2E trên device matrix.
+5. Completion evaluator được chạy hai lần: hiện tại phải block do chưa có evidence;
+   chỉ chạy pass sau observation window và sign-off thật.
+
+### Gate không thể tự động đóng
+
+- Enrollment, phản hồi định tính, D1/D7 và product-direction acceptance.
+- Android physical-device/microphone matrix và crash-free production-like sample.
+- Content/pedagogy review, product owner/developer sign-off và văn bản mở Giai đoạn 13.
+
+Developer phê duyệt triển khai framework Giai đoạn 9 ngày 2026-08-02 bằng yêu cầu
+thực hiện giai đoạn này. Yêu cầu đó không được hiểu là chữ ký Product Completion
+Gate hoặc quyết định mở Giai đoạn 13.
+
+### Kết quả kỹ thuật hiện tại
+
+- Contract/content/closed-beta test 12/12 pass; P0 freeze validator và Redocly lint
+  pass; oasdiff không phát hiện breaking change từ OpenAPI 0.13.0 sang 0.14.0.
+- Backend 41/41 test pass, 0 failure/error/skip; Flyway V1→V16, privacy/support/
+  backup rehearsal và `bootJar` pass.
+- Flutter analyzer sạch, 65/65 test pass, local debug APK build pass. Unit 1 Android
+  instrumentation pass 5 lesson/45 exercise trên emulator API 37.
+- Completion evaluator trả exit code 2 đúng thiết kế do chưa có evidence cohort thật.
+  Không có thiết bị Android thật nên physical microphone và device matrix vẫn mở;
+  Giai đoạn 13 chưa được mở khóa.

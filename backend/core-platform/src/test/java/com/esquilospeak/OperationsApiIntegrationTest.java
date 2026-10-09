@@ -181,7 +181,7 @@ class OperationsApiIntegrationTest {
             try (var versions = statement.executeQuery(
                     "select max(version::integer) from flyway_schema_history where success")) {
                 assertTrue(versions.next());
-                assertEquals(15, versions.getInt(1));
+                assertEquals(16, versions.getInt(1));
             }
             try (var tables = statement.executeQuery("""
                     select count(*)

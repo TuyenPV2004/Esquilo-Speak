@@ -54,7 +54,7 @@ public class OperationalAuditService {
                 .update();
     }
 
-    String actorHash(String actor) {
+    public String actorHash(String actor) {
         return hash(actor);
     }
 

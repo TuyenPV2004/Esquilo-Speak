@@ -204,6 +204,8 @@ vậy đổi mode, làm lại cùng item hoặc luyện offline rồi sync khôn
 | `GET /api/mobile/v1/support/tickets` | `listOwnSupportTickets` | Lấy ticket hỗ trợ/content report của learner | Màn lịch sử hỗ trợ; cần learner JWT |
 | `POST /api/mobile/v1/support/tickets` | `createSupportTicket` | Tạo yêu cầu hỗ trợ hoặc báo cáo nội dung | Màn Support; cần learner JWT |
 | `PATCH /api/support/v1/tickets/{ticketId}/status` | `updateSupportTicketStatus` | Phân loại, xử lý hoặc đóng ticket | Chỉ support staff/admin có operations scope |
+| `GET /api/support/v1/tickets` | `listSupportTicketsForOperations` | Đọc queue nội bộ kèm severity, owner giả danh, action plan, release decision và closed-loop state | Chỉ support staff/admin; không trả representation này cho learner |
+| `PATCH /api/support/v1/tickets/{ticketId}/triage` | `triageSupportTicketForClosedBeta` | Ghi triage P0/P1/P2 và immutable audit event cho closed beta | P0 không được `accept_with_plan`; resolved/dismissed cần summary phù hợp |
 
 ### 4.10. Product quality và personalization
 
@@ -261,6 +263,9 @@ Ma trận thao tác kiểm thử A01–O04 và API mong đợi nằm trong
   deterministic và tự khai báo là fallback.
 - Analytics contract tách content reference có cấu trúc khỏi attributes allowlisted;
   raw response và text tự do không có field để gửi.
+- Support closed-beta triage tách representation nội bộ khỏi learner ticket. Owner
+  dùng mã team/operator giả danh; P0/P1 phải có action plan và release decision,
+  còn mỗi mutation operations được ghi audit mà không lưu subject thô.
 
 ## 7. Checklist khi chỉnh sửa API
 

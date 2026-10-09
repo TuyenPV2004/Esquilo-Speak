@@ -1,0 +1,84 @@
+{
+  "schemaVersion": 1,
+  "planVersion": "closed-beta-v1",
+  "evidenceId": "replace-with-date-and-candidate",
+  "releaseCandidate": "replace-me",
+  "observation": {
+    "participationPolicyVersion": "beta-participation-v1",
+    "telemetryOptional": true,
+    "startedAt": null,
+    "endedAt": null,
+    "consentedLearners": 0,
+    "maturedD7Learners": 0
+  },
+  "devices": [],
+  "qualitativeFeedback": {
+    "aggregateOnly": true,
+    "areasCovered": [],
+    "decisionSummary": null
+  },
+  "metrics": {
+    "firstLessonCompletion": {
+      "value": null,
+      "sampleSize": null,
+      "source": "product_quality_dashboard"
+    },
+    "unitOneCompletion": {
+      "value": null,
+      "sampleSize": null,
+      "source": "product_quality_dashboard"
+    },
+    "d1Retention": {
+      "value": null,
+      "sampleSize": null,
+      "source": "product_quality_dashboard"
+    },
+    "d7Retention": {
+      "value": null,
+      "sampleSize": null,
+      "source": "product_quality_dashboard"
+    },
+    "acknowledgedAttemptLoss": {
+      "value": null,
+      "sampleSize": null,
+      "source": "canonical_reconciliation"
+    },
+    "duplicateAcceptedAttemptRate": {
+      "value": null,
+      "sampleSize": null,
+      "source": "product_quality_dashboard"
+    },
+    "androidCrashFreeSession": {
+      "value": null,
+      "sampleSize": null,
+      "source": "approved_android_crash_reporting"
+    }
+  },
+  "defects": {
+    "openP0": null,
+    "p1WithoutOwnerPlanOrDecision": null,
+    "allSeriousContentReportsClosedLoop": false
+  },
+  "rehearsals": {
+    "backup_restore": false,
+    "privacy_export": false,
+    "privacy_delete": false,
+    "support_closed_loop": false,
+    "offline_reconnect": false,
+    "physical_microphone": false
+  },
+  "productGate": {
+    "courseReviewed": false,
+    "exerciseEngineStable": false,
+    "dailyReviewPracticeSummaryEndToEnd": false,
+    "authoringWithoutApplicationCodeChange": false,
+    "advancedSkillsPedagogyReviewed": false,
+    "accessibilityPrivacySafetyLocalizationPass": false,
+    "productDirectionAccepted": false
+  },
+  "signOff": {
+    "productOwner": null,
+    "developer": null,
+    "stage13UnlockedByDeveloper": false
+  }
+}

@@ -31,3 +31,11 @@ the Unit 1 path, unit download, five lessons and 45 exercises on Android without
 depending on a live server. Backend scoring/progress/mastery/review is validated
 separately by `CurriculumContentPublishingIntegrationTest`; do not describe these
 two tests as one live onboarding-to-completion journey.
+
+Closed-beta evidence is governed separately by
+`docs/operations/Closed_Beta_Runbook.md`. Emulator evidence in this directory may
+cover a journey, but it cannot replace the required physical-device/microphone
+matrix, matured D7 cohort, aggregate feedback or product sign-off. Validate the
+plan with `node --test tests/closed-beta/Closed_Beta_Contract_Test.mjs`; the
+completion evaluator intentionally returns exit code 2 until a real candidate
+evidence bundle exists.

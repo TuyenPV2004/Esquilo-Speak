@@ -35,3 +35,5 @@ Decision status:
   Exercise Engine V2, canonical scoring/evidence and Unit 1 runtime decisions.
 - [`ADR-010`](ADR-010-product-quality-analytics-personalization.md): consent-aware
   product-quality analytics, traceable content queue and versioned personalization.
+- [`ADR-011`](ADR-011-closed-beta-evidence-and-completion-gate.md): fail-closed
+  closed-beta evidence, serious-finding triage and Product Completion Gate.

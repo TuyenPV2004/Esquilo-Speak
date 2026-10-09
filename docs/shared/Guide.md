@@ -610,3 +610,28 @@ Log liên quan đã loại bỏ token, password và dữ liệu nhạy cảm:
 9. Placement hiển thị câu hỏi/đáp án theo locale nhưng vẫn chấm đúng stable
    option ID; Review/Engagement không hiển thị raw concept/achievement code khi
    server đã trả presentation metadata.
+
+## 14. Kiểm tra Giai đoạn 9 — Closed beta
+
+1. Chạy `node --test tests/closed-beta/Closed_Beta_Contract_Test.mjs`; cohort,
+   consent, feedback channel, SLA và device matrix phải đúng `closed-beta-v1`.
+2. Trên operations queue, triage một content report P1 bằng
+   `PATCH /api/support/v1/tickets/{ticketId}/triage`; xác nhận response có severity,
+   owner giả danh, action plan và release decision. Đóng ticket bằng `fixed` cùng
+   resolution summary rồi xác nhận tester đã kiểm tra lại.
+3. Thử gửi P0 với `accept_with_plan`; backend phải trả
+   `422 SUPPORT_TRIAGE_INVALID`. Không dùng endpoint `/status` cũ để đóng P0/P1.
+4. Chạy journey trên ít nhất 3 Android API level và 2 model thật. Mỗi device thật
+   kiểm tra microphone; ít nhất một device kiểm tra offline → submit → reconnect
+   và đối chiếu acknowledged attempt không mất/nhân đôi.
+5. Sau tối thiểu 7 ngày, lấy dashboard theo cửa sổ UTC; chỉ ghi D1/D7 khi cohort
+   đã trưởng thành và luôn ghi sample size. Thu feedback tổng hợp đủ onboarding,
+   path, lesson, daily loop và feedback; không commit raw interview/PII.
+6. Diễn tập lại backup/restore, privacy export/delete và support closed loop; rerun
+   full regression sau P0/P1 fix.
+7. Copy evidence template thành file candidate thật rồi chạy
+   `node tests/closed-beta/Evaluate_Closed_Beta_Gate.mjs`. Exit code `2` khi chưa
+   có evidence/sign-off là đúng; không sửa template để giả lập pass.
+
+Quy trình đầy đủ, SLA, lịch 14 ngày và stop rule nằm tại
+[`Closed_Beta_Runbook.md`](../operations/Closed_Beta_Runbook.md).

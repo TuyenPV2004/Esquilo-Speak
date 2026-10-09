@@ -116,6 +116,131 @@ class CommerceSupportApiIntegrationTest {
                 .andExpect(jsonPath("$[0].status").value("triaged"));
     }
 
+    @Test
+    void recordsClosedBetaSeverityOwnerDecisionAndAuditTrail() throws Exception {
+        RequestPostProcessor learner = learner("beta-support-" + UUID.randomUUID());
+        String created = mockMvc.perform(post("/api/mobile/v1/support/tickets")
+                        .with(learner)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("""
+                                {
+                                  "type":"content_report",
+                                  "contentRef":"lesson-basic-greetings:exercise-choose-hello",
+                                  "locale":"vi",
+                                  "description":"Closed-beta content finding."
+                                }
+                                """))
+                .andExpect(status().isOk())
+                .andReturn().getResponse().getContentAsString();
+        String ticketId = field(created, "id");
+
+        mockMvc.perform(patch("/api/support/v1/tickets/{ticketId}/triage", ticketId)
+                        .with(supportStaff())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("""
+                                {
+                                  "status":"triaged",
+                                  "severity":"P1",
+                                  "ownerRef":"team:content",
+                                  "actionPlan":"Correct canonical content.",
+                                  "releaseDecision":"accept_with_plan"
+                                }
+                """))
+                .andExpect(status().isBadRequest());
+
+        mockMvc.perform(patch("/api/support/v1/tickets/{ticketId}/triage", ticketId)
+                        .with(supportStaff())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("""
+                                {
+                                  "status":"triaged",
+                                  "severity":"P1",
+                                  "ownerRef":"person@example.test",
+                                  "actionPlan":"Correct canonical content.",
+                                  "releaseDecision":"accept_with_plan",
+                                  "closedLoopConfirmed":false
+                                }
+                                """))
+                .andExpect(status().isBadRequest());
+
+        mockMvc.perform(patch("/api/support/v1/tickets/{ticketId}/triage", ticketId)
+                        .with(supportStaff())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("""
+                                {
+                                  "status":"triaged",
+                                  "severity":"P1",
+                                  "ownerRef":"team:content",
+                                  "actionPlan":"Correct canonical content and ask the tester to verify.",
+                                  "releaseDecision":"accept_with_plan",
+                                  "closedLoopConfirmed":false
+                                }
+                                """))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.severity").value("P1"))
+                .andExpect(jsonPath("$.ownerRef").value("team:content"))
+                .andExpect(jsonPath("$.releaseDecision").value("accept_with_plan"));
+
+        mockMvc.perform(get("/api/support/v1/tickets").with(supportStaff()))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[?(@.id == '%s')].actionPlan".formatted(ticketId))
+                        .value("Correct canonical content and ask the tester to verify."));
+        mockMvc.perform(get("/api/support/v1/tickets").with(learner))
+                .andExpect(status().isForbidden());
+        mockMvc.perform(get("/api/mobile/v1/support/tickets").with(learner))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].severity").doesNotExist())
+                .andExpect(jsonPath("$[0].ownerRef").doesNotExist())
+                .andExpect(jsonPath("$[0].actionPlan").doesNotExist())
+                .andExpect(jsonPath("$[0].releaseDecision").doesNotExist());
+
+        mockMvc.perform(patch("/api/support/v1/tickets/{ticketId}/triage", ticketId)
+                        .with(supportStaff())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("""
+                                {
+                                  "status":"triaged",
+                                  "severity":"P0",
+                                  "ownerRef":"team:content",
+                                  "actionPlan":"Fix before beta continues.",
+                                  "releaseDecision":"accept_with_plan",
+                                  "closedLoopConfirmed":false
+                                }
+                                """))
+                .andExpect(status().isUnprocessableContent())
+                .andExpect(jsonPath("$.code").value("SUPPORT_TRIAGE_INVALID"));
+
+        mockMvc.perform(patch("/api/support/v1/tickets/{ticketId}/triage", ticketId)
+                        .with(supportStaff())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("""
+                                {
+                                  "status":"resolved",
+                                  "severity":"P1",
+                                  "ownerRef":"team:content",
+                                  "actionPlan":"Correct canonical content and ask the tester to verify.",
+                                  "releaseDecision":"fixed",
+                                  "resolutionSummary":"Canonical item corrected and regression verified.",
+                                  "closedLoopConfirmed":true
+                                }
+                                """))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.status").value("resolved"))
+                .andExpect(jsonPath("$.releaseDecision").value("fixed"))
+                .andExpect(jsonPath("$.closedLoopAt").isNotEmpty());
+
+        Integer auditEvents = jdbc.sql("""
+                        select count(*) from support_ticket_triage_events
+                        where ticket_id = :ticketId
+                          and length(actor_hash) = 64
+                          and severity = 'P1'
+                        """)
+                .param("ticketId", UUID.fromString(ticketId))
+                .query(Integer.class)
+                .single();
+        org.junit.jupiter.api.Assertions.assertEquals(2, auditEvents);
+    }
+
     private RequestPostProcessor learner(String subject) {
         return jwt()
                 .jwt(token -> token.issuer("https://identity.test")
